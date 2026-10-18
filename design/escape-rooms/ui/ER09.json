@@ -1,0 +1,20 @@
+{
+  "rooms": { "ROOM01": "🏚️", "ROOM02": "⚓", "ROOM03": "🏛️" },
+  "objects": {
+    "O01": "🗺️", "O02": "🚋", "O03": "🏘️", "O04": "🎛️", "O05": "🔭", "O06": "🚪", "O07": "💡", "O08": "🚂", "O09": "📼",
+    "O10": "🔌", "O11": "📒", "O12": "🛢️", "O13": "🛤️", "O14": "🕹️", "O15": "🌉", "O16": "📻", "O17": "🚣", "O18": "📦",
+    "O19": "📮", "O20": "🏛️", "O21": "📋", "O22": "📜", "O24": "🚪", "O25": "⛲", "O26": "🪑", "O27": "🕊️", "O28": "🪺", "O29": "🏠"
+  },
+  "labels": {
+    "FARO": "🗼 Faro", "ANCLA": "⚓ Ancla", "OLA": "🌊 Ola", "PEZ": "🐟 Pez",
+    "MASCARA": "🎭 Máscara", "SOBRE": "✉️ Sobre", "PAN": "🍞 Pan", "LIBRO": "📖 Libro",
+    "IZQ": "⬅️ IZQ", "DER": "DER ➡️"
+  },
+  "keys": { "P02": { "1": "Aguja 1", "2": "Aguja 2", "3": "Aguja 3", "4": "Aguja 4" } },
+  "inputs": {
+    "P01": { "prompt": "Sube las palancas de una en una, en el orden correcto.", "button": "Subir las palancas" },
+    "P02": { "prompt": "Pon cada aguja a la izquierda o a la derecha y tira de Salida.", "button": "Tirar de Salida" },
+    "P03": { "prompt": "Pulsa las cuatro teclas de dibujos en orden.", "button": "Sintonizar" },
+    "P04": { "prompt": "Gira las tres ruedas del dial y pulsa Abrir.", "button": "Abrir" }
+  }
+}

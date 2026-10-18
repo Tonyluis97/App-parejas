@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: node tests/engine.test.js
+      - run: node tests/rooms.test.js
       - run: sh build.sh
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

@@ -129,6 +129,14 @@ label.f{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
 .symbols button small{font-size:12px}
 .shake{animation:shake .4s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+/* Escape rooms para dos */
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rtile{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 4px;border-radius:16px;background:var(--surface-2);font-size:12px;font-weight:700;line-height:1.2;text-align:center;min-height:92px}
+.rtile .e{font-size:34px;line-height:1}
+.rtile.deco{opacity:.7}
+.rtile.new::after{content:'';position:absolute;right:8px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.card.off{opacity:.55}
+.subbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom));z-index:15;width:calc(100% - 24px);max-width:540px;background:var(--surface);border:2px solid var(--accent);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px;font-size:15px;cursor:pointer}
 /* Hojas inferiores */
 .sheet-bg{position:fixed;inset:0;background:rgba(20,8,12,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--surface);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto;animation:up .2s ease-out}
