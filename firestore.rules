@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    // Una pareja = un documento con los dos uids. Solo sus miembros leen y escriben.
+    match /couples/{code} {
+      allow read: if request.auth != null && request.auth.uid in resource.data.uids;
+      allow create: if request.auth != null && request.resource.data.uids == [request.auth.uid];
+      allow update: if request.auth != null && (
+        request.auth.uid in resource.data.uids ||
+        // Unirse: solo si hay una persona y solo se agrega uno mismo
+        (resource.data.uids.size() == 1
+          && request.resource.data.uids == resource.data.uids.concat([request.auth.uid])
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uids', 'members']))
+      );
+      match /{col}/{id} {
+        allow read, write: if request.auth != null
+          && request.auth.uid in get(/databases/$(db)/documents/couples/$(code)).data.uids;
+      }
+    }
+  }
+}

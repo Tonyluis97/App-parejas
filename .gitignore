@@ -1,0 +1,5 @@
+dist/
+web/index.html
+web/sw.js
+web/manifest.webmanifest
+node_modules/

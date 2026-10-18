@@ -1,0 +1,2 @@
+// Punto de entrada
+boot();
