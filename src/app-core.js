@@ -47,7 +47,8 @@ function openSheet(html, onOpen) {
   const bg = document.createElement('div');
   bg.className = 'sheet-bg'; bg.id = 'sheet';
   bg.innerHTML = '<div class="sheet" role="dialog">' + html + '</div>';
-  bg.addEventListener('click', e => { if (e.target === bg) closeSheet(); });
+  const t0 = Date.now(); // un toque que llega pegado al que abrió la hoja no la cierra
+  bg.addEventListener('click', e => { if (e.target === bg && Date.now() - t0 > 400) closeSheet(); });
   document.body.appendChild(bg);
   onOpen && onOpen(bg.firstChild);
 }

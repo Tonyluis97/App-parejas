@@ -275,39 +275,91 @@
   const MORSE = { A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.', G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..', M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.', S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-', Y: '-.--', Z: '--..' };
   function morse(word) { return norm(word).toUpperCase().split('').map(c => MORSE[c] || '').filter(Boolean); }
 
+  // Cada sala tiene una cadena de cerraduras por lado. Al abrir una, en tu sala aparece algo
+  // (reveal) que solo le sirve a tu pareja, así que deben ir turnándose y hablando.
+  // La puerta de cada uno se abre al resolver su última cerradura.
   const ESC3 = {
     levels: [
-      { id: 'espera', name: 'La sala de espera', mins: 10, danger: 'calor',
+      { id: 'espera', name: 'La sala de espera', mins: 15, danger: 'calor',
         intro: 'Las puertas se cerraron y la habitación empieza a calentarse. Salgan antes de que sea insoportable.',
-        A: { kind: 'keypad', len: 4, answer: '1025', lock: 'Caja fuerte', hint: 'En la tapa dice: «La combinación es la hora exacta que marca el reloj de la otra sala».' },
-        B: { kind: 'switches', answer: [1, 0, 1, 1], lock: 'Panel de interruptores', hint: 'Debajo dice: «Las luces deben quedar igual que en el cuadro de la otra sala».' },
+        A: { door: 'La puerta tiene tres cerraduras: la caja fuerte, el maletín y el cerrojo. Ábrelas en orden.',
+          steps: [
+            { id: 'lock', kind: 'keypad', len: 4, answer: '1025', lock: 'Caja fuerte', hint: 'En la tapa dice: «La combinación es la hora exacta que marca el reloj de la otra sala».',
+              reveal: 'Dentro de la caja hay una tarjeta con símbolos: ★ = 2 · ● = 6 · ▲ = 9. Al reverso: «Para el termostato de tu pareja».', revealLabel: 'Tarjeta de símbolos' },
+            { id: 'lock2', kind: 'keypad', len: 3, answer: '434', lock: 'Maletín', hint: 'Un maletín con candado de 3 números. Tiene grabado: «Tu pareja sabe qué contar».',
+              reveal: 'En el maletín hay una nota con colores: Rojo = O · Azul = R · Amarillo = M · Verde = A.', revealLabel: 'Nota de colores' },
+            { id: 'lock3', kind: 'keypad', len: 2, answer: '12', lock: 'Cerrojo de la puerta', hint: 'Un cerrojo de 2 números. La cuenta la encontrará tu pareja.' },
+          ] },
+        B: { door: 'La puerta tiene tres cerraduras: los interruptores, el termostato y el candado de colores. Ábrelas en orden.',
+          steps: [
+            { id: 'lock', kind: 'switches', answer: [1, 0, 1, 1], lock: 'Panel de interruptores', hint: 'Debajo dice: «Las luces deben quedar igual que en el cuadro de la otra sala».',
+              reveal: 'Con las luces encendidas aparecen letras en el espejo: «Cuenta en la sala de tu pareja: sillas, revistas y lámparas del cuadro. En ese orden».', revealLabel: 'Mensaje en el espejo' },
+            { id: 'lock2', kind: 'keypad', len: 3, answer: '926', lock: 'Termostato', hint: 'El termostato no tiene números, solo símbolos: ▲ ★ ●. Pide 3 cifras.',
+              reveal: 'El termostato se apaga y se abre una tapita con un papel: «Multiplica las lámparas encendidas del cuadro de tu pareja por las sillas de tu sala».', revealLabel: 'Papel del termostato' },
+            { id: 'lock3', kind: 'word', answer: 'AMOR', lock: 'Candado de colores', hint: 'Cuatro puntos de colores, en este orden: azul, rojo, amarillo, verde. Abajo: «Lo que dicen, léelo al revés».' },
+          ] },
         clues: { A: { lamps: [1, 0, 1, 1] }, B: { clock: '10:25' } } },
-      { id: 'biblioteca', name: 'La biblioteca al revés', mins: 10, danger: 'gravedad',
+      { id: 'biblioteca', name: 'La biblioteca al revés', mins: 15, danger: 'gravedad',
         intro: 'Todo está pegado al techo. Cuando se acabe el tiempo, la gravedad vuelve… y todo cae.',
-        A: { kind: 'word', answer: 'RELOJ', lock: 'Candado de letras', hint: 'Grabado en la puerta: «Responde al acertijo que suena en la otra sala».' },
-        B: { kind: 'word', answer: 'RECUERDO', lock: 'Candado de letras', hint: 'Grabado en la puerta: «Descifra lo que está escrito en la pared».' },
+        A: { door: 'La puerta tiene tres cerraduras: el candado de letras, las velas y el atril. Ábrelas en orden.',
+          steps: [
+            { id: 'lock', kind: 'word', answer: 'RELOJ', lock: 'Candado de letras', hint: 'Grabado en la puerta: «Responde al acertijo que suena en la otra sala».',
+              reveal: 'Del techo cae una ficha de biblioteca: ♦ = 7 · ♥ = 1 · ♠ = 8 · ♣ = 4. Dice: «Para la caja del gramófono».', revealLabel: 'Ficha de biblioteca' },
+            { id: 'lock2', kind: 'switches', answer: [0, 1, 1, 0], lock: 'Cuatro velas', hint: 'Cuatro velas apagadas. «Enciende solo las que suenan en la partitura de tu pareja».',
+              reveal: 'Al encender las velas, en la pared se ve la sombra de una constelación con forma de cruz: la estrella del centro y las cuatro de su alrededor (arriba, abajo, izquierda y derecha).', revealLabel: 'Sombra de estrellas' },
+            { id: 'lock3', kind: 'word', answer: 'LIBRO', lock: 'Cajón del atril', hint: 'Un cajón con candado de letras. «Cada número es una letra: A = 1, B = 2… Los números los tiene tu pareja».' },
+          ] },
+        B: { door: 'La puerta tiene tres cerraduras: el candado de letras, la caja del gramófono y el mosaico. Ábrelas en orden.',
+          steps: [
+            { id: 'lock', kind: 'word', answer: 'RECUERDO', lock: 'Candado de letras', hint: 'Grabado en la puerta: «Descifra lo que está escrito en la pared».',
+              reveal: 'Se abre un libro con una partitura de cuatro compases: silencio, nota, nota, silencio.', revealLabel: 'Partitura' },
+            { id: 'lock2', kind: 'keypad', len: 4, answer: '7184', lock: 'Caja del gramófono', hint: 'La caja tiene cuatro símbolos pintados: ♦ ♥ ♠ ♣. Pide 4 cifras.',
+              reveal: 'Dentro de la caja hay un marcapáginas con números: 12 · 9 · 2 · 18 · 15.', revealLabel: 'Marcapáginas' },
+            { id: 'lock3', kind: 'grid', answer: [0, 1, 0, 1, 1, 1, 0, 1, 0], lock: 'Mosaico del suelo', hint: 'Nueve baldosas sueltas. «Presiona las estrellas que tu pareja ve en la pared».' },
+          ] },
         clues: { A: { shift: 3 }, B: { cipher: 'UHFXHUGR', riddle: 'Tengo agujas pero no coso, tengo números pero no llamo. ¿Qué soy?' } } },
-      { id: 'cabana', name: 'La cabaña helada', mins: 8, danger: 'hielo',
+      { id: 'cabana', name: 'La cabaña helada', mins: 12, danger: 'hielo',
         intro: 'El suelo es hielo y cruje cada vez más. No se queden quietos.',
-        A: { kind: 'grid', answer: [1, 0, 1, 0, 1, 0, 1, 0, 1], lock: 'Baldosas de hielo', hint: 'Junto a las baldosas: «Pisa solo las que tu pareja ve agrietadas en su dibujo».' },
-        B: { kind: 'word', answer: 'BESO', lock: 'Cerradura de la cabaña', hint: 'En la puerta: «La palabra que parpadea en la otra cabaña».' },
+        A: { door: 'La puerta tiene tres cerraduras: las baldosas, los faroles y el cerrojo. Ábrelas en orden.',
+          steps: [
+            { id: 'lock', kind: 'grid', answer: [1, 0, 1, 0, 1, 0, 1, 0, 1], lock: 'Baldosas de hielo', hint: 'Junto a las baldosas: «Pisa solo las que tu pareja ve agrietadas en su dibujo».',
+              reveal: 'Las baldosas se hunden y bajo el hielo se ven peces congelados: 4 rojos, 1 azul y 6 dorados. Una etiqueta dice: «rojo, azul, dorado».', revealLabel: 'Peces bajo el hielo' },
+            { id: 'lock2', kind: 'switches', answer: [1, 1, 0, 1], lock: 'Cuatro faroles', hint: 'Cuatro faroles en la pared. «Enciéndelos como en el mapa de tu pareja».',
+              reveal: 'Al encender los faroles se descongela un diario: «La palabra que nos salvó aquella noche fue lo contrario del frío».', revealLabel: 'Diario' },
+            { id: 'lock3', kind: 'keypad', len: 3, answer: '314', lock: 'Cerrojo de la puerta', hint: 'Un cerrojo de 3 números. «El camino lo tiene tu pareja».' },
+          ] },
+        B: { door: 'La puerta tiene tres cerraduras: la cerradura, el baúl y el candado del cerrojo. Ábrelas en orden.',
+          steps: [
+            { id: 'lock', kind: 'word', answer: 'BESO', lock: 'Cerradura de la cabaña', hint: 'En la puerta: «La palabra que parpadea en la otra cabaña».',
+              reveal: 'Detrás de la cerradura hay un mapa del lago con cuatro faroles: el primero, el segundo y el cuarto están encendidos; el tercero, apagado.', revealLabel: 'Mapa del lago' },
+            { id: 'lock2', kind: 'keypad', len: 3, answer: '416', lock: 'Baúl', hint: 'Un baúl con candado de 3 números. «Lo que hay bajo el hielo de tu pareja, por colores».',
+              reveal: 'En el baúl hay una brújula y una nota: «Norte = 1 · Este = 2 · Sur = 3 · Oeste = 4. El camino: Sur, Norte, Oeste».', revealLabel: 'Brújula' },
+            { id: 'lock3', kind: 'word', answer: 'CALOR', lock: 'Candado del cerrojo', hint: 'Un candado de letras. «Tu pareja leerá la palabra en un diario».' },
+          ] },
         clues: { A: { morse: 'BESO' }, B: { pattern: [1, 0, 1, 0, 1, 0, 1, 0, 1] } } },
     ],
   };
 
-  function esc3Check(level, side, value) {
-    const L = ESC3.levels[level];
-    if (!L || !L[side]) return false;
-    const p = L[side];
+  const esc3Steps = (level, side) => ((ESC3.levels[level] || {})[side] || {}).steps || [];
+  // Cerraduras resueltas por un lado (si la puerta está abierta, todas)
+  function esc3Progress(s, side) {
+    const n = esc3Steps((s && s.level) || 0, side).length;
+    return s && s[side] ? n : Math.min(n, (s && s['p' + side]) || 0);
+  }
+  function esc3Check(level, side, value, step) {
+    const p = esc3Steps(level, side)[step || 0];
+    if (!p) return false;
     if (p.kind === 'keypad') return String(value || '').replace(/\D/g, '') === p.answer;
     if (p.kind === 'word') return norm(value).toUpperCase().replace(/[^A-Z]/g, '') === p.answer;
     if (p.kind === 'switches' || p.kind === 'grid') return Array.isArray(value) && value.length === p.answer.length && value.every((v, i) => (v ? 1 : 0) === p.answer[i]);
     return false;
   }
-  // Estado: { level, levelAt, startedAt, A: bool, B: bool, fails, wonAt }
+  // Estado: { level, levelAt, startedAt, A, B (puerta abierta), pA, pB (cerraduras resueltas), fails, wonAt }
   function esc3Solve(state, side) {
     const s = Object.assign({}, state);
-    s[side] = true;
+    const p = esc3Progress(s, side) + 1;
+    s['p' + side] = p;
+    s[side] = p >= esc3Steps(s.level || 0, side).length;
     return s;
   }
   function esc3LevelDone(s) { return !!(s && s.A && s.B); }
@@ -320,10 +372,10 @@
   function esc3Advance(s, now) {
     const t = now || Date.now();
     if (s.level >= ESC3.levels.length - 1) return Object.assign({}, s, { wonAt: t });
-    return Object.assign({}, s, { level: s.level + 1, levelAt: t, A: false, B: false });
+    return Object.assign({}, s, { level: s.level + 1, levelAt: t, A: false, B: false, pA: 0, pB: 0 });
   }
   // Se acabó el tiempo: se reinicia la misma sala
-  function esc3Fail(s, now) { return Object.assign({}, s, { levelAt: now || Date.now(), A: false, B: false, fails: (s.fails || 0) + 1 }); }
+  function esc3Fail(s, now) { return Object.assign({}, s, { levelAt: now || Date.now(), A: false, B: false, pA: 0, pB: 0, fails: (s.fails || 0) + 1 }); }
 
   const Engine = {
     today, parseDay, daysBetween, daysTogether, distanceKm, formatKm, clock,
@@ -331,7 +383,7 @@
     ESCAPE, escapeTry, escapeWon, escapeProgress, norm, sameSeq, mmss,
     nextOccurrence, yearsAt, addDays, streak, tttWinner, tttMove, pickOther,
     TRUTHS, DARES, NEVER, CARDS, DATE_IDEAS, QUIZ, COUPON_IDEAS,
-    caesar, morse, ESC3, esc3Check, esc3Solve, esc3LevelDone, esc3Remaining, esc3Advance, esc3Fail,
+    caesar, morse, ESC3, esc3Steps, esc3Progress, esc3Check, esc3Solve, esc3LevelDone, esc3Remaining, esc3Advance, esc3Fail,
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = Engine;
