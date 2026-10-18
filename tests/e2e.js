@@ -38,9 +38,13 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     if (scheme === 'light') await A.screenshot({ path: shots + '/01-codigo.png' });
     await A.click('[data-act=enter]');
 
-    // B se une
-    await B.click('[data-act=wmode][data-v=join]');
-    await B.fill('#wName', 'Ella'); await B.fill('#wCode', code);
+    // B se une con el enlace de invitación
+    const link = await A.evaluate(() => inviteLink());
+    ok(scheme + ' enlace lleva el código', link.includes('unirse=' + code) && link.includes('de=Antonny'));
+    await B.goto(link);
+    ok(scheme + ' invitación con nombre', (await B.textContent('h1')).includes('Antonny te invita'));
+    ok(scheme + ' código precargado', (await B.inputValue('#wCode')) === code);
+    await B.fill('#wName', 'Ella');
     await B.click('button[type=submit]');
     await B.waitForSelector('.hero');
     await wait(300);
@@ -213,6 +217,18 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     ok(scheme + ' PIN correcto entra', (await A.$('.hero')) !== null);
     await go(A, 'settings'); await A.click('[data-act=pinOff]'); await A.click('[data-act=_confirmYes]');
     if (scheme === 'light') { await go(A, 'home'); await A.screenshot({ path: shots + '/08-inicio-saludo.png', fullPage: true }); await go(A, 'us'); await A.screenshot({ path: shots + '/09-lo-nuestro.png' }); await go(A, 'games'); await A.screenshot({ path: shots + '/10-juegos.png', fullPage: true }); }
+
+    // iPhone en Safari: primero pide instalar
+    if (scheme === 'light') {
+      const ictx = await b.newContext({ viewport: { width: 390, height: 844 }, userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1' });
+      await ictx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+      const I = await ictx.newPage(); await I.goto(link);
+      ok('iPhone ve pasos para instalar', (await I.textContent('main, .welcome')).includes('Añadir a pantalla de inicio'));
+      await I.screenshot({ path: shots + '/11-invitacion-iphone.png' });
+      await I.click('[data-act=inviteSafari]');
+      ok('iPhone puede seguir en Safari', (await I.inputValue('#wCode')) === code);
+      await ictx.close();
+    }
 
     // Sin desbordamiento horizontal en ninguna pantalla
     for (const t of ['home', 'chat', 'games', 'us', 'lists', 'letters', 'coupons', 'dates', 'settings', 'escape', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz']) {

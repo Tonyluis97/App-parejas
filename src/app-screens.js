@@ -8,24 +8,56 @@ const moodOf = k => MOODS.find(m => m[0] === k);
 VIEWS.welcome = () => {
   if (S._created) {
     return '<div class="welcome"><div class="logo">💌</div><h1>Tu código de pareja</h1>' +
-      '<p class="muted" style="text-align:center">Pásale este código a tu pareja. Ella o él abre la app, elige "Tengo un código" y lo escribe.</p>' +
+      '<p class="muted" style="text-align:center">Envíale la invitación a tu pareja: es un enlace que ya lleva este código.</p>' +
       '<div class="codebig">' + esc(S.code) + '</div>' +
-      '<button class="btn primary block" data-act="shareCode">Compartir código</button>' +
+      '<button class="btn primary block" data-act="shareCode">Enviar invitación</button>' +
       '<p class="muted small" style="text-align:center;margin-top:16px">Puedes entrar ya; verás a tu pareja en cuanto se una.</p>' +
       '<button class="btn block" data-act="enter">Entrar</button></div>';
   }
+  // Invitación abierta en Safari de iPhone: primero instalar, porque la app instalada no comparte datos con Safari
+  if (S.invite && isIOSBrowser() && !S._inSafari) {
+    return '<div class="welcome"><div class="logo">💌</div><h1>' + esc(S.invite.from || 'Tu pareja') + ' te invita</h1>' +
+      '<p class="muted" style="text-align:center;margin-top:0">a Nosotros, un espacio solo para los dos.</p>' +
+      '<div class="card"><ol style="margin:0;padding-left:20px;line-height:1.7">' +
+      '<li>Toca <b>Compartir</b> (el cuadrado con flecha ⬆️) abajo en Safari.</li>' +
+      '<li>Elige <b>Añadir a pantalla de inicio</b> y luego <b>Añadir</b>.</li>' +
+      '<li>Abre <b>Nosotros</b> desde el icono nuevo.</li>' +
+      '<li>Elige <b>Tengo un código</b> y escribe este código:</li></ol>' +
+      '<div class="codebig">' + esc(S.invite.code) + '</div></div>' +
+      '<button class="btn block" data-act="inviteSafari">Prefiero usarla en Safari</button></div>';
+  }
   const mode = S._wmode || 'new';
-  return '<div class="welcome"><div class="logo">💞</div><h1>Nosotros</h1>' +
+  const preCode = S.invite && mode === 'join' ? ' value="' + esc(S.invite.code) + '"' : '';
+  return '<div class="welcome"><div class="logo">💞</div><h1>' + (S.invite ? esc(S.invite.from || 'Tu pareja') + ' te invita' : 'Nosotros') + '</h1>' +
     '<p class="muted" style="text-align:center;margin-top:0">Un espacio solo para los dos, aunque estén lejos.</p>' +
     '<div class="seg"><button class="' + (mode === 'new' ? 'on' : '') + '" data-act="wmode" data-v="new">Crear pareja</button><button class="' + (mode === 'join' ? 'on' : '') + '" data-act="wmode" data-v="join">Tengo un código</button></div>' +
     '<form data-act="' + (mode === 'new' ? 'create' : 'join') + '">' +
     '<label class="f" for="wName">Tu nombre</label><input id="wName" type="text" data-keep="wName" maxlength="30" placeholder="Ej. Antonny" required value="' + esc(S.name) + '">' +
     (mode === 'new'
       ? '<label class="f" for="wStart">¿Desde cuándo están juntos?</label><input id="wStart" type="date" data-keep="wStart" required>'
-      : '<label class="f" for="wCode">Código de 6 dígitos</label><input id="wCode" type="tel" inputmode="numeric" data-keep="wCode" maxlength="6" placeholder="123456" required>') +
+      : '<label class="f" for="wCode">Código de 6 dígitos</label><input id="wCode" type="tel" inputmode="numeric" data-keep="wCode" maxlength="6" placeholder="123456" required' + preCode + '>') +
     '<button class="btn primary block" style="margin-top:18px" type="submit">' + (mode === 'new' ? 'Crear y obtener código' : 'Unirme') + '</button></form></div>';
 };
 ACTS.wmode = el => { S._wmode = el.dataset.v; render(); };
+ACTS.inviteSafari = () => { S._inSafari = true; S._wmode = 'join'; render(); };
+function isIOSBrowser() {
+  const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  return ios && !navigator.standalone && !(window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+}
+// Enlace de invitación con el código: <app>/?unirse=123456&de=Nombre
+function inviteLink() {
+  const u = new URL(location.href.split('#')[0].split('?')[0]);
+  u.searchParams.set('unirse', S.code);
+  const n = me().name || S.name;
+  if (n) u.searchParams.set('de', n);
+  return u.toString();
+}
+function readInvite() {
+  try {
+    const q = new URLSearchParams(location.search), code = (q.get('unirse') || '').trim();
+    if (E.validCode(code)) { S.invite = { code, from: (q.get('de') || '').slice(0, 30) }; S._wmode = 'join'; }
+  } catch (e) { }
+}
 ACTS.create = async f => {
   const name = f.querySelector('#wName').value.trim(), start = f.querySelector('#wStart').value;
   if (!name || !start) return toast('Completa tu nombre y la fecha');
@@ -45,14 +77,17 @@ ACTS.join = async f => {
   if (!name) return toast('Escribe tu nombre');
   if (!E.validCode(code)) return toast('El código tiene 6 dígitos');
   await Sync.joinCouple(code, { name, tz: myTz(), u: Date.now() });
-  S.name = name; S.code = code; saveLocal(); subscribe();
+  S.name = name; S.code = code; S.invite = null; saveLocal(); subscribe();
+  try { history.replaceState(null, '', location.pathname); } catch (e) { }
   toast('¡Ya están conectados! 💞');
 };
 ACTS.enter = () => { S._created = false; render(); };
 ACTS.shareCode = async () => {
-  const text = 'Únete a mí en Nosotros 💞 Mi código de pareja es ' + S.code;
-  if (navigator.share) { try { await navigator.share({ text }); } catch (e) { } }
-  else { try { await navigator.clipboard.writeText(text); toast('Código copiado'); } catch (e) { toast('Tu código: ' + S.code); } }
+  const url = inviteLink();
+  const text = 'Únete a mí en Nosotros 💞 Abre este enlace (mi código es ' + S.code + '):';
+  if (navigator.share) { try { await navigator.share({ title: 'Nosotros', text, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
+  try { await navigator.clipboard.writeText(text + ' ' + url); toast('Enlace de invitación copiado'); }
+  catch (e) { openSheet('<h2>Enlace de invitación</h2><p class="muted" style="margin-top:0">Cópialo y envíaselo a tu pareja:</p><input type="text" readonly value="' + esc(url) + '" onclick="this.select()"><button class="btn block" style="margin-top:12px" data-act="closeSheet">Listo</button>'); }
 };
 
 // ---------- Inicio ----------
@@ -70,7 +105,7 @@ VIEWS.home = () => {
     '<div class="big">' + (days || '—') + '</div><div class="sub">día' + (days === 1 ? '' : 's') + ' juntos</div>' + meetTxt + '</div>';
 
   if (!p) {
-    h += '<div class="card"><h2>Falta tu pareja</h2><p class="muted" style="margin-top:0">Pásale este código para que se una:</p><div class="codebig">' + esc(S.code) + '</div><button class="btn primary block" data-act="shareCode">Compartir código</button></div>';
+    h += '<div class="card"><h2>Falta tu pareja</h2><p class="muted" style="margin-top:0">Envíale la invitación; el enlace ya lleva tu código:</p><div class="codebig">' + esc(S.code) + '</div><button class="btn primary block" data-act="shareCode">Enviar invitación</button></div>';
   }
 
   h += '<button class="think" data-act="ping" data-v="think">❤️ Pienso en ti</button>' +
@@ -197,6 +232,7 @@ VIEWS.settings = () => {
   const notif = 'Notification' in window ? Notification.permission : 'unsupported';
   return '<div class="card"><h2>Tu perfil</h2><form data-act="saveName" class="row"><input type="text" id="nameIn" maxlength="30" value="' + esc(m.name || S.name) + '"><button class="btn primary sm">Guardar</button></form></div>' +
     '<div class="card"><h2>Nuestra pareja</h2><p class="muted" style="margin:0 0 6px">Código para unirse</p><div class="codebig" style="font-size:30px">' + esc(S.code) + '</div>' +
+    '<button class="btn block sm" data-act="shareCode">Enviar invitación</button>' +
     '<label class="f">Fecha en que empezaron</label><form data-act="saveStart" class="row"><input type="date" id="startIn" value="' + esc(S.couple.start || '') + '"><button class="btn sm">Guardar</button></form>' +
     '<button class="btn block sm" style="margin-top:12px" data-act="setMeet">Cambiar próximo encuentro</button></div>' +
     '<div class="card"><h2>Avisos</h2>' + (notif === 'granted' ? '<p class="muted" style="margin:0">Avisos activados mientras la app está abierta o en segundo plano.</p>'

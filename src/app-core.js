@@ -216,6 +216,7 @@ async function boot() {
   S.name = L.name || ''; S.code = L.code || null; S.lastRead = L.lastRead || 0;
   if (L.er) S.er = Object.assign(S.er, L.er);
   S.locked = Lock.enabled();
+  if (!S.code) readInvite();
   S.ready = true;
   render();
   subscribe();
