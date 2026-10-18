@@ -1,0 +1,4073 @@
+{
+  "scenario_id": "ER01",
+  "title": "El laboratorio de los recuerdos",
+  "version": "1.0.0",
+  "players": 2,
+  "genre": "Ciencia ficción íntima",
+  "synopsis": "Dos voluntarios del ensayo ficticio Eco despiertan en el Laboratorio Mnemósine, donde se estudiaban recuerdos artificiales. El laboratorio ha entrado en modo custodia y solo se abrirá si reconstruyen el último día de la doctora Irene Salvat, la científica que dirigía el ensayo. A ve sus fotografías y grabaciones; B escucha sus registros de voz y descifra sus documentos. Al final deciden qué recuerdo de Irene se restaura antes de salir.",
+  "difficulty": "medium",
+  "estimated_duration_minutes": 45,
+  "phase_minutes": {
+    "awakening": 4,
+    "discovery": 12,
+    "complication": 13,
+    "climax": 11,
+    "escape": 5
+  },
+  "competencies": [
+    "Comunicación clara",
+    "Ordenación cronológica",
+    "Asociación entre imagen y sonido",
+    "Contraste de fuentes de información",
+    "Memoria de trabajo y toma de notas",
+    "Toma de decisiones compartida"
+  ],
+  "initial_conditions": "A despierta en un sillón reclinable de la Sala de observación, frente a la pared de monitores y el proyector de diapositivas. B despierta en el Archivo sonoro, entre estanterías de casetes y bobinas. Las dos salas están separadas por un cristal esmerilado que solo deja ver siluetas; se hablan por el intercomunicador del ensayo (la llamada de voz). La Cámara de síntesis, al norte, está cerrada por una esclusa con lector doble. Todo lo que ocurre es ficticio: los recuerdos que aparecen son de Irene Salvat, un personaje inventado, nunca de los jugadores.",
+  "initial_state": "INITIALIZING",
+  "objectives": [
+    {
+      "objective_id": "OBJ01",
+      "text": "Reconstruir el último día de Irene y abrir la esclusa de la Cámara de síntesis",
+      "required": true,
+      "completed_when": [
+        "P01_SOLVED",
+        "P02_SOLVED",
+        "P03_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ02",
+      "text": "Repetir la última sesión de síntesis y anclarla",
+      "required": true,
+      "completed_when": [
+        "P04_SOLVED",
+        "P05_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ03",
+      "text": "Elegir qué recuerdo de Irene se restaura y salir del laboratorio",
+      "required": true,
+      "completed_when": [
+        "P06_SOLVED",
+        "O24_OPEN"
+      ]
+    }
+  ],
+  "win_condition": {
+    "type": "all_required_objectives_completed",
+    "required_objectives": [
+      "OBJ01",
+      "OBJ02",
+      "OBJ03"
+    ]
+  },
+  "fail_condition": {
+    "type": "timer_expired",
+    "minutes": 45,
+    "consequence": "La reserva de la sesión se agota y LUMEN pausa el laboratorio con luz suave. Los jugadores eligen reiniciar la zona actual o seguir en Modo sin reloj. Nada de lo resuelto se pierde."
+  },
+  "reset_condition": "Cualquiera de los dos pulsa Reiniciar zona y el otro lo confirma; también se ofrece al agotarse el reloj. El reinicio completo vuelve al estado inicial y a la intro.",
+  "narrative": {
+    "intro": "Fundido desde blanco. Un pitido lento de monitor marca el ritmo. La cámara recorre un pasillo de cristal con letras grabadas: Laboratorio Mnemósine, Ensayo Eco. En una pizarra, tres capas dibujadas una sobre otra. Una voz sintética y tranquila dice: Sesión de cierre interrumpida. Modo custodia activado. La imagen se divide en dos: una sala llena de pantallas apagadas y otra llena de cintas.",
+    "reason": "Los dos se apuntaron como voluntarios a la última sesión del ensayo Eco, que probaba un reproductor de recuerdos artificiales con los recuerdos de referencia que donó la propia directora, la doctora Irene Salvat. Durante la sesión hubo un fallo y el laboratorio se selló para proteger esos recuerdos.",
+    "initial_situation": "LUMEN, el sistema del laboratorio, explica que el modo custodia solo se levanta si alguien demuestra que conoce la última sesión de Irene: reconstruir su último día, repetir su síntesis y anclarla. Las puertas están cerradas, pero nadie corre peligro.",
+    "goal": "Ordenar el último día de Irene, sincronizar su grabación muda con sus sonidos, abrir la esclusa con la tarjeta partida, repetir la síntesis de cierre, anclarla con el código compartido y decidir qué recuerdo suyo se restaura.",
+    "first_discovery": "A encuentra la caja de diapositivas con seis fotografías del último día de Irene, pero ninguna tiene hora. B encuentra los casetes del diario de voz de Irene, con horas, pero sin imágenes. Solo juntando las dos cosas se puede ordenar el día.",
+    "progression": [
+      "Con el día ordenado, el proyector muestra la secuencia completa y la platina del Archivo expulsa la tarjeta del Fragmento I. Del carrusel cae media tarjeta de acceso.",
+      "La pared de monitores reproduce una grabación muda. B tiene los sonidos en bobinas; juntos los sincronizan y la grabación se oye por fin, con la última sesión de Irene al final.",
+      "Cada uno tiene media tarjeta de acceso con cifras cortadas por la mitad. Juntando las dos mitades descifran el código de la esclusa.",
+      "Al abrirse la Cámara de síntesis hay un corte de corriente: la pared de monitores de A se apaga y solo queda lo que A anotó en su cuaderno.",
+      "Con lo que A anotó de la grabación y el cuaderno cifrado de B, repiten la síntesis de cierre cargando tres viales.",
+      "Los dos terminales de la Cámara piden los fragmentos que cada uno no ha visto. Los intercambian y anclan la sesión a la vez.",
+      "El sintetizador ofrece restaurar un recuerdo de Irene. Deciden juntos cuál."
+    ],
+    "obstacles": [
+      "Las fotografías no tienen hora y los registros de voz no tienen imagen.",
+      "La grabación de la pared de monitores no tiene sonido y las bobinas no tienen imagen.",
+      "La tarjeta de acceso está partida: cada mitad muestra cifras cortadas que por sí solas pueden ser dos números distintos.",
+      "El corte de corriente apaga la pared de monitores; A ya no puede volver a ver la grabación.",
+      "El cuaderno de síntesis de Irene tiene palabras escritas al revés y un plan que no coincide con lo que hizo."
+    ],
+    "revelations": [
+      "Irene no huyó del laboratorio: cerró el proyecto con calma y dejó preparada una sesión de cierre para quien viniera después.",
+      "La caja de la primera síntesis que cerró por la tarde guardaba el recuerdo del día en que su equipo consiguió el primer eco estable.",
+      "Irene siempre cambiaba de idea en el último momento: por eso su grabación y su plan escrito no coinciden, y por eso la grabación manda."
+    ],
+    "climax": "Con la síntesis anclada, la Cámara se llena de una luz cálida. El sintetizador solo tiene carga para restaurar un recuerdo completo en el archivo personal de Irene antes de cerrar la sesión. A ve la ficha visual de uno; B escucha la grabación del otro. Votan juntos.",
+    "escape_scene": "El recuerdo elegido se proyecta un momento sobre las paredes de la Cámara, como una película suave. LUMEN levanta el modo custodia, la puerta norte se abre y los dos salen juntos a un pasillo iluminado por la mañana.",
+    "epilogue": "En el pasillo hay una carta con el sello del laboratorio: Gracias por terminar lo que yo dejé a medias. Me llegará el recuerdo que hayáis elegido; el otro sigue a salvo en el archivo. Firmado: Irene Salvat."
+  },
+  "rooms": [
+    {
+      "room_id": "ROOM01",
+      "name": "Sala de observación",
+      "description": "Sala blanca y silenciosa con un sillón reclinable del ensayo, una mesa con proyector de diapositivas y una pared entera de monitores. Al este, un cristal esmerilado la separa del Archivo sonoro.",
+      "dimensions_m": {
+        "w": 5,
+        "d": 4,
+        "h": 3
+      },
+      "layout": "Pared de monitores en la pared oeste. Mesa central con el proyector, la caja de diapositivas y el cuaderno de observación; la pantalla de proyección baja del techo frente a la pared sur. Sillón reclinable en la esquina suroeste. Cristal esmerilado en la pared este. Esclusa con el lector oeste y la puerta a la Cámara en la pared norte. Helecho junto al cristal, esquina sureste. Perchero con batas junto a la entrada sur, que está condenada.",
+      "access": {
+        "A": true,
+        "B": false
+      },
+      "view": {
+        "A": "Toda la sala: monitores, proyector, diapositivas y lector oeste",
+        "B": "Solo la silueta de A al otro lado del cristal esmerilado; no distingue pantallas ni papeles"
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR01",
+          "wall": "north",
+          "position": {
+            "x": 3,
+            "y": 0,
+            "z": 4
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "east",
+          "position": {
+            "x": 5,
+            "y": 1.5,
+            "z": 2
+          },
+          "note": "Cristal esmerilado hacia el Archivo sonoro: solo se ven siluetas; no es interactivo"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L01",
+          "type": "Panel de techo difuso",
+          "position": {
+            "x": 2.5,
+            "y": 2.9,
+            "z": 2
+          },
+          "color": "#EEF4FF",
+          "intensity": 0.7,
+          "note": "Luz de laboratorio; se apaga en el corte de corriente (E05)"
+        },
+        {
+          "light_id": "L02",
+          "type": "Lámpara de mesa",
+          "position": {
+            "x": 2.2,
+            "y": 1.3,
+            "z": 1.6
+          },
+          "color": "#FFD9A0",
+          "intensity": 0.4,
+          "note": "La misma lámpara de la diapositiva R; sigue encendida durante el corte con la batería del laboratorio"
+        },
+        {
+          "light_id": "L03",
+          "type": "Brillo de la pared de monitores",
+          "position": {
+            "x": 0.3,
+            "y": 1.6,
+            "z": 2
+          },
+          "color": "#9FC8FF",
+          "intensity": 0.5,
+          "note": "Activo mientras los monitores están encendidos"
+        }
+      ],
+      "ambient_sound": "A01",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E02",
+          "change": "La pantalla de proyección muestra las cinco diapositivas en orden y del carrusel cae media tarjeta de acceso"
+        },
+        {
+          "event": "E03",
+          "change": "La pared de monitores reproduce la grabación con sonido y termina en la última sesión de Irene"
+        },
+        {
+          "event": "E05",
+          "change": "Corte de corriente: el panel de techo y la pared de monitores se apagan; queda solo la lámpara de mesa"
+        }
+      ],
+      "objects": [
+        "O01",
+        "O02",
+        "O03",
+        "O04",
+        "O05",
+        "O06",
+        "O07",
+        "O08",
+        "O09"
+      ],
+      "puzzles": [
+        "P01",
+        "P03"
+      ],
+      "exit_conditions": [
+        "P03_SOLVED"
+      ],
+      "engine_notes": "Escena del jugador A. La pared de monitores es una textura de vídeo (VideoPlayer en Unity, Media Texture en Unreal, VideoStreamPlayer en Godot, <video> en web) con subtítulos descriptivos de cada plano. El proyector usa un carrusel de cinco ranuras con arrastrar y soltar o selección por teclado. El cristal esmerilado es un material translúcido con desenfoque que solo muestra la silueta del avatar de B. En el corte se desactivan L01 y L03 y la pared de monitores pasa a un material negro."
+    },
+    {
+      "room_id": "ROOM02",
+      "name": "Archivo sonoro",
+      "description": "Sala estrecha con estanterías de casetes, un banco de bobinas, una platina de reproducción y una mesa de sincronía con cuatro canales. Huele a cinta magnética y papel viejo.",
+      "dimensions_m": {
+        "w": 5,
+        "d": 4,
+        "h": 3
+      },
+      "layout": "Estantería de casetes en la pared este. Platina en la mesa central. Mesa de sincronía junto a la pared sur. Banco de bobinas en la esquina noroeste. Lector este de la esclusa y la puerta a la Cámara en la pared norte. Cristal esmerilado en la pared oeste. Archivadores en la esquina noreste y un gramófono de exposición en la esquina suroeste.",
+      "access": {
+        "A": false,
+        "B": true
+      },
+      "view": {
+        "A": "Solo la silueta de B al otro lado del cristal esmerilado",
+        "B": "Toda la sala: casetes, bobinas, platina, mesa de sincronía y lector este"
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR02",
+          "wall": "north",
+          "position": {
+            "x": 2,
+            "y": 0,
+            "z": 4
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 1.5,
+            "z": 2
+          },
+          "note": "Cristal esmerilado hacia la Sala de observación; no es interactivo"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L04",
+          "type": "Tubos fluorescentes cálidos",
+          "position": {
+            "x": 2.5,
+            "y": 2.9,
+            "z": 2
+          },
+          "color": "#FFF0D0",
+          "intensity": 0.6,
+          "note": "Luz general; en el corte bajan al 30 % (circuito de reserva del archivo)"
+        },
+        {
+          "light_id": "L05",
+          "type": "Piloto de la platina",
+          "position": {
+            "x": 2.5,
+            "y": 1,
+            "z": 2
+          },
+          "color": "#FFB347",
+          "intensity": 0.2,
+          "note": "Indica reproducción; se acompaña siempre de la palabra REPRODUCIENDO en la ventanilla"
+        }
+      ],
+      "ambient_sound": "A03",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E02",
+          "change": "La platina expulsa una tarjeta de cartón: Fragmento I"
+        },
+        {
+          "event": "E03",
+          "change": "En la caja de la bobina sobrante aparece la otra mitad de la tarjeta de acceso"
+        },
+        {
+          "event": "E05",
+          "change": "Los fluorescentes bajan al 30 % y la platina recibe el último registro de Irene"
+        }
+      ],
+      "objects": [
+        "O10",
+        "O11",
+        "O12",
+        "O13",
+        "O14",
+        "O15",
+        "O16",
+        "O17",
+        "O18"
+      ],
+      "puzzles": [
+        "P02"
+      ],
+      "exit_conditions": [
+        "P03_SOLVED"
+      ],
+      "engine_notes": "Escena del jugador B. Cada casete y cada bobina se reproduce con audio y muestra a la vez su transcripción en pantalla; ninguna información depende solo del sonido. La mesa de sincronía tiene cuatro ranuras de canal numeradas en relieve que aceptan bobinas por forma. Las bobinas tienen la forma en relieve en el lomo (círculo, cuadrado, triángulo, estrella, rombo)."
+    },
+    {
+      "room_id": "ROOM03",
+      "name": "Cámara de síntesis",
+      "description": "Sala circular de techo alto con el sintetizador de recuerdos en el centro, una gradilla de viales, dos terminales enfrentados en las paredes oeste y este, cápsulas de reposo vacías y la pizarra de las tres capas.",
+      "dimensions_m": {
+        "w": 8,
+        "d": 6,
+        "h": 4
+      },
+      "layout": "Entradas en la pared sur: desde la Sala de observación en x 1.5 y desde el Archivo sonoro en x 6.5. Sintetizador en el centro, con la gradilla de viales delante al norte. Terminal oeste en la pared oeste y terminal este en la pared este, separados por el sintetizador: desde uno no se lee la pantalla del otro. Placa de anclaje en la pared norte sobre la puerta de salida. Cápsulas de reposo en la esquina noroeste y pizarra en la esquina noreste.",
+      "access": {
+        "A": true,
+        "B": true
+      },
+      "view": {
+        "A": "Toda la sala y la pantalla del terminal oeste; la pantalla del terminal este queda de espaldas",
+        "B": "Toda la sala y la pantalla del terminal este; la pantalla del terminal oeste queda de espaldas"
+      },
+      "unlocked_when": [
+        "P03_SOLVED"
+      ],
+      "doors": [
+        {
+          "door_id": "DOOR03",
+          "wall": "south",
+          "position": {
+            "x": 1.5,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM01",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR04",
+          "wall": "south",
+          "position": {
+            "x": 6.5,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM02",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR05",
+          "wall": "north",
+          "position": {
+            "x": 4,
+            "y": 0,
+            "z": 6
+          },
+          "to": "EXIT",
+          "opens_when": [
+            "P06_SOLVED"
+          ]
+        }
+      ],
+      "windows": [],
+      "lighting": [
+        {
+          "light_id": "L06",
+          "type": "Anillo de luz sobre el sintetizador",
+          "position": {
+            "x": 4,
+            "y": 3.6,
+            "z": 3
+          },
+          "color": "#CFE8FF",
+          "intensity": 0.2,
+          "note": "Apagado durante el corte; sube al cargar los viales (E06) y se vuelve cálido al anclar (E07)"
+        },
+        {
+          "light_id": "L07",
+          "type": "Luces de emergencia",
+          "position": {
+            "x": 4,
+            "y": 3.8,
+            "z": 0.2
+          },
+          "color": "#FFC680",
+          "intensity": 0.35,
+          "note": "Luz ámbar fija, sin destellos, durante el corte; suficiente para leer de cerca"
+        },
+        {
+          "light_id": "L08",
+          "type": "Luz de la puerta de salida",
+          "position": {
+            "x": 4,
+            "y": 2.4,
+            "z": 5.9
+          },
+          "color": "#FFF4D6",
+          "intensity": 0.6,
+          "note": "Se enciende al resolver P06"
+        }
+      ],
+      "ambient_sound": "A11",
+      "music": "A12",
+      "dynamic_changes": [
+        {
+          "event": "E05",
+          "change": "La Cámara se abre a oscuras con las luces de emergencia ámbar"
+        },
+        {
+          "event": "E06",
+          "change": "El sintetizador se ilumina con los tres viales y vuelve la luz general"
+        },
+        {
+          "event": "E07",
+          "change": "El anillo de luz pasa a cálido y los terminales muestran los dos recuerdos"
+        },
+        {
+          "event": "E08",
+          "change": "El recuerdo elegido se proyecta en las paredes y se abre la puerta norte"
+        }
+      ],
+      "objects": [
+        "O19",
+        "O20",
+        "O21",
+        "O22",
+        "O23",
+        "O24",
+        "O25",
+        "O26"
+      ],
+      "puzzles": [
+        "P04",
+        "P05",
+        "P06"
+      ],
+      "exit_conditions": [
+        "P06_SOLVED"
+      ],
+      "engine_notes": "Escena compartida que se carga al resolver P03. Las pantallas de los terminales son paneles de interfaz por jugador: el terminal oeste solo acepta entradas de A y el este solo de B, y cada pantalla solo se muestra al jugador que la usa. La proyección final sobre las paredes es un material con textura de vídeo y una alternativa de imagen fija. Los viales tienen colisión para coger y soltar en las tres ranuras del sintetizador."
+    }
+  ],
+  "players_data": {
+    "player_a": {
+      "role": "Voluntario de observación: imágenes y grabaciones",
+      "view": "Fotografías, grabaciones de vídeo, la pared de monitores y la mitad superior de la tarjeta. No oye los casetes ni las bobinas ni lee los documentos del archivo.",
+      "initial_location": "ROOM01",
+      "initial_clues": [],
+      "initial_inventory": []
+    },
+    "player_b": {
+      "role": "Voluntario de archivo: registros de voz y documentos",
+      "view": "Casetes, bobinas, la platina, documentos cifrados y la mitad inferior de la tarjeta. No ve las fotografías ni la pared de monitores.",
+      "initial_location": "ROOM02",
+      "initial_clues": [],
+      "initial_inventory": []
+    }
+  },
+  "objects": [
+    {
+      "object_id": "O01",
+      "name": "Proyector de diapositivas",
+      "visual": "Proyector beis con carrusel circular de cinco ranuras numeradas del 1 al 5 y un botón grande con la palabra PROYECTAR",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.6,
+        "y": 0.9,
+        "z": 2.1
+      },
+      "category": "coop",
+      "states": [
+        "EMPTY",
+        "LOADED",
+        "PROJECTED"
+      ],
+      "initial_state": "EMPTY",
+      "action": "Colocar diapositivas en las ranuras y pulsar PROYECTAR",
+      "activation_condition": [],
+      "result": "Si el orden es correcto, proyecta el día completo de Irene; si no, la imagen se funde a gris y el carrusel devuelve las diapositivas",
+      "transitions": [
+        {
+          "to": "LOADED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "PROJECTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O02",
+      "name": "Caja de diapositivas",
+      "visual": "Caja de madera con seis diapositivas enmarcadas en cartón, cada marco con una letra grabada, y una etiqueta escrita a mano",
+      "room": "ROOM01",
+      "position": {
+        "x": 1.9,
+        "y": 0.9,
+        "z": 2
+      },
+      "category": "examine",
+      "states": [
+        "CLOSED",
+        "EXAMINED"
+      ],
+      "initial_state": "CLOSED",
+      "action": "Abrir y examinar cada diapositiva a contraluz",
+      "activation_condition": [],
+      "result": "Guarda la pista C01 en el cuaderno de A",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C01",
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O03",
+      "name": "Pared de monitores",
+      "visual": "Nueve monitores unidos que forman una sola imagen; abajo, un mando con PLAY y PAUSA",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.1,
+        "y": 1.6,
+        "z": 2
+      },
+      "category": "examine",
+      "states": [
+        "STANDBY",
+        "PLAYING",
+        "OFF"
+      ],
+      "initial_state": "STANDBY",
+      "action": "Reproducir la grabación",
+      "activation_condition": [],
+      "result": "Reproduce la grabación muda (C03); tras P02 la reproduce con sonido y muestra la última sesión (C08) y el Fragmento II (C12). Se apaga en el corte de corriente",
+      "transitions": [
+        {
+          "to": "PLAYING",
+          "when": [],
+          "by": "A"
+        },
+        {
+          "to": "OFF",
+          "when": [
+            "P03_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C03",
+      "puzzle": "P02",
+      "authorized": "A",
+      "final_state": "OFF",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O04",
+      "name": "Mitad superior de la tarjeta de acceso",
+      "visual": "Media tarjeta de plástico blanco cortada en horizontal, con la parte de arriba de cuatro cifras de barras",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.7,
+        "y": 0.75,
+        "z": 2.2
+      },
+      "category": "collect",
+      "states": [
+        "HIDDEN",
+        "FOUND",
+        "COLLECTED",
+        "INSERTED"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Recoger",
+      "activation_condition": [
+        "P01_SOLVED"
+      ],
+      "result": "Cae del carrusel al proyectar; pasa al inventario de A y guarda C05",
+      "transitions": [
+        {
+          "to": "FOUND",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "COLLECTED",
+          "when": [
+            "O04_FOUND"
+          ],
+          "by": "A"
+        }
+      ],
+      "clue": "C05",
+      "puzzle": "P03",
+      "authorized": "A",
+      "final_state": "INSERTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O05",
+      "name": "Lector oeste de la esclusa",
+      "visual": "Ranura de tarjeta con pantalla pequeña y teclado de diez cifras en la pared norte, junto a la puerta de la Cámara",
+      "room": "ROOM01",
+      "position": {
+        "x": 3.9,
+        "y": 1.2,
+        "z": 3.9
+      },
+      "category": "coop",
+      "states": [
+        "WAITING",
+        "HALF_IN",
+        "ACCEPTED"
+      ],
+      "initial_state": "WAITING",
+      "action": "Insertar media tarjeta y teclear el código",
+      "activation_condition": [
+        "O04_COLLECTED"
+      ],
+      "result": "Con las dos mitades insertadas muestra: Tarjeta dañada, introduzca el código a mano. Acepta el código de cuatro cifras",
+      "transitions": [
+        {
+          "to": "HALF_IN",
+          "when": [
+            "O04_COLLECTED"
+          ],
+          "by": "A"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P03",
+      "authorized": "A",
+      "final_state": "ACCEPTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O06",
+      "name": "Cuaderno de observación",
+      "visual": "Cuaderno de tapas grises con el logotipo del ensayo Eco; se abre como panel lateral",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.2,
+        "y": 0.9,
+        "z": 1.5
+      },
+      "category": "narrative",
+      "states": [
+        "OPEN"
+      ],
+      "initial_state": "OPEN",
+      "action": "Abrir y escribir notas",
+      "activation_condition": [],
+      "result": "Muestra todas las pistas de A guardadas automáticamente y las notas libres que A escriba; sigue disponible durante el corte de corriente",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "A",
+      "final_state": "OPEN",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O07",
+      "name": "Sillón reclinable del ensayo",
+      "visual": "Sillón blanco acolchado con reposacabezas y un brazo articulado sin cables",
+      "room": "ROOM01",
+      "position": {
+        "x": 1,
+        "y": 0,
+        "z": 0.8
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O08",
+      "name": "Helecho torcido",
+      "visual": "Helecho en maceta de barro inclinado hacia el cristal, el mismo de la diapositiva T",
+      "room": "ROOM01",
+      "position": {
+        "x": 4.6,
+        "y": 0,
+        "z": 0.4
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O09",
+      "name": "Perchero con batas",
+      "visual": "Perchero metálico con dos batas blancas; una lleva bordado I. Salvat",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.4,
+        "y": 0,
+        "z": 0.3
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O10",
+      "name": "Estantería de casetes del diario",
+      "visual": "Estante con cinco casetes numerados del 1 al 5 y una etiqueta común: Diario de voz de I. Salvat",
+      "room": "ROOM02",
+      "position": {
+        "x": 4.8,
+        "y": 1.2,
+        "z": 2
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Escuchar los casetes",
+      "activation_condition": [],
+      "result": "Reproduce los cinco registros con transcripción y guarda C02",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C02",
+      "puzzle": "P01",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O11",
+      "name": "Platina de reproducción",
+      "visual": "Platina de casetes con ventanilla de texto, una bandeja de expulsión y una impresora de tiques integrada",
+      "room": "ROOM02",
+      "position": {
+        "x": 2.5,
+        "y": 0.9,
+        "z": 2
+      },
+      "category": "examine",
+      "states": [
+        "IDLE",
+        "EJECTED"
+      ],
+      "initial_state": "IDLE",
+      "action": "Examinar lo que expulsa o imprime",
+      "activation_condition": [],
+      "result": "Tras P01 expulsa el Fragmento I (C07); tras abrir la Cámara recibe y transcribe el cuaderno de síntesis de Irene (C09)",
+      "transitions": [
+        {
+          "to": "EJECTED",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C07",
+      "puzzle": "P05",
+      "authorized": "B",
+      "final_state": "EJECTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O12",
+      "name": "Banco de bobinas",
+      "visual": "Caja abierta con cinco bobinas; cada una lleva una forma en relieve en el lomo: círculo, cuadrado, triángulo, estrella y rombo",
+      "room": "ROOM02",
+      "position": {
+        "x": 0.8,
+        "y": 1,
+        "z": 3.6
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Escuchar las bobinas",
+      "activation_condition": [],
+      "result": "Reproduce cada bobina con su transcripción y guarda C04",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C04",
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O13",
+      "name": "Mesa de sincronía",
+      "visual": "Mesa de mezclas con cuatro ranuras numeradas 1, 2, 3 y 4 en relieve y un botón SINCRONIZAR",
+      "room": "ROOM02",
+      "position": {
+        "x": 2.5,
+        "y": 0.9,
+        "z": 0.6
+      },
+      "category": "coop",
+      "states": [
+        "EMPTY",
+        "LOADED",
+        "SYNCED"
+      ],
+      "initial_state": "EMPTY",
+      "action": "Colocar bobinas en los canales y pulsar SINCRONIZAR",
+      "activation_condition": [],
+      "result": "Si cada bobina está en el canal de su plano, la grabación de A suena; si no, se oye un zumbido suave y las bobinas se quedan donde están",
+      "transitions": [
+        {
+          "to": "LOADED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "SYNCED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O14",
+      "name": "Mitad inferior de la tarjeta de acceso",
+      "visual": "Media tarjeta de plástico blanco con la parte de abajo de cuatro cifras de barras, dentro de la caja de la bobina sobrante",
+      "room": "ROOM02",
+      "position": {
+        "x": 1,
+        "y": 0.8,
+        "z": 3.4
+      },
+      "category": "collect",
+      "states": [
+        "HIDDEN",
+        "FOUND",
+        "COLLECTED",
+        "INSERTED"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Recoger",
+      "activation_condition": [
+        "P02_SOLVED"
+      ],
+      "result": "Pasa al inventario de B y guarda C06",
+      "transitions": [
+        {
+          "to": "FOUND",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "COLLECTED",
+          "when": [
+            "O14_FOUND"
+          ],
+          "by": "B"
+        }
+      ],
+      "clue": "C06",
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "INSERTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O15",
+      "name": "Lector este de la esclusa",
+      "visual": "Ranura de tarjeta con pantalla pequeña e impresora de tiques en la pared norte del archivo",
+      "room": "ROOM02",
+      "position": {
+        "x": 1.2,
+        "y": 1.2,
+        "z": 3.9
+      },
+      "category": "coop",
+      "states": [
+        "WAITING",
+        "HALF_IN",
+        "ACCEPTED"
+      ],
+      "initial_state": "WAITING",
+      "action": "Insertar media tarjeta",
+      "activation_condition": [
+        "O14_COLLECTED"
+      ],
+      "result": "Registra la mitad de B; al abrirse la esclusa imprime el Fragmento III (C13)",
+      "transitions": [
+        {
+          "to": "HALF_IN",
+          "when": [
+            "O14_COLLECTED"
+          ],
+          "by": "B"
+        }
+      ],
+      "clue": "C13",
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "ACCEPTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O16",
+      "name": "Archivadores metálicos",
+      "visual": "Tres archivadores grises con cajones rotulados por años",
+      "room": "ROOM02",
+      "position": {
+        "x": 4.6,
+        "y": 0,
+        "z": 3.6
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O17",
+      "name": "Gramófono de exposición",
+      "visual": "Gramófono antiguo con bocina de latón dentro de una vitrina",
+      "room": "ROOM02",
+      "position": {
+        "x": 0.5,
+        "y": 0.8,
+        "z": 0.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O18",
+      "name": "Auriculares de estudio colgados",
+      "visual": "Dos auriculares cerrados colgados de un gancho junto a la puerta",
+      "room": "ROOM02",
+      "position": {
+        "x": 2.8,
+        "y": 1.6,
+        "z": 3.9
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O19",
+      "name": "Gradilla de viales",
+      "visual": "Gradilla de acero con seis viales de vidrio; cada uno tiene un tapón con forma (cuadrado, triángulo o círculo), un grabado en relieve (ola o edificio) y una etiqueta",
+      "room": "ROOM03",
+      "position": {
+        "x": 4,
+        "y": 1,
+        "z": 4
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar los viales",
+      "activation_condition": [],
+      "result": "Guarda C10 para los dos",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "AB"
+        }
+      ],
+      "clue": "C10",
+      "puzzle": "P04",
+      "authorized": "AB",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O20",
+      "name": "Sintetizador de recuerdos",
+      "visual": "Columna de vidrio y acero con tres ranuras para viales numeradas 1, 2 y 3 de izquierda a derecha y un anillo de luz en lo alto",
+      "room": "ROOM03",
+      "position": {
+        "x": 4,
+        "y": 0,
+        "z": 3
+      },
+      "category": "coop",
+      "states": [
+        "IDLE",
+        "LOADED",
+        "ANCHORED",
+        "RESTORED"
+      ],
+      "initial_state": "IDLE",
+      "action": "Colocar viales en las ranuras y pulsar INICIAR",
+      "activation_condition": [
+        "P03_SOLVED"
+      ],
+      "result": "Con los tres viales correctos inicia la síntesis de cierre; si no, devuelve los viales a la gradilla",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P04",
+      "authorized": "B",
+      "final_state": "RESTORED",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O21",
+      "name": "Terminal oeste",
+      "visual": "Atril con pantalla, teclado numérico y un pulsador redondo con la palabra ANCLAR; solo responde a A",
+      "room": "ROOM03",
+      "position": {
+        "x": 0.5,
+        "y": 1.1,
+        "z": 3
+      },
+      "category": "coop",
+      "states": [
+        "DARK",
+        "READY",
+        "ANCHORED"
+      ],
+      "initial_state": "DARK",
+      "action": "Teclear dos cifras, pulsar ANCLAR y votar",
+      "activation_condition": [
+        "P04_SOLVED"
+      ],
+      "result": "Muestra el Fragmento IV (C14), acepta la mitad del código de anclaje y después la ficha visual de un recuerdo (C15) y el voto de A",
+      "transitions": [
+        {
+          "to": "READY",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C14",
+      "puzzle": "P05",
+      "authorized": "A",
+      "final_state": "ANCHORED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O22",
+      "name": "Terminal este",
+      "visual": "Atril con pantalla, altavoz, teclado numérico y un pulsador redondo con la palabra ANCLAR; solo responde a B",
+      "room": "ROOM03",
+      "position": {
+        "x": 7.5,
+        "y": 1.1,
+        "z": 3
+      },
+      "category": "coop",
+      "states": [
+        "DARK",
+        "READY",
+        "ANCHORED"
+      ],
+      "initial_state": "DARK",
+      "action": "Teclear dos cifras, pulsar ANCLAR y votar",
+      "activation_condition": [
+        "P04_SOLVED"
+      ],
+      "result": "Acepta la otra mitad del código de anclaje y después reproduce la grabación de un recuerdo (C16) y recoge el voto de B",
+      "transitions": [
+        {
+          "to": "READY",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C16",
+      "puzzle": "P05",
+      "authorized": "B",
+      "final_state": "ANCHORED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O23",
+      "name": "Placa de anclaje",
+      "visual": "Placa de metal grabada sobre la puerta norte, con texto en relieve y en braille",
+      "room": "ROOM03",
+      "position": {
+        "x": 4,
+        "y": 2.2,
+        "z": 5.9
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C11 para los dos",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "AB"
+        }
+      ],
+      "clue": "C11",
+      "puzzle": "P05",
+      "authorized": "AB",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 2
+    },
+    {
+      "object_id": "O24",
+      "name": "Puerta norte de salida",
+      "visual": "Puerta de vidrio opaco con el rótulo Salida y un indicador CUSTODIA / LIBRE escrito en letras",
+      "room": "ROOM03",
+      "position": {
+        "x": 4,
+        "y": 0,
+        "z": 5.95
+      },
+      "category": "exit",
+      "states": [
+        "LOCKED",
+        "OPEN"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Salir",
+      "activation_condition": [
+        "P06_SOLVED"
+      ],
+      "result": "Confirma la salida de quien la cruza; la partida termina cuando la cruzan los dos",
+      "transitions": [
+        {
+          "to": "OPEN",
+          "when": [
+            "P06_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "OPEN",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O25",
+      "name": "Cápsulas de reposo vacías",
+      "visual": "Dos cápsulas abiertas con almohadas blancas y luz interior apagada",
+      "room": "ROOM03",
+      "position": {
+        "x": 1,
+        "y": 0,
+        "z": 5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O26",
+      "name": "Pizarra de las tres capas",
+      "visual": "Pizarra blanca con tres capas dibujadas una sobre otra y rotuladas imagen, sonido y emoción",
+      "room": "ROOM03",
+      "position": {
+        "x": 7,
+        "y": 1.5,
+        "z": 5.9
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    }
+  ],
+  "clues": [
+    {
+      "clue_id": "C01",
+      "content": "Etiqueta de la caja: El último día de la doctora Salvat. Proyectar de la mañana a la noche; el carrusel tiene cinco ranuras. Diapositivas: K: dos personas comen sentadas en una azotea y una servilleta sale volando entre ellas. M: una mujer con bata señala una pizarra con tres capas dibujadas; delante, tres personas sentadas de espaldas. R: una sala a oscuras con una sola lámpara de mesa encendida. S: la mujer sopla las velas de una tarta en una sala de descanso; en la pared, un calendario de hojas marca lunes, 13 de octubre. T: la mujer riega un helecho torcido hacia el cristal de una ventana. V: una caja de cartón cerrada con cinta adhesiva; en la tapa, escrito a mano: Primera síntesis.",
+      "alt_text": "Lista en texto grande y con lectura en voz: letra de cada diapositiva y lo que muestra. K azotea y servilleta; M pizarra de tres capas; R sala a oscuras con lámpara; S tarta y calendario del lunes 13 de octubre; T riego del helecho; V caja Primera síntesis.",
+      "location": "O02",
+      "discovery": "A abre la caja de diapositivas y las mira a contraluz",
+      "player": "A",
+      "puzzle": "P01",
+      "reveals": "Qué muestra cada diapositiva y su letra",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O02_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C02",
+      "content": "Diario de voz de Irene Salvat. Martes, 14 de octubre. Casete 1, 13:15: Como en la azotea con Tomás; hace tanto viento que se nos vuela la servilleta. Casete 2, 19:05: Apago la sala de observación; solo dejo encendida la lámpara de la mesa. Casete 3, 07:50: Llego antes que nadie y riego el helecho; sigue torcido hacia el cristal. Casete 4, 16:40: Cierro con cinta la caja de la primera síntesis; ya no la necesito. Casete 5, 10:30: Reunión con el comité; les dibujo en la pizarra el esquema de las tres capas.",
+      "alt_text": "Transcripción completa en pantalla con la fecha, martes 14 de octubre, y una línea por casete con su hora y lo que cuenta Irene.",
+      "location": "O10",
+      "discovery": "B escucha los cinco casetes de la estantería",
+      "player": "B",
+      "puzzle": "P01",
+      "reveals": "La fecha del último día y la hora de cada momento",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O10_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C03",
+      "content": "Grabación muda del 14 de octubre, con el número de plano en la esquina. Plano 1: Irene junto a una ventana; gotas gruesas resbalan por el cristal. Plano 2: Irene abre la puerta de un horno de muestras; un piloto parpadea tres veces y sale una nube de vapor por una válvula. Plano 3: Irene descuelga un teléfono de pared y habla. Plano 4: Irene mira por la ventana un campanario y varias palomas salen volando de la torre.",
+      "alt_text": "Audiodescripción en texto de cada plano con su número: 1 lluvia en el cristal; 2 piloto que parpadea tres veces y vapor; 3 teléfono; 4 campanario y palomas.",
+      "location": "O03",
+      "discovery": "A reproduce la grabación en la pared de monitores",
+      "player": "A",
+      "puzzle": "P02",
+      "reveals": "Qué ocurre en cada plano numerado",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O03_PLAYING"
+      ]
+    },
+    {
+      "clue_id": "C04",
+      "content": "Banco de bobinas. Bobina círculo: tres pitidos cortos y un silbido de vapor. Bobina cuadrado: campanadas lejanas y aleteo de muchas alas. Bobina triángulo: lluvia que golpea un cristal. Bobina estrella: timbre de teléfono y una voz que dice: ¿Diga? Sí, soy Irene. Bobina rombo: teclas de una máquina de escribir. Instrucción de la mesa: cada canal se sincroniza con el plano de vídeo del mismo número.",
+      "alt_text": "Cada bobina tiene su forma en relieve y su transcripción entre corchetes en pantalla; la instrucción de la mesa también está en texto y en braille.",
+      "location": "O12",
+      "discovery": "B escucha las bobinas del banco",
+      "player": "B",
+      "puzzle": "P02",
+      "reveals": "Qué sonido guarda cada bobina y la regla de los canales",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O12_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C05",
+      "content": "Mitad superior de la tarjeta. El corte pasa justo por debajo de la barra central, así que esta mitad conserva la barra superior, las dos barras altas y la central. Cifra 1: superior, alta derecha y central. Cifra 2: superior, alta izquierda y central. Cifra 3: superior, alta izquierda, alta derecha y central. Cifra 4: superior, alta derecha y central. Al dorso, tabla del lector: 0 superior, alta izquierda, alta derecha, baja izquierda, baja derecha, inferior. 1 alta derecha, baja derecha. 2 superior, alta derecha, central, baja izquierda, inferior. 3 superior, alta derecha, central, baja derecha, inferior. 4 alta izquierda, alta derecha, central, baja derecha. 5 superior, alta izquierda, central, baja derecha, inferior. 6 superior, alta izquierda, central, baja izquierda, baja derecha, inferior. 7 superior, alta derecha, baja derecha. 8 las siete barras. 9 superior, alta izquierda, alta derecha, central, baja derecha, inferior.",
+      "alt_text": "Descripción en texto de las barras visibles de cada cifra y la tabla del lector completa en lista, con lectura en voz; las barras se dibujan también como contorno grueso.",
+      "location": "O04",
+      "discovery": "A recoge la media tarjeta que cae del carrusel",
+      "player": "A",
+      "puzzle": "P03",
+      "reveals": "La parte de arriba de las cuatro cifras y la tabla del lector",
+      "depends_on": [],
+      "enabled_when": [
+        "P01_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O04_COLLECTED"
+      ]
+    },
+    {
+      "clue_id": "C06",
+      "content": "Mitad inferior de la tarjeta. Esta mitad conserva las dos barras bajas y la inferior. Cifra 1: baja derecha e inferior. Cifra 2: baja izquierda, baja derecha e inferior. Cifra 3: baja derecha e inferior. Cifra 4: baja izquierda e inferior. Al dorso, la misma tabla del lector: 0 superior, alta izquierda, alta derecha, baja izquierda, baja derecha, inferior. 1 alta derecha, baja derecha. 2 superior, alta derecha, central, baja izquierda, inferior. 3 superior, alta derecha, central, baja derecha, inferior. 4 alta izquierda, alta derecha, central, baja derecha. 5 superior, alta izquierda, central, baja derecha, inferior. 6 superior, alta izquierda, central, baja izquierda, baja derecha, inferior. 7 superior, alta derecha, baja derecha. 8 las siete barras. 9 superior, alta izquierda, alta derecha, central, baja derecha, inferior.",
+      "alt_text": "Descripción en texto de las barras visibles de cada cifra y la tabla del lector completa en lista, con lectura en voz; las barras se dibujan también como contorno grueso.",
+      "location": "O14",
+      "discovery": "B recoge la media tarjeta de la caja de la bobina sobrante",
+      "player": "B",
+      "puzzle": "P03",
+      "reveals": "La parte de abajo de las cuatro cifras y la tabla del lector",
+      "depends_on": [],
+      "enabled_when": [
+        "P02_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O14_COLLECTED"
+      ]
+    },
+    {
+      "clue_id": "C07",
+      "content": "Tarjeta de cartón expulsada por la platina: Fragmento I de IV. Número: 4. Guárdalo: otro terminal lo pedirá.",
+      "alt_text": "Texto grande: Fragmento I, número 4.",
+      "location": "O11",
+      "discovery": "La platina expulsa la tarjeta al resolver P01",
+      "player": "B",
+      "puzzle": "P05",
+      "reveals": "El valor del Fragmento I",
+      "depends_on": [],
+      "enabled_when": [
+        "P01_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O11_EJECTED"
+      ]
+    },
+    {
+      "clue_id": "C08",
+      "content": "Grabación de la última sesión, 14 de octubre, 18:20. Irene coloca tres viales en el sintetizador, de la ranura 1 a la 3. La luz roja de la sala no deja leer las etiquetas, pero los tapones se ven bien: en la ranura 1 un tapón cuadrado, en la 2 un tapón triangular y en la 3 un tapón redondo.",
+      "alt_text": "Audiodescripción en texto guardada en el cuaderno de A: ranura 1 tapón cuadrado, ranura 2 tapón triangular, ranura 3 tapón redondo; etiquetas ilegibles.",
+      "location": "O03",
+      "discovery": "Final de la grabación con sonido que se reproduce al resolver P02; se guarda sola en el cuaderno de observación",
+      "player": "A",
+      "puzzle": "P04",
+      "reveals": "La forma de los tapones de los viales que Irene usó, en orden",
+      "depends_on": [],
+      "enabled_when": [
+        "P02_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "P02_SOLVED"
+      ]
+    },
+    {
+      "clue_id": "C09",
+      "content": "Cuaderno de síntesis de Irene, transcrito por la platina. 14 de octubre, 18:05. Las palabras entre corchetes están escritas al revés. Para la sesión de cierre usaré solo viales con el grabado de la [ALO], ninguno del [OICIFIDE]. Plan de orden: tapón [ODNODER], después [RALUGNAIRT] y al final [ODARDAUC]. Si alguien repite esta sesión, que siga lo que hice y no lo que planeé: siempre cambio de idea en el último momento.",
+      "alt_text": "Texto con lectura en voz; las palabras entre corchetes se leen letra a letra. El mismo texto se ofrece con las palabras al revés subrayadas.",
+      "location": "O11",
+      "discovery": "Al abrirse la Cámara, la platina recibe el último documento de Irene y lo imprime para B",
+      "player": "B",
+      "puzzle": "P04",
+      "reveals": "Que solo valen los viales con grabado de ola y que el plan escrito no es lo que Irene hizo",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "P03_SOLVED"
+      ]
+    },
+    {
+      "clue_id": "C10",
+      "content": "Gradilla de seis viales. Vial 1: tapón cuadrado, grabado de ola, etiqueta Muelle de Cabo Lince. Vial 2: tapón cuadrado, grabado de edificio, etiqueta Tranvía de la avenida. Vial 3: tapón triangular, grabado de edificio, etiqueta Mercado del centro. Vial 4: tapón triangular, grabado de ola, etiqueta Faro al anochecer. Vial 5: tapón redondo, grabado de ola, etiqueta Playa de las Barcas. Vial 6: tapón redondo, grabado de edificio, etiqueta Azotea del instituto.",
+      "alt_text": "Tabla de seis filas: número, forma del tapón, grabado (ola o edificio) y etiqueta. Los grabados son relieves que se describen con palabras; ningún dato depende del color.",
+      "location": "O19",
+      "discovery": "Cualquiera de los dos examina la gradilla de la Cámara",
+      "player": "AB",
+      "puzzle": "P04",
+      "reveals": "Tapón, grabado y etiqueta de cada vial",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C11",
+      "content": "Placa de anclaje: Para anclar la sesión, cada terminal pide los fragmentos que su operador no ha visto. Terminal oeste, que solo responde a A: fragmento I seguido del fragmento III. Terminal este, que solo responde a B: fragmento II seguido del fragmento IV. Escribid las dos cifras y pulsad ANCLAR a la vez; la cámara tolera dos segundos y medio de diferencia.",
+      "alt_text": "Texto de la placa en pantalla, en relieve y en braille, con lectura en voz.",
+      "location": "O23",
+      "discovery": "Cualquiera de los dos lee la placa sobre la puerta norte",
+      "player": "AB",
+      "puzzle": "P05",
+      "reveals": "Qué fragmentos pide cada terminal y que hay que pulsar a la vez",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C12",
+      "content": "Al terminar la grabación con sonido, la pared de monitores muestra en grande: Fragmento II de IV. Número: 9.",
+      "alt_text": "Texto grande en pantalla y en el cuaderno de A: Fragmento II, número 9.",
+      "location": "O03",
+      "discovery": "Aparece al resolver P02 y se guarda solo en el cuaderno de observación",
+      "player": "A",
+      "puzzle": "P05",
+      "reveals": "El valor del Fragmento II",
+      "depends_on": [],
+      "enabled_when": [
+        "P02_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "P02_SOLVED"
+      ]
+    },
+    {
+      "clue_id": "C13",
+      "content": "Tique impreso por el lector este al abrirse la esclusa: Fragmento III de IV. Número: 1.",
+      "alt_text": "Texto grande: Fragmento III, número 1.",
+      "location": "O15",
+      "discovery": "El lector este lo imprime al resolver P03",
+      "player": "B",
+      "puzzle": "P05",
+      "reveals": "El valor del Fragmento III",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "P03_SOLVED"
+      ]
+    },
+    {
+      "clue_id": "C14",
+      "content": "Pantalla del terminal oeste al iniciarse la síntesis: Fragmento IV de IV. Número: 6.",
+      "alt_text": "Texto grande en la pantalla y en el cuaderno de A: Fragmento IV, número 6.",
+      "location": "O21",
+      "discovery": "Aparece en el terminal oeste al resolver P04",
+      "player": "A",
+      "puzzle": "P05",
+      "reveals": "El valor del Fragmento IV",
+      "depends_on": [],
+      "enabled_when": [
+        "P04_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O21_READY"
+      ]
+    },
+    {
+      "clue_id": "C15",
+      "content": "Ficha visual en el terminal oeste. Recuerdo: La noche del faro. Una niña de unos nueve años y su abuela sentadas en las rocas de Cabo Lince, mirando cómo se enciende el faro. La abuela le enseña a contar los segundos entre destellos. Nota de Irene: De aquí viene todo lo que he estudiado.",
+      "alt_text": "Descripción en texto de la imagen y de la nota, con lectura en voz.",
+      "location": "O21",
+      "discovery": "Aparece en el terminal oeste al anclar la sesión",
+      "player": "A",
+      "puzzle": "P06",
+      "reveals": "De qué trata el recuerdo personal de Irene",
+      "depends_on": [],
+      "enabled_when": [
+        "P05_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "P05_SOLVED"
+      ]
+    },
+    {
+      "clue_id": "C16",
+      "content": "Grabación en el terminal este. Recuerdo: El primer eco. Voces del equipo celebrando, risas y una cuenta atrás: tres, dos, uno. Irene dice: Lo tenemos, el eco aguanta. Guardad esta noche, porque es de todos. Nota de Irene: Este recuerdo es también de mi equipo.",
+      "alt_text": "Transcripción completa en pantalla con quién habla en cada línea.",
+      "location": "O22",
+      "discovery": "Se reproduce en el terminal este al anclar la sesión",
+      "player": "B",
+      "puzzle": "P06",
+      "reveals": "De qué trata el recuerdo profesional de Irene",
+      "depends_on": [],
+      "enabled_when": [
+        "P05_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "P05_SOLVED"
+      ]
+    },
+    {
+      "clue_id": "C17",
+      "content": "LUMEN: Recuerda que el cuaderno de observación guarda todo lo que viste en la pared de monitores, aunque esté apagada.",
+      "alt_text": "Aviso en texto en el lateral de la pantalla de los dos jugadores.",
+      "location": "O06",
+      "discovery": "Ayuda contextual que ofrece el sistema si nadie progresa 90 segundos después del corte de corriente",
+      "player": "AB",
+      "puzzle": "P04",
+      "reveals": "Que la información de la grabación sigue en el cuaderno de A",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED",
+        "IDLE_90"
+      ],
+      "help_level": 1,
+      "discovered_when": [
+        "IDLE_90"
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "puzzle_id": "P01",
+      "name": "El orden del último día",
+      "room": "ROOM01",
+      "main": true,
+      "prerequisites": [
+        "START"
+      ],
+      "narrative": "LUMEN pide la primera prueba de conocimiento: proyectar el último día de Irene tal como ocurrió. Las fotografías no tienen hora; el diario de voz sí.",
+      "objective": "Cargar en el carrusel las cinco diapositivas del último día, de la mañana a la noche, y proyectarlas.",
+      "situation": "A tiene seis diapositivas con letras y un carrusel de cinco ranuras. B tiene cinco casetes del diario de Irene con su hora y la fecha.",
+      "required_objects": [
+        "O01",
+        "O02",
+        "O10"
+      ],
+      "info_a": "Lo que muestra cada diapositiva y su letra (C01), incluida una con un calendario del lunes 13 de octubre.",
+      "info_b": "La fecha del diario, martes 14 de octubre, y la hora de cada momento del día (C02).",
+      "must_communicate": "B lee la fecha y cada registro con su hora; A busca la diapositiva que corresponde a cada registro, descarta la que no es de ese día y dicta las letras en orden para confirmar con B antes de proyectar.",
+      "rules": [
+        "El carrusel tiene cinco ranuras y solo se proyecta con las cinco llenas.",
+        "Se valida al pulsar PROYECTAR.",
+        "Una diapositiva sobra."
+      ],
+      "steps": [
+        "B escucha los cinco casetes y lee en voz alta la fecha y las horas.",
+        "A examina las seis diapositivas.",
+        "Emparejan cada registro con una diapositiva: helecho T, pizarra M, azotea K, caja V y lámpara R.",
+        "Descartan S porque su calendario marca el lunes 13 y el diario es del martes 14.",
+        "Ordenan por hora: 07:50 T, 10:30 M, 13:15 K, 16:40 V y 19:05 R.",
+        "A carga T, M, K, V y R en las ranuras 1 a 5 y pulsa PROYECTAR."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "T",
+          "M",
+          "K",
+          "V",
+          "R"
+        ],
+        "normalize": "Letras de las diapositivas de la ranura 1 a la 5, en mayúsculas"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "K",
+            "R",
+            "T",
+            "V",
+            "M"
+          ],
+          "why": "Es el orden de los casetes por su número (1, 2, 3, 4, 5), no por la hora."
+        },
+        {
+          "value": [
+            "S",
+            "T",
+            "M",
+            "K",
+            "V"
+          ],
+          "why": "Incluye la diapositiva S, que es del lunes 13 de octubre, y deja fuera la noche."
+        },
+        {
+          "value": [
+            "R",
+            "V",
+            "K",
+            "M",
+            "T"
+          ],
+          "why": "Es el día al revés, de la noche a la mañana."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C01",
+          "C02"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": "M01",
+        "check": "Al pulsar PROYECTAR, la lista de letras de las ranuras 1 a 5 debe coincidir con las diapositivas que corresponden a los registros de C02 (variante activa) ordenados por hora. C01 debe estar descubierta por A y C02 por B."
+      },
+      "on_solve": {
+        "message": "El proyector recorre el último día de Irene, de la mañana a la noche.",
+        "events": [
+          "E02"
+        ],
+        "sets": [
+          "O01_PROJECTED"
+        ]
+      },
+      "on_fail": {
+        "message": "La imagen se funde a gris. LUMEN: Ese no es el día que recuerdo.",
+        "effect": "El carrusel devuelve las diapositivas a la caja; las pistas se conservan."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 15
+      },
+      "hints": [
+        "Las fotografías no tienen hora, pero el diario de voz sí: compárenlos.",
+        "Cada registro del diario describe un detalle que se ve en una sola diapositiva; una diapositiva no es de ese día.",
+        "La primera diapositiva es la del helecho (T) y la S sobra porque es del lunes 13."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P03"
+      ],
+      "reset_condition": "Tras un fallo el carrusel se vacía. Un reinicio de zona deja la caja cerrada y el proyector en EMPTY.",
+      "edge_cases": [
+        "A pulsa PROYECTAR con ranuras vacías: no se valida y no cuenta como fallo.",
+        "A coloca la misma diapositiva en dos ranuras: imposible, cada diapositiva es un objeto único.",
+        "B se desconecta tras escuchar los casetes: C02 sigue en su registro y la transcripción reaparece al volver.",
+        "Doble pulsación de PROYECTAR con el mismo actionId: se ignora la segunda."
+      ],
+      "solution_proof": "Cada registro de C02 nombra un detalle que solo aparece en una diapositiva: helecho (T), pizarra de tres capas (M), servilleta en la azotea (K), caja Primera síntesis (V) y lámpara de mesa en la sala a oscuras (R). La diapositiva S muestra un calendario del lunes 13 y el diario es del martes 14, así que se descarta. Las cinco horas son distintas, por lo que el orden es único: T, M, K, V, R. A no sabe las horas ni la fecha y B no ve las diapositivas."
+    },
+    {
+      "puzzle_id": "P02",
+      "name": "La grabación muda",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "START"
+      ],
+      "narrative": "La pared de monitores reproduce una grabación de Irene sin sonido. Sus sonidos están guardados por separado en el Archivo, en bobinas sin imagen.",
+      "objective": "Colocar en cada canal de la mesa de sincronía la bobina que corresponde al plano del mismo número y sincronizar.",
+      "situation": "A ve la grabación muda con cuatro planos numerados. B tiene cinco bobinas con forma en relieve y la mesa de cuatro canales.",
+      "required_objects": [
+        "O03",
+        "O12",
+        "O13"
+      ],
+      "info_a": "Lo que ocurre en cada plano numerado (C03).",
+      "info_b": "Qué sonido guarda cada bobina y que cada canal va con el plano de su número (C04).",
+      "must_communicate": "A describe cada plano con su número; B escucha las bobinas y dice cuál encaja; B coloca las bobinas y repite la asignación antes de pulsar SINCRONIZAR.",
+      "rules": [
+        "Hay cinco bobinas y cuatro canales: una sobra.",
+        "Se valida al pulsar SINCRONIZAR.",
+        "Mover bobinas antes de sincronizar no cuenta como intento."
+      ],
+      "steps": [
+        "A reproduce la grabación y describe los cuatro planos.",
+        "B escucha las cinco bobinas.",
+        "Plano 1, lluvia en el cristal: bobina triángulo.",
+        "Plano 2, piloto que parpadea tres veces y vapor: bobina círculo.",
+        "Plano 3, teléfono: bobina estrella.",
+        "Plano 4, campanario y palomas: bobina cuadrado.",
+        "B deja fuera la bobina rombo y pulsa SINCRONIZAR."
+      ],
+      "answer": {
+        "type": "position",
+        "value": {
+          "1": "TRIANGULO",
+          "2": "CIRCULO",
+          "3": "ESTRELLA",
+          "4": "CUADRADO"
+        },
+        "normalize": "Forma de la bobina en cada canal en el momento de sincronizar, sin tildes"
+      },
+      "wrong_answers": [
+        {
+          "value": {
+            "1": "CIRCULO",
+            "2": "CUADRADO",
+            "3": "TRIANGULO",
+            "4": "ESTRELLA"
+          },
+          "why": "Es el orden en que están las bobinas en la caja, sin relación con los planos."
+        },
+        {
+          "value": {
+            "1": "TRIANGULO",
+            "2": "ROMBO",
+            "3": "ESTRELLA",
+            "4": "CUADRADO"
+          },
+          "why": "En el plano 2 no hay máquina de escribir: el piloto que parpadea tres veces va con los tres pitidos de la bobina círculo."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C03",
+          "C04"
+        ],
+        "coop_model": "M2",
+        "mechanism_id": "M02",
+        "check": "Al pulsar SINCRONIZAR, cada canal debe tener la bobina cuyo sonido corresponde al plano del mismo número en C03. La entrada viene de B y C03 debe estar descubierta por A."
+      },
+      "on_solve": {
+        "message": "La grabación de Irene suena por fin, y al final aparece su última sesión.",
+        "events": [
+          "E03"
+        ],
+        "sets": [
+          "O13_SYNCED"
+        ]
+      },
+      "on_fail": {
+        "message": "Se oye un zumbido suave: imagen y sonido no encajan.",
+        "effect": "Las bobinas se quedan en sus canales para que puedan corregirlas."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "A tiene la imagen y B el sonido: descríbanse lo que ven y oyen.",
+        "Busquen en cada plano algo que haga ruido: la lluvia, el piloto, el teléfono, las campanas.",
+        "El piloto que parpadea tres veces del plano 2 suena como los tres pitidos de la bobina círculo."
+      ],
+      "estimated_minutes": 6,
+      "unlocks": [
+        "P03"
+      ],
+      "reset_condition": "Las bobinas se quedan tras un fallo. Un reinicio de zona devuelve las bobinas a la caja y la mesa a EMPTY.",
+      "edge_cases": [
+        "B pulsa SINCRONIZAR antes de que A haya reproducido la grabación: se rechaza con el mensaje Falta la imagen y no cuenta como fallo.",
+        "B coloca una bobina en un canal ocupado: la anterior vuelve a la caja.",
+        "A pausa la grabación a mitad: los planos ya vistos siguen en su cuaderno."
+      ],
+      "solution_proof": "Cada plano de C03 contiene una sola fuente de sonido que coincide con una sola bobina de C04: lluvia en el cristal con triángulo, piloto de tres destellos y vapor con círculo (tres pitidos y silbido), teléfono con estrella y campanario con palomas con cuadrado (campanas y aleteo). La bobina rombo no tiene plano. La regla de canal igual a número de plano fija la posición. A no oye las bobinas y B no ve los planos."
+    },
+    {
+      "puzzle_id": "P03",
+      "name": "La tarjeta partida",
+      "room": "ROOM01",
+      "main": true,
+      "prerequisites": [
+        "P01_SOLVED",
+        "P02_SOLVED"
+      ],
+      "narrative": "La tarjeta de acceso de Irene a la Cámara de síntesis se partió en dos. Cada mitad cayó en una sala y cada una solo muestra media cifra.",
+      "objective": "Insertar las dos mitades en sus lectores y teclear el código de cuatro cifras que forman juntas.",
+      "situation": "A tiene la mitad superior y el teclado del lector oeste. B tiene la mitad inferior y el lector este. Las dos mitades llevan al dorso la tabla de barras del lector.",
+      "required_objects": [
+        "O04",
+        "O14",
+        "O05",
+        "O15"
+      ],
+      "info_a": "Las barras superiores, altas y central de cada cifra (C05) y la tabla del lector.",
+      "info_b": "Las barras bajas e inferior de cada cifra (C06) y la misma tabla.",
+      "must_communicate": "Cada uno describe, cifra por cifra, qué barras ve en su mitad; juntos buscan en la tabla la única cifra que tiene exactamente esas barras arriba y abajo; A teclea el código y B confirma cada cifra.",
+      "rules": [
+        "Las dos mitades deben estar insertadas antes de teclear.",
+        "El código tiene cuatro cifras.",
+        "Se valida al pulsar la tecla de confirmar del lector oeste."
+      ],
+      "steps": [
+        "A inserta la mitad superior en el lector oeste y B la inferior en el lector este.",
+        "Cifra 1: arriba superior, alta derecha y central (2 o 3); abajo baja derecha e inferior (3, 5 o 9): es 3.",
+        "Cifra 2: arriba superior, alta izquierda y central (5 o 6); abajo dos bajas e inferior (0, 6 u 8): es 6.",
+        "Cifra 3: arriba las cuatro barras (8 o 9); abajo baja derecha e inferior (3, 5 o 9): es 9.",
+        "Cifra 4: arriba superior, alta derecha y central (2 o 3); abajo baja izquierda e inferior: es 2.",
+        "A teclea 3692 y confirma."
+      ],
+      "answer": {
+        "type": "code",
+        "value": "3692",
+        "normalize": "Cuatro cifras sin espacios"
+      },
+      "wrong_answers": [
+        {
+          "value": "2582",
+          "why": "Usa solo la mitad superior y elige la primera opción de cada cifra; la mitad inferior la descarta."
+        },
+        {
+          "value": "2963",
+          "why": "Lee las cifras de derecha a izquierda; la tarjeta se lee de izquierda a derecha, de la cifra 1 a la 4."
+        },
+        {
+          "value": "9052",
+          "why": "Usa solo la mitad inferior: 9, 0 y 5 encajan abajo, pero arriba la cifra 1 no tiene barra alta izquierda, la cifra 2 sí tiene barra central y la cifra 3 tiene barra alta derecha."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C05",
+          "C06"
+        ],
+        "coop_model": "M5",
+        "mechanism_id": "M03",
+        "check": "O05 y O15 deben estar en HALF_IN (las dos mitades insertadas) y el código tecleado por A debe coincidir con las cifras que cumplen a la vez C05 y C06 según la tabla del lector (variante activa)."
+      },
+      "on_solve": {
+        "message": "La esclusa se abre con un suspiro de aire. La Cámara de síntesis está a oscuras.",
+        "events": [
+          "E04",
+          "E05"
+        ],
+        "sets": [
+          "O04_INSERTED",
+          "O14_INSERTED",
+          "O05_ACCEPTED",
+          "O15_ACCEPTED"
+        ]
+      },
+      "on_fail": {
+        "message": "El lector parpadea: Código no válido. Las mitades siguen insertadas.",
+        "effect": "Se borra el código tecleado; nada más cambia."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 15
+      },
+      "hints": [
+        "Cada mitad muestra solo una parte de las barras: juntas forman las cifras enteras.",
+        "Para cada cifra, busquen en la tabla la única que tenga a la vez las barras de arriba de A y las de abajo de B.",
+        "La primera cifra es 3: arriba podría ser 2 o 3, pero abajo no tiene la barra baja izquierda."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P04"
+      ],
+      "reset_condition": "Tras un fallo se borra el código. Un reinicio de zona devuelve cada mitad al inventario de su jugador y los lectores a WAITING.",
+      "edge_cases": [
+        "A teclea el código con una sola mitad insertada: el lector muestra Falta la otra mitad y no cuenta como fallo.",
+        "B intenta teclear: el lector este no tiene teclado; su pantalla le recuerda que el código se teclea en el lector oeste.",
+        "Un jugador saca su mitad tras insertarla: el lector vuelve a pedirla sin borrar el progreso de la sala.",
+        "Doble confirmación con el código correcto: la segunda se ignora."
+      ],
+      "solution_proof": "Con la tabla del lector, la mitad superior de cada cifra deja dos candidatos (2 o 3; 5 o 6; 8 o 9; 2 o 3) y la inferior deja otros (3, 5 o 9; 0, 6 u 8; 3, 5 o 9; solo 2). La intersección de cada par es una sola cifra: 3, 6, 9 y 2. Ninguna mitad sola da el código y cada jugador solo tiene una mitad."
+    },
+    {
+      "puzzle_id": "P04",
+      "name": "Las dos versiones de la última sesión",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P03_SOLVED"
+      ],
+      "narrative": "Con la Cámara abierta, un corte de corriente apaga la pared de monitores. Para repetir la síntesis de cierre solo quedan lo que A anotó de la grabación y el cuaderno de Irene, que no cuentan lo mismo.",
+      "objective": "Cargar en las tres ranuras del sintetizador los viales que Irene usó, en el orden en que los colocó, y pulsar INICIAR.",
+      "situation": "Los dos están en la Cámara con luz de emergencia. La gradilla tiene seis viales. A tiene en su cuaderno lo que vio en la grabación; B tiene el cuaderno de síntesis cifrado. B es quien coloca los viales.",
+      "required_objects": [
+        "O19",
+        "O20",
+        "O06",
+        "O11"
+      ],
+      "info_a": "La forma de los tapones en cada ranura según la grabación (C08), guardada en el cuaderno de observación.",
+      "info_b": "Que solo se usan viales con grabado de ola, el plan escrito de Irene y su aviso de que vale lo que hizo y no lo que planeó (C09).",
+      "must_communicate": "B descifra y lee el cuaderno; A lee su nota de la grabación; contrastan las dos versiones del orden, eligen la de la grabación y, con la gradilla, B identifica los viales de ola que tienen cada tapón y los coloca.",
+      "rules": [
+        "Se usan exactamente tres viales.",
+        "Las ranuras se cuentan de izquierda a derecha, del 1 al 3.",
+        "Se valida al pulsar INICIAR."
+      ],
+      "steps": [
+        "B lee C09 y da la vuelta a las palabras entre corchetes: ola, edificio, redondo, triangular, cuadrado.",
+        "A lee en su cuaderno C08: cuadrado, triangular y redondo.",
+        "Notan que el plan de Irene (redondo, triangular, cuadrado) contradice la grabación y siguen la grabación, como pide el propio cuaderno.",
+        "En la gradilla, el vial cuadrado con ola es Muelle de Cabo Lince, el triangular con ola es Faro al anochecer y el redondo con ola es Playa de las Barcas.",
+        "B coloca Muelle, Faro y Playa en las ranuras 1, 2 y 3 y pulsa INICIAR."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "MUELLE",
+          "FARO",
+          "PLAYA"
+        ],
+        "normalize": "Primera palabra de la etiqueta del vial en cada ranura, de la 1 a la 3, sin tildes"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "PLAYA",
+            "FARO",
+            "MUELLE"
+          ],
+          "why": "Es el plan escrito de Irene; ella misma avisa de que vale lo que hizo en la grabación."
+        },
+        {
+          "value": [
+            "TRANVIA",
+            "MERCADO",
+            "AZOTEA"
+          ],
+          "why": "Tienen los tapones en el orden correcto pero el grabado de edificio, que Irene descartó."
+        },
+        {
+          "value": [
+            "MUELLE",
+            "MERCADO",
+            "PLAYA"
+          ],
+          "why": "El vial triangular de la ranura 2 debe tener grabado de ola: es Faro al anochecer."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C08",
+          "C09",
+          "C10"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": "M04",
+        "check": "Al pulsar INICIAR, las ranuras 1 a 3 deben contener los viales con grabado de ola cuyo tapón coincide con el orden de C08 (variante activa). La entrada viene de B y C08 debe estar descubierta por A."
+      },
+      "on_solve": {
+        "message": "El sintetizador se ilumina y la corriente vuelve a la Cámara.",
+        "events": [
+          "E06"
+        ],
+        "sets": [
+          "O20_LOADED"
+        ]
+      },
+      "on_fail": {
+        "message": "El sintetizador devuelve los viales con un clic suave: esa no fue la sesión de Irene.",
+        "effect": "Los viales vuelven a la gradilla; las pistas se conservan."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 15
+      },
+      "hints": [
+        "La pared de monitores está apagada, pero el cuaderno de A guarda lo que vio en la grabación.",
+        "El cuaderno de B y la grabación de A no dicen el mismo orden: Irene explica cuál de los dos vale.",
+        "Sigan la grabación: ranura 1 tapón cuadrado, 2 triangular, 3 redondo, y solo viales con grabado de ola."
+      ],
+      "estimated_minutes": 8,
+      "unlocks": [
+        "P05"
+      ],
+      "reset_condition": "Tras un fallo los viales vuelven a la gradilla. Un reinicio de zona deja el sintetizador en IDLE y repite el corte de corriente al entrar.",
+      "edge_cases": [
+        "A intenta colocar viales: el sintetizador le indica que la carga la hace B desde el lado este; A puede señalar los viales.",
+        "B pulsa INICIAR con dos viales: no se valida y no cuenta como fallo.",
+        "A no abrió el cuaderno de observación: la ayuda de nivel 1 (C17) se lo recuerda tras 90 s sin progreso.",
+        "Un jugador se desconecta durante el corte: al volver ve la Cámara con luz de emergencia y su registro completo."
+      ],
+      "solution_proof": "C09 limita los viales a los tres con grabado de ola (1, 4 y 5), que tienen tapones distintos: cuadrado, triangular y redondo. C08 fija el orden cuadrado, triangular y redondo, y C09 indica que la grabación manda sobre el plan. El resultado único es Muelle, Faro y Playa. Sin C08 hay dos órdenes posibles y sin C09 hay dos viales por cada forma de tapón."
+    },
+    {
+      "puzzle_id": "P05",
+      "name": "El anclaje compartido",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P04_SOLVED"
+      ],
+      "narrative": "La síntesis está en marcha, pero se disolverá si no se ancla. Los cuatro fragmentos que fueron apareciendo forman el código de anclaje, repartido de forma que nadie lo tenga entero.",
+      "objective": "Teclear en cada terminal los dos fragmentos que pide y pulsar ANCLAR a la vez en los dos terminales.",
+      "situation": "A está en el terminal oeste y B en el terminal este, separados por el sintetizador. A vio los fragmentos II y IV; B vio el I y el III. Cada terminal pide los fragmentos que su operador no ha visto.",
+      "required_objects": [
+        "O21",
+        "O22",
+        "O23"
+      ],
+      "info_a": "Fragmento II: 9 (C12) y Fragmento IV: 6 (C14).",
+      "info_b": "Fragmento I: 4 (C07) y Fragmento III: 1 (C13).",
+      "must_communicate": "B dicta a A los fragmentos I y III; A dicta a B los fragmentos II y IV; cuando los dos han tecleado, uno cuenta en voz alta tres, dos, uno y los dos pulsan ANCLAR.",
+      "rules": [
+        "El terminal oeste solo acepta entradas de A y el este solo de B.",
+        "Cada terminal pide sus dos cifras en el orden de la placa.",
+        "Los dos ANCLAR deben pulsarse con menos de 2,5 segundos de diferencia.",
+        "Si uno pulsa y el otro no, el primero queda en espera durante la ventana y después se cancela sin penalización."
+      ],
+      "steps": [
+        "Leen la placa de anclaje (C11).",
+        "B dice: el fragmento I es 4 y el III es 1. A teclea 41.",
+        "A dice: el fragmento II es 9 y el IV es 6. B teclea 96.",
+        "Uno cuenta tres, dos, uno.",
+        "A pulsa ANCLAR en el terminal oeste y B en el este a la vez."
+      ],
+      "answer": {
+        "type": "simultaneous",
+        "value": {
+          "A": "41",
+          "B": "96"
+        },
+        "normalize": "Dos cifras por terminal y pulsación de ANCLAR de A y de B dentro de la ventana"
+      },
+      "wrong_answers": [
+        {
+          "value": {
+            "A": "96",
+            "B": "41"
+          },
+          "why": "Cada uno teclea los fragmentos que ha visto; la placa pide justo los del otro."
+        },
+        {
+          "value": {
+            "A": "14",
+            "B": "69"
+          },
+          "why": "Fragmentos correctos en orden inverso: la placa pide I antes que III y II antes que IV."
+        },
+        {
+          "value": {
+            "A": "41",
+            "B": "96",
+            "gap_ms": 4000
+          },
+          "why": "Cifras correctas, pero las dos pulsaciones llegan con 4 segundos de diferencia, fuera de la ventana."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A",
+          "B"
+        ],
+        "requires_clues": [
+          "C07",
+          "C12",
+          "C13",
+          "C14",
+          "C11"
+        ],
+        "coop_model": "M3",
+        "mechanism_id": "M05",
+        "window_ms": 2500,
+        "check": "El servidor recibe ANCLAR de A con el texto del terminal oeste y ANCLAR de B con el del terminal este. Se acepta si el oeste contiene los fragmentos I y III y el este los II y IV (variante activa) y la diferencia entre las dos marcas de tiempo del servidor es de 2500 ms o menos."
+      },
+      "on_solve": {
+        "message": "La síntesis queda anclada. La luz de la Cámara se vuelve cálida.",
+        "events": [
+          "E07"
+        ],
+        "sets": [
+          "O20_ANCHORED",
+          "O21_ANCHORED",
+          "O22_ANCHORED"
+        ]
+      },
+      "on_fail": {
+        "message": "La síntesis tiembla y vuelve a su sitio. LUMEN: Necesito los dos anclajes a la vez y con los fragmentos del otro.",
+        "effect": "Se borran las cifras de los dos terminales; los fragmentos siguen en los registros."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "Cada terminal pide lo que su operador no ha visto: tendrán que dictarse los fragmentos.",
+        "A tiene II y IV; B tiene I y III. El oeste pide I y III; el este, II y IV.",
+        "A teclea 41, B teclea 96 y pulsan ANCLAR a la vez tras contar tres."
+      ],
+      "estimated_minutes": 5,
+      "unlocks": [
+        "P06"
+      ],
+      "reset_condition": "Tras un fallo se borran las cifras. Un reinicio de zona deja los terminales en READY y el sintetizador en LOADED.",
+      "edge_cases": [
+        "A pulsa ANCLAR y B pulsa 3 s después: fuera de ventana, se cancela y no cuenta como fallo de cifras.",
+        "Un jugador pulsa ANCLAR sin cifras: el terminal pide primero las dos cifras.",
+        "Un jugador se desconecta con su pulsación en espera: la espera se cancela y el estado vuelve a PUZZLE_ACTIVE al reconectar.",
+        "Los dos pulsan dentro de la ventana con cifras incorrectas: falla y se indica en qué terminal está el error, sin decir la cifra."
+      ],
+      "solution_proof": "Los cuatro fragmentos son números fijos (I 4, II 9, III 1, IV 6) y la placa C11 fija qué terminal pide cuáles y en qué orden, por lo que solo vale oeste 41 y este 96. A nunca ve I ni III y B nunca ve II ni IV, así que cada terminal depende de lo que dicte el otro, y la pulsación exige a los dos a la vez."
+    },
+    {
+      "puzzle_id": "P06",
+      "name": "El recuerdo que vuelve",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P05_SOLVED"
+      ],
+      "narrative": "El sintetizador solo tiene carga para restaurar un recuerdo completo en el archivo personal de Irene antes de cerrar la sesión. El otro quedará guardado y a salvo.",
+      "objective": "Elegir juntos qué recuerdo de Irene se restaura.",
+      "situation": "A ve en el terminal oeste la ficha visual de un recuerdo y B escucha en el terminal este la grabación del otro. Cada uno vota en su terminal.",
+      "required_objects": [
+        "O21",
+        "O22"
+      ],
+      "info_a": "La noche del faro: Irene niña con su abuela en Cabo Lince (C15).",
+      "info_b": "El primer eco: la noche en que su equipo logró la primera síntesis estable (C16).",
+      "must_communicate": "Cada uno cuenta el recuerdo que ha visto u oído y deciden juntos cuál restaurar.",
+      "rules": [
+        "Los dos votan en secreto.",
+        "Si votan distinto, se pide que hablen y vuelvan a votar.",
+        "Las dos opciones abren la salida y ninguna se considera incorrecta."
+      ],
+      "steps": [
+        "A lee la ficha visual.",
+        "B escucha la grabación.",
+        "Se cuentan lo que tienen y votan la misma opción."
+      ],
+      "answer": {
+        "type": "decision",
+        "value": null,
+        "normalize": "Clave de opción",
+        "options": [
+          {
+            "key": "FARO",
+            "label": "Restaurar La noche del faro",
+            "consequence": "Irene recupera el recuerdo de su abuela; el epílogo muestra a Irene volviendo a Cabo Lince."
+          },
+          {
+            "key": "EQUIPO",
+            "label": "Restaurar El primer eco",
+            "consequence": "El recuerdo del equipo vuelve al archivo; el epílogo muestra a Irene reuniendo a su antiguo equipo."
+          }
+        ]
+      },
+      "wrong_answers": [],
+      "validation": {
+        "input_by": [
+          "A",
+          "B"
+        ],
+        "requires_clues": [
+          "C15",
+          "C16"
+        ],
+        "coop_model": "M6",
+        "mechanism_id": "M06",
+        "check": "Se acepta cuando el voto de A y el de B coinciden; se registra la opción elegida."
+      },
+      "on_solve": {
+        "message": "El recuerdo elegido llena la Cámara un momento. La puerta norte se abre.",
+        "events": [
+          "E08"
+        ],
+        "sets": [
+          "O20_RESTORED"
+        ]
+      },
+      "on_fail": {
+        "message": "Han votado distinto. Cuéntense lo que han visto y oído y voten otra vez.",
+        "effect": "Se borran los dos votos."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "A tiene la imagen de un recuerdo y B el sonido del otro.",
+        "No hay opción incorrecta: el recuerdo que no elijan sigue guardado.",
+        "Voten la misma opción en los dos terminales."
+      ],
+      "estimated_minutes": 3,
+      "unlocks": [],
+      "reset_condition": "Reinicio de zona: se borran los votos.",
+      "edge_cases": [
+        "Un jugador vota y el otro se desconecta: el voto se conserva hasta que vuelva.",
+        "Un jugador cambia su voto antes de que vote el otro: cuenta el último.",
+        "Se agota el reloj durante la votación: se ofrece seguir sin reloj y los votos se conservan."
+      ],
+      "solution_proof": "Es una decisión compartida: cualquier opción en la que coincidan es válida, abre la salida y solo cambia el epílogo. A conoce un recuerdo y B el otro, así que la elección informada exige que hablen."
+    }
+  ],
+  "coop_mechanisms": [
+    {
+      "mechanism_id": "M01",
+      "model": "M1",
+      "puzzle": "P01",
+      "title": "Fotografías sin hora y voces sin imagen",
+      "why_not_solo": "A tiene las imágenes pero ninguna hora ni la fecha; B tiene las horas y la fecha pero no ve las diapositivas.",
+      "info_a": "Seis diapositivas con letra y contenido.",
+      "info_b": "Cinco registros con hora y la fecha del día.",
+      "communicate_a": "Qué muestra cada diapositiva y su letra.",
+      "communicate_b": "La fecha y la hora de cada registro con su detalle.",
+      "action_a": "Cargar el carrusel y proyectar.",
+      "action_b": "Leer los registros y confirmar el orden.",
+      "validation": "El servidor exige C01 descubierta por A, C02 por B y la entrada desde el proyector de A.",
+      "miscommunication": "Si ordenan por número de casete o incluyen la diapositiva S, la imagen se funde a gris y la ayuda recuerda la fecha.",
+      "anti_domination": "B conoce el criterio de orden (horas y fecha) y A ejecuta: ninguno puede decidir solo.",
+      "skill_gap": "La relación entre detalle e imagen es directa; la ayuda de nivel 3 da la primera diapositiva y la que sobra."
+    },
+    {
+      "mechanism_id": "M02",
+      "model": "M2",
+      "puzzle": "P02",
+      "title": "La imagen de uno y el sonido del otro",
+      "why_not_solo": "Los planos solo se ven en la pared de A y los sonidos solo se oyen en el archivo de B.",
+      "info_a": "Cuatro planos numerados.",
+      "info_b": "Cinco bobinas con sonido y forma.",
+      "communicate_a": "Qué ocurre en cada plano y su número.",
+      "communicate_b": "Qué suena en cada bobina.",
+      "action_a": "Observar y describir la grabación.",
+      "action_b": "Colocar las bobinas y sincronizar.",
+      "validation": "La entrada viene de B y C03 debe estar descubierta por A antes del intento.",
+      "miscommunication": "Si una bobina queda en el plano equivocado, suena un zumbido suave y las bobinas se quedan para corregir.",
+      "anti_domination": "Quien observa no puede tocar la mesa y quien la toca no ve la imagen.",
+      "skill_gap": "Las transcripciones permiten jugar sin oír; las descripciones de planos permiten jugar sin ver el vídeo."
+    },
+    {
+      "mechanism_id": "M03",
+      "model": "M5",
+      "puzzle": "P03",
+      "title": "Dos mitades de una tarjeta",
+      "why_not_solo": "Cada mitad de la tarjeta deja dos o tres cifras posibles por posición; solo la combinación de las dos da una.",
+      "info_a": "La mitad superior de las cuatro cifras.",
+      "info_b": "La mitad inferior de las cuatro cifras.",
+      "communicate_a": "Qué barras ve arriba en cada cifra.",
+      "communicate_b": "Qué barras ve abajo en cada cifra.",
+      "action_a": "Insertar su mitad y teclear el código.",
+      "action_b": "Insertar su mitad y confirmar cada cifra.",
+      "validation": "Los dos lectores deben estar en HALF_IN, con C05 de A y C06 de B descubiertas, antes de aceptar el código.",
+      "miscommunication": "Si confunden izquierda y derecha, el código falla y la ayuda de nivel 2 explica cómo cruzar las dos mitades con la tabla.",
+      "anti_domination": "Los dos objetos son imprescindibles y cada uno está en la sala del otro lado del cristal.",
+      "skill_gap": "La tabla del lector está escrita con palabras; la ayuda de nivel 3 resuelve la primera cifra como ejemplo."
+    },
+    {
+      "mechanism_id": "M04",
+      "model": "M1",
+      "puzzle": "P04",
+      "title": "Lo que se vio y lo que se escribió",
+      "why_not_solo": "La grabación anotada por A da el orden de los tapones pero no qué viales; el cuaderno de B dice qué viales pero propone un orden equivocado.",
+      "info_a": "Orden de los tapones según la grabación.",
+      "info_b": "Filtro de grabado, plan escrito y aviso de Irene.",
+      "communicate_a": "El orden de tapones que vio antes del corte.",
+      "communicate_b": "Las palabras descifradas y el aviso de seguir lo que hizo.",
+      "action_a": "Consultar el cuaderno de observación y señalar viales.",
+      "action_b": "Descifrar el cuaderno y cargar los viales.",
+      "validation": "La entrada viene de B y C08 debe estar descubierta por A.",
+      "miscommunication": "Si siguen el plan escrito, el sintetizador devuelve los viales; la ayuda de nivel 2 señala que las dos versiones no coinciden.",
+      "anti_domination": "La carga pasa a B mientras la memoria de la grabación es de A, que ya no puede volver a verla.",
+      "skill_gap": "Las palabras al revés tienen una versión subrayada; el cuaderno de A guarda la nota automáticamente para no depender de la memoria."
+    },
+    {
+      "mechanism_id": "M05",
+      "model": "M3",
+      "puzzle": "P05",
+      "title": "Anclar a la vez con los números del otro",
+      "why_not_solo": "Cada terminal pide fragmentos que solo vio el otro y los dos ANCLAR deben llegar dentro de 2,5 segundos.",
+      "info_a": "Fragmentos II y IV.",
+      "info_b": "Fragmentos I y III.",
+      "communicate_a": "Los valores de II y IV.",
+      "communicate_b": "Los valores de I y III.",
+      "action_a": "Teclear 41 en el terminal oeste y pulsar ANCLAR.",
+      "action_b": "Teclear 96 en el terminal este y pulsar ANCLAR.",
+      "validation": "El servidor compara las marcas de tiempo de las dos pulsaciones (ventana de 2500 ms) y el contenido de cada terminal.",
+      "miscommunication": "Si cada uno teclea sus propios fragmentos, falla y se indica que la placa pide los del otro; si pulsan a destiempo, se cancela sin castigo.",
+      "anti_domination": "Las dos pulsaciones valen lo mismo y cada terminal solo acepta a su operador.",
+      "skill_gap": "La ventana de 2,5 s es amplia; en modo fácil se amplía a 4 s y aparece una cuenta atrás compartida."
+    },
+    {
+      "mechanism_id": "M06",
+      "model": "M6",
+      "puzzle": "P06",
+      "title": "Qué recuerdo vuelve",
+      "why_not_solo": "A conoce un recuerdo y B el otro, y la restauración exige los dos votos iguales.",
+      "info_a": "La noche del faro.",
+      "info_b": "El primer eco.",
+      "communicate_a": "Qué muestra la ficha visual.",
+      "communicate_b": "Qué se oye en la grabación.",
+      "action_a": "Votar en el terminal oeste.",
+      "action_b": "Votar en el terminal este.",
+      "validation": "Solo se aplica una opción cuando los dos votos coinciden.",
+      "miscommunication": "Si votan distinto se borran los votos y se pide hablar; no hay penalización.",
+      "anti_domination": "El voto es secreto hasta que votan los dos.",
+      "skill_gap": "No hay respuesta correcta; solo hace falta ponerse de acuerdo."
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "START",
+      "to": "C01",
+      "condition": "A examina la caja de diapositivas",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C02",
+      "condition": "B escucha los casetes del diario",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C03",
+      "condition": "A reproduce la grabación muda",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C04",
+      "condition": "B escucha las bobinas",
+      "type": "required"
+    },
+    {
+      "from": "C01",
+      "to": "P01",
+      "condition": "A describe las diapositivas",
+      "type": "required"
+    },
+    {
+      "from": "C02",
+      "to": "P01",
+      "condition": "B lee fecha y horas",
+      "type": "required"
+    },
+    {
+      "from": "C03",
+      "to": "P02",
+      "condition": "A describe los planos",
+      "type": "required"
+    },
+    {
+      "from": "C04",
+      "to": "P02",
+      "condition": "B describe las bobinas",
+      "type": "required"
+    },
+    {
+      "from": "P01",
+      "to": "C05",
+      "condition": "Cae la mitad superior de la tarjeta",
+      "type": "required"
+    },
+    {
+      "from": "P01",
+      "to": "C07",
+      "condition": "La platina expulsa el Fragmento I",
+      "type": "required"
+    },
+    {
+      "from": "P02",
+      "to": "C06",
+      "condition": "Aparece la mitad inferior de la tarjeta",
+      "type": "required"
+    },
+    {
+      "from": "P02",
+      "to": "C08",
+      "condition": "A ve la última sesión y queda en su cuaderno",
+      "type": "required"
+    },
+    {
+      "from": "P02",
+      "to": "C12",
+      "condition": "Aparece el Fragmento II",
+      "type": "required"
+    },
+    {
+      "from": "C05",
+      "to": "P03",
+      "condition": "A describe su mitad",
+      "type": "required"
+    },
+    {
+      "from": "C06",
+      "to": "P03",
+      "condition": "B describe su mitad",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "ROOM03",
+      "condition": "Se abre la esclusa",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "E05",
+      "condition": "Corte de corriente",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "C09",
+      "condition": "La platina imprime el cuaderno de síntesis",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "C13",
+      "condition": "El lector este imprime el Fragmento III",
+      "type": "required"
+    },
+    {
+      "from": "ROOM03",
+      "to": "C10",
+      "condition": "Examinan la gradilla",
+      "type": "required"
+    },
+    {
+      "from": "ROOM03",
+      "to": "C11",
+      "condition": "Leen la placa de anclaje",
+      "type": "required"
+    },
+    {
+      "from": "C08",
+      "to": "P04",
+      "condition": "A consulta su cuaderno",
+      "type": "required"
+    },
+    {
+      "from": "C09",
+      "to": "P04",
+      "condition": "B descifra el cuaderno de síntesis",
+      "type": "required"
+    },
+    {
+      "from": "C10",
+      "to": "P04",
+      "condition": "Identifican los viales",
+      "type": "required"
+    },
+    {
+      "from": "P04",
+      "to": "C14",
+      "condition": "El terminal oeste muestra el Fragmento IV",
+      "type": "required"
+    },
+    {
+      "from": "C07",
+      "to": "P05",
+      "condition": "B dicta el Fragmento I",
+      "type": "required"
+    },
+    {
+      "from": "C13",
+      "to": "P05",
+      "condition": "B dicta el Fragmento III",
+      "type": "required"
+    },
+    {
+      "from": "C12",
+      "to": "P05",
+      "condition": "A dicta el Fragmento II",
+      "type": "required"
+    },
+    {
+      "from": "C14",
+      "to": "P05",
+      "condition": "A dicta el Fragmento IV",
+      "type": "required"
+    },
+    {
+      "from": "C11",
+      "to": "P05",
+      "condition": "Siguen la placa",
+      "type": "required"
+    },
+    {
+      "from": "P05",
+      "to": "C15",
+      "condition": "Ficha visual en el terminal oeste",
+      "type": "required"
+    },
+    {
+      "from": "P05",
+      "to": "C16",
+      "condition": "Grabación en el terminal este",
+      "type": "required"
+    },
+    {
+      "from": "C15",
+      "to": "P06",
+      "condition": "A cuenta su recuerdo",
+      "type": "required"
+    },
+    {
+      "from": "C16",
+      "to": "P06",
+      "condition": "B cuenta su recuerdo",
+      "type": "required"
+    },
+    {
+      "from": "P06",
+      "to": "O24",
+      "condition": "Se abre la puerta norte",
+      "type": "required"
+    },
+    {
+      "from": "O24",
+      "to": "ESCAPE",
+      "condition": "Los dos cruzan la puerta",
+      "type": "required"
+    }
+  ],
+  "state_transitions": [
+    {
+      "from": "INTRO",
+      "to": "EXPLORATION",
+      "event": "player.ready x2",
+      "conditions": "Los dos pulsan Listo o saltan la intro",
+      "validations": "Ambos jugadores conectados y asignados",
+      "effects": "Arranca el reloj de 45 min y LUMEN da la bienvenida (E01)",
+      "message": "Modo custodia activo. Demostrad que conocéis la última sesión."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "PUZZLE_ACTIVE",
+      "event": "A abre el carrusel del proyector",
+      "conditions": "P01 disponible",
+      "validations": "Jugador A",
+      "effects": "Muestra las cinco ranuras",
+      "message": "Carrusel del proyector"
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "VALIDATING",
+      "event": "A pulsa PROYECTAR",
+      "conditions": "Cinco ranuras llenas",
+      "validations": "validatePuzzle(P01)",
+      "effects": "Bloquea el carrusel mientras valida",
+      "message": "Comprobando…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Orden incorrecto",
+      "conditions": "Secuencia distinta de la solución",
+      "validations": "Contador de fallos",
+      "effects": "Devuelve las diapositivas",
+      "message": "Ese no es el día que recuerdo."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P01 o P02 correcto",
+      "conditions": "Respuesta correcta",
+      "validations": "Pistas exigidas descubiertas por su jugador",
+      "effects": "E02 o E03",
+      "message": "Un fragmento del día vuelve a su sitio."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "EXPLORATION",
+      "event": "Fin del evento del acertijo",
+      "conditions": "Quedan acertijos en la zona",
+      "validations": "Ninguna",
+      "effects": "Aparece la media tarjeta correspondiente",
+      "message": "Algo ha caído cerca de ti."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P03 correcto",
+      "conditions": "Dos mitades insertadas y código correcto",
+      "validations": "O05 y O15 en HALF_IN",
+      "effects": "E04 y E05",
+      "message": "La esclusa se abre."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "ROOM_UNLOCKED",
+      "event": "Fin de E04",
+      "conditions": "exit_conditions de ROOM01 y ROOM02 cumplidas",
+      "validations": "Ninguna",
+      "effects": "Carga ROOM03 y abre DOOR01 y DOOR02; empieza el corte de corriente",
+      "message": "La Cámara de síntesis está a oscuras."
+    },
+    {
+      "from": "ROOM_UNLOCKED",
+      "to": "EXPLORATION",
+      "event": "Los dos entran en la Cámara o pasan 20 s",
+      "conditions": "Escena cargada",
+      "validations": "Ninguna",
+      "effects": "Luz de emergencia; pared de monitores en OFF",
+      "message": "Solo queda lo que anotaste."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "Un ANCLAR de P05",
+      "conditions": "Falta la pulsación del otro",
+      "validations": "Jugador en su terminal",
+      "effects": "Abre la ventana de 2500 ms y muestra Esperando a tu pareja",
+      "message": "Esperando el anclaje de tu pareja…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "VALIDATING",
+      "event": "Segundo ANCLAR dentro de la ventana",
+      "conditions": "Diferencia de 2500 ms o menos",
+      "validations": "validateSimultaneous(P05)",
+      "effects": "Compara cifras de los dos terminales",
+      "message": "Anclando…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Ventana caducada",
+      "conditions": "Pasan 2500 ms sin el segundo ANCLAR",
+      "validations": "Hora del servidor",
+      "effects": "Cancela la pulsación sin contar fallo",
+      "message": "Hay que pulsar a la vez. Contad tres y probad otra vez."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "Un voto de P06",
+      "conditions": "Falta el voto del otro",
+      "validations": "Jugador con C15 o C16",
+      "effects": "Guarda el voto oculto",
+      "message": "Esperando el voto de tu pareja…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "VALIDATING",
+      "event": "Segundo voto",
+      "conditions": "Los dos votaron",
+      "validations": "submitDecision(P06)",
+      "effects": "Compara votos",
+      "message": "Comprobando…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Votos distintos",
+      "conditions": "Opciones distintas",
+      "validations": "Ninguna",
+      "effects": "Borra los votos",
+      "message": "Han votado distinto. Hablen y voten otra vez."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "FINAL_SEQUENCE",
+      "event": "P06 resuelto",
+      "conditions": "Votos coincidentes",
+      "validations": "Ninguna",
+      "effects": "E08: proyección del recuerdo y apertura de la puerta norte",
+      "message": "El recuerdo vuelve a casa."
+    },
+    {
+      "from": "FINAL_SEQUENCE",
+      "to": "COMPLETED",
+      "event": "escape.confirm x2",
+      "conditions": "Los dos cruzan la puerta norte",
+      "validations": "O24 en OPEN",
+      "effects": "Calcula el final según P06",
+      "message": "Modo custodia desactivado."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "FAILED",
+      "event": "timer.expired",
+      "conditions": "Reloj a cero en modo con reloj",
+      "validations": "Hora del servidor",
+      "effects": "E10: pausa suave del laboratorio",
+      "message": "La reserva de la sesión se ha agotado. ¿Reiniciar la zona o seguir sin reloj?"
+    },
+    {
+      "from": "FAILED",
+      "to": "EXPLORATION",
+      "event": "Elegir Modo sin reloj",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Oculta el reloj y conserva el progreso",
+      "message": "Seguid a vuestro ritmo."
+    },
+    {
+      "from": "FAILED",
+      "to": "RESETTING",
+      "event": "Elegir reiniciar zona",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Aplica reset_rules de la zona actual",
+      "message": "Restaurando la zona…"
+    },
+    {
+      "from": "RESETTING",
+      "to": "EXPLORATION",
+      "event": "Zona restaurada",
+      "conditions": "Estado restaurado",
+      "validations": "Ninguna",
+      "effects": "Reloj con 15 min extra",
+      "message": "Zona restaurada."
+    },
+    {
+      "from": "ANY",
+      "to": "PAUSED",
+      "event": "game.pause",
+      "conditions": "Cualquiera pulsa Pausa",
+      "validations": "Ninguna",
+      "effects": "Congela el reloj, las ventanas de simultaneidad y las entradas",
+      "message": "Pausado."
+    },
+    {
+      "from": "PAUSED",
+      "to": "EXPLORATION",
+      "event": "game.resume x2",
+      "conditions": "Los dos pulsan Reanudar",
+      "validations": "Ambos conectados",
+      "effects": "Reanuda el reloj y los eventos donde quedaron",
+      "message": "Seguimos."
+    }
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "trigger": [
+        "START"
+      ],
+      "prev_state": "INTRO",
+      "action": "LUMEN da la bienvenida y explica el modo custodia a los dos",
+      "affects": [
+        "ROOM01",
+        "ROOM02"
+      ],
+      "duration_s": 20,
+      "audio": "A07",
+      "visual": null,
+      "end_condition": "Termina el mensaje",
+      "on_interrupt": "Si se pausa, se reanuda donde se quedó; el texto ya está en el historial",
+      "repeat": "Se puede volver a oír desde el menú de ayuda"
+    },
+    {
+      "event_id": "E02",
+      "trigger": [
+        "P01_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El proyector muestra las cinco diapositivas en orden; del carrusel cae la mitad superior de la tarjeta y la platina expulsa el Fragmento I",
+      "affects": [
+        "O01",
+        "O04",
+        "O11"
+      ],
+      "duration_s": 12,
+      "audio": "A04",
+      "visual": "V01",
+      "end_condition": "O04 en FOUND y O11 en EJECTED",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez; A puede volver a proyectar la secuencia sin efectos"
+    },
+    {
+      "event_id": "E03",
+      "trigger": [
+        "P02_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La grabación suena con sus sonidos y termina con la última sesión de Irene y el Fragmento II; en el archivo aparece la mitad inferior de la tarjeta",
+      "affects": [
+        "O03",
+        "O13",
+        "O14"
+      ],
+      "duration_s": 35,
+      "audio": "A05",
+      "visual": "V02",
+      "end_condition": "C08 y C12 guardadas en el cuaderno de A y O14 en FOUND",
+      "on_interrupt": "Las pistas se guardan aunque se pause o se desconecte A",
+      "repeat": "A puede repetir la grabación hasta el corte de corriente"
+    },
+    {
+      "event_id": "E04",
+      "trigger": [
+        "P03_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Se abre la esclusa con las dos puertas a la Cámara y el lector este imprime el Fragmento III",
+      "affects": [
+        "DOOR01",
+        "DOOR02",
+        "ROOM03",
+        "O15"
+      ],
+      "duration_s": 6,
+      "audio": "A06",
+      "visual": "V03",
+      "end_condition": "ROOM03 accesible",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E05",
+      "trigger": [
+        "P03_SOLVED"
+      ],
+      "prev_state": "ROOM_UNLOCKED",
+      "action": "Corte de corriente: la pared de monitores y el panel de techo de A se apagan, el archivo baja al 30 % y la Cámara queda con luz de emergencia; la platina imprime el cuaderno de síntesis",
+      "affects": [
+        "O03",
+        "ROOM01",
+        "ROOM02",
+        "ROOM03",
+        "O11"
+      ],
+      "duration_s": 8,
+      "audio": "A08",
+      "visual": "V04",
+      "end_condition": "O03 en OFF y luces de emergencia activas hasta E06",
+      "on_interrupt": "Se aplica el estado final; el cuaderno de A conserva todo",
+      "repeat": "Una sola vez por partida (se repite tras un reinicio de zona de ROOM03)"
+    },
+    {
+      "event_id": "E06",
+      "trigger": [
+        "P04_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El sintetizador se ilumina, vuelve la luz general de la Cámara y el terminal oeste muestra el Fragmento IV",
+      "affects": [
+        "O20",
+        "O21",
+        "O22",
+        "ROOM03"
+      ],
+      "duration_s": 8,
+      "audio": "A09",
+      "visual": "V05",
+      "end_condition": "O21 y O22 en READY",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E07",
+      "trigger": [
+        "P05_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La síntesis queda anclada y cada terminal muestra un recuerdo de Irene",
+      "affects": [
+        "O20",
+        "O21",
+        "O22"
+      ],
+      "duration_s": 6,
+      "audio": "A10",
+      "visual": "V05",
+      "end_condition": "C15 y C16 disponibles",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E08",
+      "trigger": [
+        "P06_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El recuerdo elegido se proyecta en las paredes de la Cámara y se abre la puerta norte",
+      "affects": [
+        "ROOM03",
+        "O24",
+        "DOOR05"
+      ],
+      "duration_s": 20,
+      "audio": "A12",
+      "visual": "V06",
+      "end_condition": "O24 en OPEN",
+      "on_interrupt": "La puerta queda abierta",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E09",
+      "trigger": [
+        "IDLE_120"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "LUMEN ofrece la ayuda de nivel 1 del acertijo activo",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03"
+      ],
+      "duration_s": 5,
+      "audio": "A07",
+      "visual": null,
+      "end_condition": "Aviso mostrado",
+      "on_interrupt": "Se descarta",
+      "repeat": "Cada 2 min sin progreso, como máximo una vez por nivel de ayuda"
+    },
+    {
+      "event_id": "E10",
+      "trigger": [
+        "TIMER_EXPIRED"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "Las luces bajan con suavidad y se ofrece reiniciar la zona o seguir sin reloj",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03"
+      ],
+      "duration_s": 8,
+      "audio": "A07",
+      "visual": "V07",
+      "end_condition": "Los dos eligen",
+      "on_interrupt": "Se vuelve a mostrar la elección",
+      "repeat": "Una vez por partida con reloj"
+    },
+    {
+      "event_id": "E11",
+      "trigger": [
+        "E05_DONE",
+        "IDLE_90"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "LUMEN recuerda que el cuaderno de observación conserva lo visto en los monitores (C17)",
+      "affects": [
+        "O06"
+      ],
+      "duration_s": 5,
+      "audio": "A07",
+      "visual": null,
+      "end_condition": "Aviso mostrado",
+      "on_interrupt": "Se descarta",
+      "repeat": "Una sola vez"
+    }
+  ],
+  "dialogues": [
+    {
+      "dialogue_id": "D01",
+      "speaker": "LUMEN",
+      "text": "Buenos días. Soy LUMEN, el sistema del Laboratorio Mnemósine. La sesión de cierre se interrumpió y el laboratorio está en modo custodia.",
+      "trigger": "E01",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D02",
+      "speaker": "LUMEN",
+      "text": "Nadie corre peligro. Las puertas se abrirán cuando demostréis que conocéis la última sesión de la doctora Salvat.",
+      "trigger": "E01",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D03",
+      "speaker": "Narrador",
+      "text": "Despiertas en un sillón blanco. Frente a ti, una pared de monitores apagados. Al otro lado del cristal se mueve una silueta.",
+      "trigger": "START",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D04",
+      "speaker": "Narrador",
+      "text": "Despiertas entre estanterías de cintas. Huele a papel viejo. Al otro lado del cristal se mueve una silueta.",
+      "trigger": "START",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D05",
+      "speaker": "Irene Salvat (casete)",
+      "text": "Martes, catorce de octubre. Llego antes que nadie y riego el helecho; sigue torcido hacia el cristal.",
+      "trigger": "C02_DISCOVERED",
+      "audience": "B",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D06",
+      "speaker": "Sistema",
+      "text": "El proyector recorre el día de la mañana a la noche.",
+      "trigger": "E02",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D07",
+      "speaker": "Narrador",
+      "text": "Algo cae del carrusel con un golpe seco: media tarjeta de plástico.",
+      "trigger": "E02",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D08",
+      "speaker": "Narrador",
+      "text": "La platina se abre sola y deja salir una tarjeta de cartón.",
+      "trigger": "E02",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D09",
+      "speaker": "Irene Salvat (grabación)",
+      "text": "¿Diga? Sí, soy Irene. No, hoy no vuelvo tarde. Solo me queda una sesión.",
+      "trigger": "E03",
+      "audience": "A",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D10",
+      "speaker": "Irene Salvat (grabación)",
+      "text": "Seis y veinte. Sesión de cierre. Si alguien ve esto, que se fije en lo que hago y no en lo que escribí.",
+      "trigger": "E03",
+      "audience": "A",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D11",
+      "speaker": "Sistema",
+      "text": "Lo que has visto se ha guardado en tu cuaderno de observación.",
+      "trigger": "E03",
+      "audience": "A",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D12",
+      "speaker": "Narrador",
+      "text": "En la caja de la bobina sobrante hay media tarjeta de plástico.",
+      "trigger": "E03",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D13",
+      "speaker": "LUMEN",
+      "text": "Esclusa abierta. Atención: la apertura ha consumido la reserva de la sala de observación.",
+      "trigger": "E04",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D14",
+      "speaker": "Narrador",
+      "text": "Los monitores se apagan uno a uno, despacio. Solo queda encendida la lámpara de la mesa, como en la diapositiva R.",
+      "trigger": "E05",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D15",
+      "speaker": "Narrador",
+      "text": "Los fluorescentes bajan. La platina imprime una hoja escrita a mano por Irene.",
+      "trigger": "E05",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D16",
+      "speaker": "LUMEN",
+      "text": "Recuerda que el cuaderno de observación guarda todo lo que viste en la pared de monitores, aunque esté apagada.",
+      "trigger": "E11",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D17",
+      "speaker": "Sistema",
+      "text": "La corriente vuelve a la Cámara. El terminal oeste muestra un número.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D18",
+      "speaker": "LUMEN",
+      "text": "Necesito los dos anclajes a la vez y con los fragmentos del otro.",
+      "trigger": "P05",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D19",
+      "speaker": "LUMEN",
+      "text": "Síntesis anclada. Tengo carga para restaurar un recuerdo completo en el archivo personal de la doctora. El otro quedará guardado.",
+      "trigger": "E07",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D20",
+      "speaker": "Sistema",
+      "text": "Han votado distinto. Cuéntense lo que han visto y oído y voten otra vez.",
+      "trigger": "P06",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D21",
+      "speaker": "Irene Salvat (grabación)",
+      "text": "Gracias por terminar lo que yo dejé a medias. El recuerdo que elijáis me llegará; el otro sigue a salvo.",
+      "trigger": "E08",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D22",
+      "speaker": "LUMEN",
+      "text": "Modo custodia desactivado. Podéis salir cuando queráis.",
+      "trigger": "E08",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D23",
+      "speaker": "LUMEN",
+      "text": "La reserva de la sesión se ha agotado. Podéis reiniciar esta zona o seguir sin reloj. No se pierde nada de lo resuelto.",
+      "trigger": "E10",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D24",
+      "speaker": "LUMEN",
+      "text": "Si os ayuda: cada uno tiene la mitad de lo que necesitáis. Contadle al otro lo que tenéis delante.",
+      "trigger": "E09",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    }
+  ],
+  "audio_cues": [
+    {
+      "audio_id": "A01",
+      "type": "ambient",
+      "description": "Zumbido bajo de equipos y pitido lento de monitor cada cuatro segundos",
+      "loop": true,
+      "subtitle": "[zumbido de equipos]"
+    },
+    {
+      "audio_id": "A02",
+      "type": "music",
+      "description": "Piano lento con pads suaves, muy bajo",
+      "loop": true,
+      "subtitle": null
+    },
+    {
+      "audio_id": "A03",
+      "type": "ambient",
+      "description": "Siseo leve de cinta y crujido de papel",
+      "loop": true,
+      "subtitle": "[siseo de cinta]"
+    },
+    {
+      "audio_id": "A04",
+      "type": "sfx",
+      "description": "Clac del carrusel del proyector al avanzar cada diapositiva",
+      "loop": false,
+      "subtitle": "[clac del proyector]"
+    },
+    {
+      "audio_id": "A05",
+      "type": "sfx",
+      "description": "Mezcla de lluvia, pitidos, teléfono y campanas de la grabación sincronizada",
+      "loop": false,
+      "subtitle": "[suena la grabación]"
+    },
+    {
+      "audio_id": "A06",
+      "type": "sfx",
+      "description": "Suspiro neumático de la esclusa al abrirse",
+      "loop": false,
+      "subtitle": "[la esclusa se abre]"
+    },
+    {
+      "audio_id": "A07",
+      "type": "voice",
+      "description": "Voz de LUMEN, neutra, cálida y pausada",
+      "loop": false,
+      "subtitle": "Ver diálogos"
+    },
+    {
+      "audio_id": "A08",
+      "type": "sfx",
+      "description": "Descenso suave del zumbido eléctrico durante dos segundos, sin golpe ni chasquido",
+      "loop": false,
+      "subtitle": "[se va la corriente]"
+    },
+    {
+      "audio_id": "A09",
+      "type": "sfx",
+      "description": "Zumbido ascendente del sintetizador al cargar",
+      "loop": false,
+      "subtitle": "[el sintetizador arranca]"
+    },
+    {
+      "audio_id": "A10",
+      "type": "sfx",
+      "description": "Acorde de campanas suave al anclar",
+      "loop": false,
+      "subtitle": "[acorde de anclaje]"
+    },
+    {
+      "audio_id": "A11",
+      "type": "ambient",
+      "description": "Eco amplio de sala y respiración lenta de ventiladores",
+      "loop": true,
+      "subtitle": "[eco de la cámara]"
+    },
+    {
+      "audio_id": "A12",
+      "type": "music",
+      "description": "Tema de Irene: cuerdas y celesta, sube de capas con cada fragmento",
+      "loop": true,
+      "subtitle": null
+    },
+    {
+      "audio_id": "A13",
+      "type": "sfx",
+      "description": "Zumbido corto y suave de error, nunca estridente",
+      "loop": false,
+      "subtitle": "[zumbido suave]"
+    },
+    {
+      "audio_id": "A14",
+      "type": "voice",
+      "description": "Voz de Irene Salvat, cincuentona, serena, con grano de cinta",
+      "loop": false,
+      "subtitle": "Ver diálogos"
+    }
+  ],
+  "visual_effects": [
+    {
+      "vfx_id": "V01",
+      "description": "Las cinco diapositivas se suceden en la pantalla con un fundido cálido",
+      "reduced_motion_alt": "Las cinco diapositivas aparecen a la vez en una cuadrícula fija"
+    },
+    {
+      "vfx_id": "V02",
+      "description": "La grabación recupera el color al sincronizarse y muestra el Fragmento II en grande",
+      "reduced_motion_alt": "Imagen fija del último plano con el Fragmento II"
+    },
+    {
+      "vfx_id": "V03",
+      "description": "Las hojas de la esclusa se deslizan y entra una corriente de niebla fría muy tenue",
+      "reduced_motion_alt": "Fundido a la esclusa abierta sin niebla"
+    },
+    {
+      "vfx_id": "V04",
+      "description": "Las luces bajan durante dos segundos y se encienden las de emergencia ámbar fijas; sin parpadeos",
+      "reduced_motion_alt": "Cambio directo a la iluminación de emergencia"
+    },
+    {
+      "vfx_id": "V05",
+      "description": "El anillo del sintetizador gira y pasa de azul frío a luz cálida",
+      "reduced_motion_alt": "El anillo cambia de color sin girar"
+    },
+    {
+      "vfx_id": "V06",
+      "description": "El recuerdo elegido se proyecta sobre las paredes como una película suave",
+      "reduced_motion_alt": "Imagen fija del recuerdo con su texto"
+    },
+    {
+      "vfx_id": "V07",
+      "description": "Las luces de la sala bajan lentamente a un tono suave",
+      "reduced_motion_alt": "Cambio de iluminación sin transición"
+    }
+  ],
+  "endings": [
+    {
+      "ending_id": "END01",
+      "name": "Custodia levantada",
+      "type": "main",
+      "condition": [
+        "O24_OPEN"
+      ],
+      "text": "Los dos salen al pasillo de cristal iluminado por la mañana. LUMEN apaga el laboratorio con un saludo y en el suelo los espera la carta de Irene."
+    },
+    {
+      "ending_id": "END02",
+      "name": "La noche del faro",
+      "type": "decision",
+      "condition": [
+        "P06_OPT_FARO",
+        "O24_OPEN"
+      ],
+      "text": "En la carta hay una postal de Cabo Lince: Irene ha vuelto a las rocas donde su abuela le enseñó a contar los destellos del faro. Escribe: Ya lo recuerdo entero."
+    },
+    {
+      "ending_id": "END03",
+      "name": "El primer eco",
+      "type": "decision",
+      "condition": [
+        "P06_OPT_EQUIPO",
+        "O24_OPEN"
+      ],
+      "text": "En la carta hay una fotografía del antiguo equipo reunido en la azotea del instituto. Irene escribe: Les he devuelto su noche. Vamos a escribir juntos lo que aprendimos."
+    }
+  ],
+  "replay_tips": [
+    "Intercambien los papeles: quien vio las imágenes, que escuche los registros.",
+    "Elijan el otro recuerdo para ver el otro epílogo.",
+    "Prueben el modo difícil: la grabación de la última sesión solo se ve una vez y no se guarda sola en el cuaderno; hay que anotarla.",
+    "Jueguen una variante: cambian las horas del diario, el código de la tarjeta o los fragmentos."
+  ],
+  "variants": [
+    {
+      "variant_id": "VAR01",
+      "description": "Cambian las horas del diario de voz y con ellas el orden del día",
+      "overrides": {
+        "clues": {
+          "C02": {
+            "content": "Diario de voz de Irene Salvat. Martes, 14 de octubre. Casete 1, 14:45: Como en la azotea con Tomás; hace tanto viento que se nos vuela la servilleta. Casete 2, 19:05: Apago la sala de observación; solo dejo encendida la lámpara de la mesa. Casete 3, 07:50: Llego antes que nadie y riego el helecho; sigue torcido hacia el cristal. Casete 4, 10:20: Cierro con cinta la caja de la primera síntesis; ya no la necesito. Casete 5, 12:30: Reunión con el comité; les dibujo en la pizarra el esquema de las tres capas.",
+            "alt_text": "Transcripción en pantalla: martes 14 de octubre; azotea 14:45, lámpara 19:05, helecho 07:50, caja 10:20, pizarra 12:30."
+          }
+        },
+        "puzzles": {
+          "P01": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "T",
+                "V",
+                "M",
+                "K",
+                "R"
+              ],
+              "normalize": "Igual que la base"
+            },
+            "hints": [
+              "Las fotografías no tienen hora, pero el diario de voz sí: compárenlos.",
+              "Cada registro del diario describe un detalle que se ve en una sola diapositiva; una diapositiva no es de ese día.",
+              "La primera diapositiva es la del helecho (T) y la S sobra porque es del lunes 13."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "K",
+                  "R",
+                  "T",
+                  "V",
+                  "M"
+                ],
+                "why": "Es el orden de los casetes por su número, no por la hora."
+              },
+              {
+                "value": [
+                  "S",
+                  "T",
+                  "V",
+                  "M",
+                  "K"
+                ],
+                "why": "Incluye la diapositiva S, del lunes 13, y deja fuera la noche."
+              },
+              {
+                "value": [
+                  "R",
+                  "K",
+                  "M",
+                  "V",
+                  "T"
+                ],
+                "why": "Es el día al revés, de la noche a la mañana."
+              }
+            ],
+            "steps": [
+              "B escucha los cinco casetes y lee en voz alta la fecha y las horas.",
+              "A examina las seis diapositivas.",
+              "Emparejan cada registro con una diapositiva: helecho T, caja V, pizarra M, azotea K y lámpara R.",
+              "Descartan S porque su calendario marca el lunes 13 y el diario es del martes 14.",
+              "Ordenan por hora: 07:50 T, 10:20 V, 12:30 M, 14:45 K y 19:05 R.",
+              "A carga T, V, M, K y R en las ranuras 1 a 5 y pulsa PROYECTAR."
+            ],
+            "solution_proof": "Cada registro de C02 nombra un detalle que solo aparece en una diapositiva: helecho (T), caja Primera síntesis (V), pizarra de tres capas (M), servilleta en la azotea (K) y lámpara de mesa en la sala a oscuras (R). La diapositiva S muestra un calendario del lunes 13 y el diario es del martes 14, así que se descarta. Con las horas de esta variante (07:50, 10:20, 12:30, 14:45 y 19:05), todas distintas, el orden es único: T, V, M, K, R. A no sabe las horas ni la fecha y B no ve las diapositivas."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR02",
+      "description": "Cambia el código de la tarjeta partida",
+      "overrides": {
+        "clues": {
+          "C05": {
+            "content": "Mitad superior de la tarjeta. Conserva la barra superior, las dos altas y la central. Cifra 1: superior, alta izquierda y central. Cifra 2: superior, alta izquierda y alta derecha, sin central. Cifra 3: superior, alta izquierda, alta derecha y central. Cifra 4: superior, alta derecha y central. Al dorso, tabla del lector: 0 superior, alta izquierda, alta derecha, baja izquierda, baja derecha, inferior. 1 alta derecha, baja derecha. 2 superior, alta derecha, central, baja izquierda, inferior. 3 superior, alta derecha, central, baja derecha, inferior. 4 alta izquierda, alta derecha, central, baja derecha. 5 superior, alta izquierda, central, baja derecha, inferior. 6 superior, alta izquierda, central, baja izquierda, baja derecha, inferior. 7 superior, alta derecha, baja derecha. 8 las siete barras. 9 superior, alta izquierda, alta derecha, central, baja derecha, inferior.",
+            "alt_text": "Cifra 1 superior, alta izquierda, central; cifra 2 superior y las dos altas sin central; cifra 3 las cuatro barras; cifra 4 superior, alta derecha, central. Tabla del lector en lista."
+          },
+          "C06": {
+            "content": "Mitad inferior de la tarjeta. Conserva las dos bajas y la inferior. Cifra 1: baja derecha e inferior. Cifra 2: baja izquierda, baja derecha e inferior. Cifra 3: baja izquierda, baja derecha e inferior. Cifra 4: baja derecha e inferior. Al dorso, tabla del lector: 0 superior, alta izquierda, alta derecha, baja izquierda, baja derecha, inferior. 1 alta derecha, baja derecha. 2 superior, alta derecha, central, baja izquierda, inferior. 3 superior, alta derecha, central, baja derecha, inferior. 4 alta izquierda, alta derecha, central, baja derecha. 5 superior, alta izquierda, central, baja derecha, inferior. 6 superior, alta izquierda, central, baja izquierda, baja derecha, inferior. 7 superior, alta derecha, baja derecha. 8 las siete barras. 9 superior, alta izquierda, alta derecha, central, baja derecha, inferior.",
+            "alt_text": "Cifra 1 baja derecha e inferior; cifra 2 las dos bajas e inferior; cifra 3 las dos bajas e inferior; cifra 4 baja derecha e inferior. Tabla del lector en lista."
+          }
+        },
+        "puzzles": {
+          "P03": {
+            "answer": {
+              "type": "code",
+              "value": "5083",
+              "normalize": "Cuatro cifras sin espacios"
+            },
+            "hints": [
+              "Cada mitad muestra solo una parte de las barras: juntas forman las cifras enteras.",
+              "Para cada cifra, busquen en la tabla la única que tenga a la vez las barras de arriba de A y las de abajo de B.",
+              "La primera cifra es 5: arriba podría ser 5 o 6, pero abajo no tiene la barra baja izquierda."
+            ],
+            "wrong_answers": [
+              {
+                "value": "5082",
+                "why": "Usa solo la mitad superior y elige la primera opción de cada cifra."
+              },
+              {
+                "value": "3805",
+                "why": "Lee las cifras de derecha a izquierda."
+              },
+              {
+                "value": "9063",
+                "why": "Usa solo la mitad inferior: 9, 0, 6 y 3 encajan abajo, pero arriba la cifra 1 no tiene barra alta derecha y la cifra 3 sí la tiene."
+              }
+            ],
+            "steps": [
+              "A inserta la mitad superior en el lector oeste y B la inferior en el lector este.",
+              "Cifra 1: arriba superior, alta izquierda y central (5 o 6); abajo baja derecha e inferior (3, 5 o 9): es 5.",
+              "Cifra 2: arriba superior, alta izquierda y alta derecha sin central (solo 0); abajo dos bajas e inferior (0, 6 u 8): es 0.",
+              "Cifra 3: arriba las cuatro barras (8 o 9); abajo dos bajas e inferior (0, 6 u 8): es 8.",
+              "Cifra 4: arriba superior, alta derecha y central (2 o 3); abajo baja derecha e inferior (3, 5 o 9): es 3.",
+              "A teclea 5083 y confirma."
+            ],
+            "solution_proof": "Con la tabla del lector, la mitad superior de cada cifra deja estos candidatos: 5 o 6; solo 0; 8 o 9; 2 o 3. La inferior deja: 3, 5 o 9; 0, 6 u 8; 0, 6 u 8; 3, 5 o 9. La intersección de cada par es una sola cifra: 5, 0, 8 y 3. La cifra 2 ya se deduce solo con la mitad superior, pero las otras tres necesitan las dos mitades, y cada jugador solo tiene una."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR03",
+      "description": "Cambian los fragmentos que ve B y con ellos el código del terminal oeste",
+      "overrides": {
+        "clues": {
+          "C07": {
+            "content": "Tarjeta de cartón expulsada por la platina: Fragmento I de IV. Número: 7. Guárdalo: otro terminal lo pedirá.",
+            "alt_text": "Texto grande: Fragmento I, número 7."
+          },
+          "C13": {
+            "content": "Tique impreso por el lector este al abrirse la esclusa: Fragmento III de IV. Número: 2.",
+            "alt_text": "Texto grande: Fragmento III, número 2."
+          }
+        },
+        "puzzles": {
+          "P05": {
+            "answer": {
+              "type": "simultaneous",
+              "value": {
+                "A": "72",
+                "B": "96"
+              },
+              "normalize": "Igual que la base"
+            },
+            "hints": [
+              "Cada terminal pide lo que su operador no ha visto: tendrán que dictarse los fragmentos.",
+              "A tiene II y IV; B tiene I y III. El oeste pide I y III; el este, II y IV.",
+              "A teclea 72, B teclea 96 y pulsan ANCLAR a la vez tras contar tres."
+            ],
+            "wrong_answers": [
+              {
+                "value": {
+                  "A": "96",
+                  "B": "72"
+                },
+                "why": "Cada uno teclea los fragmentos que ha visto; la placa pide los del otro."
+              },
+              {
+                "value": {
+                  "A": "27",
+                  "B": "69"
+                },
+                "why": "Fragmentos correctos en orden inverso."
+              },
+              {
+                "value": {
+                  "A": "72",
+                  "B": "96",
+                  "gap_ms": 4000
+                },
+                "why": "Cifras correctas, pero fuera de la ventana de 2,5 s."
+              }
+            ],
+            "steps": [
+              "Leen la placa de anclaje (C11).",
+              "B dice: el fragmento I es 7 y el III es 2. A teclea 72.",
+              "A dice: el fragmento II es 9 y el IV es 6. B teclea 96.",
+              "Uno cuenta tres, dos, uno.",
+              "A pulsa ANCLAR en el terminal oeste y B en el este a la vez."
+            ],
+            "solution_proof": "Los cuatro fragmentos son números fijos (I 7, II 9, III 2, IV 6) y la placa C11 fija qué terminal pide cuáles y en qué orden, por lo que solo vale oeste 72 y este 96. A nunca ve I ni III y B nunca ve II ni IV, así que cada terminal depende de lo que dicte el otro, y la pulsación exige a los dos a la vez."
+          }
+        }
+      }
+    }
+  ],
+  "difficulty_tuning": {
+    "easy": [
+      "La caja de diapositivas trae solo las cinco del día, sin la S.",
+      "La ventana de P05 se amplía a 4000 ms y aparece una cuenta atrás compartida.",
+      "Las palabras al revés de C09 aparecen ya subrayadas y con la primera letra resaltada.",
+      "La ayuda de nivel 1 se ofrece a los 90 s de inactividad."
+    ],
+    "hard": [
+      "La grabación de la última sesión (C08) se ve una sola vez y no se guarda sola: A debe escribirla en su cuaderno antes del corte; si no lo hace, la ayuda de nivel 3 la ofrece con penalización de 2 minutos.",
+      "La gradilla tiene ocho viales, con un segundo vial cuadrado de ola marcado como Muestra vacía.",
+      "La ventana de P05 baja a 1500 ms.",
+      "La ayuda solo se ofrece si se pide."
+    ]
+  },
+  "reset_rules": [
+    {
+      "scope": "puzzle",
+      "target": "P01",
+      "restores": "Carrusel vacío y diapositivas en la caja",
+      "keeps": "Pistas C01 y C02"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P03",
+      "restores": "Código borrado; las mitades siguen insertadas",
+      "keeps": "Pistas C05 y C06 y los acertijos P01 y P02"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P05",
+      "restores": "Cifras de los dos terminales borradas y ventana cerrada",
+      "keeps": "Los cuatro fragmentos y la síntesis cargada"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM01",
+      "restores": "P01 y P03 sin resolver si no se ha abierto la Cámara; proyector vacío y mitad superior de nuevo en el carrusel",
+      "keeps": "Lo resuelto por B en ROOM02 y las pistas de B"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM02",
+      "restores": "P02 sin resolver si no se ha abierto la Cámara; bobinas en la caja",
+      "keeps": "Lo resuelto por A en ROOM01 y las pistas de A"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM03",
+      "restores": "P04, P05 y P06 sin resolver, viales en la gradilla, terminales en DARK, votos borrados y el corte de corriente se repite al entrar",
+      "keeps": "P01 a P03, las pistas C01 a C13 y el cuaderno de A"
+    },
+    {
+      "scope": "full",
+      "target": "ALL",
+      "restores": "Estado inicial completo e intro",
+      "keeps": "Nada salvo los ajustes de accesibilidad"
+    }
+  ],
+  "test_cases": [
+    {
+      "test_id": "T01",
+      "category": 1,
+      "title": "Inicio correcto",
+      "steps": [
+        "Cargar ER01",
+        "A y B pulsan Listo"
+      ],
+      "expected": "A en ROOM01, B en ROOM02, reloj en 45:00, E01 suena una vez, ROOM03 cerrada",
+      "covers": [
+        "ROOM01",
+        "ROOM02",
+        "E01"
+      ]
+    },
+    {
+      "test_id": "T02",
+      "category": 2,
+      "title": "Todas las pistas obligatorias se pueden descubrir",
+      "steps": [
+        "Recorrer la ruta de victoria",
+        "Revisar el registro de pistas de cada jugador"
+      ],
+      "expected": "C01 a C16 descubiertas por su jugador; C17 solo aparece tras inactividad",
+      "covers": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16"
+      ]
+    },
+    {
+      "test_id": "T03",
+      "category": 3,
+      "title": "P01 correcto",
+      "steps": [
+        "A carga T, M, K, V, R",
+        "A pulsa PROYECTAR"
+      ],
+      "expected": "P01 resuelto, E02 una vez, O04 en FOUND, O11 en EJECTED y C07 en el registro de B",
+      "covers": [
+        "P01",
+        "M01",
+        "E02",
+        "C07"
+      ]
+    },
+    {
+      "test_id": "T04",
+      "category": 4,
+      "title": "P01 con la diapositiva del lunes",
+      "steps": [
+        "A carga S, T, M, K, V y proyecta"
+      ],
+      "expected": "Rechazo, fails = 1, diapositivas devueltas a la caja, nada más cambia",
+      "covers": [
+        "P01"
+      ]
+    },
+    {
+      "test_id": "T05",
+      "category": 3,
+      "title": "P02 correcto",
+      "steps": [
+        "A reproduce la grabación",
+        "B coloca triángulo, círculo, estrella y cuadrado en los canales 1 a 4 y sincroniza"
+      ],
+      "expected": "P02 resuelto, E03, C08 y C12 en el cuaderno de A, O14 en FOUND",
+      "covers": [
+        "P02",
+        "M02",
+        "E03",
+        "C08",
+        "C12"
+      ]
+    },
+    {
+      "test_id": "T06",
+      "category": 6,
+      "title": "P02 sin que A haya reproducido la grabación",
+      "steps": [
+        "B coloca la solución correcta y sincroniza sin C03 descubierta"
+      ],
+      "expected": "Rechazo MISSING_CLUE con el mensaje Falta la imagen; no cuenta como fallo",
+      "covers": [
+        "P02",
+        "M02",
+        "C03"
+      ]
+    },
+    {
+      "test_id": "T07",
+      "category": 5,
+      "title": "Código de la esclusa con una sola mitad",
+      "steps": [
+        "Resolver P01 y P02",
+        "A inserta su mitad y teclea 3692 sin que B inserte la suya"
+      ],
+      "expected": "Rechazo LOCKED Falta la otra mitad; no cuenta como fallo",
+      "covers": [
+        "P03",
+        "M03",
+        "O05",
+        "O15"
+      ]
+    },
+    {
+      "test_id": "T08",
+      "category": 3,
+      "title": "P03 correcto",
+      "steps": [
+        "A y B insertan sus mitades",
+        "A teclea 3692"
+      ],
+      "expected": "P03 resuelto, E04 y E05, ROOM03 accesible, O03 en OFF, C09 y C13 en el registro de B",
+      "covers": [
+        "P03",
+        "M03",
+        "E04",
+        "E05",
+        "ROOM03"
+      ]
+    },
+    {
+      "test_id": "T09",
+      "category": 4,
+      "title": "P03 usando solo la mitad superior",
+      "steps": [
+        "A teclea 2582"
+      ],
+      "expected": "Rechazo, el código se borra y las mitades siguen insertadas",
+      "covers": [
+        "P03"
+      ]
+    },
+    {
+      "test_id": "T10",
+      "category": 6,
+      "title": "P04 siguiendo el plan escrito y luego la grabación",
+      "steps": [
+        "B carga Playa, Faro, Muelle e inicia",
+        "B carga Muelle, Faro, Playa e inicia"
+      ],
+      "expected": "Primero rechazo con los viales devueltos; después P04 resuelto, E06 y C14 en el terminal oeste",
+      "covers": [
+        "P04",
+        "M04",
+        "E06",
+        "C14"
+      ]
+    },
+    {
+      "test_id": "T11",
+      "category": 14,
+      "title": "Corte de corriente y accesibilidad de la grabación",
+      "steps": [
+        "Resolver P03 con lector de pantalla y modo sin color activos",
+        "A abre el cuaderno de observación durante el corte"
+      ],
+      "expected": "C08 está legible en texto en el cuaderno; los viales se describen por forma de tapón y grabado, no por color; las luces de emergencia no parpadean",
+      "covers": [
+        "C08",
+        "C10",
+        "O06",
+        "V04"
+      ]
+    },
+    {
+      "test_id": "T12",
+      "category": 7,
+      "title": "Anclaje dentro de la ventana",
+      "steps": [
+        "A teclea 41 y B 96",
+        "A pulsa ANCLAR y B pulsa 1200 ms después"
+      ],
+      "expected": "WAITING_FOR_PARTNER durante 1200 ms y después P05 resuelto y E07",
+      "covers": [
+        "P05",
+        "M05",
+        "E07"
+      ]
+    },
+    {
+      "test_id": "T13",
+      "category": 7,
+      "title": "Anclaje fuera de la ventana",
+      "steps": [
+        "A teclea 41 y B 96",
+        "A pulsa ANCLAR y B pulsa 3000 ms después"
+      ],
+      "expected": "La espera caduca a los 2500 ms, vuelve a PUZZLE_ACTIVE sin contar fallo y se muestra el mensaje de pulsar a la vez",
+      "covers": [
+        "P05",
+        "M05"
+      ]
+    },
+    {
+      "test_id": "T14",
+      "category": 4,
+      "title": "Anclaje con los fragmentos propios",
+      "steps": [
+        "A teclea 96 y B 41",
+        "Pulsan ANCLAR a la vez"
+      ],
+      "expected": "Rechazo, se borran las cifras y D18 recuerda que la placa pide los del otro",
+      "covers": [
+        "P05",
+        "D18"
+      ]
+    },
+    {
+      "test_id": "T15",
+      "category": 6,
+      "title": "Votos distintos en P06",
+      "steps": [
+        "A vota FARO",
+        "B vota EQUIPO"
+      ],
+      "expected": "Se borran los votos y aparece D20",
+      "covers": [
+        "P06",
+        "M06",
+        "D20"
+      ]
+    },
+    {
+      "test_id": "T16",
+      "category": 11,
+      "title": "Final con el recuerdo del faro",
+      "steps": [
+        "Resolver todo y votar FARO los dos",
+        "A y B cruzan la puerta norte"
+      ],
+      "expected": "COMPLETED con END01 y END02 en el resumen",
+      "covers": [
+        "P06",
+        "M06",
+        "END01",
+        "END02",
+        "O24",
+        "E08"
+      ]
+    },
+    {
+      "test_id": "T17",
+      "category": 11,
+      "title": "Final con el recuerdo del equipo",
+      "steps": [
+        "Resolver todo y votar EQUIPO los dos",
+        "Cruzar la puerta norte"
+      ],
+      "expected": "COMPLETED con END01 y END03",
+      "covers": [
+        "END01",
+        "END03",
+        "P06"
+      ]
+    },
+    {
+      "test_id": "T18",
+      "category": 8,
+      "title": "Doble envío de PROYECTAR correcto",
+      "steps": [
+        "A pulsa PROYECTAR dos veces con el mismo actionId y luego con otro"
+      ],
+      "expected": "E02 se dispara una sola vez; la segunda respuesta es ALREADY_SOLVED y no aparece una segunda media tarjeta",
+      "covers": [
+        "P01",
+        "E02",
+        "O04"
+      ]
+    },
+    {
+      "test_id": "T19",
+      "category": 9,
+      "title": "Pausa durante el corte de corriente",
+      "steps": [
+        "Resolver P03",
+        "B pausa durante E05",
+        "Reanudar los dos"
+      ],
+      "expected": "El reloj se congela; al reanudar O03 está en OFF, la Cámara con luz de emergencia y el cuaderno de A completo",
+      "covers": [
+        "E05",
+        "O03",
+        "ROOM03"
+      ]
+    },
+    {
+      "test_id": "T20",
+      "category": 10,
+      "title": "Reinicio completo",
+      "steps": [
+        "Resolver P01 a P04",
+        "Reinicio completo"
+      ],
+      "expected": "Objetos y pistas en estado inicial, pared de monitores en STANDBY, ROOM03 cerrada y reloj a 45:00",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "O03"
+      ]
+    },
+    {
+      "test_id": "T21",
+      "category": 12,
+      "title": "Intentar cargar viales antes de abrir la Cámara",
+      "steps": [
+        "Con P01 y P02 resueltos, B intenta interactuar con el sintetizador"
+      ],
+      "expected": "No es posible: ROOM03 sigue cerrada y P04 rechaza con LOCKED",
+      "covers": [
+        "P04",
+        "O20",
+        "ROOM03"
+      ]
+    },
+    {
+      "test_id": "T22",
+      "category": 13,
+      "title": "Desconexión con el anclaje en espera",
+      "steps": [
+        "A pulsa ANCLAR",
+        "A se desconecta antes de que B pulse",
+        "A vuelve a los 20 s"
+      ],
+      "expected": "La espera se cancela, P05 vuelve a PUZZLE_ACTIVE, las cifras tecleadas se conservan y A recibe el estado completo",
+      "covers": [
+        "P05",
+        "M05",
+        "O21"
+      ]
+    },
+    {
+      "test_id": "T23",
+      "category": 15,
+      "title": "Validador de rutas sin salida",
+      "steps": [
+        "Ejecutar validate.mjs ER01"
+      ],
+      "expected": "Todos los acertijos principales, objetivos y finales alcanzables",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06"
+      ]
+    }
+  ],
+  "resources": {
+    "models_3d": [
+      "Sala de observación con sillón reclinable y pared de nueve monitores",
+      "Proyector de diapositivas con carrusel de cinco ranuras",
+      "Caja de diapositivas con seis marcos",
+      "Archivo sonoro con estanterías de casetes y banco de bobinas",
+      "Platina con impresora de tiques",
+      "Mesa de sincronía de cuatro canales",
+      "Dos lectores de esclusa con ranura de media tarjeta",
+      "Dos mitades de tarjeta de acceso",
+      "Cámara de síntesis con sintetizador de vidrio y anillo de luz",
+      "Gradilla con seis viales de tapones de tres formas",
+      "Dos terminales con pulsador ANCLAR",
+      "Cápsulas de reposo",
+      "Pizarra de tres capas",
+      "Helecho, perchero, gramófono y archivadores"
+    ],
+    "textures": [
+      "Laboratorio blanco mate",
+      "Cristal esmerilado",
+      "Cinta magnética y etiquetas manuscritas",
+      "Diapositivas con fotografías sepia",
+      "Grabados en relieve de ola y edificio",
+      "Tarjeta con cifras de barras cortadas"
+    ],
+    "sounds": [
+      "A01 a A14"
+    ],
+    "animations": [
+      "Carrusel del proyector",
+      "Expulsión de la platina",
+      "Bobinas encajando en los canales",
+      "Caída de la media tarjeta",
+      "Apertura de la esclusa",
+      "Apagado de monitores",
+      "Carga de viales",
+      "Giro del anillo de luz",
+      "Proyección del recuerdo"
+    ],
+    "ui": [
+      "Cuaderno de observación con pistas guardadas y notas libres",
+      "Carrusel de cinco ranuras",
+      "Reproductor de vídeo con audiodescripción",
+      "Reproductor de casetes y bobinas con transcripción",
+      "Mesa de cuatro canales",
+      "Teclado de cuatro cifras",
+      "Terminal con teclado de dos cifras y ANCLAR",
+      "Indicador de espera de la pareja",
+      "Votación oculta de dos opciones"
+    ],
+    "vfx": [
+      "V01 a V07"
+    ],
+    "dialogue_lines": 24,
+    "mechanisms": [
+      "Ordenación cronológica de diapositivas",
+      "Asociación imagen y sonido por canales",
+      "Código con dos mitades de tarjeta",
+      "Carga de viales por contraste de fuentes",
+      "Código compartido con pulsación simultánea",
+      "Votación compartida"
+    ]
+  }
+}
