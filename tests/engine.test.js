@@ -41,5 +41,32 @@ eq('progreso', E.escapeProgress(s), 4);
 eq('no muta', E.escapeProgress({}), 0);
 eq('mmss', E.mmss(125000), '02:05');
 
+// Fechas importantes
+eq('próximo aniversario este año', E.nextOccurrence('2025-12-24', '2026-10-18', true), '2026-12-24');
+eq('próximo aniversario el año siguiente', E.nextOccurrence('2025-02-14', '2026-10-18', true), '2027-02-14');
+eq('hoy cuenta como próximo', E.nextOccurrence('2020-10-18', '2026-10-18', true), '2026-10-18');
+eq('29 feb en año no bisiesto', E.nextOccurrence('2024-02-29', '2026-10-18', true), '2027-02-28');
+eq('fecha única', E.nextOccurrence('2026-12-01', '2026-10-18', false), '2026-12-01');
+eq('años cumplidos', E.yearsAt('2025-02-14', '2027-02-14'), 2);
+eq('sumar días cruza mes', E.addDays('2026-10-31', 1), '2026-11-01');
+// Racha
+const G = (day, from) => ({ day, from });
+eq('racha 3', E.streak([G('2026-10-16', 'a'), G('2026-10-16', 'b'), G('2026-10-17', 'a'), G('2026-10-17', 'b'), G('2026-10-18', 'a'), G('2026-10-18', 'b')], ['a', 'b'], '2026-10-18'), 3);
+eq('racha sigue si hoy falta uno', E.streak([G('2026-10-17', 'a'), G('2026-10-17', 'b'), G('2026-10-18', 'a')], ['a', 'b'], '2026-10-18'), 1);
+eq('racha rota', E.streak([G('2026-10-15', 'a'), G('2026-10-15', 'b')], ['a', 'b'], '2026-10-18'), 0);
+eq('racha sin pareja', E.streak([], ['a'], '2026-10-18'), 0);
+// Tres en raya
+eq('gana fila', E.tttWinner(['X', 'X', 'X', '', 'O', 'O', '', '', '']), 'X');
+eq('gana diagonal', E.tttWinner(['O', 'X', '', 'X', 'O', '', '', '', 'O']), 'O');
+eq('empate', E.tttWinner(['X', 'O', 'X', 'X', 'O', 'O', 'O', 'X', 'X']), 'empate');
+eq('sigue', E.tttWinner(['X', '', '', '', '', '', '', '', '']), null);
+eq('jugada válida', E.tttMove(['', '', '', '', '', '', '', '', ''], 4, 'X')[4], 'X');
+eq('casilla ocupada', E.tttMove(['X', '', '', '', '', '', '', '', ''], 0, 'O'), null);
+eq('partida terminada', E.tttMove(['X', 'X', 'X', '', '', '', '', '', ''], 5, 'O'), null);
+const seq = [0.45, 0.45, 0.9]; let k = 0;
+eq('elige otro distinto', E.pickOther(5, 2, () => seq[k++]), 4);
+eq('elige con uno solo', E.pickOther(1, 0), 0);
+eq('contenido juegos', E.TRUTHS.length >= 20 && E.DARES.length >= 20 && E.NEVER.length >= 15, true);
+
 console.log(fails ? `${fails} de ${n} pruebas fallaron` : `OK ${n} pruebas`);
 process.exit(fails ? 1 : 0);

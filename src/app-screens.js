@@ -74,7 +74,8 @@ VIEWS.home = () => {
   }
 
   h += '<button class="think" data-act="ping" data-v="think">❤️ Pienso en ti</button>' +
-    '<div class="row" style="margin:10px 0 14px"><button class="btn block" data-act="ping" data-v="hug">🤗 Mandar un abrazo</button></div>';
+    '<div class="row" style="margin:10px 0 14px"><button class="btn block" data-act="ping" data-v="hug">🤗 Mandar un abrazo</button></div>' +
+    (VIEWS.homeExtra ? VIEWS.homeExtra() : '');
 
   // Relojes y distancia
   const km = p ? E.distanceKm(m.loc, p.loc) : null;
@@ -190,17 +191,6 @@ ACTS.addItem = async f => {
 ACTS.toggleItem = el => { const i = S.items.find(x => x.id === el.dataset.v); if (i) return Sync.set(S.code, 'items', i.id, { done: !i.done, u: Date.now() }, true); };
 ACTS.delItem = el => Sync.set(S.code, 'items', el.dataset.v, { del: true, u: Date.now() }, true);
 
-// ---------- Juegos ----------
-VIEWS.games = () => {
-  const er = S.couple.escape || {};
-  const prog = E.escapeProgress(er);
-  return '<div class="card game" data-act="tab" data-v="escape" role="button"><div class="ic">🗝️</div><div><h3>La casa de los recuerdos</h3>' +
-    '<div class="muted small">Escape room en primera persona para dos, con llamada de voz. Cada uno está en una habitación distinta y solo hablando encuentran la salida.</div>' +
-    '<div class="small" style="margin-top:4px;font-weight:700;color:var(--accent)">' + (E.escapeWon(er) ? '✅ Escaparon en ' + E.mmss(er.wonAt - er.startedAt) : prog ? 'En curso: ' + prog + ' de 4 cerraduras' : 'Nuevo') + '</div></div></div>' +
-    '<div class="card game" data-act="tab" data-v="would" role="button"><div class="ic">🤔</div><div><h3>¿Qué prefieres?</h3><div class="muted small">Elijan a la vez y descubran si coinciden.</div></div></div>' +
-    '<p class="muted small" style="text-align:center">Más juegos en la próxima versión.</p>';
-};
-
 // ---------- Ajustes ----------
 VIEWS.settings = () => {
   const m = me();
@@ -213,6 +203,7 @@ VIEWS.settings = () => {
       : notif === 'unsupported' ? '<p class="muted" style="margin:0">Este navegador no permite avisos. En iPhone, primero añade la app a la pantalla de inicio desde Safari (Compartir › Añadir a pantalla de inicio).</p>'
         : '<button class="btn block" data-act="askNotif">Activar avisos</button>') +
     '<p class="muted small" style="margin:8px 0 0">Esta versión avisa mientras la app sigue abierta. Los avisos con la app cerrada llegarán cuando se conecte el servicio de notificaciones.</p></div>' +
+    (VIEWS.settingsExtra ? VIEWS.settingsExtra() : '') +
     '<div class="card"><h2>Conexión</h2><p class="muted" style="margin:0">' + (Sync.mode === 'demo' ? 'Modo demo (solo este navegador).' : 'Conectado a la nube: sus datos se sincronizan entre los dos móviles.') + '</p>' +
     (Sync.mode === 'demo' ? '<button class="btn block sm" style="margin-top:10px" data-act="resetDemo">Borrar datos de la demo</button>' : '') + '</div>' +
     '<button class="btn block" data-act="leave" style="color:var(--bad)">Salir de esta pareja en este móvil</button>' +

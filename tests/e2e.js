@@ -79,9 +79,9 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     if (scheme === 'light') await A.screenshot({ path: shots + '/03-chat.png' });
 
     // Listas
-    await A.click('[data-act=tab][data-v=lists]');
+    await A.click('nav [data-act=tab][data-v=us]'); await A.click('main [data-act=tab][data-v=lists]');
     await A.fill('[data-keep=itemIn]', 'Ver Interestelar'); await A.click('form[data-act=addItem] button'); await wait(300);
-    await B.click('[data-act=tab][data-v=lists]'); await wait(200);
+    await B.click('nav [data-act=tab][data-v=us]'); await B.click('main [data-act=tab][data-v=lists]'); await wait(200);
     ok(scheme + ' lista compartida', (await B.textContent('main')).includes('Interestelar'));
     await B.click('[data-act=toggleItem]'); await wait(300);
     ok(scheme + ' marcado compartido', await A.$('.item.done') !== null);
@@ -140,8 +140,82 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     await A.click('[data-act=wouldPick][data-v="0"]'); await B.click('[data-act=wouldPick][data-v="0"]'); await wait(300);
     ok(scheme + ' coinciden', (await A.textContent('main')).includes('Coinciden'));
 
+    // Saludo y racha
+    const go = (p, t) => p.evaluate(t => { closeSheet(); S.tab = t; render(); }, t);
+    await go(A, 'home'); await go(B, 'home');
+    await A.click('[data-act=greet]'); await B.click('[data-act=greet]'); await wait(400);
+    ok(scheme + ' racha 1 día', (await A.textContent('main')).includes('🔥 1 día'));
+
+    // Cartas: una con candado y otra para hoy
+    await go(A, 'letters'); await A.click('[data-act=newLetter]');
+    await A.fill('#lTitle', 'Para Navidad'); await A.fill('#lText', 'Te amo mucho'); await A.fill('#lDate', '2099-12-24');
+    await A.click('form[data-act=sendLetter] button'); await wait(300);
+    await A.click('[data-act=newLetter]'); await A.fill('#lTitle', 'Hoy'); await A.fill('#lText', 'Ábrela ya'); await A.click('form[data-act=sendLetter] button'); await wait(300);
+    await go(B, 'letters');
+    ok(scheme + ' carta con candado', (await B.textContent('main')).includes('🔒'));
+    await B.click('[data-act=openLetter]'); await wait(300);
+    ok(scheme + ' carta abierta', (await B.textContent('#sheet')).includes('Ábrela ya'));
+    ok(scheme + ' A ve carta abierta', await A.evaluate(() => S.letters.some(l => l.title === 'Hoy' && l.opened)));
+    await B.click('[data-act=closeSheet]');
+
+    // Cupones
+    await go(A, 'coupons'); await A.click('[data-act=newCoupon]'); await A.click('[data-act=couponIdea]'); await A.click('form[data-act=sendCoupon] button'); await wait(300);
+    await go(B, 'coupons'); await B.click('[data-act=useCoupon]'); await B.click('[data-act=_confirmYes]'); await wait(400);
+    ok(scheme + ' cupón canjeado', await A.evaluate(() => S.coupons.some(c => c.used)));
+
+    // Fechas
+    await go(A, 'dates'); await A.click('[data-act=newDate]'); await A.fill('#dTitle', 'Cumpleaños de Ella'); await A.fill('#dDate', '2000-12-24'); await A.click('form[data-act=saveDate] button.primary'); await wait(300);
+    await go(B, 'dates');
+    ok(scheme + ' fecha compartida', (await B.textContent('main')).includes('Cumpleaños de Ella'));
+    ok(scheme + ' aniversario automático', (await B.textContent('main')).includes('Aniversario'));
+
+    // Tres en raya: A gana
+    await go(A, 'ttt'); await go(B, 'ttt');
+    await A.click('[data-act=tttNew]'); await wait(200);
+    for (const [p, i] of [[A, 0], [B, 3], [A, 1], [B, 4], [A, 2]]) { await p.click(`[data-act=tttPlay][data-v="${i}"]`); await wait(200); }
+    ok(scheme + ' tres en raya ganado', (await A.textContent('main')).includes('Ganaste') && (await B.textContent('main')).includes('ganó'));
+
+    // Verdad o reto
+    await go(A, 'tod'); await go(B, 'tod');
+    const turnA = await A.evaluate(() => !S.couple.tod || !S.couple.tod.turn || S.couple.tod.turn === S.uid);
+    const P = turnA ? A : B, Q = turnA ? B : A;
+    await P.click('[data-act=todPick][data-v=dare]'); await wait(300);
+    ok(scheme + ' reto visible para los dos', (await Q.textContent('main')).includes('Reto'));
+    await Q.click('[data-act=todNext]'); await wait(300);
+    ok(scheme + ' cambia el turno', (await Q.textContent('main')).includes('Turno de ti'));
+
+    // Yo nunca he
+    await go(A, 'never'); await go(B, 'never');
+    await A.click('[data-act=neverPick][data-v="1"]'); await B.click('[data-act=neverPick][data-v="0"]'); await wait(300);
+    ok(scheme + ' yo nunca revela', (await A.textContent('main')).includes('Uno de ustedes'));
+
+    // ¿Qué tanto me conoces?
+    await go(A, 'quiz'); await go(B, 'quiz');
+    await A.fill('#quizIn', 'Pizza'); await A.click('form[data-act=quizSend] button'); await wait(300);
+    await B.fill('#quizIn', 'Pizza'); await B.click('form[data-act=quizSend] button'); await wait(300);
+    await A.click('[data-act=quizJudge][data-v="1"]'); await wait(300);
+    ok(scheme + ' quiz acierto', (await B.textContent('main')).includes('Acertó'));
+
+    // Cartas de conversación y ruleta
+    await go(A, 'cards'); await go(B, 'cards');
+    await A.click('[data-act=cardsDeck][data-v=futuro]'); await wait(300);
+    ok(scheme + ' carta sincronizada', (await B.textContent('main')).includes('Carta 1 de'));
+    await go(A, 'roulette'); await A.click('[data-act=spin]'); await wait(2000);
+    await A.click('[data-act=spinSave]'); await wait(300);
+    ok(scheme + ' ruleta a planes', await B.evaluate(() => S.items.some(i => i.list === 'planes' && i.by !== S.uid)));
+
+    // PIN
+    await go(A, 'settings'); await A.fill('#pinNew', '1234'); await A.click('form[data-act=pinOn] button'); await wait(300);
+    await A.reload(); await wait(500);
+    ok(scheme + ' pide PIN', (await A.textContent('body')).includes('Escribe tu PIN'));
+    for (const d of '1234') await A.click(`[data-act=pinKey][data-v="${d}"]`);
+    await wait(300);
+    ok(scheme + ' PIN correcto entra', (await A.$('.hero')) !== null);
+    await go(A, 'settings'); await A.click('[data-act=pinOff]'); await A.click('[data-act=_confirmYes]');
+    if (scheme === 'light') { await go(A, 'home'); await A.screenshot({ path: shots + '/08-inicio-saludo.png', fullPage: true }); await go(A, 'us'); await A.screenshot({ path: shots + '/09-lo-nuestro.png' }); await go(A, 'games'); await A.screenshot({ path: shots + '/10-juegos.png', fullPage: true }); }
+
     // Sin desbordamiento horizontal en ninguna pantalla
-    for (const t of ['home', 'chat', 'games', 'lists', 'settings', 'escape', 'would']) {
+    for (const t of ['home', 'chat', 'games', 'us', 'lists', 'letters', 'coupons', 'dates', 'settings', 'escape', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz']) {
       await A.evaluate(t => { S.tab = t; render(); }, t);
       const over = await A.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
       ok(scheme + ' sin desborde ' + t, !over);

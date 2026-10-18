@@ -71,6 +71,10 @@ const until = (p, fn, arg, t = 15000) => p.waitForFunction(fn, arg, { timeout: t
   ok('escape iniciado', await until(B, () => S.couple.escape && S.couple.escape.startedAt));
   await B.evaluate(() => Sync.patchCouple(S.code, { 'escape.chest': true }));
   ok('cofre sincronizado', await until(A, () => S.couple.escape.chest === true));
+  await A.evaluate(() => Sync.add(S.code, 'letters', { from: S.uid, to: partnerId(), title: 'Prueba', text: 'Hola', openAt: null, opened: false, t: Date.now() }));
+  ok('carta sincronizada', await until(B, () => S.letters.some(l => l.title === 'Prueba')));
+  await B.evaluate(() => Sync.patchCouple(S.code, { ttt: { board: ['X', '', '', '', '', '', '', '', ''], x: S.uid, turn: S.uid, score: {} } }));
+  ok('tres en raya sincronizado', await until(A, () => S.couple.ttt && S.couple.ttt.board[0] === 'X'));
 
   const errs = [...A.errs, ...B.errs].filter(e => !/fonts/.test(e));
   ok('sin errores', errs.length === 0); if (errs.length) console.log(errs.slice(0, 5));
