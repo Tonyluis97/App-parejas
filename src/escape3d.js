@@ -6,7 +6,7 @@
 const Esc3D = (function () {
   let T = null;                 // módulo three
   let R = null;                 // renderer, escena, cámara y demás del nivel actual
-  let state = null, side = 'A', builtLevel = -1, raf = 0, tick = 0, lastT = 0, failGuard = 0, advGuard = 0;
+  let state = null, side = 'A', builtLevel = -1, pendingLevel = -1, raf = 0, tick = 0, lastT = 0, failGuard = 0, advGuard = 0;
   const keys = {};
   const look = { yaw: 0, pitch: 0 };
   const joy = { id: null, x0: 0, y0: 0, dx: 0, dy: 0 };
@@ -19,6 +19,77 @@ const Esc3D = (function () {
       try { T = await import(u); return T; } catch (e) { console.warn('three no cargó desde', u); }
     }
     throw new Error('No se pudo cargar el motor 3D. Revisa tu conexión.');
+  }
+
+  // ---------- Texturas, muebles y luz de Poly Haven (CC0) ----------
+  // Están en web/assets. Si algo no carga (sin internet o en la versión de un solo archivo),
+  // se usan las texturas dibujadas en canvas y los muebles hechos con primitivas.
+  const ASSETS = './assets/';
+  const LEVEL_ASSETS = {
+    espera: { tex: ['herringbone_parquet', 'painted_plaster_wall', 'dark_wooden_planks'], glb: ['GreenChair_01', 'CoffeeTable_01', 'potted_plant_01', 'sofa_02', 'ornate_mirror_01', 'throw_pillows_01'], hdri: 'lythwood_room' },
+    biblioteca: { tex: ['decrepit_wallpaper', 'dirty_carpet', 'rectangular_parquet', 'dark_wooden_planks'], glb: ['wooden_bookshelf_worn', 'book_encyclopedia_set_01', 'WoodenTable_01', 'WoodenChair_01', 'Chandelier_01', 'ArmChair_01', 'wooden_stool_01'], hdri: 'lythwood_room' },
+    cabana: { tex: ['wood_trunk_wall', 'roof_planks', 'dark_wooden_planks', 'stacked_stone_wall'], glb: ['scandinavian_masonry_heater', 'WoodenTable_03', 'Rockingchair_01', 'wooden_stool_01', 'Lantern_01', 'wooden_crate_01'], hdri: 'snowy_forest' },
+  };
+  const texCache = {}, glbCache = {}, hdrCache = {};
+  let X = null; // cargadores de three/examples
+  async function loadExtras() {
+    if (X) return X;
+    const [g, r] = await Promise.all([import('./vendor/GLTFLoader.js'), import('./vendor/RGBELoader.js')]);
+    X = { gltf: new g.GLTFLoader(), rgbe: new r.RGBELoader(), tex: new T.TextureLoader() };
+    return X;
+  }
+  const withTimeout = (p, ms) => Promise.race([p, new Promise(r => setTimeout(() => r(null), ms))]);
+  // Cada carga se hace una vez; el resultado queda en p.v para usarlo sin await al construir la sala
+  function cached(cache, id, fn) {
+    if (!cache[id]) { const p = fn(); p.then(v => { p.v = v; }); cache[id] = p; }
+    return cache[id];
+  }
+  function loadPBR(id) {
+    return cached(texCache, id, () => Promise.all(['diff', 'nor', 'arm'].map(k => new Promise(res => X.tex.load(ASSETS + 'tex/' + id + '_' + k + '.jpg', t => res(t), undefined, () => res(null)))))
+        .then(([map, nor, arm]) => {
+          if (!map) return null;
+          map.colorSpace = T.SRGBColorSpace;
+          return { map, nor, arm };
+        }));
+  }
+  function loadGLB(id) {
+    return cached(glbCache, id, () => new Promise(res => X.gltf.load(ASSETS + 'models/' + id + '.glb', g => res(g.scene), undefined, () => res(null))));
+  }
+  function loadHDR(id) {
+    return cached(hdrCache, id, () => new Promise(res => X.rgbe.load(ASSETS + 'hdri/' + id + '_1k.hdr', t => res(t), undefined, () => res(null))));
+  }
+  // Espera lo que necesita la sala (como mucho unos segundos; lo que falte se dibuja a mano)
+  async function preloadLevel(level) {
+    const A = LEVEL_ASSETS[E.ESC3.levels[level].id] || LEVEL_ASSETS.cabana;
+    try { await withTimeout(loadExtras(), 8000); } catch (e) { console.warn('sin cargadores 3D', e); }
+    if (!X) return;
+    await withTimeout(Promise.all([...A.tex.map(loadPBR), ...A.glb.map(loadGLB), loadHDR(A.hdri)]), 25000);
+  }
+  const ready = (cache, id) => cache[id] && cache[id].v;
+  // Material PBR con color, relieve y rugosidad/oclusión (mapa ARM: R=oclusión, G=rugosidad; son materiales no metálicos)
+  function pbr(id, rep, o) {
+    const t = ready(texCache, id);
+    if (!t) return null;
+    const cl = tx => { if (!tx) return null; const c = tx.clone(); c.wrapS = c.wrapT = T.RepeatWrapping; c.repeat.set(rep[0], rep[1]); c.anisotropy = 4; c.needsUpdate = true; return c; };
+    const arm = cl(t.arm);
+    return new T.MeshStandardMaterial(Object.assign({ map: cl(t.map), normalMap: cl(t.nor), aoMap: arm, roughnessMap: arm, roughness: 1, metalness: 0 }, o || {}));
+  }
+  // Mueble glTF a escala real, apoyado en el suelo y centrado; o la versión con primitivas
+  function model(id, fallback, o) {
+    const src = ready(glbCache, id);
+    if (!src) return fallback();
+    o = o || {};
+    const m = src.clone(true);
+    if (o.flip) m.rotation.z = Math.PI;
+    const b = new T.Box3().setFromObject(m), sz = b.getSize(new T.Vector3());
+    let k = o.scale || 1;
+    if (o.h) k = o.h / sz.y; else if (o.w) k = o.w / Math.max(sz.x, sz.z);
+    m.scale.setScalar(k);
+    m.position.set(-(b.min.x + sz.x / 2) * k, -b.min.y * k, -(b.min.z + sz.z / 2) * k);
+    if (o.back) m.position.z = -b.min.z * k; // pegado a la pared (para cuadros y espejos)
+    m.traverse(c => { if (c.isMesh) { c.castShadow = o.shadow !== false; c.receiveShadow = true; } });
+    const g = new T.Group(); g.add(m);
+    return g;
   }
 
   // ---------- Texturas dibujadas en canvas ----------
@@ -90,11 +161,19 @@ const Esc3D = (function () {
     ice(cracks, rep) {
       return canvasTex(512, 512, (g, w, h) => {
         const grd = g.createLinearGradient(0, 0, w, h);
-        grd.addColorStop(0, '#cfe9f5'); grd.addColorStop(1, '#9fcde3');
+        grd.addColorStop(0, '#86aec2'); grd.addColorStop(1, '#5f8aa2');
         g.fillStyle = grd; g.fillRect(0, 0, w, h);
-        g.strokeStyle = 'rgba(255,255,255,.55)'; g.lineWidth = 1;
+        // Nubes de escarcha y burbujas atrapadas en el hielo
+        for (let i = 0; i < 60; i++) {
+          const x = Math.random() * w, y = Math.random() * h, r = 20 + Math.random() * 90;
+          const rg = g.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, 'rgba(235,248,255,' + (0.05 + Math.random() * 0.12) + ')'); rg.addColorStop(1, 'rgba(235,248,255,0)');
+          g.fillStyle = rg; g.fillRect(x - r, y - r, r * 2, r * 2);
+        }
+        g.fillStyle = 'rgba(255,255,255,.35)';
+        for (let i = 0; i < 300; i++) { g.beginPath(); g.arc(Math.random() * w, Math.random() * h, Math.random() * 1.6, 0, Math.PI * 2); g.fill(); }
+        g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = 1;
         for (let i = 0; i < 40; i++) { g.beginPath(); g.moveTo(Math.random() * w, Math.random() * h); g.lineTo(Math.random() * w, Math.random() * h); g.stroke(); }
-        g.strokeStyle = 'rgba(40,80,110,.6)'; g.lineWidth = 2;
+        g.strokeStyle = 'rgba(225,242,252,.45)'; g.lineWidth = 1.2;
         for (let i = 0; i < cracks; i++) {
           let x = Math.random() * w, y = Math.random() * h;
           g.beginPath(); g.moveTo(x, y);
@@ -127,12 +206,13 @@ const Esc3D = (function () {
   const P = {
     door(color) {
       const g = new T.Group();
-      const frameM = M('#3b2a1f', { roughness: 0.6 });
+      const frameM = pbr('dark_wooden_planks', [0.3, 1.5], { color: '#8a6a55' }) || M('#3b2a1f', { roughness: 0.6 });
       g.add(at(box(0.12, 2.25, 0.16, frameM), -0.56, 1.12, 0), at(box(0.12, 2.25, 0.16, frameM), 0.56, 1.12, 0), at(box(1.24, 0.12, 0.16, frameM), 0, 2.25, 0));
       const pivot = new T.Group(); pivot.position.set(-0.5, 0, 0.02);
-      const panel = box(1.0, 2.15, 0.06, M(color || '#6b4a32', { roughness: 0.55 }));
+      const wood = pbr('dark_wooden_planks', [1, 2]);
+      const panel = box(1.0, 2.15, 0.06, wood || M(color || '#6b4a32', { roughness: 0.55 }));
       panel.position.set(0.5, 1.08, 0);
-      const inset = M(shade(color || '#6b4a32', 0.8).replace('rgb', 'rgb'), {});
+      const inset = wood ? pbr('dark_wooden_planks', [0.6, 0.6], { color: '#b8a090' }) : M(shade(color || '#6b4a32', 0.8), {});
       for (const yy of [0.6, 1.55]) { const p = box(0.7, 0.7, 0.02, inset); p.position.set(0.5, yy, 0.04); pivot.add(p); }
       const knob = new T.Mesh(new T.SphereGeometry(0.045, 16, 12), M('#d4af37', { metalness: 0.9, roughness: 0.25 }));
       knob.position.set(0.88, 1.05, 0.07);
@@ -141,19 +221,26 @@ const Esc3D = (function () {
       g.userData.pivot = pivot;
       return g;
     },
-    chair(color) {
+    chair(color, id) {
+      return model(id || 'GreenChair_01', () => P.chairBox(color));
+    },
+    chairBox(color) {
       const g = new T.Group(), m = M(color, { roughness: 0.85 }), leg = M('#2b2b2b', { metalness: 0.6, roughness: 0.4 });
       g.add(at(box(0.5, 0.08, 0.5, m), 0, 0.46, 0), at(box(0.5, 0.55, 0.07, m), 0, 0.76, -0.22));
       for (const [x, z] of [[-0.21, -0.21], [0.21, -0.21], [-0.21, 0.21], [0.21, 0.21]]) g.add(at(cyl(0.02, 0.02, 0.46, leg, 8), x, 0.23, z));
       return g;
     },
-    table(w, d, h, color) {
+    table(w, d, h, color, id, o) {
+      if (id) return model(id, () => P.table(w, d, h, color), o);
       const g = new T.Group(), m = M(color || '#5b3a24', { roughness: 0.5 });
       g.add(at(box(w, 0.06, d, m), 0, h, 0));
       for (const [x, z] of [[-w / 2 + 0.06, -d / 2 + 0.06], [w / 2 - 0.06, -d / 2 + 0.06], [-w / 2 + 0.06, d / 2 - 0.06], [w / 2 - 0.06, d / 2 - 0.06]]) g.add(at(box(0.06, h, 0.06, m), x, h / 2, z));
       return g;
     },
     plant() {
+      return model('potted_plant_01', P.plantBox, { h: 1.25 });
+    },
+    plantBox() {
       const g = new T.Group();
       g.add(at(cyl(0.2, 0.15, 0.4, M('#9a5b3c', { roughness: 0.9 })), 0, 0.2, 0));
       const leaf = M('#2f7d43', { roughness: 0.8 });
@@ -161,6 +248,15 @@ const Esc3D = (function () {
       return g;
     },
     bookshelf() {
+      if (!ready(glbCache, 'wooden_bookshelf_worn')) return P.bookshelfBox();
+      const g = model('wooden_bookshelf_worn', null, { h: 2.2 });
+      // Llena los estantes con tomos de enciclopedia
+      for (let i = 0; i < 5; i++) {
+        for (const x of [-0.31, 0.31]) { const b = model('book_encyclopedia_set_01', () => new T.Group(), { shadow: false }); b.position.set(x + (i % 2 ? 0.03 : -0.03), 0.09 + i * 0.41, 0); g.add(b); }
+      }
+      return g;
+    },
+    bookshelfBox() {
       const g = new T.Group(), wood = M('#4a2f1d', { roughness: 0.6 });
       g.add(at(box(1.6, 2.2, 0.06, wood), 0, 1.1, -0.17), at(box(0.06, 2.2, 0.4, wood), -0.8, 1.1, 0), at(box(0.06, 2.2, 0.4, wood), 0.8, 1.1, 0));
       const cols = ['#8e2b2b', '#2b4a8e', '#2e6b3a', '#b88a1e', '#5a2b6e', '#333333', '#a0522d'];
@@ -177,6 +273,13 @@ const Esc3D = (function () {
       return g;
     },
     sofa(color) {
+      if (!ready(glbCache, 'sofa_02')) return P.sofaBox(color);
+      const g = model('sofa_02', null, { w: 1.9 });
+      const pil = model('throw_pillows_01', () => new T.Group(), { w: 1.2 });
+      pil.position.set(0, 0.36, -0.12); g.add(pil);
+      return g;
+    },
+    sofaBox(color) {
       const g = new T.Group(), m = M(color, { roughness: 0.95 });
       g.add(at(box(1.9, 0.42, 0.85, m), 0, 0.21, 0), at(box(1.9, 0.6, 0.2, m), 0, 0.6, -0.33), at(box(0.2, 0.55, 0.85, m), -0.85, 0.42, 0), at(box(0.2, 0.55, 0.85, m), 0.85, 0.42, 0));
       return g;
@@ -212,7 +315,7 @@ const Esc3D = (function () {
       return g;
     },
     safe() {
-      const g = new T.Group(), m = M('#3a3f45', { metalness: 0.7, roughness: 0.35 });
+      const g = new T.Group(), m = M('#2f3a33', { metalness: 0.8, roughness: 0.38 });
       g.add(at(box(0.7, 0.7, 0.6, m), 0, 0.35, 0));
       const dial = cyl(0.1, 0.1, 0.04, M('#c0c0c0', { metalness: 0.9, roughness: 0.2 }), 24); dial.rotation.x = Math.PI / 2; dial.position.set(0, 0.4, 0.31); g.add(dial);
       const handle = box(0.2, 0.04, 0.04, M('#c0c0c0', { metalness: 0.9, roughness: 0.2 })); handle.position.set(0, 0.2, 0.32); g.add(handle);
@@ -270,21 +373,25 @@ const Esc3D = (function () {
       return g;
     },
     lectern() {
-      const g = new T.Group(), m = M('#4a2f1d', { roughness: 0.6 });
+      const g = new T.Group(), m = pbr('dark_wooden_planks', [0.5, 1]) || M('#4a2f1d', { roughness: 0.6 });
       g.add(at(box(0.5, 1.0, 0.4, m), 0, 0.5, 0));
       const top = box(0.6, 0.05, 0.5, m); top.position.set(0, 1.05, 0); top.rotation.x = -0.4; g.add(top);
       return g;
     },
     gramophone() {
       const g = new T.Group();
-      g.add(at(box(0.5, 0.25, 0.5, M('#5a3a22', { roughness: 0.5 })), 0, 0.85, 0));
+      g.add(at(box(0.5, 0.25, 0.5, pbr('dark_wooden_planks', [0.5, 0.3], { color: '#c09070' }) || M('#5a3a22', { roughness: 0.5 })), 0, 0.85, 0));
       const disc = cyl(0.2, 0.2, 0.01, M('#111111', { roughness: 0.3 }), 32); disc.position.set(0, 0.98, 0); g.add(disc);
       const horn = new T.Mesh(new T.ConeGeometry(0.28, 0.6, 24, 1, true), M('#c9a227', { metalness: 0.85, roughness: 0.3, side: T.DoubleSide }));
       horn.position.set(0.12, 1.35, -0.05); horn.rotation.z = -0.9; g.add(horn);
       g.add(P.table(0.6, 0.6, 0.72, '#3b2a1f'));
+      if (ready(glbCache, 'wooden_stool_01')) { g.children.pop(); const st = model('wooden_stool_01', null, { h: 0.72 }); g.add(st); }
       return g;
     },
     chandelier() {
+      return model('Chandelier_01', P.chandelierBox, { flip: true, scale: 1.2 });
+    },
+    chandelierBox() {
       const g = new T.Group(), gold = M('#c9a227', { metalness: 0.85, roughness: 0.3 });
       g.add(at(cyl(0.02, 0.02, 0.8, gold, 8), 0, 0.4, 0));
       const ring = new T.Mesh(new T.TorusGeometry(0.45, 0.025, 8, 32), gold); ring.rotation.x = Math.PI / 2; ring.position.y = 0.8; g.add(ring);
@@ -292,7 +399,10 @@ const Esc3D = (function () {
       return g;
     },
     fireplace() {
-      const g = new T.Group(), stone = M('#6e6a66', { roughness: 0.95 });
+      return model('scandinavian_masonry_heater', P.fireplaceBox, { h: 2.1 });
+    },
+    fireplaceBox() {
+      const g = new T.Group(), stone = pbr('stacked_stone_wall', [2, 1.5]) || M('#6e6a66', { roughness: 0.95 });
       g.add(at(box(1.6, 1.2, 0.5, stone), 0, 0.6, 0), at(box(1.8, 0.12, 0.6, M('#4a3a2c')), 0, 1.26, 0));
       g.add(at(box(0.9, 0.7, 0.3, M('#151515', { roughness: 1 })), 0, 0.4, 0.12));
       return g;
@@ -373,9 +483,10 @@ const Esc3D = (function () {
     const add = o => objs.push(o);
     if (L.id === 'espera') {
       add({ id: 'door', label: 'Puerta', build: () => P.door('#5b3b28'), pos: [0, 0, -3.95], door: true });
-      for (let i = 0; i < 4; i++) add({ id: 'chair' + i, build: () => P.chair(sd === 'A' ? '#7a2e2e' : '#2e4f7a'), pos: [-3.4, 0, -1.6 + i * 0.6], ry: Math.PI / 2, solid: [0.5, 0.5] });
-      add({ id: 'table', build: () => P.table(1.0, 0.6, 0.45, '#6b4a32'), pos: [-2.3, 0, 0], solid: [1.0, 0.6] });
-      add({ id: 'mags', label: 'Revistas', build: () => P.magazine(), pos: [-2.3, 0.48, 0], info: sd === 'A' ? 'Una revista vieja abierta en una página subrayada: «Todo lo que necesitas saber está en la otra sala. Hablen.»' : 'Una revista con un crucigrama a medias. En el margen alguien escribió: «Las luces nunca mienten».' });
+      for (let i = 0; i < 4; i++) add({ id: 'chair' + i, build: () => P.chair(sd === 'A' ? '#7a2e2e' : '#2e4f7a'), pos: [-3.4, 0, -2.0 + i * 0.75], ry: Math.PI / 2, solid: [0.6, 0.6] });
+      add({ id: 'table', build: () => P.table(1.0, 0.6, 0.42, '#6b4a32', 'CoffeeTable_01', { scale: 0.8 }), pos: [-2.3, 0, -0.85], ry: Math.PI / 2, solid: [1.2, 0.75] });
+      add({ id: 'mirror', build: () => model('ornate_mirror_01', () => new T.Group(), { back: true, scale: 1.3, shadow: false }), pos: [3.99, 1.15, -2.2], ry: -Math.PI / 2 });
+      add({ id: 'mags', label: 'Revistas', build: () => P.magazine(), pos: [-2.3, 0.42, -0.85], info: sd === 'A' ? 'Una revista vieja abierta en una página subrayada: «Todo lo que necesitas saber está en la otra sala. Hablen.»' : 'Una revista con un crucigrama a medias. En el margen alguien escribió: «Las luces nunca mienten».' });
       add({ id: 'plant', build: () => P.plant(), pos: [3.4, 0, -3.4], solid: [0.5, 0.5] });
       add({ id: 'radiator', label: 'Radiador', build: () => P.radiator(), pos: [3.92, 0, 0.5], ry: -Math.PI / 2, info: 'El radiador quema al tocarlo. Cada minuto hace más calor.' });
       add({ id: 'sofa', build: () => P.sofa(sd === 'A' ? '#5a2b2b' : '#2b3f5a'), pos: [1.5, 0, 3.4], ry: Math.PI, solid: [1.9, 0.85] });
@@ -391,8 +502,9 @@ const Esc3D = (function () {
       const H = 3.2;
       add({ id: 'shelf1', build: () => P.bookshelf(), pos: [-3.75, H, -1], ry: Math.PI / 2, flip: true });
       add({ id: 'shelf2', build: () => P.bookshelf(), pos: [3.75, H, 1], ry: -Math.PI / 2, flip: true });
-      add({ id: 'ctable', build: () => P.table(1.4, 0.8, 0.75, '#4a2f1d'), pos: [0.6, H, 1.5], flip: true });
-      add({ id: 'cchair', build: () => P.chair('#6b2e2e'), pos: [0.6, H, 2.3], flip: true });
+      add({ id: 'ctable', build: () => P.table(1.4, 0.8, 0.75, '#4a2f1d', 'WoodenTable_01'), pos: [0.6, H, 1.5], flip: true });
+      add({ id: 'cchair', build: () => P.chair('#6b2e2e', 'WoodenChair_01'), pos: [0.6, H, 2.3], ry: Math.PI, flip: true });
+      add({ id: 'carm', build: () => model('ArmChair_01', () => new T.Group()), pos: [-2.6, H, -3.1], ry: 0.5, flip: true });
       add({ id: 'chand', label: 'Lámpara de araña', build: () => P.chandelier(), pos: [0, 0, 0], info: 'La lámpara de araña está en el suelo, apuntando hacia arriba. Aquí todo está al revés.' });
       add({ id: 'door', label: 'Puerta', build: () => P.door('#3b2a1f'), pos: [0, 0, -3.95], door: true });
       add({ id: 'lock', label: 'Candado de letras', build: () => box(0.25, 0.18, 0.08, M('#b08d2e', { metalness: 0.8, roughness: 0.3 })), pos: [0.35, 1.05, -3.85], lock: true });
@@ -406,12 +518,18 @@ const Esc3D = (function () {
       }
     } else {
       add({ id: 'door', label: 'Puerta', build: () => P.door('#4a3020'), pos: [0, 0, -3.95], door: true });
-      add({ id: 'fire', label: 'Chimenea apagada', build: () => P.fireplace(), pos: [3.7, 0, 0], ry: -Math.PI / 2, solid: [0.5, 1.6], info: 'La chimenea está helada. Ni una brasa.' });
+      const heater = !!ready(glbCache, 'scandinavian_masonry_heater');
+      add({ id: 'fire', label: 'Chimenea apagada', build: () => P.fireplace(), pos: [heater ? 3.3 : 3.7, 0, 0], ry: -Math.PI / 2, solid: heater ? [1.2, 1.1] : [0.5, 1.6], info: 'La chimenea está helada. Ni una brasa.' });
       add({ id: 'win', label: 'Ventana', build: () => P.window(true), pos: [-3.96, 1.6, -1.5], ry: Math.PI / 2, info: 'Afuera nieva sin parar. El lago está congelado.' });
       add({ id: 'rugc', build: () => P.rug(TEX.carpet('#7a2e2e', '#d9b36a', [1, 1])), pos: [1.2, 0, 2.4] });
+      add({ id: 'rock', build: () => model('Rockingchair_01', () => new T.Group()), pos: [1.4, 0, 2.5], ry: Math.PI / 2 + 0.3, solid: [0.7, 0.85] });
+      add({ id: 'crate', build: () => model('wooden_crate_01', () => new T.Group()), pos: [-3.3, 0, -3.5], ry: 0.15, solid: [0.85, 0.45] });
+      add({ id: 'lantern', build: () => model('Lantern_01', () => new T.Group(), { scale: 1.3 }), pos: [-3.1, 0.35, -3.45] });
+      const lt = ready(glbCache, 'WoodenTable_03') ? 0.83 * 0.75 : 0.72;
       if (sd === 'A') {
-        add({ id: 'clue', label: 'Lámpara que parpadea', build: () => P.morseLamp(), pos: [-2.6, 0.75, 2.6], morse: true, clue: 'La lámpara parpadea siempre con el mismo ritmo, se apaga un rato y vuelve a empezar.' });
-        add({ id: 'ltable', build: () => P.table(0.6, 0.6, 0.72, '#4a3020'), pos: [-2.6, 0, 2.6], solid: [0.6, 0.6] });
+        add({ id: 'clue', label: 'Lámpara que parpadea', build: () => P.morseLamp(), pos: [-2.6, lt + 0.01, 2.6], morse: true, clue: 'La lámpara parpadea siempre con el mismo ritmo, se apaga un rato y vuelve a empezar.' });
+        add({ id: 'ltable', build: () => P.table(0.6, 0.6, 0.72, '#4a3020', 'WoodenTable_03', { scale: 0.75 }), pos: [-2.6, 0, 2.6], solid: [1.0, 0.45] });
+        add({ id: 'stool', build: () => model('wooden_stool_01', () => new T.Group()), pos: [-1.6, 0, 2.1], solid: [0.4, 0.4] });
         add({ id: 'lock', label: 'Baldosas de hielo', build: () => P.iceGrid(), pos: [1.6, 0, -2.2], lock: true });
       } else {
         add({ id: 'clue', label: 'Tabla Morse', build: () => P.morseChart(), pos: [-3.95, 1.6, 1.6], ry: Math.PI / 2, clue: 'Una tabla con el código Morse: cada letra es una serie de destellos cortos (·) y largos (—).' });
@@ -424,9 +542,9 @@ const Esc3D = (function () {
 
   function theme(level) {
     const id = E.ESC3.levels[level].id;
-    if (id === 'espera') return { wall: TEX.wallpaper('#c9b48f', '#b39a70', [4, 1.2]), floor: TEX.planks('#8a5a34', [3, 3]), ceil: TEX.plaster('#efe9df', [2, 2]), light: '#ffe2b8', fog: '#2a1d14', amb: 0.55 };
-    if (id === 'biblioteca') return { wall: TEX.wallpaper('#3f4f45', '#33423a', [4, 1.2]), floor: TEX.carpet('#5a1e24', '#c9a227', [2, 2]), ceil: TEX.planks('#5a3a22', [3, 3]), light: '#ffd9a0', fog: '#141812', amb: 0.45 };
-    return { wall: TEX.logs([3, 1]), floor: TEX.ice(6, [2, 2]), ceil: TEX.logs([3, 2]), light: '#cfe6ff', fog: '#9fb7c9', amb: 0.6, icy: true };
+    if (id === 'espera') return { pbr: { wall: ['painted_plaster_wall', [3, 1.2], '#e6d3ad'], floor: ['herringbone_parquet', [3, 3], null, { roughness: 4 }], ceil: ['painted_plaster_wall', [2, 2], '#fff6ea'] }, hdri: 'lythwood_room', wall: TEX.wallpaper('#c9b48f', '#b39a70', [4, 1.2]), floor: TEX.planks('#8a5a34', [3, 3]), ceil: TEX.plaster('#efe9df', [2, 2]), light: '#ffe2b8', fog: '#2a1d14', amb: 0.55 };
+    if (id === 'biblioteca') return { pbr: { wall: ['decrepit_wallpaper', [3, 1.2], '#b8c4b0'], floor: ['dirty_carpet', [2, 2], '#b05058'], ceil: ['rectangular_parquet', [3, 3]] }, hdri: 'lythwood_room', wall: TEX.wallpaper('#3f4f45', '#33423a', [4, 1.2]), floor: TEX.carpet('#5a1e24', '#c9a227', [2, 2]), ceil: TEX.planks('#5a3a22', [3, 3]), light: '#ffd9a0', fog: '#141812', amb: 0.45 };
+    return { pbr: { wall: ['wood_trunk_wall', [2.5, 1]], ceil: ['roof_planks', [2, 2]] }, hdri: 'snowy_forest', wall: TEX.logs([3, 1]), floor: TEX.ice(6, [2, 2]), ceil: TEX.logs([3, 2]), light: '#cfe6ff', fog: '#9fb7c9', amb: 0.6, icy: true };
   }
 
   // ---------- Construcción de la escena ----------
@@ -436,11 +554,13 @@ const Esc3D = (function () {
     scene.background = new T.Color(th.fog);
     scene.fog = new T.Fog(th.fog, 6, 16);
     const W = 8, D = 8, H = 3.2;
-    const floor = new T.Mesh(new T.PlaneGeometry(W, D), M('#ffffff', { map: th.floor, roughness: th.icy ? 0.12 : 0.7, metalness: th.icy ? 0.15 : 0 }));
+    const P3 = k => { const d = th.pbr[k]; return d && pbr(d[0], d[1], Object.assign(d[2] ? { color: d[2] } : {}, d[3])); };
+    const floorM = th.icy ? new T.MeshPhysicalMaterial({ map: th.floor, roughness: 0.35, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.12 }) : P3('floor') || M('#ffffff', { map: th.floor, roughness: 0.7 });
+    const floor = new T.Mesh(new T.PlaneGeometry(W, D), floorM);
     floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
-    const ceil = new T.Mesh(new T.PlaneGeometry(W, D), M('#ffffff', { map: th.ceil, roughness: 0.9 }));
+    const ceil = new T.Mesh(new T.PlaneGeometry(W, D), P3('ceil') || M('#ffffff', { map: th.ceil, roughness: 0.9 }));
     ceil.rotation.x = Math.PI / 2; ceil.position.y = H; scene.add(ceil);
-    const wallM = M('#ffffff', { map: th.wall, roughness: 0.85 });
+    const wallM = P3('wall') || M('#ffffff', { map: th.wall, roughness: 0.85 });
     const walls = [[0, H / 2, -D / 2, 0], [0, H / 2, D / 2, Math.PI], [-W / 2, H / 2, 0, Math.PI / 2], [W / 2, H / 2, 0, -Math.PI / 2]];
     const wallMeshes = [];
     for (const [x, y, z, ry] of walls) { const w = new T.Mesh(new T.PlaneGeometry(W, H), wallM); w.position.set(x, y, z); w.rotation.y = ry; w.receiveShadow = true; scene.add(w); wallMeshes.push(w); }
@@ -449,11 +569,11 @@ const Esc3D = (function () {
 
     const hemi = new T.HemisphereLight('#ffffff', '#3a2a1a', th.amb); scene.add(hemi);
     const main = new T.PointLight(th.light, 28, 14, 1.6);
-    main.position.set(0, H - 0.3, 0.5); main.castShadow = true; main.shadow.mapSize.set(1024, 1024); main.shadow.bias = -0.002;
+    main.position.set(0, H - 0.65, 0.5); main.castShadow = true; main.shadow.mapSize.set(1024, 1024); main.shadow.bias = -0.002;
     scene.add(main);
     const bulb = new T.Mesh(new T.SphereGeometry(0.09, 16, 12), M('#fff5dd', { emissive: th.light, emissiveIntensity: 2 }));
     bulb.position.copy(main.position); scene.add(bulb);
-    scene.add(at(cyl(0.01, 0.01, 0.3, M('#222'), 6), 0, H - 0.15, 0.5));
+    scene.add(at(cyl(0.008, 0.008, 0.62, M('#222'), 6), 0, H - 0.31, 0.5));
 
     const objs = levelDef(level, side), interact = [], colliders = [];
     const byId = {};
@@ -468,7 +588,17 @@ const Esc3D = (function () {
       if (o.solid) colliders.push({ x: o.pos[0], z: o.pos[2], w: o.ry && Math.abs(Math.sin(o.ry)) > 0.5 ? o.solid[1] : o.solid[0], d: o.ry && Math.abs(Math.sin(o.ry)) > 0.5 ? o.solid[0] : o.solid[1] });
       byId[o.id] = { def: o, mesh: m };
     }
-    // Brillo leve en lo que se puede examinar, para guiar sin regalar
+    // Luz ambiental con un HDRI: reflejos y sombras suaves como en una foto
+    const hdr = ready(hdrCache, th.hdri);
+    if (hdr && R) {
+      R.pmrem = R.pmrem || new T.PMREMGenerator(R.renderer);
+      R.envs = R.envs || {};
+      R.envs[th.hdri] = R.envs[th.hdri] || R.pmrem.fromEquirectangular(hdr).texture;
+      scene.environment = R.envs[th.hdri];
+      hemi.intensity = th.amb * 0.4;
+      scene.traverse(o => { if (o.isMesh) for (const m of [].concat(o.material)) if ('envMapIntensity' in m) m.envMapIntensity = th.icy ? 0.7 : 0.45; });
+      floor.material.envMapIntensity = th.icy ? 0.3 : 0.18; // el suelo refleja menos las ventanas del HDRI
+    }
     const camera = new T.PerspectiveCamera(70, innerWidth / innerHeight, 0.05, 40);
     camera.position.set(0, 1.6, 2.6);
     look.yaw = 0; look.pitch = 0;
@@ -746,9 +876,12 @@ const Esc3D = (function () {
       el.classList.add('loading');
       msg('Cargando la sala…', 20000);
       try { await loadThree(); } catch (e) { api.close(); throw e; }
+      state = (S.couple && S.couple.escape3) || {};
+      await preloadLevel(state.level || 0);
+      if (!api.active) return;
+      state = (S.couple && S.couple.escape3) || state;
       el.classList.remove('loading');
       loadE3();
-      state = (S.couple && S.couple.escape3) || {};
       if (S.e3.game !== state.startedAt) { S.e3 = { notes: [], game: state.startedAt }; saveE3(); }
       side = (S.couple.uids || [])[0] === S.uid ? 'A' : 'B';
       const renderer = new T.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
@@ -774,7 +907,8 @@ const Esc3D = (function () {
       cancelAnimationFrame(raf); clearInterval(tick);
       window.removeEventListener('resize', onResize); window.removeEventListener('keydown', kd); window.removeEventListener('keyup', ku);
       if (R && R.renderer) { R.renderer.dispose(); }
-      R = null; builtLevel = -1;
+      if (R && R.pmrem) R.pmrem.dispose();
+      R = null; builtLevel = -1; pendingLevel = -1;
       const el = document.getElementById('e3'); if (el) el.remove();
       try { speechSynthesis.cancel(); } catch (e) { }
       render();
@@ -794,9 +928,16 @@ const Esc3D = (function () {
         if (prev && prev.wonAt === state.wonAt) return;
         msg('🎉 ¡Escaparon juntos en ' + E.mmss(state.wonAt - state.startedAt) + '!', 6000); setTimeout(() => api.active && api.close(), 3500); return; }
       if ((state.level || 0) !== builtLevel) {
-        const L = E.ESC3.levels[state.level || 0], up = (state.level || 0) > builtLevel;
-        buildLevel(state.level || 0);
-        msg((up ? '🚪 Sala superada. Ahora: ' : '') + L.name + '. ' + L.intro, 6000);
+        const lv = state.level || 0, L = E.ESC3.levels[lv], up = lv > builtLevel;
+        if (pendingLevel === lv) return;
+        pendingLevel = lv;
+        msg(up ? '🚪 Sala superada. Cargando la siguiente…' : 'Cargando la sala…', 20000);
+        preloadLevel(lv).then(() => {
+          if (pendingLevel === lv) pendingLevel = -1;
+          if (!api.active || !R || (state.level || 0) !== lv || state.wonAt) return;
+          buildLevel(lv);
+          msg((up ? '🚪 Sala superada. Ahora: ' : '') + L.name + '. ' + L.intro, 6000);
+        });
       } else if (prev && prev.levelAt !== state.levelAt && !state.A && !state.B) {
         msg('⏱️ Se acabó el tiempo. La sala vuelve a empezar.', 4000);
         R.camera.position.set(0, 1.6, 2.6); look.yaw = 0; look.pitch = 0;
@@ -807,12 +948,15 @@ const Esc3D = (function () {
   };
   api._interact = id => interactWith(id); // para las pruebas automáticas
   api._info = () => R && R.renderer.info.render;
+  api._view = (x, z, yaw, pitch) => { if (R) { R.camera.position.x = x; R.camera.position.z = z; look.yaw = yaw; look.pitch = pitch || 0; } };
   function buildLevel(level) {
     const b = build(level);
     Object.assign(R, b);
     builtLevel = level;
     R.renderer.shadowMap.needsUpdate = true;
     onResize();
+    // Adelanta la descarga de la sala siguiente mientras juegan esta
+    if (E.ESC3.levels[level + 1]) setTimeout(() => preloadLevel(level + 1), 3000);
   }
   return api;
 })();
