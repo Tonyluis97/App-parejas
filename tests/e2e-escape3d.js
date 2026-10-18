@@ -58,23 +58,47 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   ok('B ve el reloj', (await sheet(B)).includes('10:25'));
   await B.click('#sheet [data-act=closeSheet]');
   await A.evaluate(() => Esc3D._interact('door'));
-  ok('puerta cerrada da pista', (await sheet(A)).includes('reloj de la otra sala'));
+  ok('puerta cerrada da pista', (await sheet(A)).includes('reloj de la otra sala') && (await sheet(A)).includes('0 de 3'));
   await A.click('#sheet [data-act=closeSheet]');
+  // Cerraduras en orden: la segunda está bloqueada y lo que revela la primera aún no se ve
+  await A.evaluate(() => Esc3D._interact('lock2')); await wait(200);
+  ok('maletín bloqueado', (await A.textContent('#e3Msg')).includes('sigue bloqueado') && !(await A.$('#sheet')));
+  await A.evaluate(() => Esc3D._interact('rev1')); await wait(200);
+  ok('tarjeta oculta antes de abrir', !(await A.$('#sheet')));
   // A: clave incorrecta y luego la correcta
   await A.evaluate(() => Esc3D._interact('lock'));
   for (const k of '9999') await A.click(`#sheet [data-act=lkKey][data-v="${k}"]`);
   await A.click('#sheet [data-act=lkTry]');
-  ok('clave mala no abre', !(await st(A)).A && (await A.$('#sheet .shake')) !== null);
+  ok('clave mala no abre', !(await st(A)).pA && (await A.$('#sheet .shake')) !== null);
   await A.screenshot({ path: shots + '/e3-04-teclado.png' });
   for (const k of '1025') await A.click(`#sheet [data-act=lkKey][data-v="${k}"]`);
-  await A.click('#sheet [data-act=lkTry]'); await wait(500);
-  ok('A abrió su puerta', (await st(B)).A === true && (await st(B)).level === 0);
-  ok('B se entera', (await B.textContent('#e3Msg')).includes('Tu pareja abrió'));
+  await A.click('#sheet [data-act=lkTry]'); await wait(600);
+  ok('A abrió la caja fuerte', (await st(B)).pA === 1 && !(await st(B)).A);
+  ok('aparece la tarjeta de símbolos', (await sheet(A)).includes('★ = 2'));
+  await A.click('#sheet [data-act=closeSheet]');
+  ok('B se entera', (await B.textContent('#e3Msg')).includes('Tu pareja abrió una cerradura'));
+  await A.evaluate(() => Esc3D._view(2.6, -2.4, 0, -0.5)); await wait(1200);
+  await A.screenshot({ path: shots + '/e3-04b-tarjeta.png' });
+
+  // Ayudantes para el resto de cerraduras
+  const keypad = async (p, id, code) => { await p.evaluate(id => Esc3D._interact(id), id); for (const k of code) await p.click(`#sheet [data-act=lkKey][data-v="${k}"]`); await p.click('#sheet [data-act=lkTry]'); await wait(700); };
+  const toggles = async (p, id, idx) => { await p.evaluate(id => Esc3D._interact(id), id); for (const i of idx) await p.click(`#sheet [data-act=lkToggle][data-v="${i}"]`); await p.click('#sheet [data-act=lkTry]'); await wait(700); };
+  const word = async (p, id, w) => { await p.evaluate(id => Esc3D._interact(id), id); await p.fill('#lkWord', w); await p.click('#sheet [data-act=lkTry]'); await wait(700); };
+  const close = async p => { const c = await p.$('#sheet [data-act=closeSheet]'); if (c) await c.click(); };
+
   // B: interruptores
   await B.evaluate(() => Esc3D._interact('lock'));
   for (const i of [0, 2, 3]) await B.click(`#sheet [data-act=lkToggle][data-v="${i}"]`);
   await B.screenshot({ path: shots + '/e3-05-interruptores.png' });
-  await B.click('#sheet [data-act=lkTry]'); await wait(1200);
+  await B.click('#sheet [data-act=lkTry]'); await wait(700);
+  ok('B ve el mensaje del espejo', (await sheet(B)).includes('sillas, revistas'));
+  await close(B);
+  await keypad(A, 'lock2', '434'); ok('A abre el maletín', (await sheet(A)).includes('Rojo = O')); await close(A);
+  await keypad(B, 'lock2', '926'); ok('B apaga el termostato', (await sheet(B)).includes('Multiplica')); await close(B);
+  await B.evaluate(() => Esc3D._view(-1.4, -2.6, 0, 0)); await wait(1200); await B.screenshot({ path: shots + '/e3-05b-termostato.png' });
+  await keypad(A, 'lock3', '12'); ok('A abrió su puerta', (await st(B)).A === true && (await st(B)).level === 0);
+  await word(B, 'lock3', 'amor');
+  await wait(1500);
   ok('pasan a la sala 2', (await st(A)).level === 1 && (await st(B)).level === 1);
   await wait(400);
   ok('A ve sala 2', (await A.textContent('#e3Name')).includes('Sala 2 de 3'));
@@ -84,28 +108,39 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   // Sala 2: B oye el acertijo (A responde RELOJ); A tiene la rueda para descifrar la pared de B
   await B.evaluate(() => Esc3D._interact('gram'));
   ok('B oye el acertijo', (await sheet(B)).includes('gramófono') || (await sheet(B)).includes('voz'));
-  await B.click('#sheet [data-act=closeSheet]');
+  await close(B);
   await B.evaluate(() => Esc3D._interact('clue'));
   ok('B ve la pared cifrada', (await sheet(B)).includes('UHFXHUGR'));
-  await B.click('#sheet [data-act=closeSheet]');
-  await A.evaluate(() => Esc3D._interact('lock')); await A.fill('#lkWord', 'reloj'); await A.click('#sheet [data-act=lkTry]');
-  await B.evaluate(() => Esc3D._interact('lock')); await B.fill('#lkWord', 'recuerdo'); await B.click('#sheet [data-act=lkTry]');
-  await wait(1200);
+  await close(B);
+  await word(A, 'lock', 'reloj'); ok('A recibe la ficha', (await sheet(A)).includes('♦ = 7')); await close(A);
+  await word(B, 'lock', 'recuerdo'); ok('B recibe la partitura', (await sheet(B)).includes('silencio, nota')); await close(B);
+  await toggles(A, 'lock2', [1, 2]); ok('A enciende las velas', (await sheet(A)).includes('cruz')); await close(A);
+  await A.evaluate(() => Esc3D._view(2.8, -1.2, 0, 0.15)); await wait(1200); await A.screenshot({ path: shots + '/e3-08b-velas.png' });
+  await keypad(B, 'lock2', '7184'); ok('B abre la caja', (await sheet(B)).includes('12 · 9')); await close(B);
+  await word(A, 'lock3', 'LIBRO');
+  await toggles(B, 'lock3', [1, 3, 4, 5, 7]);
+  await wait(1500);
   ok('pasan a la sala 3', (await st(A)).level === 2);
   await A.screenshot({ path: shots + '/e3-09-cabana-A.png' }); await B.screenshot({ path: shots + '/e3-10-cabana-B.png' });
 
   // Sala 3: A ve la lámpara Morse, B tiene el dibujo de grietas
   await A.evaluate(() => Esc3D._interact('clue')); await wait(300);
   ok('A ve la luz Morse', (await A.$('#mLamp')) !== null);
-  await A.click('#sheet [data-act=closeSheet]');
+  await close(A);
   await B.evaluate(() => Esc3D._interact('clue2'));
   ok('B ve las grietas', (await sheet(B)).includes('arriba izquierda'));
-  await B.click('#sheet [data-act=closeSheet]');
+  await close(B);
   await A.evaluate(() => Esc3D._interact('lock'));
   for (const i of [0, 2, 4, 6, 8]) await A.click(`#sheet [data-act=lkToggle][data-v="${i}"]`);
   await A.screenshot({ path: shots + '/e3-11-baldosas.png' });
-  await A.click('#sheet [data-act=lkTry]');
-  await B.evaluate(() => Esc3D._interact('lock')); await B.fill('#lkWord', 'BESO'); await B.click('#sheet [data-act=lkTry]');
+  await A.click('#sheet [data-act=lkTry]'); await wait(700);
+  ok('A ve los peces', (await sheet(A)).includes('4 rojos')); await close(A);
+  await word(B, 'lock', 'BESO'); ok('B ve el mapa', (await sheet(B)).includes('mapa del lago')); await close(B);
+  await toggles(A, 'lock2', [0, 1, 3]); ok('A lee el diario', (await sheet(A)).includes('contrario del frío')); await close(A);
+  await A.evaluate(() => Esc3D._view(2.0, -1.6, 0, 0.1)); await wait(1200); await A.screenshot({ path: shots + '/e3-11b-faroles.png' });
+  await keypad(B, 'lock2', '416'); ok('B abre el baúl', (await sheet(B)).includes('brújula')); await close(B);
+  await keypad(A, 'lock3', '314');
+  await word(B, 'lock3', 'calor');
   await wait(800);
   ok('ganaron', !!(await st(A)).wonAt);
   await wait(4000);
@@ -116,7 +151,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 
   // Se acaba el tiempo: la sala se reinicia una sola vez
   await A.click('[data-act=e3New]'); await A.click('[data-act=_confirmYes]'); await A.waitForSelector('#e3 canvas');
-  await A.evaluate(() => Sync.patchCouple(S.code, { 'escape3.levelAt': Date.now() - 10 * 60000 + 300, 'escape3.A': true }));
+  await A.evaluate(() => Sync.patchCouple(S.code, { 'escape3.levelAt': Date.now() - 15 * 60000 + 300, 'escape3.A': true }));
   await wait(2000);
   const f = await st(A);
   console.log('fps A', await A.evaluate(() => new Promise(r => { let n = 0; const t0 = performance.now(); const k = () => { n++; if (performance.now() - t0 < 1000) requestAnimationFrame(k); else r(n); }; requestAnimationFrame(k); })));

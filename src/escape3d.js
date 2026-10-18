@@ -473,14 +473,127 @@ const Esc3D = (function () {
       return g;
     },
     rug(tex) { const m = plane(2.4, 1.6, tex); m.rotation.x = -Math.PI / 2; m.position.y = 0.005; return m; },
+    // Texto en un papel o placa (las pistas que aparecen al abrir cerraduras)
+    textTex(lines, o) {
+      o = o || {};
+      const w = o.w || 512, h = o.h || 512;
+      return canvasTex(w, h, (g) => {
+        if (o.bg !== null) { g.fillStyle = o.bg || '#efe6cf'; g.fillRect(0, 0, w, h); }
+        if (o.bg !== null) noise(g, w, h, 1500, 0.05);
+        g.fillStyle = o.ink || '#2b1d14'; g.textAlign = 'center'; g.textBaseline = 'middle';
+        const fs = o.size || 46;
+        g.font = (o.font || 'bold ' + fs + 'px Georgia');
+        lines.forEach((l, i) => g.fillText(l, w / 2, h / 2 + (i - (lines.length - 1) / 2) * fs * 1.3));
+      });
+    },
+    note(lines, w, h, o) {
+      const m = new T.Mesh(new T.PlaneGeometry(w, h), M('#ffffff', { map: P.textTex(lines, Object.assign({ w: 512, h: Math.round(512 * h / w) }, o)), roughness: 0.9, transparent: o && o.bg === null }));
+      m.receiveShadow = true;
+      return m;
+    },
+    floorNote(lines, o) { const m = P.note(lines, 0.3, 0.22, o); m.rotation.x = -Math.PI / 2; m.position.y = 0.004; return m; },
+    lockBox(color) {
+      const g = new T.Group();
+      g.add(box(0.2, 0.26, 0.07, M(color || '#555555', { metalness: 0.8, roughness: 0.35 })));
+      const sh = new T.Mesh(new T.TorusGeometry(0.06, 0.014, 8, 16, Math.PI), M('#c0c0c0', { metalness: 0.9, roughness: 0.25 }));
+      sh.position.y = 0.13; g.add(sh);
+      return g;
+    },
+    briefcase() {
+      const g = new T.Group(), lea = M('#3b2416', { roughness: 0.6 }), gold = M('#c9a227', { metalness: 0.9, roughness: 0.3 });
+      g.add(at(box(0.5, 0.36, 0.13, lea), 0, 0.18, 0));
+      const hd = new T.Mesh(new T.TorusGeometry(0.06, 0.012, 8, 16, Math.PI), lea); hd.position.y = 0.37; g.add(hd);
+      g.add(at(box(0.06, 0.04, 0.02, gold), -0.15, 0.3, 0.07), at(box(0.06, 0.04, 0.02, gold), 0.15, 0.3, 0.07), at(box(0.12, 0.05, 0.02, gold), 0, 0.3, 0.07));
+      return g;
+    },
+    symbolPanel(text, bg, ink) {
+      const g = new T.Group();
+      g.add(box(0.36, 0.24, 0.04, M('#d9d4cc', { metalness: 0.4, roughness: 0.4 })));
+      const p = P.note([text], 0.3, 0.17, { bg: bg || '#1d2a22', ink: ink || '#9cf0b4', size: 120, font: 'bold 120px sans-serif' }); p.position.z = 0.021; g.add(p);
+      return g;
+    },
+    colorLock(cols) {
+      const g = P.lockBox('#6b5a2e');
+      cols.forEach((c, i) => { const d = new T.Mesh(new T.CircleGeometry(0.022, 16), M(c, { roughness: 0.4 })); d.position.set(-0.066 + i * 0.044, -0.02, 0.036); g.add(d); });
+      return g;
+    },
+    candles(lit) {
+      const g = new T.Group();
+      g.add(P.table(0.9, 0.4, 0.8, '#3b2a1f'));
+      const wax = M('#efe6d0', { roughness: 0.6 });
+      g.userData.flames = [];
+      for (let i = 0; i < 4; i++) {
+        const x = -0.3 + i * 0.2;
+        g.add(at(cyl(0.035, 0.04, 0.22, wax, 12), x, 0.94, 0), at(cyl(0.06, 0.06, 0.02, M('#c9a227', { metalness: 0.9, roughness: 0.3 }), 16), x, 0.84, 0));
+        const f = new T.Mesh(new T.SphereGeometry(0.022, 10, 8), M('#ffd27a', { emissive: '#ffb347', emissiveIntensity: 3 }));
+        f.scale.y = 1.8; f.position.set(x, 1.08, 0); f.visible = !!(lit && lit[i]); g.add(f); g.userData.flames.push(f);
+      }
+      return g;
+    },
+    chest(symbols) {
+      const g = new T.Group(), wood = pbr('dark_wooden_planks', [0.6, 0.4], { color: '#c09070' }) || M('#5a3a22', { roughness: 0.6 });
+      g.add(at(box(0.7, 0.32, 0.42, wood), 0, 0.16, 0));
+      const lid = box(0.72, 0.06, 0.44, wood); lid.position.y = 0.35; g.add(lid);
+      if (symbols) { const p = P.note([symbols], 0.4, 0.14, { bg: '#e8d9b5', size: 90, font: 'bold 90px serif' }); p.position.set(0, 0.17, 0.212); g.add(p); }
+      return g;
+    },
+    tiles(color) {
+      const g = new T.Group();
+      for (let i = 0; i < 9; i++) {
+        const t = box(0.5, 0.04, 0.5, M(color, { roughness: 0.5 }));
+        t.position.set(((i % 3) - 1) * 0.55, 0.02, (((i / 3) | 0) - 1) * 0.55); g.add(t);
+      }
+      return g;
+    },
+    lanterns(lit) {
+      const g = new T.Group();
+      g.userData.bulbs = [];
+      for (let i = 0; i < 4; i++) {
+        const x = -0.75 + i * 0.5;
+        g.add(at(box(0.04, 0.04, 0.2, M('#2b2b2b', { metalness: 0.6 })), x, 0.42, 0.1));
+        const l = model('Lantern_01', () => at(box(0.12, 0.28, 0.1, M('#3a3020', { metalness: 0.6 })), 0, 0.14, 0), { scale: 1.3 });
+        l.position.set(x, 0, 0.18); g.add(l);
+        const b = new T.Mesh(new T.SphereGeometry(0.03, 10, 8), M('#fff2c4', { emissive: '#ffcc66', emissiveIntensity: 3 }));
+        b.position.set(x, 0.14, 0.18); b.visible = !!(lit && lit[i]); g.add(b); g.userData.bulbs.push(b);
+      }
+      return g;
+    },
+    stars() {
+      const tex = canvasTex(512, 512, (g, w, h) => {
+        g.clearRect(0, 0, w, h);
+        const rg = g.createRadialGradient(256, 256, 20, 256, 256, 250); rg.addColorStop(0, 'rgba(255,220,150,.35)'); rg.addColorStop(1, 'rgba(255,220,150,0)');
+        g.fillStyle = rg; g.fillRect(0, 0, w, h);
+        g.fillStyle = 'rgba(20,12,6,.85)';
+        for (let i = 0; i < 9; i++) if ([1, 3, 4, 5, 7].includes(i)) {
+          const x = 106 + (i % 3) * 150, y = 106 + ((i / 3) | 0) * 150;
+          g.beginPath(); for (let k = 0; k < 10; k++) { const r = k % 2 ? 18 : 44, a = k / 10 * Math.PI * 2 - Math.PI / 2; g.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); } g.fill();
+        }
+      });
+      return new T.Mesh(new T.PlaneGeometry(1.2, 1.2), new T.MeshStandardMaterial({ map: tex, transparent: true, roughness: 1 }));
+    },
+    fish() {
+      const tex = canvasTex(512, 512, (g, w, h) => {
+        g.fillStyle = '#5f8aa2'; g.fillRect(0, 0, w, h);
+        const fishAt = (x, y, c, r) => { g.save(); g.translate(x, y); g.rotate(r); g.fillStyle = c; g.beginPath(); g.ellipse(0, 0, 34, 16, 0, 0, Math.PI * 2); g.fill(); g.beginPath(); g.moveTo(-28, 0); g.lineTo(-52, -16); g.lineTo(-52, 16); g.fill(); g.restore(); };
+        const list = [].concat(Array(4).fill('#c0392b'), ['#2471a3'], Array(6).fill('#d4ac0d'));
+        list.forEach((c, i) => fishAt(70 + (i % 4) * 120, 90 + ((i / 4) | 0) * 150 + (i % 2) * 30, c, (i * 1.7) % 1 - 0.5));
+        g.fillStyle = 'rgba(230,245,255,.35)'; g.fillRect(0, 0, w, h);
+      });
+      const m = new T.Mesh(new T.PlaneGeometry(1.2, 1.2), new T.MeshPhysicalMaterial({ map: tex, roughness: 0.2, clearcoat: 1 }));
+      m.rotation.x = -Math.PI / 2; m.position.y = 0.006; m.receiveShadow = true;
+      return m;
+    },
   };
 
   // ---------- Salas ----------
   // Cada objeto: { id, label, build(), pos:[x,y,z], ry, solid:[w,d], clue|lock|info }
   function levelDef(level, sd) {
-    const L = E.ESC3.levels[level], C = L.clues;
+    const L = E.ESC3.levels[level], C = L.clues, ST = L[sd].steps;
     const objs = [];
     const add = o => objs.push(o);
+    // Cerradura del paso n (el nombre sale del motor) y lo que aparece al abrirla
+    const lock = (n, o) => add(Object.assign({ id: n ? 'lock' + (n + 1) : 'lock', label: ST[n].lock, lock: true, step: n }, o));
+    const reveal = (n, o) => add(Object.assign({ id: 'rev' + (n + 1), label: ST[n].revealLabel, reveal: n, after: n + 1 }, o));
     if (L.id === 'espera') {
       add({ id: 'door', label: 'Puerta', build: () => P.door('#5b3b28'), pos: [0, 0, -3.95], door: true });
       for (let i = 0; i < 4; i++) add({ id: 'chair' + i, build: () => P.chair(sd === 'A' ? '#7a2e2e' : '#2e4f7a'), pos: [-3.4, 0, -2.0 + i * 0.75], ry: Math.PI / 2, solid: [0.6, 0.6] });
@@ -491,10 +604,18 @@ const Esc3D = (function () {
       add({ id: 'radiator', label: 'Radiador', build: () => P.radiator(), pos: [3.92, 0, 0.5], ry: -Math.PI / 2, info: 'El radiador quema al tocarlo. Cada minuto hace más calor.' });
       add({ id: 'sofa', build: () => P.sofa(sd === 'A' ? '#5a2b2b' : '#2b3f5a'), pos: [1.5, 0, 3.4], ry: Math.PI, solid: [1.9, 0.85] });
       if (sd === 'A') {
-        add({ id: 'lock', label: 'Caja fuerte', build: () => P.safe(), pos: [2.6, 0, -3.5], solid: [0.7, 0.6], lock: true });
+        lock(0, { build: () => P.safe(), pos: [2.6, 0, -3.5], solid: [0.7, 0.6] });
+        reveal(0, { build: () => { const n = P.floorNote(['★ = 2', '● = 6', '▲ = 9'], { size: 90 }); n.position.y = 0; return n; }, pos: [2.6, 0.705, -3.45] });
+        lock(1, { build: () => P.briefcase(), pos: [0.2, 0, 3.45], ry: 0.2, solid: [0.5, 0.2] });
+        reveal(1, { build: () => P.floorNote(['Rojo = O', 'Azul = R', 'Amarillo = M', 'Verde = A'], { size: 64 }), pos: [0.75, 0, 2.95], ry: 0.3 });
+        lock(2, { build: () => P.lockBox('#555555'), pos: [0.38, 1.05, -3.85] });
         add({ id: 'clue', label: 'Cuadro «Nocturno»', build: () => P.lampsPainting(C.A.lamps), pos: [-3.95, 1.7, 1.6], ry: Math.PI / 2, clue: 'Un cuadro con cuatro lámparas colgando. De izquierda a derecha: ' + C.A.lamps.map(v => v ? 'encendida' : 'apagada').join(', ') + '.' });
       } else {
-        add({ id: 'lock', label: 'Panel de interruptores', build: () => P.switches(), pos: [1.3, 1.3, -3.97], lock: true });
+        lock(0, { build: () => P.switches(), pos: [1.3, 1.3, -3.97] });
+        reveal(0, { build: () => P.note(['SILLAS · REVISTAS', '· LÁMPARAS DEL CUADRO', '(en la otra sala)'], 0.6, 0.45, { bg: null, ink: 'rgba(170,20,40,.95)', size: 40, font: 'bold 40px "Courier New", monospace' }), pos: [3.93, 1.65, -2.2], ry: -Math.PI / 2 });
+        lock(1, { build: () => P.symbolPanel('▲ ★ ●'), pos: [-1.4, 1.45, -3.96] });
+        reveal(1, { build: () => P.note(['lámparas encendidas', 'del cuadro de tu pareja', '× sillas de tu sala'], 0.34, 0.26, { size: 38 }), pos: [-1.4, 1.1, -3.975] });
+        lock(2, { build: () => P.colorLock(['#2c6fd1', '#c0392b', '#e5c02a', '#2e9c4f']), pos: [0.38, 1.05, -3.85] });
         add({ id: 'clue', label: 'Reloj de pared', build: () => P.clock(C.B.clock), pos: [-3.95, 2.0, 1.6], ry: Math.PI / 2, clue: 'El reloj está detenido. Marca exactamente las ' + C.B.clock + '.' });
       }
     } else if (L.id === 'biblioteca') {
@@ -507,14 +628,22 @@ const Esc3D = (function () {
       add({ id: 'carm', build: () => model('ArmChair_01', () => new T.Group()), pos: [-2.6, H, -3.1], ry: 0.5, flip: true });
       add({ id: 'chand', label: 'Lámpara de araña', build: () => P.chandelier(), pos: [0, 0, 0], info: 'La lámpara de araña está en el suelo, apuntando hacia arriba. Aquí todo está al revés.' });
       add({ id: 'door', label: 'Puerta', build: () => P.door('#3b2a1f'), pos: [0, 0, -3.95], door: true });
-      add({ id: 'lock', label: 'Candado de letras', build: () => box(0.25, 0.18, 0.08, M('#b08d2e', { metalness: 0.8, roughness: 0.3 })), pos: [0.35, 1.05, -3.85], lock: true });
+      lock(0, { build: () => P.lockBox('#b08d2e'), pos: [0.35, 1.05, -3.85] });
       if (sd === 'A') {
         add({ id: 'lect', build: () => P.lectern(), pos: [-2, 0, 2.6], solid: [0.5, 0.4] });
+        reveal(0, { build: () => P.floorNote(['♦ = 7   ♥ = 1', '♠ = 8   ♣ = 4'], { size: 64 }), pos: [0.9, 0, -1.4], ry: 0.4 });
+        lock(1, { build: () => P.candles(), pos: [2.8, 0, -3.3], solid: [0.9, 0.4], candles: true, answerLit: ST[1].answer });
+        reveal(1, { build: () => P.stars(), pos: [2.8, 2.0, -3.97] });
+        lock(2, { build: () => P.lockBox('#6b4a1e'), pos: [-2, 0.62, 2.37], ry: Math.PI });
         add({ id: 'clue', label: 'Rueda de cifrado', build: () => P.cipherWheel(C.A.shift), pos: [-2, 1.12, 2.5], ry: 0, clue: 'Una rueda de cifrado. Cada letra de afuera corresponde a la letra que está ' + C.A.shift + ' lugares antes en el abecedario (D→A, E→B…).', tilt: -0.4 });
         add({ id: 'note', label: 'Nota', build: () => box(0.2, 0.01, 0.28, M('#f2e8cf')), pos: [-2, 1.13, 2.75], info: 'Una nota: «Las palabras escritas con sangre no se leen: se descifran».' });
       } else {
         add({ id: 'clue', label: 'Pared escrita', build: () => P.wallText(C.B.cipher), pos: [-3.96, 1.7, 0.6], ry: Math.PI / 2, clue: 'En la pared, pintado en rojo: «' + C.B.cipher + '».' });
         add({ id: 'gram', label: 'Gramófono', build: () => P.gramophone(), pos: [2.6, 0, 2.6], solid: [0.6, 0.6], riddle: C.B.riddle, clue: 'El gramófono repite una voz: «' + C.B.riddle + '»' });
+        reveal(0, { build: () => P.floorNote(['𝄽   ♪   ♪   𝄽'], { size: 80, font: 'bold 80px serif' }), pos: [-2.4, 0, 1.6], ry: -0.3 });
+        lock(1, { build: () => P.chest('♦ ♥ ♠ ♣'), pos: [1.5, 0, 3.55], solid: [0.7, 0.42] });
+        reveal(1, { build: () => P.floorNote(['12 · 9 · 2 · 18 · 15'], { size: 60 }), pos: [1.5, 0.385, 3.55] });
+        lock(2, { build: () => P.tiles('#6b4a32'), pos: [-1.6, 0, -1.8] });
       }
     } else {
       add({ id: 'door', label: 'Puerta', build: () => P.door('#4a3020'), pos: [0, 0, -3.95], door: true });
@@ -523,18 +652,30 @@ const Esc3D = (function () {
       add({ id: 'win', label: 'Ventana', build: () => P.window(true), pos: [-3.96, 1.6, -1.5], ry: Math.PI / 2, info: 'Afuera nieva sin parar. El lago está congelado.' });
       add({ id: 'rugc', build: () => P.rug(TEX.carpet('#7a2e2e', '#d9b36a', [1, 1])), pos: [1.2, 0, 2.4] });
       add({ id: 'rock', build: () => model('Rockingchair_01', () => new T.Group()), pos: [1.4, 0, 2.5], ry: Math.PI / 2 + 0.3, solid: [0.7, 0.85] });
-      add({ id: 'crate', build: () => model('wooden_crate_01', () => new T.Group()), pos: [-3.3, 0, -3.5], ry: 0.15, solid: [0.85, 0.45] });
-      add({ id: 'lantern', build: () => model('Lantern_01', () => new T.Group(), { scale: 1.3 }), pos: [-3.1, 0.35, -3.45] });
+      const crate = () => model('wooden_crate_01', () => P.chest());
+      if (sd === 'A') {
+        add({ id: 'crate', build: crate, pos: [-3.3, 0, -3.5], ry: 0.15, solid: [0.85, 0.45] });
+        add({ id: 'lantern', build: () => model('Lantern_01', () => new T.Group(), { scale: 1.3 }), pos: [-3.1, 0.35, -3.45] });
+      } else {
+        lock(1, { build: crate, pos: [-3.3, 0, -3.5], ry: 0.15, solid: [0.85, 0.45] });
+        reveal(1, { build: () => P.floorNote(['S · N · O', 'N=1 E=2 S=3 O=4'], { size: 60 }), pos: [-3.3, 0.36, -3.5], ry: 0.15 });
+      }
       const lt = ready(glbCache, 'WoodenTable_03') ? 0.83 * 0.75 : 0.72;
       if (sd === 'A') {
         add({ id: 'clue', label: 'Lámpara que parpadea', build: () => P.morseLamp(), pos: [-2.6, lt + 0.01, 2.6], morse: true, clue: 'La lámpara parpadea siempre con el mismo ritmo, se apaga un rato y vuelve a empezar.' });
         add({ id: 'ltable', build: () => P.table(0.6, 0.6, 0.72, '#4a3020', 'WoodenTable_03', { scale: 0.75 }), pos: [-2.6, 0, 2.6], solid: [1.0, 0.45] });
         add({ id: 'stool', build: () => model('wooden_stool_01', () => new T.Group()), pos: [-1.6, 0, 2.1], solid: [0.4, 0.4] });
-        add({ id: 'lock', label: 'Baldosas de hielo', build: () => P.iceGrid(), pos: [1.6, 0, -2.2], lock: true });
+        lock(0, { build: () => P.iceGrid(), pos: [1.6, 0, -2.2] });
+        reveal(0, { build: () => P.fish(), pos: [1.6, 0, -0.6] });
+        lock(1, { build: () => P.lanterns(), pos: [2.0, 1.6, -3.98], lanterns: true, answerLit: ST[1].answer });
+        reveal(1, { build: () => P.floorNote(['«Lo contrario', 'del frío»'], { size: 64 }), pos: [-2.25, lt + 0.002, 2.45], ry: 0.2 });
+        lock(2, { build: () => P.lockBox('#555555'), pos: [0.38, 1.05, -3.85] });
       } else {
         add({ id: 'clue', label: 'Tabla Morse', build: () => P.morseChart(), pos: [-3.95, 1.6, 1.6], ry: Math.PI / 2, clue: 'Una tabla con el código Morse: cada letra es una serie de destellos cortos (·) y largos (—).' });
         add({ id: 'clue2', label: 'Dibujo de baldosas', build: () => P.crackDrawing(C.B.pattern), pos: [2.0, 1.6, 3.96], ry: Math.PI, clue: 'Un dibujo de 9 baldosas. Las agrietadas son: ' + C.B.pattern.map((v, i) => v ? (['arriba izquierda', 'arriba centro', 'arriba derecha', 'centro izquierda', 'centro', 'centro derecha', 'abajo izquierda', 'abajo centro', 'abajo derecha'][i]) : null).filter(Boolean).join(', ') + '.' });
-        add({ id: 'lock', label: 'Cerradura de la cabaña', build: () => box(0.2, 0.3, 0.08, M('#555555', { metalness: 0.8, roughness: 0.35 })), pos: [0.38, 1.05, -3.85], lock: true });
+        lock(0, { build: () => P.lockBox('#555555'), pos: [0.38, 1.05, -3.85] });
+        reveal(0, { build: () => P.note(['Mapa del lago', '💡  💡  ⚫  💡'], 0.6, 0.45, { size: 56 }), pos: [-1.5, 1.6, -3.97] });
+        lock(2, { build: () => P.lockBox('#8a6d2e'), pos: [-0.38, 1.05, -3.85] });
       }
     }
     return objs;
@@ -670,10 +811,16 @@ const Esc3D = (function () {
       if (e.pointerId === joy.id) { joy.id = null; joy.dx = joy.dy = 0; knob.style.transform = ''; joyEl.classList.remove('on'); }
       else if (e.pointerId === drag.id) {
         drag.id = null;
-        if (drag.moved < 10 && performance.now() - drag.t < 350) tapAt(e.clientX, e.clientY);
+        if (e.type === 'pointerup' && drag.moved < 14 && performance.now() - drag.t < 450) {
+          // Se abre en el "click" que el móvil manda justo después del toque: si se abriera ya,
+          // ese click caería sobre la hoja recién abierta y la cerraría al instante.
+          const x = e.clientX, y = e.clientY;
+          clearTimeout(drag.tap); drag.tap = setTimeout(() => { drag.tap = 0; tapAt(x, y); }, 450);
+        }
       }
     };
     canvas.addEventListener('pointerup', up); canvas.addEventListener('pointercancel', up);
+    canvas.addEventListener('click', e => { if (drag.tap) { clearTimeout(drag.tap); drag.tap = 0; tapAt(e.clientX, e.clientY); } });
     window.addEventListener('keydown', kd); window.addEventListener('keyup', ku);
   }
   function kd(e) { keys[e.key.toLowerCase()] = true; }
@@ -683,14 +830,27 @@ const Esc3D = (function () {
   function pick(x, y) {
     const rc = ray(), v = new T.Vector2((x / innerWidth) * 2 - 1, -(y / innerHeight) * 2 + 1);
     rc.setFromCamera(v, R.camera);
-    const hit = rc.intersectObjects(R.interact, true)[0];
+    const hit = rc.intersectObjects(R.interact, true).find(h => visibleNow(h.object));
     return hit ? { id: hit.object.userData.id, label: hit.object.userData.label, dist: hit.distance } : null;
+  }
+  function visibleNow(o) { for (; o; o = o.parent) if (!o.visible) return false; return true; }
+  // Lo que aparece al abrir cerraduras y las velas/faroles que se encienden
+  function syncProgress() {
+    if (!R || !R.byId) return;
+    const done = E.esc3Progress(state, side);
+    for (const id in R.byId) {
+      const { def, mesh } = R.byId[id];
+      if (def.after !== undefined) mesh.visible = done >= def.after;
+      const lit = def.lock && done > def.step;
+      if (def.candles) mesh.userData.flames.forEach((f, i) => { f.visible = lit && !!def.answerLit[i]; });
+      if (def.lanterns) mesh.userData.bulbs.forEach((b, i) => { b.visible = lit && !!def.answerLit[i]; });
+    }
   }
   function tapAt(x, y) {
     if (document.getElementById('sheet')) return;
     const h = pick(x, y);
     if (!h) return;
-    if (h.dist > 3.4) { msg('Acércate más para examinar: ' + h.label); return; }
+    if (h.dist > 4) { msg('Acércate más para examinar: ' + h.label); return; }
     interactWith(h.id);
   }
 
@@ -745,8 +905,10 @@ const Esc3D = (function () {
     if (t - (R.pt || 0) > 150) {
       R.pt = t;
       const h = pick(innerWidth / 2, innerHeight / 2), pr = document.getElementById('e3Prompt');
-      if (pr) { if (h && h.dist < 3.4) { pr.textContent = '👆 ' + h.label; pr.hidden = false; } else pr.hidden = true; }
+      if (pr) { if (h && h.dist < 4) { pr.textContent = '👆 ' + h.label; pr.hidden = false; } else pr.hidden = true; }
     }
+    const dn = E.esc3Progress(state, side);
+    if (dn !== R.prog) { R.prog = dn; syncProgress(); R.renderer.shadowMap.needsUpdate = true; }
     R.renderer.render(R.scene, R.camera);
   }
 
@@ -766,7 +928,7 @@ const Esc3D = (function () {
     tm.className = rem !== null && rem < 60000 ? 'urgent' : '';
     const temp = Math.round(24 + frac * 36);
     dg.textContent = L.danger === 'calor' ? '🌡️ ' + temp + ' °C' : L.danger === 'gravedad' ? (rem < 60000 ? '⚠️ ¡La gravedad está volviendo!' : '🙃 Gravedad invertida') : (rem < 90000 ? '🧊 ¡El hielo se está rompiendo!' : '🧊 El hielo cruje');
-    dg.textContent += state[side] ? ' · ✅ Tu puerta está abierta' : '';
+    dg.textContent += state[side] ? ' · ✅ Tu puerta está abierta' : ' · 🔒 ' + E.esc3Progress(state, side) + '/' + L[side].steps.length;
     // Se acabó el tiempo: reinicia la sala (una sola vez por intento)
     if (rem !== null && rem <= 0 && !E.esc3LevelDone(state) && failGuard !== state.levelAt) {
       failGuard = state.levelAt;
@@ -779,12 +941,24 @@ const Esc3D = (function () {
   function interactWith(id) {
     const o = R.byId[id];
     if (!o) return;
-    const d = o.def, L = E.ESC3.levels[state.level], p = L[side];
+    const d = o.def, L = E.ESC3.levels[state.level], p = L[side], done = E.esc3Progress(state, side);
+    if (!visibleNow(o.mesh)) return;
     if (d.door) {
       if (state[side]) return msg('Tu puerta está abierta. Esperen a que la otra también se abra.');
-      return openSheet('<div class="closeup">🚪</div><h2>La puerta está cerrada</h2><p style="margin-top:0">' + esc(p.hint) + '</p><button class="btn block" data-act="closeSheet">Seguir buscando</button>');
+      const nx = p.steps[done];
+      return openSheet('<div class="closeup">🚪</div><h2>La puerta está cerrada</h2><p style="margin-top:0">' + esc(p.door) + '</p>' +
+        '<p><b>Cerraduras abiertas: ' + done + ' de ' + p.steps.length + '.</b> Ahora toca: <b>' + esc(nx.lock) + '</b>. ' + esc(nx.hint) + '</p><button class="btn block" data-act="closeSheet">Seguir buscando</button>');
     }
-    if (d.lock) return openLock(p, d.label);
+    if (d.lock) {
+      if (d.step < done) return msg('Ya abriste: ' + d.label + '.');
+      if (d.step > done) return msg('🔒 ' + d.label + ' sigue bloqueado. Primero abre: ' + p.steps[done].lock + '.', 3200);
+      return openLock(p.steps[d.step], d.label, d.step);
+    }
+    if (d.reveal !== undefined) {
+      const txt = p.steps[d.reveal].reveal;
+      addNote3(d.id, txt);
+      return openSheet('<h2>' + esc(d.label) + '</h2><p style="margin-top:0">' + esc(txt) + '</p><p class="small" style="color:var(--ok);font-weight:700">📓 Pista guardada en tus notas. Cuéntasela a tu pareja: es para su sala.</p><button class="btn block" data-act="closeSheet">Seguir</button>');
+    }
     if (d.clue) {
       addNote3(d.id, d.clue);
       if (d.riddle && 'speechSynthesis' in window) { try { const u = new SpeechSynthesisUtterance(d.riddle); u.lang = 'es-ES'; u.rate = 0.9; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) { } }
@@ -809,9 +983,9 @@ const Esc3D = (function () {
   }
 
   let LK = null;
-  function openLock(p, label) {
+  function openLock(p, label, step) {
     if (state[side]) return msg('Ya resolviste esta cerradura.');
-    LK = { p, label, v: p.kind === 'switches' ? [0, 0, 0, 0] : p.kind === 'grid' ? [0, 0, 0, 0, 0, 0, 0, 0, 0] : '' };
+    LK = { p, label, step, v: p.kind === 'switches' ? [0, 0, 0, 0] : p.kind === 'grid' ? [0, 0, 0, 0, 0, 0, 0, 0, 0] : '' };
     openSheet('<div id="lk"></div>', () => drawLock());
   }
   function drawLock(bad) {
@@ -841,16 +1015,23 @@ const Esc3D = (function () {
   ACTS.lkTry = async () => {
     if (!LK) return;
     const val = LK.p.kind === 'word' ? (document.getElementById('lkWord') || {}).value : LK.v;
-    if (!E.esc3Check(state.level, side, val)) {
+    if (!E.esc3Check(state.level, side, val, LK.step)) {
       vibrate([60, 40, 60]); chime(false);
       if (LK.p.kind === 'keypad') LK.v = '';
       drawLock(true);
       return;
     }
+    const solved = LK.p;
     vibrate(150); chime(true); closeSheet(); LK = null;
     const next = E.esc3Solve(state, side);
-    await Sync.patchCouple(S.code, E.esc3LevelDone(next) ? { escape3: E.esc3Advance(next, Date.now()) } : { ['escape3.' + side]: true });
-    msg(E.esc3LevelDone(next) ? '¡Las dos puertas se abrieron!' : '¡Se abrió tu puerta! Ayuda a tu pareja con la suya.', 3500);
+    state = next; // para que lo que aparece se vea ya, sin esperar a la sincronización
+    await Sync.patchCouple(S.code, E.esc3LevelDone(next) ? { escape3: E.esc3Advance(next, Date.now()) } : { ['escape3.p' + side]: next['p' + side], ['escape3.' + side]: next[side] });
+    if (E.esc3LevelDone(next)) return msg('¡Las dos puertas se abrieron!', 3500);
+    if (next[side]) return msg('¡Se abrió tu puerta! Ayuda a tu pareja con la suya.', 3500);
+    if (solved.reveal) {
+      addNote3('rev' + next['p' + side], solved.reveal);
+      openSheet('<div class="closeup">🔓</div><h2>¡Abriste: ' + esc(solved.lock) + '!</h2><p style="margin-top:0"><b>' + esc(solved.revealLabel) + ':</b> ' + esc(solved.reveal) + '</p><p class="small" style="color:var(--ok);font-weight:700">📓 Guardado en tus notas. Esto es para la sala de tu pareja: díselo.</p><button class="btn block" data-act="closeSheet">Seguir</button>');
+    }
   };
 
   function addNote3(id, text) {
@@ -941,6 +1122,8 @@ const Esc3D = (function () {
       } else if (prev && prev.levelAt !== state.levelAt && !state.A && !state.B) {
         msg('⏱️ Se acabó el tiempo. La sala vuelve a empezar.', 4000);
         R.camera.position.set(0, 1.6, 2.6); look.yaw = 0; look.pitch = 0;
+      } else if (prev && E.esc3Progress(state, side === 'A' ? 'B' : 'A') > E.esc3Progress(prev, side === 'A' ? 'B' : 'A') && !state[side === 'A' ? 'B' : 'A']) {
+        msg('🔓 Tu pareja abrió una cerradura (' + E.esc3Progress(state, side === 'A' ? 'B' : 'A') + ' de 3). Pregúntale qué encontró.', 3500);
       } else if (prev && !prev[side === 'A' ? 'B' : 'A'] && state[side === 'A' ? 'B' : 'A']) {
         msg('🔓 ¡Tu pareja abrió su puerta!', 3500);
       }
@@ -953,6 +1136,7 @@ const Esc3D = (function () {
     const b = build(level);
     Object.assign(R, b);
     builtLevel = level;
+    R.prog = -1;
     R.renderer.shadowMap.needsUpdate = true;
     onResize();
     // Adelanta la descarga de la sala siguiente mientras juegan esta
