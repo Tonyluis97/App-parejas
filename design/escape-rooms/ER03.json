@@ -2021,8 +2021,8 @@
     },
     {
       "clue_id": "C06",
-      "content": "Placa de los tornos, vista desde arriba. Torno izquierdo: cada vuelta gira el anillo exterior un signo en el sentido de las agujas del reloj y el anillo medio un signo en sentido contrario. Torno derecho: cada vuelta gira el anillo medio un signo en el sentido de las agujas del reloj y arrastra el interior un signo en el mismo sentido. Los tornos solo giran hacia delante. Los tres anillos llevan los mismos seis signos en este orden, en el sentido de las agujas del reloj: círculo con punto, dos ondas, triángulo, cuadrado, estrella, hexágono. Ahora la flecha del norte señala: exterior, estrella; medio, círculo con punto; interior, dos ondas.",
-      "alt_text": "Texto y voz con un esquema accesible de tres anillos: cada anillo se muestra como una fila de seis casillas con el signo actual resaltado con marco grueso, y se describe en voz qué hace cada torno.",
+      "content": "Placa de los tornos, vista desde arriba. Cada vuelta del torno izquierdo hace que la flecha del anillo exterior pase al signo siguiente de la lista y la del anillo medio al signo anterior. Cada vuelta del torno derecho hace que la flecha del anillo medio y la del interior pasen al signo siguiente. Los tornos solo giran hacia delante. Lista de signos de los tres anillos, en orden: círculo con punto, dos ondas, triángulo, cuadrado, estrella, hexágono; después del hexágono vuelve el círculo con punto. Ahora la flecha del norte señala: exterior, estrella; medio, círculo con punto; interior, dos ondas.",
+      "alt_text": "Texto y voz con un esquema accesible de tres anillos: cada anillo se muestra como una fila de seis casillas en el orden de la lista (círculo con punto, dos ondas, triángulo, cuadrado, estrella, hexágono), con el signo que señala la flecha resaltado con marco grueso. En voz se describe qué hace cada torno: el izquierdo pasa el exterior al signo siguiente y el medio al anterior; el derecho pasa el medio y el interior al siguiente.",
       "location": "O12",
       "discovery": "A examina la placa entre los dos tornos",
       "player": "A",
@@ -2541,8 +2541,8 @@
       "info_b": "Los valores de las figuras (C02) y la frase del pedestal (C07).",
       "must_communicate": "B lee la frase; A traduce los nombres a figuras; B convierte las figuras en valores, opera y devuelve una figura; A traduce esa figura a su nombre si hace falta y calcula las vueltas de cada torno.",
       "rules": [
-        "Cada torno solo gira hacia delante, un signo por vuelta.",
-        "El torno izquierdo mueve el exterior y, al revés, el medio; el derecho mueve el medio y el interior.",
+        "Cada torno solo gira hacia delante; cada vuelta mueve cada flecha afectada un signo de la lista.",
+        "El torno izquierdo pasa el exterior al signo siguiente y el medio al anterior; el derecho pasa el medio y el interior al siguiente.",
         "Se valida cuando A pulsa Fijar anillos."
       ],
       "steps": [
@@ -2577,7 +2577,7 @@
             "medio": "KEL",
             "interior": "ILO"
           },
-          "why": "Olvida que el torno izquierdo hace retroceder el anillo medio."
+          "why": "El medio debe señalar el signo que vale Tir + Kel = 4, el hexágono (Vash), no Kel; además, con el exterior en Tir y el interior en Ilo los tornos siempre dejan el medio en Vash."
         },
         {
           "value": {
@@ -2857,7 +2857,7 @@
       "hints": [
         "La bóveda es el reflejo del suelo: A ve dónde están los soles y B sabe cómo reflejarlos.",
         "Usen la losa descubierta para comprobar: el sol de la bóveda en (1,2) corresponde a la losa (5,2).",
-        "Restén la columna de 6 y dejen la fila: cavad (2,1), (1,3) y (4,5)."
+        "Resten la columna de 6 y dejen la fila: cavad (2,1), (1,3) y (4,5)."
       ],
       "estimated_minutes": 7,
       "unlocks": [
@@ -2908,8 +2908,8 @@
       },
       "wrong_answers": [
         {
-          "value": "546",
-          "why": "Usa los lados de las figuras (triángulo 3, ondas 2...) en lugar de la estela; además 4 − 5 no daría un número válido."
+          "value": "688",
+          "why": "Trata la mano cerrada como suma: 6 + 2 = 8; la mano cerrada resta, 6 − 2 = 4."
         },
         {
           "value": "646",
@@ -3328,7 +3328,7 @@
       "action_a": "Dictar y comprobar con B el reflejo.",
       "action_b": "Reflejar y cavar.",
       "validation": "Las tres celdas cavadas deben ser los reflejos de C11 con la regla de C12, excluida la de C13.",
-      "miscommunication": "Si no reflejan, la comprobación de (5,2) no cuadra y la arena vuelve a cubrir lo cavado sin penalizar.",
+      "miscommunication": "Si no reflejan, la comprobación con la losa descubierta no cuadra y la arena vuelve a cubrir lo cavado sin penalizar.",
       "anti_domination": "B decide dónde cavar, pero solo puede saberlo con lo que dicta A.",
       "skill_gap": "La operación es restar de 6; la losa visible sirve de ejemplo resuelto."
     },
@@ -3926,7 +3926,7 @@
         "ROOM03_UNLOCKED"
       ],
       "prev_state": "EXPLORATION",
-      "action": "Complicación: cae una cortina de arena fina que cubre el suelo de la cámara salvo la losa (5,2) y deja asomar la tesela",
+      "action": "Complicación: cae una cortina de arena fina que cubre el suelo de la cámara salvo una losa y deja asomar la tesela",
       "affects": [
         "O21",
         "O23",
@@ -4504,7 +4504,47 @@
                 "interior": "KEL"
               },
               "normalize": "Igual que la base. Kel 3 + Ilo 2 = 5, dos ondas; Quen 6 − Kel 3 = 3, círculo con punto. Tornos: 4 vueltas al izquierdo y 5 al derecho; el medio queda en 0 − 4 + 5 = 1, dos ondas."
-            }
+            },
+            "hints": [
+              "El pedestal habla con nombres; A tiene los nombres y B los valores.",
+              "Los valores no son los lados de la figura: miren la estela. El triángulo vale 1 y el círculo con punto 3.",
+              "Exterior en triángulo, medio en dos ondas, interior en círculo con punto: 4 vueltas al torno izquierdo y 5 al derecho."
+            ],
+            "wrong_answers": [
+              {
+                "value": {
+                  "exterior": "TIR",
+                  "medio": "VASH",
+                  "interior": "TIR"
+                },
+                "why": "Cuenta lados: Kel 1 + Ilo 5 = 6 (hexágono) y Quen 4 − Kel 1 = 3 (triángulo); ignora la estela."
+              },
+              {
+                "value": {
+                  "exterior": "TIR",
+                  "medio": "KEL",
+                  "interior": "KEL"
+                },
+                "why": "El medio debe valer Kel + Ilo = 5, dos ondas."
+              },
+              {
+                "value": {
+                  "exterior": "QUEN",
+                  "medio": "DOA",
+                  "interior": "KEL"
+                },
+                "why": "Confunde Tir con el cuadrado."
+              }
+            ],
+            "steps": [
+              "B lee el pedestal: exterior TIR; medio, KEL e ILO juntos; interior, QUEN menos KEL.",
+              "A traduce: Tir es el triángulo, Kel el círculo con punto, Ilo la estrella y Quen el cuadrado.",
+              "B mira la estela: triángulo 1, círculo con punto 3, estrella 2, cuadrado 6.",
+              "Medio: 3 + 2 = 5, las dos ondas (Doa). Interior: 6 − 3 = 3, el círculo con punto (Kel).",
+              "A calcula: el exterior va de estrella a triángulo, 4 vueltas del torno izquierdo; el interior va de dos ondas a círculo con punto, 5 vueltas del derecho; el medio queda en círculo con punto − 4 + 5 = dos ondas.",
+              "A da 4 vueltas al torno izquierdo y 5 al derecho y pulsa Fijar anillos."
+            ],
+            "solution_proof": "C07 nombra Tir, Kel, Ilo y Quen. C01 da sus figuras (triángulo, círculo con punto, estrella, cuadrado) y C02 sus valores (1, 3, 2 y 6). 3 + 2 = 5 y en C02 solo las dos ondas valen 5; 6 − 3 = 3 y solo el círculo con punto vale 3. Los tornos son lineales módulo 6 sobre la lista de C06: el exterior necesita 4 vueltas del izquierdo (de estrella a triángulo), el interior 5 del derecho (de dos ondas a círculo con punto), y el medio queda en 0 − 4 + 5 ≡ 1, las dos ondas, que coincide con lo pedido. A no tiene la frase ni los valores y B no tiene los nombres ni ve los anillos."
           }
         }
       }
@@ -4533,7 +4573,49 @@
                 "5-5"
               ],
               "normalize": "Igual que la base. (2,4) da (4,4), la losa visible; (5,1) da (1,1); (3,2) da (3,2) porque la columna central no cambia; (1,5) da (5,5)."
-            }
+            },
+            "hints": [
+              "La bóveda es el reflejo del suelo: A ve dónde están los soles y B sabe cómo reflejarlos.",
+              "Usen la losa descubierta para comprobar: el sol de la bóveda en (2,4) corresponde a la losa (4,4).",
+              "Resten la columna de 6 y dejen la fila: cavad (1,1), (3,2) y (5,5)."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "2-4",
+                  "5-1",
+                  "3-2",
+                  "1-5"
+                ],
+                "why": "Copia la bóveda sin reflejar; la losa visible (4,4) lo desmiente."
+              },
+              {
+                "value": [
+                  "2-2",
+                  "5-5",
+                  "3-4",
+                  "1-1"
+                ],
+                "why": "Invierte filas en lugar de columnas."
+              },
+              {
+                "value": [
+                  "1-1",
+                  "3-2",
+                  "5-5",
+                  "4-4"
+                ],
+                "why": "Incluye la losa ya descubierta."
+              }
+            ],
+            "steps": [
+              "A examina la bóveda: soles en (2,4), (5,1), (3,2) y (1,5).",
+              "B lee la inscripción del estanque y examina la losa descubierta (4,4).",
+              "Comprueban: (2,4) de la bóveda da (6 − 2, 4) = (4,4), la losa descubierta.",
+              "Las otras: (5,1) da (1,1); (3,2) da (3,2), porque la columna central no cambia; (1,5) da (5,5).",
+              "B cava (1,1), (3,2) y (5,5)."
+            ],
+            "solution_proof": "C12 da una regla única: columna c pasa a 6 − c y la fila no cambia. Aplicada a C11 de esta variante, el sol de (2,4) cae en (4,4), que C13 confirma como losa ya visible; los otros tres caen en (1,1), (3,2) y (5,5), todos cubiertos. Sin reflejar no se cumple la comprobación de (4,4) y reflejando filas tampoco. A no ve el suelo ni la regla; B no ve la bóveda."
           }
         }
       }
@@ -4559,7 +4641,49 @@
                 "LUNA:VASH"
               ],
               "normalize": "Igual que la base. 1 Sol recta, vale seis, cuadrado; 2 Luna curva, Doa; 3 Sol en V, Kel; 4 Luna doble, vale cuatro, hexágono."
-            }
+            },
+            "hints": [
+              "Cada renglón empieza en una mitad y acaba en la otra: léanse los dos lados.",
+              "Emparejen por la muesca: recta con recta, curva con curva, en V con en V, doble con doble.",
+              "Sol a cuadrado, Luna a dos ondas, Sol a círculo con punto, Luna a hexágono."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "SOL:DOA",
+                  "LUNA:QUEN",
+                  "SOL:VASH",
+                  "LUNA:KEL"
+                ],
+                "why": "Une los renglones en el orden de la Mitad de la Luna, sin mirar muescas."
+              },
+              {
+                "value": [
+                  "SOL:VASH",
+                  "LUNA:DOA",
+                  "SOL:KEL",
+                  "LUNA:QUEN"
+                ],
+                "why": "Cuenta lados: toma el hexágono por el que vale seis y el cuadrado por el que vale cuatro."
+              },
+              {
+                "value": [
+                  "LUNA:DOA",
+                  "SOL:QUEN",
+                  "LUNA:VASH",
+                  "SOL:KEL"
+                ],
+                "why": "Empieza la Luna; el primer renglón es del Sol."
+              }
+            ],
+            "steps": [
+              "A lee sus renglones: primero Sol (muesca recta), segundo Luna (curva), tercero Sol (en V), cuarto Luna (doble).",
+              "B lee los suyos: curva, Doa; recta, el que vale seis; doble, el que vale cuatro; en V, Kel.",
+              "Emparejan: 1 Sol al que vale seis; 2 Luna a Doa; 3 Sol a Kel; 4 Luna al que vale cuatro.",
+              "Traducen: vale seis, cuadrado (Quen); Doa, dos ondas; Kel, círculo con punto; vale cuatro, hexágono (Vash).",
+              "A gira a cuadrado, B a dos ondas, A a círculo con punto y B a hexágono."
+            ],
+            "solution_proof": "Cada muesca aparece una sola vez en cada mitad, así que el emparejamiento de C16 con C17 de esta variante es único: 1 Sol-vale seis, 2 Luna-Doa, 3 Sol-Kel, 4 Luna-vale cuatro. Con C01, Doa son las dos ondas y Kel el círculo con punto; con C02, solo el cuadrado vale 6 y solo el hexágono vale 4. Cada mitad sola da medio renglón y cada cerradura solo la gira quien tiene su mitad."
           }
         }
       }

@@ -209,7 +209,7 @@
           "type": "Baliza de Crisálida sobre la mampara",
           "position": {
             "x": 4,
-            "y": 3.0,
+            "y": 3,
             "z": 5.5
           },
           "color": "#FFB347",
@@ -673,8 +673,8 @@
       "room": "ROOM01",
       "position": {
         "x": 0.4,
-        "y": 1.0,
-        "z": 3.0
+        "y": 1,
+        "z": 3
       },
       "category": "use",
       "states": [
@@ -720,8 +720,8 @@
       "visual": "Cuaderno grueso de tapas verdes abierto en un atril, con una nota amarilla pegada en la página de hoy",
       "room": "ROOM01",
       "position": {
-        "x": 6.0,
-        "y": 1.0,
+        "x": 6,
+        "y": 1,
         "z": 3.5
       },
       "category": "examine",
@@ -744,7 +744,7 @@
       "puzzle": "P01",
       "authorized": "B",
       "final_state": "EXAMINED",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O03",
@@ -753,8 +753,8 @@
       "room": "ROOM01",
       "position": {
         "x": 7.8,
-        "y": 1.0,
-        "z": 2.0
+        "y": 1,
+        "z": 2
       },
       "category": "locked",
       "states": [
@@ -778,7 +778,7 @@
       "puzzle": "P02",
       "authorized": "B",
       "final_state": "OPEN",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O04",
@@ -819,7 +819,7 @@
       "puzzle": "P02",
       "authorized": "A",
       "final_state": "COMBINED",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O05",
@@ -829,7 +829,7 @@
       "position": {
         "x": 7.8,
         "y": 1.2,
-        "z": 2.0
+        "z": 2
       },
       "category": "combine",
       "states": [
@@ -930,9 +930,9 @@
       "visual": "Cajón de acero que atraviesa la mampara a media altura, con una ranura a cada lado y una flecha grabada",
       "room": "ROOM01",
       "position": {
-        "x": 4.0,
-        "y": 1.0,
-        "z": 3.0
+        "x": 4,
+        "y": 1,
+        "z": 3
       },
       "category": "coop",
       "states": [
@@ -964,7 +964,7 @@
       "visual": "Esfera blanca con un anillo de luz que late cuando VEGA habla y una pantalla con la cuenta atrás",
       "room": "ROOM01",
       "position": {
-        "x": 4.0,
+        "x": 4,
         "y": 2.8,
         "z": 5.5
       },
@@ -990,7 +990,7 @@
       "puzzle": null,
       "authorized": "AB",
       "final_state": "IDLE",
-      "interact_radius_m": 2.0
+      "interact_radius_m": 2
     },
     {
       "object_id": "O10",
@@ -1048,7 +1048,7 @@
       "visual": "Compuerta circular con ojo de buey y una franja ámbar que dice Sellado por Crisálida",
       "room": "ROOM01",
       "position": {
-        "x": 6.0,
+        "x": 6,
         "y": 0,
         "z": 0.1
       },
@@ -1073,8 +1073,8 @@
       "visual": "Barandilla de la pasarela desde la que se ven los cuatro bancales con etiquetas flotantes de humedad",
       "room": "ROOM02",
       "position": {
-        "x": 7.0,
-        "y": 3.0,
+        "x": 7,
+        "y": 3,
         "z": 9.4
       },
       "category": "examine",
@@ -1105,8 +1105,8 @@
       "visual": "Consola en la pared sur con cuatro válvulas de volante, cada una con el dibujo de un cultivo, y una pantalla de reglas",
       "room": "ROOM02",
       "position": {
-        "x": 7.0,
-        "y": 1.0,
+        "x": 7,
+        "y": 1,
         "z": 0.4
       },
       "category": "use",
@@ -1154,8 +1154,8 @@
       "visual": "Terminal de pie con teclado numérico y el registro de VEGA en pantalla",
       "room": "ROOM02",
       "position": {
-        "x": 1.0,
-        "y": 3.0,
+        "x": 1,
+        "y": 3,
         "z": 9.5
       },
       "category": "use",
@@ -1186,7 +1186,7 @@
       "puzzle": "P04",
       "authorized": "A",
       "final_state": "CLEARED",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O16",
@@ -1194,8 +1194,8 @@
       "visual": "Pantalla en la barandilla norte con la vista cenital del invernadero, las tapas numeradas de los sensores y las nubes de nebulización",
       "room": "ROOM02",
       "position": {
-        "x": 10.0,
-        "y": 3.0,
+        "x": 10,
+        "y": 3,
         "z": 9.4
       },
       "category": "examine",
@@ -1226,9 +1226,9 @@
       "visual": "Cinco postes cortos con un cristal frontal; algunos tienen gotas en el cristal y el icono de gotas encendido",
       "room": "ROOM02",
       "position": {
-        "x": 7.0,
+        "x": 7,
         "y": 0.4,
-        "z": 5.0
+        "z": 5
       },
       "category": "examine",
       "states": [
@@ -1250,7 +1250,7 @@
       "puzzle": "P04",
       "authorized": "B",
       "final_state": "EXAMINED",
-      "interact_radius_m": 6.0
+      "interact_radius_m": 6
     },
     {
       "object_id": "O18",
@@ -1258,9 +1258,9 @@
       "visual": "Dron del tamaño de un puño con forma de abejorro y una etiqueta colgando de una pata",
       "room": "ROOM02",
       "position": {
-        "x": 12.0,
+        "x": 12,
         "y": 0.3,
-        "z": 1.0
+        "z": 1
       },
       "category": "collect",
       "states": [
@@ -1295,7 +1295,7 @@
       "position": {
         "x": 13.8,
         "y": 1.2,
-        "z": 5.0
+        "z": 5
       },
       "category": "use",
       "states": [
@@ -1319,7 +1319,7 @@
       "visual": "Torre de macetas de barro y dos regaderas de latón",
       "room": "ROOM02",
       "position": {
-        "x": 2.0,
+        "x": 2,
         "y": 0,
         "z": 0.6
       },
@@ -1371,7 +1371,7 @@
       "position": {
         "x": 0.3,
         "y": 1.3,
-        "z": 4.0
+        "z": 4
       },
       "category": "use",
       "states": [
@@ -1427,7 +1427,7 @@
       "position": {
         "x": 9.7,
         "y": 1.2,
-        "z": 5.0
+        "z": 5
       },
       "category": "locked",
       "states": [
@@ -1451,7 +1451,7 @@
       "puzzle": "P05",
       "authorized": "B",
       "final_state": "OPEN",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O24",
@@ -1459,7 +1459,7 @@
       "visual": "Placa de latón grabada en el marco de la mampara, legible por los dos lados",
       "room": "ROOM03",
       "position": {
-        "x": 5.0,
+        "x": 5,
         "y": 1.8,
         "z": 7.6
       },
@@ -1492,7 +1492,7 @@
       "room": "ROOM03",
       "position": {
         "x": 0.6,
-        "y": 1.0,
+        "y": 1,
         "z": 0.6
       },
       "category": "coop",
@@ -1534,7 +1534,7 @@
       "room": "ROOM03",
       "position": {
         "x": 9.4,
-        "y": 1.0,
+        "y": 1,
         "z": 0.6
       },
       "category": "coop",
@@ -1600,9 +1600,9 @@
       "visual": "Ventilador industrial de aspas anchas que se detiene en energía mínima",
       "room": "ROOM03",
       "position": {
-        "x": 5.0,
+        "x": 5,
         "y": 3.7,
-        "z": 3.0
+        "z": 3
       },
       "category": "decorative",
       "states": [
@@ -1625,8 +1625,8 @@
       "visual": "Cilindro de vidrio y madera con una semilla tallada en la tapa; dentro, una tarjeta y una nota de Tomás Velarde",
       "room": "ROOM04",
       "position": {
-        "x": 10.0,
-        "y": 1.0,
+        "x": 10,
+        "y": 1,
         "z": 2.5
       },
       "category": "examine",
@@ -1649,7 +1649,7 @@
       "puzzle": "P07",
       "authorized": "B",
       "final_state": "EXAMINED",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O30",
@@ -1657,7 +1657,7 @@
       "visual": "Consola de piedra pulida con un teclado de dieciséis teclas y cuatro ranuras luminosas",
       "room": "ROOM04",
       "position": {
-        "x": 9.0,
+        "x": 9,
         "y": 1.1,
         "z": 7.6
       },
@@ -1689,7 +1689,7 @@
       "puzzle": "P07",
       "authorized": "B",
       "final_state": "AUTHORIZED",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O31",
@@ -1699,7 +1699,7 @@
       "position": {
         "x": 0.3,
         "y": 1.4,
-        "z": 5.0
+        "z": 5
       },
       "category": "use",
       "states": [
@@ -1741,7 +1741,7 @@
       "position": {
         "x": 11.7,
         "y": 1.3,
-        "z": 5.0
+        "z": 5
       },
       "category": "use",
       "states": [
@@ -1806,7 +1806,7 @@
       "visual": "Compuerta redonda con un volante y una franja que pasa de ámbar a blanco",
       "room": "ROOM04",
       "position": {
-        "x": 3.0,
+        "x": 3,
         "y": 0,
         "z": 8.9
       },
@@ -1834,7 +1834,7 @@
       "puzzle": null,
       "authorized": "A",
       "final_state": "OPEN",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O35",
@@ -1842,7 +1842,7 @@
       "visual": "Compuerta gemela de la oeste",
       "room": "ROOM04",
       "position": {
-        "x": 9.0,
+        "x": 9,
         "y": 0,
         "z": 8.9
       },
@@ -1870,7 +1870,7 @@
       "puzzle": null,
       "authorized": "B",
       "final_state": "OPEN",
-      "interact_radius_m": 1.0
+      "interact_radius_m": 1
     },
     {
       "object_id": "O36",
@@ -1878,7 +1878,7 @@
       "visual": "Mural pintado de la ladera cubierta de árboles, con la firma T. V.",
       "room": "ROOM04",
       "position": {
-        "x": 9.0,
+        "x": 9,
         "y": 1.5,
         "z": 0.1
       },
@@ -2678,7 +2678,7 @@
         "check": "El terminal acepta el número del sensor que está a la vez en la lista de empañados de C09 y bajo una nube de C08 (variante activa). Exige C09 descubierta por B."
       },
       "on_solve": {
-        "message": "Falsa alarma anulada. Sensor 46 marcado para revisión.",
+        "message": "Falsa alarma anulada. Sensor marcado para revisión.",
         "events": [
           "E05"
         ],
@@ -4499,6 +4499,10 @@
           "C01": {
             "content": "PROTOCOLO CRISÁLIDA ACTIVO. Hora del cierre: 18:50. Para abrir la taquilla de relevo, introduzca la credencial de cuatro cifras de la persona responsable del refugio en el momento del cierre.",
             "alt_text": "Texto grande con lectura en voz: hora del cierre 18:50; introducir la credencial de quien era responsable a esa hora."
+          },
+          "C10": {
+            "content": "Registro de VEGA, 18:50. Aviso de fuga emitido por un sensor con el cristal empañado y una nube de nebulización activa encima. Revisión: probable falsa alarma por condensación. Para anularla, introduzca el número de ese sensor.",
+            "alt_text": "Texto del registro con lectura en voz."
           }
         },
         "puzzles": {
@@ -4507,7 +4511,41 @@
               "type": "code",
               "value": "3906",
               "normalize": "Cuatro cifras sin espacios"
-            }
+            },
+            "hints": [
+              "La consola sabe la hora; el libro sabe quién estaba. Junten las dos cosas.",
+              "Lean la nota pegada en el libro de turnos y comprueben si el cierre fue antes o después del cambio que anuncia.",
+              "A las 18:50 Ciro todavía no se había ido: la nota solo cambia el turno desde las 19:00."
+            ],
+            "wrong_answers": [
+              {
+                "value": "5821",
+                "why": "Daniela Ruiz solo es responsable desde las 19:00, después del cierre."
+              },
+              {
+                "value": "7354",
+                "why": "El turno de noche de Inés Galván empieza a las 21:00, después del cierre."
+              },
+              {
+                "value": "4127",
+                "why": "El turno de mañana terminó a las 14:00."
+              }
+            ],
+            "steps": [
+              "A examina la consola de relevo.",
+              "B examina el libro de turnos y la nota.",
+              "A comunica que el cierre fue a las 18:50.",
+              "B comprueba que a las 18:50 Ciro todavía no se había ido: el responsable era Ciro Lamas.",
+              "A introduce 3906."
+            ],
+            "on_solve": {
+              "message": "Credencial aceptada: Ciro Lamas. Taquilla de relevo abierta.",
+              "events": [
+                "E02"
+              ],
+              "sets": []
+            },
+            "solution_proof": "Con C01 la hora es 18:50. En C02, la franja 14:00–21:00 es de Ciro (3906); la nota solo la recorta desde las 19:00, cuando pasa a Daniela Ruiz (5821). 18:50 cae antes del recorte, así que 3906 es la única respuesta. Quien aplique la nota sin mirar la hora sacará 5821; sin la hora no se puede elegir entre Ciro y Daniela."
           }
         }
       }
@@ -4537,14 +4575,90 @@
                 "RIEGO"
               ],
               "normalize": "Igual que la base"
-            }
+            },
+            "hints": [
+              "La placa es de los días tranquilos; busquen las reglas de energía mínima.",
+              "Ordenen por cuánto aguanta cada sistema sin energía y, si empatan, por lo que consume.",
+              "Primero el soporte vital, que solo aguanta 20 minutos; luego deshagan el empate a 45 minutos por consumo."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "ACCESOS",
+                  "SOPORTE",
+                  "RIEGO",
+                  "FRIO"
+                ],
+                "why": "Es el orden de la placa de energía normal, que la tarjeta declara no válido."
+              },
+              {
+                "value": [
+                  "SOPORTE",
+                  "FRIO",
+                  "ACCESOS",
+                  "RIEGO"
+                ],
+                "why": "Deshace el empate al revés: accesos consume 2 y frío 5, así que van antes los accesos."
+              },
+              {
+                "value": [
+                  "ACCESOS",
+                  "RIEGO",
+                  "SOPORTE",
+                  "FRIO"
+                ],
+                "why": "Ordena solo por consumo y deja el soporte vital, que aguanta 20 minutos, en tercer lugar."
+              }
+            ],
+            "steps": [
+              "A examina el panel y se produce la caída a energía mínima.",
+              "B abre el armario y lee la tarjeta.",
+              "Ordenan por autonomía: soporte vital (20 min), luego frío y accesos (45 min), luego riego (12 h).",
+              "Empate a 45 min: accesos (2 u) antes que frío (5 u).",
+              "A coloca Soporte vital, Accesos, Frío, Riego y confirma."
+            ],
+            "on_solve": {
+              "message": "Prioridades aceptadas. Alimentados: soporte vital, accesos y frío de la bóveda (11 de 12 unidades). Riego en espera.",
+              "events": [
+                "E07"
+              ],
+              "sets": []
+            },
+            "solution_proof": "Por la regla 1 de C13 y las autonomías de C12: soporte vital (20 min) va primero y riego (12 h) último. Frío y accesos empatan a 45 min; por la regla 2 va antes el que consume menos, accesos (2) frente a frío (5). El resultado es único: Soporte, Accesos, Frío, Riego. Con 12 unidades se alimentan 4+2+5 = 11 y riego (3) queda En espera, lo que la regla 3 permite. B no ve consumos ni autonomías y A no tiene las reglas."
           },
           "P07": {
             "answer": {
               "type": "code",
               "value": "71386205",
               "normalize": "Ocho cifras sin espacios"
-            }
+            },
+            "hints": [
+              "Cada fragmento dice a qué sistema pertenece.",
+              "El orden es el que dejó el panel de energía, no el de las zonas.",
+              "Empieza por el fragmento del soporte vital, 71; el siguiente es el de los accesos."
+            ],
+            "wrong_answers": [
+              {
+                "value": "38057162",
+                "why": "Es el orden de las zonas (fragmentos 1, 2, 3, 4), no el de prioridad."
+              },
+              {
+                "value": "38710562",
+                "why": "Es el orden de la placa de energía normal (Accesos, Soporte, Riego, Frío)."
+              },
+              {
+                "value": "71623805",
+                "why": "Deshace el empate al revés y pone Frío antes que Accesos."
+              }
+            ],
+            "steps": [
+              "B examina la consola y abre la cápsula del fundador.",
+              "A lee la prioridad vigente: Soporte vital, Accesos, Frío, Riego.",
+              "A dicta Soporte vital 71 y Accesos 38.",
+              "B añade Frío 62 y Riego 05.",
+              "B introduce 71 38 62 05."
+            ],
+            "solution_proof": "C14 fija el orden Soporte vital, Accesos, Frío de la bóveda, Riego. Los fragmentos dicen su sistema: Soporte 71 (C19), Accesos 38 (C05), Frío 62 (C20), Riego 05 (C18). Concatenados: 71 38 62 05 = 71386205. El orden de zonas da 38057162 y la placa da 38710562, ambos distintos. B tiene solo dos fragmentos y no conoce la prioridad; A no tiene la consola ni los otros dos."
           }
         }
       }
@@ -4565,7 +4679,34 @@
               "type": "code",
               "value": "27",
               "normalize": "Dos cifras sin espacios"
-            }
+            },
+            "hints": [
+              "Desde arriba y desde abajo se ve una mitad distinta de la misma pista.",
+              "El registro pide dos cosas a la vez: cristal empañado y niebla encima.",
+              "Solo un bancal aparece en las dos listas: el de las lentejas."
+            ],
+            "wrong_answers": [
+              {
+                "value": "46",
+                "why": "El sensor de maíz está empañado, pero no tiene nebulización encima."
+              },
+              {
+                "value": "58",
+                "why": "El de quinoa tiene nebulización encima, pero su cristal está limpio."
+              },
+              {
+                "value": "31",
+                "why": "El sensor de la fuente está limpio y sin niebla encima."
+              }
+            ],
+            "steps": [
+              "A lee el registro del terminal.",
+              "A examina el mapa vivo de sensores.",
+              "B recorre los sensores del suelo.",
+              "Cruzan: empañados lentejas y maíz; con niebla lentejas y quinoa; coincide lentejas.",
+              "A introduce 27."
+            ],
+            "solution_proof": "C09 da dos empañados: lentejas y maíz. C08 da niebla sobre lentejas y quinoa. La intersección es solo lentejas, cuyo sensor es el 27 según C08. 46 cumple solo una condición, 58 la otra, 31 ninguna. A no ve los cristales y B no ve los números ni las nubes desde arriba."
           }
         }
       }
