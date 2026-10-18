@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 mkdir -p dist web
 BUILD=$(date -u +%Y-%m-%d_%H%M)
 CONFIG="window.FIREBASE_CONFIG = null;"
-[ -f config.js ] && CONFIG=$(cat config.js)
+[ -f config.js ] && [ -z "$DEMO" ] && CONFIG=$(cat config.js)
 {
   echo "<script>"
   echo "const APP_BUILD = '$BUILD';"

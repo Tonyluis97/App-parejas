@@ -25,6 +25,10 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     await A.evaluate(() => { localStorage.clear(); });
     await A.reload(); await B.reload();
 
+    // Tocar los campos no debe enviar el formulario ni bloquear el calendario
+    await A.click('#wName'); await A.click('#wStart');
+    ok(scheme + ' tocar fecha no envía', (await A.$('.toast')) === null);
+    ok(scheme + ' fecha recibe el foco', await A.evaluate(() => document.activeElement.id === 'wStart'));
     // A crea la pareja
     await A.fill('#wName', 'Antonny'); await A.fill('#wStart', '2025-02-14');
     await A.click('button[type=submit]');

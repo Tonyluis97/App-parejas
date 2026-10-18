@@ -62,6 +62,9 @@ function closeSheet() { const s = $('#sheet'); if (s) s.remove(); }
 const VIEWS = {};
 function render() {
   const app = $('#app');
+  // No redibujar mientras se elige una fecha: cerraría el calendario del móvil
+  const ae = document.activeElement;
+  if (ae && ae.type === 'date' && app.contains(ae)) { if (!ae._wait) { ae._wait = true; ae.addEventListener('blur', () => setTimeout(render, 0), { once: true }); } return; }
   const keep = {};
   app.querySelectorAll('[data-keep]').forEach(el => { keep[el.dataset.keep] = el.value; });
   const act = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.keep : null;
@@ -111,7 +114,7 @@ function renderCallbar() {
 // ---------- Acciones ----------
 const ACTS = {};
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-act]');
+  const el = e.target.closest('[data-act]:not(form)');
   if (!el) return;
   const fn = ACTS[el.dataset.act];
   if (fn) { e.preventDefault(); Promise.resolve(fn(el, e)).catch(err => { console.error(err); toast(err.message || 'Algo salió mal'); }); }
@@ -208,6 +211,6 @@ async function boot() {
   render();
   subscribe();
   document.addEventListener('visibilitychange', () => { if (!document.hidden && S.tab === 'chat') { markRead(); render(); } });
-  setInterval(() => { if (['home', 'escape'].includes(S.tab) && !$('#sheet') && !(document.activeElement && document.activeElement.dataset && document.activeElement.dataset.keep)) render(); }, 30000);
+  setInterval(() => { const ae = document.activeElement; if (S.code && S.couple && ['home', 'escape'].includes(S.tab) && !$('#sheet') && !(ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))) render(); }, 30000);
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !window.Capacitor) navigator.serviceWorker.register('sw.js').catch(() => { });
 }
