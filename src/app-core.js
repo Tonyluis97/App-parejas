@@ -118,18 +118,35 @@ function renderCallbar() {
 
 // ---------- Acciones ----------
 const ACTS = {};
+// Si Firestore queda en un estado interno roto (pasa tras suspender el móvil o con varias pestañas),
+// ya no se recupera solo: se recarga la app una vez para reconectar.
+function fatalSync(err) {
+  if (!/INTERNAL ASSERTION FAILED/i.test(String((err && err.message) || err))) return false;
+  let last = 0;
+  try { last = +sessionStorage.getItem('nosotros_reload') || 0; } catch (e) { }
+  if (Date.now() - last > 30000) {
+    try { sessionStorage.setItem('nosotros_reload', Date.now()); } catch (e) { }
+    toast('Reconectando…');
+    setTimeout(() => location.reload(), 600);
+  } else toast('Se perdió la conexión. Cierra y vuelve a abrir la app.');
+  return true;
+}
+window.addEventListener('unhandledrejection', e => { if (fatalSync(e.reason)) e.preventDefault(); });
+window.addEventListener('error', e => { fatalSync(e.error || e.message); });
+function actErr(err) { console.error(err); if (!fatalSync(err)) toast(err.message || 'Algo salió mal'); }
+
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-act]:not(form)');
   if (!el) return;
   const fn = ACTS[el.dataset.act];
-  if (fn) { e.preventDefault(); Promise.resolve(fn(el, e)).catch(err => { console.error(err); toast(err.message || 'Algo salió mal'); }); }
+  if (fn) { e.preventDefault(); Promise.resolve(fn(el, e)).catch(actErr); }
 });
 document.addEventListener('submit', e => {
   const f = e.target.closest('form[data-act]');
   if (!f) return;
   e.preventDefault();
   const fn = ACTS[f.dataset.act];
-  if (fn) Promise.resolve(fn(f, e)).catch(err => { console.error(err); toast(err.message || 'Algo salió mal'); });
+  if (fn) Promise.resolve(fn(f, e)).catch(actErr);
 });
 
 ACTS.tab = el => { S.tab = el.dataset.v; closeSheet(); if (S.tab === 'chat') { markRead(); S._scrollChat = true; } render(); window.scrollTo(0, S.tab === 'chat' ? document.body.scrollHeight : 0); };

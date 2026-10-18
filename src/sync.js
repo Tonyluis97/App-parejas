@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  const FB_VER = '10.12.2';
+  const FB_VER = '12.19.0';
   const FB = 'https://www.gstatic.com/firebasejs/' + FB_VER + '/';
 
   // ---------- Modo demo (localStorage + BroadcastChannel) ----------
@@ -114,7 +114,8 @@
         const app = appM.initializeApp(config);
         const auth = authM.getAuth(app);
         fs = fsM;
-        db = fsM.initializeFirestore(app, { localCache: fsM.persistentLocalCache() });
+        // Caché compartida entre pestañas: con varias pestañas abiertas la caché de una sola pestaña se corrompía
+        db = fsM.initializeFirestore(app, { localCache: fsM.persistentLocalCache({ tabManager: fsM.persistentMultipleTabManager() }) });
         uid = await new Promise((resolve, reject) => {
           const off = authM.onAuthStateChanged(auth, u => {
             if (u) { off(); resolve(u.uid); }
@@ -138,7 +139,11 @@
       },
       async patchCouple(code, patch) { await fs.updateDoc(fs.doc(db, 'couples', code), patch); },
       watchCouple(code, cb) {
-        return fs.onSnapshot(fs.doc(db, 'couples', code), s => cb(s.exists() ? s.data() : null), e => { console.error(e); cb(null); });
+        return fs.onSnapshot(fs.doc(db, 'couples', code), s => cb(s.exists() ? s.data() : null), e => {
+          console.error(e);
+          // Solo se suelta la pareja si de verdad ya no somos miembros; otros errores no deben sacarnos
+          if (e && e.code === 'permission-denied') cb(null); else if (window.fatalSync) fatalSync(e);
+        });
       },
       async add(code, col, data) {
         const r = await fs.addDoc(fs.collection(db, 'couples', code, col), data);
@@ -149,7 +154,7 @@
       },
       watch(code, col, cb) {
         const q = fs.query(fs.collection(db, 'couples', code, col), fs.orderBy('t', 'desc'), fs.limit(300));
-        return fs.onSnapshot(q, s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data())).reverse()), e => console.error(e));
+        return fs.onSnapshot(q, s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data())).reverse()), e => { console.error(e); if (window.fatalSync) fatalSync(e); });
       },
     };
   }

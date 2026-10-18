@@ -1,9 +1,9 @@
 // Prueba con Firebase real: dos navegadores separados = dos móviles distintos.
-// El SDK se sirve desde el paquete npm firebase@10.12.2 (ruta en FB_PKG) porque gstatic puede estar bloqueado.
+// El SDK se sirve desde el paquete npm firebase@12.19.0 (ruta en FB_PKG) porque gstatic puede estar bloqueado.
 const { chromium } = require('/opt/node-tools/node_modules/playwright');
 const fs = require('fs'), path = require('path'), http = require('http');
 const exe = fs.readdirSync('/opt/pw-browsers').filter(d => d.startsWith('chromium-')).map(d => `/opt/pw-browsers/${d}/chrome-linux/chrome`).find(fs.existsSync);
-const root = path.join(__dirname, '..', 'web'), pkg = process.env.FB_PKG || '/tmp/fbtest/package';
+const root = path.join(__dirname, '..', 'web'), pkg = process.env.FB_PKG || '/tmp/fb12/package';
 const srv = http.createServer((q, r) => {
   const f = path.join(root, decodeURIComponent(q.url.split('?')[0]).replace(/\/$/, '/index.html'));
   fs.readFile(f, (e, d) => { if (e) { r.writeHead(404); r.end(); } else { r.writeHead(200, { 'Content-Type': f.endsWith('.html') ? 'text/html' : f.endsWith('.js') ? 'text/javascript' : 'application/octet-stream' }); r.end(d); } });
