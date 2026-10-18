@@ -1,0 +1,40 @@
+Assets 3D del escape room "Sin salida"
+
+Todo lo que hay en esta carpeta viene de Poly Haven (https://polyhaven.com) y tiene licencia CC0 1.0
+(dominio público: https://creativecommons.org/publicdomain/zero/1.0/). No hace falta atribución, pero gracias a Poly Haven.
+Se bajaron con tools/polyhaven.mjs y se aligeraron para móviles (texturas a 1024/512 px, muebles en .glb con texturas webp).
+
+Texturas (tex/):
+  https://polyhaven.com/a/dark_wooden_planks
+  https://polyhaven.com/a/decrepit_wallpaper
+  https://polyhaven.com/a/dirty_carpet
+  https://polyhaven.com/a/herringbone_parquet
+  https://polyhaven.com/a/painted_plaster_wall
+  https://polyhaven.com/a/rectangular_parquet
+  https://polyhaven.com/a/roof_planks
+  https://polyhaven.com/a/stacked_stone_wall
+  https://polyhaven.com/a/wood_trunk_wall
+
+Muebles (models/):
+  https://polyhaven.com/a/ArmChair_01
+  https://polyhaven.com/a/Chandelier_01
+  https://polyhaven.com/a/CoffeeTable_01
+  https://polyhaven.com/a/GreenChair_01
+  https://polyhaven.com/a/Lantern_01
+  https://polyhaven.com/a/Rockingchair_01
+  https://polyhaven.com/a/WoodenChair_01
+  https://polyhaven.com/a/WoodenTable_01
+  https://polyhaven.com/a/WoodenTable_03
+  https://polyhaven.com/a/book_encyclopedia_set_01
+  https://polyhaven.com/a/ornate_mirror_01
+  https://polyhaven.com/a/potted_plant_01
+  https://polyhaven.com/a/scandinavian_masonry_heater
+  https://polyhaven.com/a/sofa_02
+  https://polyhaven.com/a/throw_pillows_01
+  https://polyhaven.com/a/wooden_bookshelf_worn
+  https://polyhaven.com/a/wooden_crate_01
+  https://polyhaven.com/a/wooden_stool_01
+
+HDRI (hdri/):
+  https://polyhaven.com/a/lythwood_room
+  https://polyhaven.com/a/snowy_forest

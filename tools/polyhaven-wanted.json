@@ -1,0 +1,195 @@
+[
+ {
+  "id": "herringbone_parquet",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "painted_plaster_wall",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "white_plaster_02",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "decrepit_wallpaper",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "dark_wooden_planks",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "rectangular_parquet",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "wood_trunk_wall",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "roof_planks",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "velour_velvet",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "brown_leather",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "stacked_stone_wall",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "dirty_carpet",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "old_wooden_floor_01",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "fabric_pattern_05",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "WoodenChair_01"
+ },
+ {
+  "id": "sofa_02"
+ },
+ {
+  "id": "Sofa_01"
+ },
+ {
+  "id": "CoffeeTable_01"
+ },
+ {
+  "id": "potted_plant_01"
+ },
+ {
+  "id": "wooden_bookshelf_worn"
+ },
+ {
+  "id": "decorative_book_set_01"
+ },
+ {
+  "id": "book_encyclopedia_set_01"
+ },
+ {
+  "id": "Chandelier_01"
+ },
+ {
+  "id": "WoodenTable_01"
+ },
+ {
+  "id": "GreenChair_01"
+ },
+ {
+  "id": "Rockingchair_01"
+ },
+ {
+  "id": "scandinavian_masonry_heater"
+ },
+ {
+  "id": "vintage_oil_lamp"
+ },
+ {
+  "id": "WoodenTable_03"
+ },
+ {
+  "id": "wooden_stool_01"
+ },
+ {
+  "id": "ArmChair_01"
+ },
+ {
+  "id": "fancy_picture_frame_01"
+ },
+ {
+  "id": "wall_clock"
+ },
+ {
+  "id": "Lantern_01"
+ },
+ {
+  "id": "vintage_grandfather_clock_01"
+ },
+ {
+  "id": "modern_ceiling_lamp_01"
+ },
+ {
+  "id": "ornate_mirror_01"
+ },
+ {
+  "id": "wooden_crate_01"
+ },
+ {
+  "id": "throw_pillows_01"
+ },
+ {
+  "id": "lythwood_room"
+ },
+ {
+  "id": "snowy_forest"
+ }
+]

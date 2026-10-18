@@ -7,3 +7,4 @@ App web instalable para parejas a distancia (Android e iPhone), sincronizada con
 - Sin `config.js` la app arranca en modo demo (localStorage). Con `config.js` (`window.FIREBASE_CONFIG = {...};`) usa Firestore + Auth anónima.
 - Reglas de Firestore: `firestore.rules` (pegarlas en Firebase > Firestore > Reglas).
 - Llamada: WebRTC con STUN de Google; para un TURN, definir `window.TURN_SERVERS = [...]` en `config.js`.
+- Escape room 3D (`src/escape3d.js`): texturas, muebles y HDRI CC0 de Poly Haven en `web/assets/` (ver `web/assets/LICENSE.txt`). Si no cargan, usa texturas de canvas y primitivas. Para bajar más: añadir ids a `tools/polyhaven-wanted.json` y subirlo a una rama `claude/**` (el workflow `assets.yml` los descarga en `assets-raw/`). `node tests/tour-escape3d.js <carpeta>` saca capturas de las tres salas.
