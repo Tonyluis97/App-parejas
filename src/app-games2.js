@@ -11,7 +11,10 @@ VIEWS.games = () => {
   const er = (S.couple && S.couple.escape) || {};
   const prog = E.escapeProgress(er);
   const game = (v, ic, t, d, extra) => '<div class="card game" data-act="tab" data-v="' + v + '" role="button"><div class="ic">' + ic + '</div><div><h3>' + t + '</h3><div class="muted small">' + d + '</div>' + (extra || '') + '</div></div>';
-  return game('escape', '🗝️', 'La casa de los recuerdos', 'Escape room en primera persona. Cada uno en una habitación; solo hablando encuentran la salida.',
+  const e3 = (S.couple && S.couple.escape3) || {};
+  return game('escape3d', '🚪', 'Sin salida (3D)', 'Escape room en 3D y primera persona: tres salas mortales con acertijos reales. Cada uno en su sala, solo hablando salen vivos.',
+    '<div class="small" style="margin-top:4px;font-weight:700;color:var(--accent)">' + (e3.wonAt ? '✅ Escaparon en ' + E.mmss(e3.wonAt - e3.startedAt) : e3.startedAt ? 'En curso: sala ' + ((e3.level || 0) + 1) + ' de 3' : 'Nuevo · con llamada de voz') + '</div>') +
+    game('escape', '🗝️', 'La casa de los recuerdos', 'Escape room en primera persona. Cada uno en una habitación; solo hablando encuentran la salida.',
     '<div class="small" style="margin-top:4px;font-weight:700;color:var(--accent)">' + (E.escapeWon(er) ? '✅ Escaparon en ' + E.mmss(er.wonAt - er.startedAt) : prog ? 'En curso: ' + prog + ' de 4 cerraduras' : 'Con llamada de voz') + '</div>') +
     game('tod', '🔥', 'Verdad o reto', 'Por turnos: elige verdad o reto y cúmplelo por la llamada.') +
     game('ttt', '❌', 'Tres en raya', 'El clásico, cada uno desde su móvil.') +

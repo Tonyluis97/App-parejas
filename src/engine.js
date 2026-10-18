@@ -266,12 +266,72 @@
   const COUPON_IDEAS = ['Vale por un masaje', 'Vale por una cena que yo invito', 'Vale por elegir la película', 'Vale por un abrazo de 10 minutos',
     'Vale por una videollamada sin límite', 'Vale por un desayuno en la cama', 'Vale por un deseo', 'Vale por ganar una discusión'];
 
+  // ---------- Escape 3D "Sin salida": 3 salas, cada jugador en su propia habitación ----------
+  const ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  // Cifrado César sobre letras A-Z (sin tildes); el resto se deja igual
+  function caesar(text, shift) {
+    return norm(text).toUpperCase().replace(/[A-Z]/g, ch => ALPHA[(ALPHA.indexOf(ch) + shift + 26 * 10) % 26]);
+  }
+  const MORSE = { A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.', G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..', M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.', S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-', Y: '-.--', Z: '--..' };
+  function morse(word) { return norm(word).toUpperCase().split('').map(c => MORSE[c] || '').filter(Boolean); }
+
+  const ESC3 = {
+    levels: [
+      { id: 'espera', name: 'La sala de espera', mins: 10, danger: 'calor',
+        intro: 'Las puertas se cerraron y la habitación empieza a calentarse. Salgan antes de que sea insoportable.',
+        A: { kind: 'keypad', len: 4, answer: '1025', lock: 'Caja fuerte', hint: 'En la tapa dice: «La combinación es la hora exacta que marca el reloj de la otra sala».' },
+        B: { kind: 'switches', answer: [1, 0, 1, 1], lock: 'Panel de interruptores', hint: 'Debajo dice: «Las luces deben quedar igual que en el cuadro de la otra sala».' },
+        clues: { A: { lamps: [1, 0, 1, 1] }, B: { clock: '10:25' } } },
+      { id: 'biblioteca', name: 'La biblioteca al revés', mins: 10, danger: 'gravedad',
+        intro: 'Todo está pegado al techo. Cuando se acabe el tiempo, la gravedad vuelve… y todo cae.',
+        A: { kind: 'word', answer: 'RELOJ', lock: 'Candado de letras', hint: 'Grabado en la puerta: «Responde al acertijo que suena en la otra sala».' },
+        B: { kind: 'word', answer: 'RECUERDO', lock: 'Candado de letras', hint: 'Grabado en la puerta: «Descifra lo que está escrito en la pared».' },
+        clues: { A: { shift: 3 }, B: { cipher: 'UHFXHUGR', riddle: 'Tengo agujas pero no coso, tengo números pero no llamo. ¿Qué soy?' } } },
+      { id: 'cabana', name: 'La cabaña helada', mins: 8, danger: 'hielo',
+        intro: 'El suelo es hielo y cruje cada vez más. No se queden quietos.',
+        A: { kind: 'grid', answer: [1, 0, 1, 0, 1, 0, 1, 0, 1], lock: 'Baldosas de hielo', hint: 'Junto a las baldosas: «Pisa solo las que tu pareja ve agrietadas en su dibujo».' },
+        B: { kind: 'word', answer: 'BESO', lock: 'Cerradura de la cabaña', hint: 'En la puerta: «La palabra que parpadea en la otra cabaña».' },
+        clues: { A: { morse: 'BESO' }, B: { pattern: [1, 0, 1, 0, 1, 0, 1, 0, 1] } } },
+    ],
+  };
+
+  function esc3Check(level, side, value) {
+    const L = ESC3.levels[level];
+    if (!L || !L[side]) return false;
+    const p = L[side];
+    if (p.kind === 'keypad') return String(value || '').replace(/\D/g, '') === p.answer;
+    if (p.kind === 'word') return norm(value).toUpperCase().replace(/[^A-Z]/g, '') === p.answer;
+    if (p.kind === 'switches' || p.kind === 'grid') return Array.isArray(value) && value.length === p.answer.length && value.every((v, i) => (v ? 1 : 0) === p.answer[i]);
+    return false;
+  }
+  // Estado: { level, levelAt, startedAt, A: bool, B: bool, fails, wonAt }
+  function esc3Solve(state, side) {
+    const s = Object.assign({}, state);
+    s[side] = true;
+    return s;
+  }
+  function esc3LevelDone(s) { return !!(s && s.A && s.B); }
+  function esc3Remaining(s, now) {
+    const L = ESC3.levels[(s && s.level) || 0];
+    if (!s || !s.levelAt || !L) return null;
+    return L.mins * 60000 - ((now || Date.now()) - s.levelAt);
+  }
+  // Siguiente estado al terminar una sala: pasa a la siguiente o gana
+  function esc3Advance(s, now) {
+    const t = now || Date.now();
+    if (s.level >= ESC3.levels.length - 1) return Object.assign({}, s, { wonAt: t });
+    return Object.assign({}, s, { level: s.level + 1, levelAt: t, A: false, B: false });
+  }
+  // Se acabó el tiempo: se reinicia la misma sala
+  function esc3Fail(s, now) { return Object.assign({}, s, { levelAt: now || Date.now(), A: false, B: false, fails: (s.fails || 0) + 1 }); }
+
   const Engine = {
     today, parseDay, daysBetween, daysTogether, distanceKm, formatKm, clock,
     newCode, validCode, QUESTIONS, questionFor, WOULD, mergeRecords,
     ESCAPE, escapeTry, escapeWon, escapeProgress, norm, sameSeq, mmss,
     nextOccurrence, yearsAt, addDays, streak, tttWinner, tttMove, pickOther,
     TRUTHS, DARES, NEVER, CARDS, DATE_IDEAS, QUIZ, COUPON_IDEAS,
+    caesar, morse, ESC3, esc3Check, esc3Solve, esc3LevelDone, esc3Remaining, esc3Advance, esc3Fail,
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = Engine;

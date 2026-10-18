@@ -6,7 +6,7 @@ const exe = fs.readdirSync('/opt/pw-browsers').filter(d => d.startsWith('chromiu
 const root = path.join(__dirname, '..', 'web'), pkg = process.env.FB_PKG || '/tmp/fbtest/package';
 const srv = http.createServer((q, r) => {
   const f = path.join(root, decodeURIComponent(q.url.split('?')[0]).replace(/\/$/, '/index.html'));
-  fs.readFile(f, (e, d) => { if (e) { r.writeHead(404); r.end(); } else { r.writeHead(200, { 'Content-Type': f.endsWith('.html') ? 'text/html' : 'application/octet-stream' }); r.end(d); } });
+  fs.readFile(f, (e, d) => { if (e) { r.writeHead(404); r.end(); } else { r.writeHead(200, { 'Content-Type': f.endsWith('.html') ? 'text/html' : f.endsWith('.js') ? 'text/javascript' : 'application/octet-stream' }); r.end(d); } });
 }).listen(0);
 let fails = 0;
 const ok = (n, c) => { if (!c) { fails++; console.log('FALLA', n); } else console.log('ok', n); };
@@ -75,6 +75,17 @@ const until = (p, fn, arg, t = 15000) => p.waitForFunction(fn, arg, { timeout: t
   ok('carta sincronizada', await until(B, () => S.letters.some(l => l.title === 'Prueba')));
   await B.evaluate(() => Sync.patchCouple(S.code, { ttt: { board: ['X', '', '', '', '', '', '', '', ''], x: S.uid, turn: S.uid, score: {} } }));
   ok('tres en raya sincronizado', await until(A, () => S.couple.ttt && S.couple.ttt.board[0] === 'X'));
+
+  // Escape room 3D: la sala carga y si los dos abren a la vez se avanza una sola sala
+  await A.evaluate(() => { const t = Date.now(); return Sync.patchCouple(S.code, { escape3: { level: 0, levelAt: t, startedAt: t, A: false, B: false, fails: 0 } }); });
+  ok('sin salida iniciado', await until(B, () => S.couple.escape3 && S.couple.escape3.level === 0));
+  await A.evaluate(() => Esc3D.open());
+  ok('sala 3D abierta', !!(await A.$('#e3 canvas')));
+  await Promise.all([A.evaluate(() => Sync.patchCouple(S.code, { 'escape3.A': true })), B.evaluate(() => Sync.patchCouple(S.code, { 'escape3.B': true }))]);
+  ok('a la vez avanza una sala', await until(B, () => S.couple.escape3.level === 1 && !S.couple.escape3.A));
+  await new Promise(r => setTimeout(r, 2000));
+  ok('no se salta salas', await B.evaluate(() => S.couple.escape3.level) === 1);
+  await A.evaluate(() => Esc3D.close());
 
   const errs = [...A.errs, ...B.errs].filter(e => !/fonts/.test(e));
   ok('sin errores', errs.length === 0); if (errs.length) console.log(errs.slice(0, 5));

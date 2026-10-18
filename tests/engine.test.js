@@ -68,5 +68,29 @@ eq('elige otro distinto', E.pickOther(5, 2, () => seq[k++]), 4);
 eq('elige con uno solo', E.pickOther(1, 0), 0);
 eq('contenido juegos', E.TRUTHS.length >= 20 && E.DARES.length >= 20 && E.NEVER.length >= 15, true);
 
+// Escape 3D
+eq('césar cifra', E.caesar('Recuerdo', 3), 'UHFXHUGR');
+eq('césar descifra', E.caesar('UHFXHUGR', -3), 'RECUERDO');
+eq('pista de cifrado coincide', E.caesar(E.ESC3.levels[1].clues.B.cipher, -E.ESC3.levels[1].clues.A.shift), E.ESC3.levels[1].B.answer);
+eq('morse', E.morse('beso'), ['-...', '.', '...', '---']);
+eq('pista morse coincide', E.ESC3.levels[2].clues.A.morse, E.ESC3.levels[2].B.answer);
+eq('pista reloj coincide', E.ESC3.levels[0].clues.B.clock.replace(':', ''), E.ESC3.levels[0].A.answer);
+eq('pista cuadro coincide', E.ESC3.levels[0].clues.A.lamps, E.ESC3.levels[0].B.answer);
+eq('pista dibujo coincide', E.ESC3.levels[2].clues.B.pattern, E.ESC3.levels[2].A.answer);
+eq('caja fuerte', E.esc3Check(0, 'A', '10 25'), true);
+eq('caja fuerte mala', E.esc3Check(0, 'A', '2510'), false);
+eq('interruptores', E.esc3Check(0, 'B', [true, false, true, true]), true);
+eq('interruptores malos', E.esc3Check(0, 'B', [1, 1, 1, 1]), false);
+eq('palabra con tilde y minúsculas', E.esc3Check(1, 'A', 'reloj '), true);
+eq('palabra mala', E.esc3Check(1, 'B', 'RECUERDOS'), false);
+eq('baldosas', E.esc3Check(2, 'A', [1, 0, 1, 0, 1, 0, 1, 0, 1]), true);
+let e3 = { level: 0, levelAt: 1000, startedAt: 1000, A: false, B: false };
+e3 = E.esc3Solve(e3, 'A'); eq('sala sin terminar', E.esc3LevelDone(e3), false);
+e3 = E.esc3Solve(e3, 'B'); eq('sala terminada', E.esc3LevelDone(e3), true);
+e3 = E.esc3Advance(e3, 5000); eq('pasa a sala 2', [e3.level, e3.A, e3.B, e3.levelAt], [1, false, false, 5000]);
+eq('tiempo restante', E.esc3Remaining(e3, 65000), 10 * 60000 - 60000);
+e3 = E.esc3Fail(E.esc3Solve(e3, 'A'), 9000); eq('fallo reinicia sala', [e3.level, e3.A, e3.fails, e3.levelAt], [1, false, 1, 9000]);
+e3 = E.esc3Advance(Object.assign(e3, { level: 2 }), 20000); eq('gana al final', e3.wonAt, 20000);
+
 console.log(fails ? `${fails} de ${n} pruebas fallaron` : `OK ${n} pruebas`);
 process.exit(fails ? 1 : 0);
