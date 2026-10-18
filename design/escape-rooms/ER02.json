@@ -1,0 +1,4071 @@
+{
+  "scenario_id": "ER02",
+  "title": "La última transmisión",
+  "version": "1.0.0",
+  "players": 2,
+  "genre": "Thriller de supervivencia (moderado)",
+  "synopsis": "Una tormenta de nieve deja sin corriente la estación de radio de Pico Albar, aislada en la montaña. Los dos guardas de la noche tienen hasta que se agote la batería de emergencia para devolver la vida a la estación y enviar el último parte. A maneja el cuadro de mando y ve los indicadores; B tiene el manual técnico y escucha una señal entrecortada. Un rayo lo complica todo y, al final, la batería solo alcanza para un mensaje: deciden juntos quién lo recibe.",
+  "difficulty": "medium",
+  "estimated_duration_minutes": 50,
+  "phase_minutes": {
+    "awakening": 4,
+    "discovery": 13,
+    "complication": 15,
+    "climax": 12,
+    "escape": 6
+  },
+  "competencies": [
+    "Comunicación de instrucciones",
+    "Escucha activa",
+    "Razonamiento lógico",
+    "Seguimiento de procedimientos",
+    "Coordinación temporal",
+    "Toma de decisiones compartida"
+  ],
+  "initial_conditions": "A empieza en la Sala de cuadros, frente al cuadro de mando de la estación, con una linterna de mano. B empieza en la Cabina de radio, con el manual técnico sobre la mesa y el receptor apagado. Las dos salas están separadas por un muro; se hablan por el interfono de la estación (la llamada de voz). La Sala del transmisor, al norte, está cerrada. El reloj de la partida es la batería de emergencia. Todo es ficticio: el cuadro, las palancas, los cartuchos y los relés son elementos de juego inventados y no reproducen ninguna instalación eléctrica real.",
+  "initial_state": "INITIALIZING",
+  "objectives": [
+    {
+      "objective_id": "OBJ01",
+      "text": "Arrancar el generador auxiliar y reconectar las barras de la estación",
+      "required": true,
+      "completed_when": [
+        "P01_SOLVED",
+        "P02_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ02",
+      "text": "Recuperar la antena después del rayo y fijar el canal de emisión",
+      "required": true,
+      "completed_when": [
+        "P07_SOLVED",
+        "P03_SOLVED",
+        "P04_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ03",
+      "text": "Emitir el último parte, elegir quién lo recibe y bajar a la sala común",
+      "required": true,
+      "completed_when": [
+        "P05_SOLVED",
+        "P06_SOLVED",
+        "O21_OPEN"
+      ]
+    }
+  ],
+  "win_condition": {
+    "type": "all_required_objectives_completed",
+    "required_objectives": [
+      "OBJ01",
+      "OBJ02",
+      "OBJ03"
+    ]
+  },
+  "fail_condition": {
+    "type": "timer_expired",
+    "minutes": 50,
+    "consequence": "La batería de emergencia entra en modo de ahorro y la estación espera en silencio. Los jugadores eligen reiniciar la zona actual o seguir en Modo sin reloj con la batería en reserva indefinida. No se pierde nada de lo resuelto."
+  },
+  "reset_condition": "Cualquiera de los dos pulsa Reiniciar zona y el otro lo confirma; también se ofrece al agotarse la batería. El reinicio completo vuelve al estado inicial y a la intro.",
+  "narrative": {
+    "intro": "Viento fuerte contra madera. La cámara sube por una ladera nevada hasta una caseta con una antena torcida: Estación de radio Pico Albar, 2.300 m. Dentro, una luz se apaga. Una voz automática anuncia: Corte de suministro. Batería de emergencia activada. Autonomía: cincuenta minutos. La imagen se divide: a un lado, un cuadro de mando con palancas; al otro, un receptor mudo y un manual grueso.",
+    "reason": "Los dos hacen la guardia de noche en la estación, que cada hora envía el parte meteorológico del puerto de montaña. Esta noche la tormenta ha cortado el suministro justo antes del último parte.",
+    "initial_situation": "La batería de emergencia mantiene encendidos los indicadores y el interfono, pero no el transmisor. El último mensaje recibido en el libro de guardia habla de dos excursionistas refugiados en una cabaña y de una carretera que quizá haya que cerrar.",
+    "goal": "Arrancar el generador auxiliar, reconectar las barras siguiendo la señal de la base del valle, recuperar la antena tras el rayo, fijar el canal, emitir a la vez y decidir quién recibe el único mensaje que permite la batería.",
+    "first_discovery": "A ve que una de las palancas del cuadro de arranque está helada y no se mueve. B encuentra en el manual la lógica del módulo de arranque, pero las entradas tienen nombres de forma que solo A puede ver en el cuadro.",
+    "progression": [
+      "El generador auxiliar arranca y enciende el receptor. Por él llega, entrecortada, la señal automática de la base de Valle Hondo con la secuencia de reconexión de barras.",
+      "B reconstruye la secuencia juntando tres repeticiones con huecos y A conecta las barras en ese orden. La estación vuelve a zumbar.",
+      "Un rayo cae cerca de la antena. Se funde un cartucho de protección del cuadro y las barras de antena caen. El orden de reenganche ya no es el mismo.",
+      "A sustituye el cartucho y B aplica el procedimiento tras descarga: el orden cambia según lo que se fundió.",
+      "La Sala del transmisor se abre. Con el tablero de antenas de A y la tabla de alcances de B, eligen la única antena que llega al repetidor y fijan su canal.",
+      "Potencia y modulación se pulsan a la vez y la estación sale al aire.",
+      "El repetidor de Peña Gris solo puede reenviar un mensaje antes del amanecer. Deciden juntos a quién."
+    ],
+    "obstacles": [
+      "Una palanca del cuadro de arranque está helada.",
+      "La señal de la base llega con cortes y cada repetición se oye incompleta.",
+      "El rayo funde un cartucho y desconecta las barras de antena.",
+      "Dos antenas no sirven: una está helada y otra dañada por el rayo.",
+      "La emisión solo arranca si los dos pulsan a la vez."
+    ],
+    "revelations": [
+      "La señal entrecortada no es una persona pidiendo ayuda: es la baliza automática de la base, que repite la secuencia de reconexión cada noche de tormenta.",
+      "La antena que parecía la más débil es la única que llega esta noche al repetidor.",
+      "Los dos excursionistas están a salvo en la cabaña del Collado; lo urgente es avisar a tiempo, no rescatar a nadie en plena tormenta."
+    ],
+    "climax": "Con la estación en el aire, la pantalla del repetidor de Peña Gris avisa de que solo puede reenviar un mensaje antes del amanecer. A ve en la pantalla qué puede hacer cada destinatario; B tiene en el libro de guardia lo que ha pasado esta noche. Votan juntos.",
+    "escape_scene": "El mensaje sale. La aguja del transmisor baja despacio, la tormenta amaina y el viento deja de golpear la caseta. La puerta de la escalera se desbloquea y los dos bajan a la sala común, donde la estufa ya calienta.",
+    "epilogue": "Al amanecer, la radio de la sala común recibe la respuesta de quien eligieron. Por la ventana se ve la ladera limpia de nieve y, a lo lejos, la luz de la máquina quitanieves subiendo por el puerto."
+  },
+  "rooms": [
+    {
+      "room_id": "ROOM01",
+      "name": "Sala de cuadros",
+      "description": "Cuarto estrecho de paredes de madera con el cuadro de mando de la estación: el módulo de arranque, los interruptores de barra y el panel de cartuchos de protección. Huele a leña fría.",
+      "dimensions_m": {
+        "w": 5,
+        "d": 4,
+        "h": 2.8
+      },
+      "layout": "Cuadro de arranque en la pared oeste, al sur. Interruptores de barra en la pared oeste, al norte. Panel de cartuchos en la pared norte, junto a la puerta de la Sala del transmisor. Cajón de repuestos bajo el panel de cartuchos. Indicador de batería en la pared este, junto al interfono. Estufa de leña en la esquina sureste, mapa de rutas en la pared sur y taquilla en la esquina suroeste.",
+      "access": {
+        "A": true,
+        "B": false
+      },
+      "view": {
+        "A": "Todo el cuarto: palancas, pilotos, cartuchos e indicador de batería",
+        "B": "No lo ve; oye a A por el interfono y el zumbido del cuadro a través del muro"
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR01",
+          "wall": "north",
+          "position": {
+            "x": 4,
+            "y": 0,
+            "z": 4
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "south",
+          "position": {
+            "x": 2.5,
+            "y": 1.6,
+            "z": 0
+          },
+          "note": "Ventanuco con nieve pegada; deja ver la ventisca y los destellos de la tormenta; no es interactivo"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L01",
+          "type": "Linterna de mano de A",
+          "position": {
+            "x": 2.5,
+            "y": 1.4,
+            "z": 2
+          },
+          "color": "#FFF4DD",
+          "intensity": 0.6,
+          "note": "Luz principal hasta P01; sigue la mirada de A"
+        },
+        {
+          "light_id": "L02",
+          "type": "Plafón de techo",
+          "position": {
+            "x": 2.5,
+            "y": 2.7,
+            "z": 2
+          },
+          "color": "#FFE6B8",
+          "intensity": 0.7,
+          "note": "Apagado al inicio; se enciende con el generador auxiliar (E02) y baja al 40 % tras el rayo (E04)"
+        },
+        {
+          "light_id": "L03",
+          "type": "Pilotos del cuadro",
+          "position": {
+            "x": 0.2,
+            "y": 1.4,
+            "z": 2.5
+          },
+          "color": "#9CFF9C",
+          "intensity": 0.2,
+          "note": "Cada piloto tiene además una palabra y una forma (círculo correcto, aspa fundido); nunca solo color"
+        }
+      ],
+      "ambient_sound": "A01",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E02",
+          "change": "Se enciende el plafón y los interruptores de barra reciben corriente"
+        },
+        {
+          "event": "E04",
+          "change": "Destello en el ventanuco, trueno amortiguado; el piloto de un cartucho pasa a FUNDIDO con aspa y se abre el cajón de repuestos"
+        },
+        {
+          "event": "E05",
+          "change": "El cartucho nuevo encaja y el piloto vuelve a CORRECTO con círculo"
+        }
+      ],
+      "objects": [
+        "O01",
+        "O02",
+        "O03",
+        "O04",
+        "O05",
+        "O06",
+        "O07",
+        "O08"
+      ],
+      "puzzles": [
+        "P01",
+        "P02",
+        "P07"
+      ],
+      "exit_conditions": [
+        "P03_SOLVED"
+      ],
+      "engine_notes": "Escena del jugador A. El cuadro es un panel de interfaz diegético: palancas con estado ARRIBA o ABAJO que se muestra con posición, flecha y texto. Los pilotos solo cambian al pulsar PROBAR, para que la lógica no se resuelva por tanteo visual. El rayo es un destello único limitado a una subida de luminancia del 30 % durante 0,3 s, con aviso sonoro previo de 3 s, apto para personas fotosensibles; con movimiento reducido se sustituye por un cambio de color del ventanuco. Ningún elemento imita una instalación real."
+    },
+    {
+      "room_id": "ROOM02",
+      "name": "Cabina de radio",
+      "description": "Cabina pequeña con mesa corrida, el receptor de onda corta con su lámpara de pulsos, el panel de reenganche de antena y el manual técnico de la estación. Una ventana helada da a la ladera.",
+      "dimensions_m": {
+        "w": 4,
+        "d": 4,
+        "h": 2.8
+      },
+      "layout": "Mesa corrida en la pared este con el receptor en el centro y el manual a su izquierda. Panel de reenganche de antena en la pared norte, junto a la puerta de la Sala del transmisor. Libro de guardia en la esquina suroeste, sobre un atril. Silla giratoria frente al receptor. Ventana helada en la pared sur. Banderines de radioaficionados en la pared oeste. Termo y taza en la mesa.",
+      "access": {
+        "A": false,
+        "B": true
+      },
+      "view": {
+        "A": "No la ve; oye a B por el interfono",
+        "B": "Toda la cabina: receptor, lámpara de pulsos, manual, panel de reenganche y libro de guardia"
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR02",
+          "wall": "north",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "z": 4
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "south",
+          "position": {
+            "x": 2,
+            "y": 1.5,
+            "z": 0
+          },
+          "note": "Ventana helada; se ve la nieve en horizontal y los destellos lejanos; no es interactiva"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L04",
+          "type": "Lámpara de emergencia de pared",
+          "position": {
+            "x": 0.2,
+            "y": 2.2,
+            "z": 2
+          },
+          "color": "#FFD08A",
+          "intensity": 0.35,
+          "note": "Luz tenue alimentada por la batería; suficiente para leer el manual"
+        },
+        {
+          "light_id": "L05",
+          "type": "Lámpara de pulsos del receptor",
+          "position": {
+            "x": 3.8,
+            "y": 1.1,
+            "z": 2
+          },
+          "color": "#FFFFFF",
+          "intensity": 0.3,
+          "note": "Destella corto o largo con cada pulso de la señal; se acompaña siempre del texto corto o largo en la pantalla"
+        },
+        {
+          "light_id": "L06",
+          "type": "Flexo de la mesa",
+          "position": {
+            "x": 3.6,
+            "y": 1.3,
+            "z": 1
+          },
+          "color": "#FFF1D6",
+          "intensity": 0.5,
+          "note": "Se enciende con el generador auxiliar"
+        }
+      ],
+      "ambient_sound": "A03",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E02",
+          "change": "El receptor se enciende y empieza a sonar la señal entrecortada, con la lámpara de pulsos y el texto"
+        },
+        {
+          "event": "E04",
+          "change": "La ventana se ilumina un instante y los relés del panel de reenganche caen a ABAJO"
+        },
+        {
+          "event": "E06",
+          "change": "Los cuatro relés quedan ENGANCHADOS y se abre la puerta norte"
+        }
+      ],
+      "objects": [
+        "O09",
+        "O10",
+        "O11",
+        "O12",
+        "O13",
+        "O14",
+        "O15"
+      ],
+      "puzzles": [
+        "P03"
+      ],
+      "exit_conditions": [
+        "P03_SOLVED"
+      ],
+      "engine_notes": "Escena del jugador B. La señal del receptor es un audio de pitidos cortos y largos con ruido; cada pulso se muestra a la vez como destello de la lámpara y como texto (corto, largo, [ruido]) en la pantalla del receptor y en el registro de pistas. El manual es un documento de varias páginas con índice navegable por teclado. El panel de reenganche tiene cuatro relés rotulados con texto y con una flecha que indica su punto cardinal."
+    },
+    {
+      "room_id": "ROOM03",
+      "name": "Sala del transmisor",
+      "description": "Sala alta con el armario del transmisor en el centro, que la divide en dos lados. Al oeste, la consola de potencia con el tablero de antenas; al este, la consola de modulación. Un ventanal da a la cresta y a la antena.",
+      "dimensions_m": {
+        "w": 7,
+        "d": 5,
+        "h": 3.2
+      },
+      "layout": "Entradas en la pared sur: desde la Sala de cuadros en x 5.5 y desde la Cabina de radio en x 1.5. Armario del transmisor en el centro, de pared a pared hasta media altura. Consola de potencia, tablero de antenas y pantalla del repetidor en la mitad oeste. Consola de modulación en la mitad este. Puerta de la escalera a la sala común en la pared norte, centro. Barómetro en la pared este y vitrina de válvulas antiguas en la esquina noroeste. Ventanal en la pared norte.",
+      "access": {
+        "A": true,
+        "B": true
+      },
+      "view": {
+        "A": "Toda la sala; desde la consola de potencia ve el tablero de antenas y la pantalla del repetidor, pero no la pantalla de la consola de modulación",
+        "B": "Toda la sala; desde la consola de modulación ve su dial y sus teclas, pero no el tablero de antenas ni la pantalla del repetidor"
+      },
+      "unlocked_when": [
+        "P03_SOLVED"
+      ],
+      "doors": [
+        {
+          "door_id": "DOOR03",
+          "wall": "south",
+          "position": {
+            "x": 5.5,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM01",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR04",
+          "wall": "south",
+          "position": {
+            "x": 1.5,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM02",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR05",
+          "wall": "north",
+          "position": {
+            "x": 3.5,
+            "y": 0,
+            "z": 5
+          },
+          "to": "EXIT",
+          "opens_when": [
+            "P06_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "north",
+          "position": {
+            "x": 5.5,
+            "y": 1.8,
+            "z": 5
+          },
+          "note": "Ventanal a la cresta: se ven las tres antenas y cómo amaina la tormenta tras P06; no es interactivo"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L07",
+          "type": "Tubos de techo",
+          "position": {
+            "x": 3.5,
+            "y": 3.1,
+            "z": 2.5
+          },
+          "color": "#EAF2FF",
+          "intensity": 0.6,
+          "note": "Encendidos al entrar"
+        },
+        {
+          "light_id": "L08",
+          "type": "Indicador EN EL AIRE",
+          "position": {
+            "x": 3.5,
+            "y": 2.6,
+            "z": 2.5
+          },
+          "color": "#FF6B6B",
+          "intensity": 0.4,
+          "note": "Rótulo con las palabras EN EL AIRE; se ilumina al resolver P05 y no parpadea"
+        },
+        {
+          "light_id": "L09",
+          "type": "Luz del amanecer",
+          "position": {
+            "x": 5.5,
+            "y": 2.2,
+            "z": 4.8
+          },
+          "color": "#FFC9A3",
+          "intensity": 0.5,
+          "note": "Entra por el ventanal en la secuencia final"
+        }
+      ],
+      "ambient_sound": "A10",
+      "music": "A11",
+      "dynamic_changes": [
+        {
+          "event": "E07",
+          "change": "El armario del transmisor se calienta: sube la aguja de temperatura y suena un zumbido grave"
+        },
+        {
+          "event": "E08",
+          "change": "Se enciende EN EL AIRE y la pantalla del repetidor muestra los dos destinatarios"
+        },
+        {
+          "event": "E09",
+          "change": "La tormenta amaina en el ventanal, entra la luz del amanecer y se abre la puerta de la escalera"
+        }
+      ],
+      "objects": [
+        "O16",
+        "O17",
+        "O18",
+        "O19",
+        "O20",
+        "O21",
+        "O22",
+        "O23"
+      ],
+      "puzzles": [
+        "P04",
+        "P05",
+        "P06"
+      ],
+      "exit_conditions": [
+        "P06_SOLVED"
+      ],
+      "engine_notes": "Escena compartida que se carga al resolver P03. El armario del transmisor tiene colisión de pared a media altura: los avatares se ven por encima, pero las pantallas de cada consola son paneles de interfaz por jugador (la consola de potencia solo acepta a A y la de modulación solo a B). El dial de canal tiene tres ruedas del 0 al 9. Las teclas de potencia y modulación llevan forma, palabra y braille."
+    }
+  ],
+  "players_data": {
+    "player_a": {
+      "role": "Guarda del cuadro: palancas e indicadores",
+      "view": "El cuadro de mando con sus palancas, pilotos, cartuchos y la batería; después, el tablero de antenas y la pantalla del repetidor. No ve el manual ni oye el receptor.",
+      "initial_location": "ROOM01",
+      "initial_clues": [],
+      "initial_inventory": []
+    },
+    "player_b": {
+      "role": "Guarda de radio: manual y señal",
+      "view": "El manual técnico, el receptor con su señal y lámpara de pulsos, el panel de reenganche y el libro de guardia; después, la consola de modulación. No ve el cuadro ni los indicadores de A.",
+      "initial_location": "ROOM02",
+      "initial_clues": [],
+      "initial_inventory": []
+    }
+  },
+  "objects": [
+    {
+      "object_id": "O01",
+      "name": "Cuadro de arranque auxiliar",
+      "visual": "Caja metálica con cuatro palancas en fila, cada una con una forma en relieve, tres pilotos rotulados y un botón PROBAR",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.2,
+        "y": 1.2,
+        "z": 1.5
+      },
+      "category": "coop",
+      "states": [
+        "COLD",
+        "STARTED"
+      ],
+      "initial_state": "COLD",
+      "action": "Subir o bajar palancas y pulsar PROBAR",
+      "activation_condition": [],
+      "result": "Si la combinación cumple la lógica del manual, arranca el generador auxiliar; si no, los pilotos muestran la combinación probada y nada arranca",
+      "transitions": [],
+      "clue": "C01",
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "STARTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O02",
+      "name": "Interruptores de barra",
+      "visual": "Cuatro interruptores grandes rotulados NORTE, SUR, ESTE y OESTE, cada uno con un piloto que dice CONECTADA o DESCONECTADA",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.2,
+        "y": 1.2,
+        "z": 3
+      },
+      "category": "coop",
+      "states": [
+        "UNPOWERED",
+        "POWERED",
+        "CONNECTED"
+      ],
+      "initial_state": "UNPOWERED",
+      "action": "Conectar las barras de una en una",
+      "activation_condition": [
+        "P01_SOLVED"
+      ],
+      "result": "Si el orden es correcto, las cuatro barras quedan conectadas; si no, todas se desconectan",
+      "transitions": [
+        {
+          "to": "POWERED",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C05",
+      "puzzle": "P02",
+      "authorized": "A",
+      "final_state": "CONNECTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O03",
+      "name": "Panel de cartuchos de protección",
+      "visual": "Cuatro cartuchos cerámicos ficticios rotulados F1 a F4, cada uno con un piloto que muestra círculo y CORRECTO o aspa y FUNDIDO, y una placa con la barra que protege",
+      "room": "ROOM01",
+      "position": {
+        "x": 3,
+        "y": 1.3,
+        "z": 3.9
+      },
+      "category": "combine",
+      "states": [
+        "NORMAL",
+        "FUSED",
+        "REPAIRED"
+      ],
+      "initial_state": "NORMAL",
+      "action": "Examinar; colocar un cartucho de repuesto en la ranura vacía",
+      "activation_condition": [
+        "P02_SOLVED"
+      ],
+      "result": "Tras el rayo muestra qué cartucho se fundió (C06); con el repuesto correcto vuelve a CORRECTO",
+      "transitions": [
+        {
+          "to": "FUSED",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C06",
+      "puzzle": "P07",
+      "authorized": "A",
+      "final_state": "REPAIRED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O04",
+      "name": "Cajón de cartuchos de repuesto",
+      "visual": "Cajón metálico con tres cartuchos de repuesto marcados con uno, tres y cinco puntos en relieve y la palabra CLASE",
+      "room": "ROOM01",
+      "position": {
+        "x": 3,
+        "y": 0.5,
+        "z": 3.8
+      },
+      "category": "collect",
+      "states": [
+        "LOCKED",
+        "OPEN",
+        "USED"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Abrir y coger un cartucho",
+      "activation_condition": [
+        "P02_SOLVED"
+      ],
+      "result": "Se abre solo con el aviso de avería tras el rayo; el cartucho elegido pasa al inventario de A",
+      "transitions": [
+        {
+          "to": "OPEN",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C07",
+      "puzzle": "P07",
+      "authorized": "A",
+      "final_state": "USED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O05",
+      "name": "Indicador de batería de emergencia",
+      "visual": "Barra vertical de diez segmentos junto al interfono, con los minutos de autonomía en números grandes",
+      "room": "ROOM01",
+      "position": {
+        "x": 4.9,
+        "y": 1.5,
+        "z": 2
+      },
+      "category": "narrative",
+      "states": [
+        "DRAINING"
+      ],
+      "initial_state": "DRAINING",
+      "action": "Mirar",
+      "activation_condition": [],
+      "result": "Muestra el reloj de la partida en minutos y segmentos",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "A",
+      "final_state": "DRAINING",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O06",
+      "name": "Estufa de leña apagada",
+      "visual": "Estufa de hierro con la puerta entreabierta y ceniza fría",
+      "room": "ROOM01",
+      "position": {
+        "x": 4.5,
+        "y": 0,
+        "z": 0.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O07",
+      "name": "Mapa de rutas de montaña",
+      "visual": "Mapa enmarcado del macizo con senderos marcados a lápiz y la cabaña del Collado rodeada",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.5,
+        "y": 1.5,
+        "z": 0.05
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O08",
+      "name": "Taquilla con chaquetones",
+      "visual": "Taquilla de madera abierta con dos chaquetones de plumas y unos crampones colgados",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.4,
+        "y": 0,
+        "z": 0.4
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O09",
+      "name": "Manual técnico de la estación",
+      "visual": "Carpeta gruesa de anillas con la portada Manual técnico, Estación Pico Albar, edición de entrenamiento, y un índice con pestañas",
+      "room": "ROOM02",
+      "position": {
+        "x": 3.6,
+        "y": 0.8,
+        "z": 2.8
+      },
+      "category": "examine",
+      "states": [
+        "CLOSED",
+        "EXAMINED"
+      ],
+      "initial_state": "CLOSED",
+      "action": "Abrir y consultar páginas",
+      "activation_condition": [],
+      "result": "Guarda en el registro de B cada página consultada: C02, C08, C10 y C12",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C02",
+      "puzzle": "P01",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O10",
+      "name": "Receptor de onda corta",
+      "visual": "Receptor con altavoz, pantalla de texto y una lámpara de pulsos redonda encima",
+      "room": "ROOM02",
+      "position": {
+        "x": 3.7,
+        "y": 0.9,
+        "z": 2
+      },
+      "category": "examine",
+      "states": [
+        "OFF",
+        "ON"
+      ],
+      "initial_state": "OFF",
+      "action": "Escuchar y leer la pantalla",
+      "activation_condition": [
+        "P01_SOLVED"
+      ],
+      "result": "Con el generador auxiliar recibe la señal de Valle Hondo (C03), la reproduce en bucle y la transcribe",
+      "transitions": [
+        {
+          "to": "ON",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C03",
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "ON",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O11",
+      "name": "Panel de reenganche de antena",
+      "visual": "Panel con cuatro relés rotulados NORTE, SUR, ESTE y OESTE, cada uno con una flecha a su punto cardinal y un indicador ENGANCHADO o ABAJO",
+      "room": "ROOM02",
+      "position": {
+        "x": 2.5,
+        "y": 1.3,
+        "z": 3.9
+      },
+      "category": "coop",
+      "states": [
+        "ENGAGED_OLD",
+        "DOWN",
+        "ENGAGED"
+      ],
+      "initial_state": "ENGAGED_OLD",
+      "action": "Enganchar relés de uno en uno",
+      "activation_condition": [
+        "P07_SOLVED"
+      ],
+      "result": "Si el orden cumple el procedimiento tras descarga, la antena queda enganchada y se abre la Sala del transmisor; si no, los relés vuelven a ABAJO",
+      "transitions": [
+        {
+          "to": "DOWN",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "ENGAGED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O12",
+      "name": "Libro de guardia",
+      "visual": "Libro de tapas verdes abierto sobre un atril, con anotaciones a mano y la hora de cada una",
+      "room": "ROOM02",
+      "position": {
+        "x": 0.5,
+        "y": 1,
+        "z": 0.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C14",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C14",
+      "puzzle": "P06",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O13",
+      "name": "Termo y taza",
+      "visual": "Termo de acero y una taza con el escudo de la estación, aún templada",
+      "room": "ROOM02",
+      "position": {
+        "x": 3.6,
+        "y": 0.8,
+        "z": 1.2
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O14",
+      "name": "Banderines de radioaficionados",
+      "visual": "Tarjetas y banderines de estaciones lejanas clavados en el corcho de la pared oeste",
+      "room": "ROOM02",
+      "position": {
+        "x": 0.05,
+        "y": 1.6,
+        "z": 2.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O15",
+      "name": "Silla giratoria",
+      "visual": "Silla de oficina gastada con una manta doblada encima",
+      "room": "ROOM02",
+      "position": {
+        "x": 2.8,
+        "y": 0,
+        "z": 2
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O16",
+      "name": "Armario del transmisor",
+      "visual": "Armario metálico gris de pared a pared hasta media altura, con aguja de temperatura y un rótulo EN EL AIRE encima",
+      "room": "ROOM03",
+      "position": {
+        "x": 3.5,
+        "y": 0,
+        "z": 2.5
+      },
+      "category": "narrative",
+      "states": [
+        "COLD",
+        "WARM",
+        "ON_AIR"
+      ],
+      "initial_state": "COLD",
+      "action": "Mirar",
+      "activation_condition": [],
+      "result": "Muestra el estado del transmisor con su aguja y su rótulo",
+      "transitions": [
+        {
+          "to": "WARM",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "ON_AIR",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "ON_AIR",
+      "interact_radius_m": 2
+    },
+    {
+      "object_id": "O17",
+      "name": "Consola de potencia",
+      "visual": "Consola en la mitad oeste con indicador de batería y tres teclas: BAJA con triángulo, MEDIA con cuadrado y ALTA con círculo; solo responde a A",
+      "room": "ROOM03",
+      "position": {
+        "x": 0.6,
+        "y": 1,
+        "z": 2.5
+      },
+      "category": "coop",
+      "states": [
+        "LOCKED",
+        "READY",
+        "ON_AIR"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Pulsar una tecla de potencia y votar",
+      "activation_condition": [
+        "P04_SOLVED"
+      ],
+      "result": "Envía la potencia elegida en el momento de la emisión; después recoge el voto de A",
+      "transitions": [
+        {
+          "to": "READY",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C11",
+      "puzzle": "P05",
+      "authorized": "A",
+      "final_state": "ON_AIR",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O18",
+      "name": "Tablero de antenas",
+      "visual": "Tablero en la mitad oeste con las tres antenas dibujadas, su estado escrito y un mapa de cobertura con distancias",
+      "room": "ROOM03",
+      "position": {
+        "x": 0.1,
+        "y": 1.6,
+        "z": 3.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda C09",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C09",
+      "puzzle": "P04",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O19",
+      "name": "Consola de modulación",
+      "visual": "Consola en la mitad este con dial de tres ruedas, botón FIJAR y dos teclas: ESTRECHA con línea recta y ANCHA con onda; solo responde a B",
+      "room": "ROOM03",
+      "position": {
+        "x": 6.4,
+        "y": 1,
+        "z": 2.5
+      },
+      "category": "coop",
+      "states": [
+        "LOCKED",
+        "TUNED",
+        "ON_AIR"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Marcar el canal y pulsar FIJAR; pulsar una tecla de modulación; votar",
+      "activation_condition": [
+        "P03_SOLVED"
+      ],
+      "result": "Fija el canal de emisión, envía la modulación y recoge el voto de B",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P04",
+      "authorized": "B",
+      "final_state": "ON_AIR",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O20",
+      "name": "Pantalla del repetidor",
+      "visual": "Pantalla pequeña junto al tablero de antenas con el rótulo Repetidor de Peña Gris",
+      "room": "ROOM03",
+      "position": {
+        "x": 0.1,
+        "y": 1.6,
+        "z": 1.5
+      },
+      "category": "examine",
+      "states": [
+        "DARK",
+        "LIVE"
+      ],
+      "initial_state": "DARK",
+      "action": "Leer",
+      "activation_condition": [
+        "P05_SOLVED"
+      ],
+      "result": "Con la estación en el aire muestra los dos destinatarios posibles (C13)",
+      "transitions": [
+        {
+          "to": "LIVE",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C13",
+      "puzzle": "P06",
+      "authorized": "A",
+      "final_state": "LIVE",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O21",
+      "name": "Puerta de la escalera",
+      "visual": "Puerta de madera con barra antipánico y un letrero: Sala común",
+      "room": "ROOM03",
+      "position": {
+        "x": 3.5,
+        "y": 0,
+        "z": 4.95
+      },
+      "category": "exit",
+      "states": [
+        "LOCKED",
+        "OPEN"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Bajar a la sala común",
+      "activation_condition": [
+        "P06_SOLVED"
+      ],
+      "result": "Confirma la salida de quien la cruza; la partida termina cuando la cruzan los dos",
+      "transitions": [
+        {
+          "to": "OPEN",
+          "when": [
+            "P06_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "OPEN",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O22",
+      "name": "Vitrina de válvulas antiguas",
+      "visual": "Vitrina con válvulas de radio de cristal de los primeros años de la estación, con etiquetas de fecha",
+      "room": "ROOM03",
+      "position": {
+        "x": 0.5,
+        "y": 0,
+        "z": 4.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O23",
+      "name": "Barómetro de pared",
+      "visual": "Barómetro de latón con la aguja en Tormenta; tras el final sube a Variable",
+      "room": "ROOM03",
+      "position": {
+        "x": 6.95,
+        "y": 1.7,
+        "z": 4
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    }
+  ],
+  "clues": [
+    {
+      "clue_id": "C01",
+      "content": "Cuadro de arranque auxiliar. Cuatro palancas de izquierda a derecha, cada una con su forma en relieve: círculo, rombo, triángulo y cuadrado. Todas están abajo. La palanca del triángulo está cubierta de escarcha y no se mueve: se queda abajo. Pilotos: ARRANQUE, ALERTA y SOBRECARGA. Placa: El generador arranca al pulsar PROBAR si la combinación es segura.",
+      "alt_text": "Lista en texto grande: palancas círculo, rombo, triángulo (helada, abajo) y cuadrado; pilotos ARRANQUE, ALERTA y SOBRECARGA. La escarcha se indica con texto y con un icono de copo de nieve.",
+      "location": "O01",
+      "discovery": "A examina el cuadro de arranque con la linterna",
+      "player": "A",
+      "puzzle": "P01",
+      "reveals": "Las formas de las palancas, su orden y que la del triángulo está helada",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C02",
+      "content": "Manual técnico, página 4: Módulo de arranque auxiliar. Entradas: E1 palanca triángulo, E2 palanca círculo, E3 palanca cuadrado, E4 palanca rombo. Palanca arriba vale 1 y abajo vale 0. Una puerta O da 1 si al menos una de sus entradas vale 1. Una puerta Y da 1 solo si sus dos entradas valen 1. ARRANQUE = (E1 O E2) Y (E3 O E4). ALERTA = E2 Y E4. SOBRECARGA = E1 Y E3. El generador solo arranca con ARRANQUE encendido y ALERTA y SOBRECARGA apagados.",
+      "alt_text": "Texto de la página con lectura en voz; el esquema de puertas se describe también en frases y como tabla de verdad de cada piloto.",
+      "location": "O09",
+      "discovery": "B consulta la página 4 del manual",
+      "player": "B",
+      "puzzle": "P01",
+      "reveals": "La lógica del módulo de arranque y qué forma corresponde a cada entrada",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O09_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C03",
+      "content": "Señal automática de la base Valle Hondo, transcrita por el receptor: Valle Hondo para Pico Albar, secuencia de reconexión de barras, cuatro grupos y fin. Repetición 1: largo corto / largo largo corto / [ruido] / [ruido] / [ruido]. Repetición 2: [ruido] / largo largo corto / corto largo / [ruido] / [ruido]. Repetición 3: [ruido] / [ruido] / corto largo / corto corto largo / corto corto corto.",
+      "alt_text": "Cada pulso se oye como pitido corto o largo, se ve como destello corto o largo de la lámpara y se escribe en la pantalla como corto o largo; los cortes de la señal aparecen como [ruido].",
+      "location": "O10",
+      "discovery": "B escucha el receptor cuando arranca el generador auxiliar",
+      "player": "B",
+      "puzzle": "P02",
+      "reveals": "Los grupos de pulsos de la secuencia de reconexión, repartidos entre tres repeticiones incompletas",
+      "depends_on": [],
+      "enabled_when": [
+        "P01_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O10_ON"
+      ]
+    },
+    {
+      "clue_id": "C04",
+      "content": "Tabla plastificada atornillada junto a los interruptores de barra: Código de pulsos de la red de montaña. corto largo: barra NORTE. largo corto: barra SUR. corto corto largo: barra ESTE. largo largo corto: barra OESTE. corto corto corto: fin de secuencia. Si una repetición llega incompleta, completadla con las demás: los grupos siempre van en el mismo orden.",
+      "alt_text": "Tabla en texto grande con lectura en voz: cada combinación de cortos y largos y la barra que nombra.",
+      "location": "O02",
+      "discovery": "A examina los interruptores de barra",
+      "player": "A",
+      "puzzle": "P02",
+      "reveals": "Qué barra nombra cada grupo de pulsos",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C05",
+      "content": "Placa de los interruptores de barra: Conectad las barras de una en una en el orden que transmita la base del valle. Un orden distinto las desconecta todas. Interruptores: NORTE, SUR, ESTE y OESTE.",
+      "alt_text": "Texto de la placa en grande; cada interruptor tiene su nombre escrito y su estado en palabras.",
+      "location": "O02",
+      "discovery": "A examina los interruptores de barra",
+      "player": "A",
+      "puzzle": "P02",
+      "reveals": "Que el orden lo da la base del valle y qué interruptores hay",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C06",
+      "content": "Panel de cartuchos tras el rayo. F1 protege la barra OESTE: círculo, CORRECTO. F2 protege la barra NORTE: aspa, FUNDIDO. F3 protege la barra SUR: círculo, CORRECTO. F4 protege la barra ESTE: círculo, CORRECTO. Placa de la ranura de F2: Clase 3.",
+      "alt_text": "Lista en texto: F1 Oeste correcto; F2 Norte fundido, clase 3; F3 Sur correcto; F4 Este correcto. El estado se indica con palabra y forma, no con color.",
+      "location": "O03",
+      "discovery": "A examina el panel de cartuchos tras el rayo",
+      "player": "A",
+      "puzzle": "P03",
+      "reveals": "Qué cartucho se fundió, qué barra protege y qué clase de repuesto necesita",
+      "depends_on": [],
+      "enabled_when": [
+        "P02_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O03_FUSED"
+      ]
+    },
+    {
+      "clue_id": "C07",
+      "content": "Cajón de repuestos: tres cartuchos. Uno con un punto en relieve y la palabra CLASE 1, otro con tres puntos y CLASE 3, y otro con cinco puntos y CLASE 5.",
+      "alt_text": "Texto: repuestos de clase 1, 3 y 5, marcados también con uno, tres y cinco puntos en relieve.",
+      "location": "O04",
+      "discovery": "A abre el cajón cuando se abre solo tras el rayo",
+      "player": "A",
+      "puzzle": "P07",
+      "reveals": "Las clases de los cartuchos de repuesto",
+      "depends_on": [],
+      "enabled_when": [
+        "P02_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "P02_SOLVED"
+      ]
+    },
+    {
+      "clue_id": "C08",
+      "content": "Manual técnico, página 9: Procedimiento tras una descarga. Primero: sustituid el cartucho fundido por uno de su misma clase. Segundo: reenganchad los relés de antena en el orden inverso al de la última reconexión de barras. Tercero: el relé de la barra que protegía el cartucho fundido no se engancha en su turno, sino el último de todos.",
+      "alt_text": "Texto de la página en tres pasos numerados con lectura en voz.",
+      "location": "O09",
+      "discovery": "B consulta la página 9 del manual",
+      "player": "B",
+      "puzzle": "P03",
+      "reveals": "Cómo cambia el orden de reenganche después de un rayo",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O09_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C09",
+      "content": "Tablero de antenas. Antena Norte: copo de nieve y texto HIELO. Antena Cresta: círculo y texto EN SERVICIO. Antena Collado: aspa y texto DAÑADA POR EL RAYO. Mapa de cobertura: el repetidor de Peña Gris está a 40 km de la estación.",
+      "alt_text": "Lista en texto: Norte con hielo, Cresta en servicio, Collado dañada; repetidor a 40 km. Cada estado se indica con palabra y forma.",
+      "location": "O18",
+      "discovery": "A examina el tablero de antenas de la consola de potencia",
+      "player": "A",
+      "puzzle": "P04",
+      "reveals": "El estado de cada antena y la distancia al repetidor",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O18_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C10",
+      "content": "Manual técnico, página 12: Antenas de la estación. Alcance con buen tiempo y canal: Collado, 80 km, canal 518. Norte, 60 km, canal 147. Cresta, 45 km, canal 362. Una antena con hielo solo alcanza la mitad de su distancia. Una antena dañada no emite. Emitid siempre por la antena que funcione y llegue al destino; si llegan varias, por la de mayor alcance.",
+      "alt_text": "Tabla de tres filas con antena, alcance y canal, y las reglas en frases, con lectura en voz.",
+      "location": "O09",
+      "discovery": "B consulta la página 12 del manual",
+      "player": "B",
+      "puzzle": "P04",
+      "reveals": "Alcance y canal de cada antena y cómo elegir",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O09_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C11",
+      "content": "Indicador de batería de la consola de potencia: 3 de 10 segmentos encendidos y la palabra RESERVA.",
+      "alt_text": "Texto: batería en RESERVA, 3 de 10 segmentos.",
+      "location": "O17",
+      "discovery": "A mira la consola de potencia",
+      "player": "A",
+      "puzzle": "P05",
+      "reveals": "Que la batería está en reserva",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C12",
+      "content": "Manual técnico, página 13: Emisión. Potencia según la antena: Norte, ALTA (tecla círculo); Cresta, MEDIA (tecla cuadrado); Collado, BAJA (tecla triángulo). Modulación según la batería: si el indicador marca RESERVA, ESTRECHA (tecla de línea recta); si no, ANCHA (tecla de onda). La emisión arranca solo si la tecla de potencia y la de modulación se pulsan a la vez, con menos de dos segundos de diferencia.",
+      "alt_text": "Dos tablas con lectura en voz: antena y potencia con su forma; batería y modulación con su forma; y la regla de pulsar a la vez.",
+      "location": "O09",
+      "discovery": "B consulta la página 13 del manual",
+      "player": "B",
+      "puzzle": "P05",
+      "reveals": "Qué potencia corresponde a cada antena, qué modulación corresponde a la batería y la regla de simultaneidad",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O09_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C13",
+      "content": "Pantalla del repetidor de Peña Gris: Batería del repetidor baja. Solo puedo reenviar un mensaje antes del amanecer. Destino 1, Refugio Valle Hondo: su equipo de montaña puede subir a la cabaña del Collado en cuanto amanezca. Destino 2, Ayuntamiento de Sorbe: puede cerrar la carretera del puerto antes de las ocho de la mañana. El mensaje que no se envíe saldrá en el siguiente parte de mediodía.",
+      "alt_text": "Texto en pantalla con lectura en voz; los dos destinos en tarjetas con icono de montaña y de carretera además del nombre.",
+      "location": "O20",
+      "discovery": "Aparece en la pantalla del repetidor al salir al aire",
+      "player": "A",
+      "puzzle": "P06",
+      "reveals": "Qué puede hacer cada destinatario con el mensaje",
+      "depends_on": [],
+      "enabled_when": [
+        "P05_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O20_LIVE"
+      ]
+    },
+    {
+      "clue_id": "C14",
+      "content": "Libro de guardia. 19:00: dos excursionistas avisan por radio de que pasan la noche en la cabaña del Collado; están bien, tienen leña y comida para dos días, pero no conocen el camino de bajada con nieve. 21:30: el Ayuntamiento de Sorbe pregunta si debe cerrar la carretera del puerto por la helada; mañana a las ocho sube el autobús de la escuela. 22:10: corte de suministro.",
+      "alt_text": "Las tres anotaciones en texto grande con su hora, con lectura en voz.",
+      "location": "O12",
+      "discovery": "B lee el libro de guardia",
+      "player": "B",
+      "puzzle": "P06",
+      "reveals": "La situación de los excursionistas y la pregunta de Sorbe",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O12_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C15",
+      "content": "Voz automática de la estación: Cada uno de vosotros ve una parte del sistema. Antes de tocar nada, contaos lo que tenéis delante.",
+      "alt_text": "Aviso en texto en la pantalla de los dos jugadores.",
+      "location": "O05",
+      "discovery": "Ayuda contextual que ofrece el sistema si nadie progresa en 2 minutos",
+      "player": "AB",
+      "puzzle": "P01",
+      "reveals": "Que la información está repartida entre los dos",
+      "depends_on": [],
+      "enabled_when": [
+        "IDLE_120"
+      ],
+      "help_level": 1,
+      "discovered_when": [
+        "IDLE_120"
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "puzzle_id": "P01",
+      "name": "El arranque helado",
+      "room": "ROOM01",
+      "main": true,
+      "prerequisites": [
+        "START"
+      ],
+      "narrative": "Sin el generador auxiliar no hay receptor ni luz. El módulo de arranque tiene una lógica de seguridad que solo explica el manual, y una de sus palancas está helada.",
+      "objective": "Poner las cuatro palancas del cuadro de arranque en una combinación segura y pulsar PROBAR.",
+      "situation": "A está ante el cuadro con cuatro palancas de formas y tres pilotos. B tiene el manual con la lógica, pero no ve las palancas ni sabe que una está helada.",
+      "required_objects": [
+        "O01",
+        "O09"
+      ],
+      "info_a": "Las formas de las palancas, su orden y que la del triángulo está helada abajo (C01).",
+      "info_b": "Qué forma es cada entrada y las fórmulas de ARRANQUE, ALERTA y SOBRECARGA (C02).",
+      "must_communicate": "B lee las fórmulas y la correspondencia entre entradas y formas; A informa de que la palanca del triángulo no se mueve; razonan juntos qué palancas deben subir y A confirma la combinación con B antes de PROBAR.",
+      "rules": [
+        "Las palancas se mueven libremente; solo se valida al pulsar PROBAR.",
+        "Los pilotos solo muestran el resultado de la combinación probada.",
+        "La palanca del triángulo no se puede subir."
+      ],
+      "steps": [
+        "B lee la página 4 del manual.",
+        "A describe el cuadro y la palanca helada.",
+        "Como E1 (triángulo) vale 0, para ARRANQUE hace falta E2 (círculo) = 1.",
+        "Con E2 = 1, ALERTA obliga a E4 (rombo) = 0.",
+        "Con E4 = 0, ARRANQUE obliga a E3 (cuadrado) = 1; SOBRECARGA queda apagada porque E1 = 0.",
+        "A sube círculo y cuadrado, deja abajo rombo y triángulo, y pulsa PROBAR."
+      ],
+      "answer": {
+        "type": "position",
+        "value": {
+          "CIRCULO": "ARRIBA",
+          "ROMBO": "ABAJO",
+          "TRIANGULO": "ABAJO",
+          "CUADRADO": "ARRIBA"
+        },
+        "normalize": "Posición de cada palanca, nombrada por su forma, en el momento de pulsar PROBAR"
+      },
+      "wrong_answers": [
+        {
+          "value": {
+            "CIRCULO": "ABAJO",
+            "ROMBO": "ARRIBA",
+            "TRIANGULO": "ARRIBA",
+            "CUADRADO": "ABAJO"
+          },
+          "why": "Cumple la lógica del manual, pero la palanca del triángulo está helada y no sube: esta combinación no se puede formar."
+        },
+        {
+          "value": {
+            "CIRCULO": "ARRIBA",
+            "ROMBO": "ARRIBA",
+            "TRIANGULO": "ABAJO",
+            "CUADRADO": "ARRIBA"
+          },
+          "why": "Con círculo y rombo arriba se enciende ALERTA (E2 Y E4)."
+        },
+        {
+          "value": {
+            "CIRCULO": "ARRIBA",
+            "ROMBO": "ABAJO",
+            "TRIANGULO": "ABAJO",
+            "CUADRADO": "ABAJO"
+          },
+          "why": "Sin cuadrado ni rombo, la segunda puerta O da 0 y ARRANQUE no se enciende."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C01",
+          "C02"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": "M01",
+        "check": "Al pulsar PROBAR, el servidor calcula ARRANQUE, ALERTA y SOBRECARGA con la combinación y la tabla de C02. Se acepta si ARRANQUE = 1, ALERTA = 0 y SOBRECARGA = 0 con la palanca del triángulo abajo. C01 debe estar descubierta por A y C02 por B."
+      },
+      "on_solve": {
+        "message": "El generador auxiliar tose y arranca. Se enciende la luz.",
+        "events": [
+          "E02"
+        ],
+        "sets": [
+          "O01_STARTED"
+        ]
+      },
+      "on_fail": {
+        "message": "Los pilotos muestran la combinación probada; el generador no arranca.",
+        "effect": "Las palancas se quedan donde están; los pilotos se apagan a los 5 s."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 15
+      },
+      "hints": [
+        "A ve las palancas y B tiene la lógica: lean juntos las fórmulas.",
+        "Empiecen por lo que no pueden cambiar: la palanca helada.",
+        "El triángulo es E1 y está abajo, así que el círculo (E2) tiene que subir."
+      ],
+      "estimated_minutes": 6,
+      "unlocks": [
+        "P02"
+      ],
+      "reset_condition": "Las palancas no se mueven tras un fallo. Un reinicio de zona baja todas las palancas y deja el cuadro en COLD.",
+      "edge_cases": [
+        "A intenta subir la palanca del triángulo: no se mueve, se oye un roce de hielo y no cuenta como intento.",
+        "A pulsa PROBAR muy seguido: cada 3 fallos hay una pausa de 15 s para evitar el tanteo.",
+        "B se desconecta tras leer el manual: C02 sigue en su registro.",
+        "Doble pulsación de PROBAR con el mismo actionId: se ignora la segunda."
+      ],
+      "solution_proof": "Con E1 = 0 por la escarcha, ARRANQUE exige E2 = 1; ALERTA apagada exige entonces E4 = 0; ARRANQUE exige E3 = 1; SOBRECARGA = E1 Y E3 = 0. La combinación es única: círculo y cuadrado arriba. Sin la información de la escarcha existiría otra solución (triángulo y rombo arriba), y sin el manual A no sabe qué forma es cada entrada ni qué hace cada piloto."
+    },
+    {
+      "puzzle_id": "P02",
+      "name": "La señal entrecortada",
+      "room": "ROOM01",
+      "main": true,
+      "prerequisites": [
+        "P01_SOLVED"
+      ],
+      "narrative": "El receptor recoge la baliza automática de la base de Valle Hondo, que transmite la secuencia de reconexión de barras. La tormenta corta trozos de cada repetición.",
+      "objective": "Conectar las cuatro barras de la estación en el orden que transmite la base.",
+      "situation": "B oye la señal y ve la lámpara de pulsos. A tiene los interruptores de barra y, junto a ellos, la tabla del código de pulsos.",
+      "required_objects": [
+        "O02",
+        "O10",
+        "O09"
+      ],
+      "info_a": "Los interruptores de barra (C05) y la tabla del código de pulsos (C04).",
+      "info_b": "Las tres repeticiones incompletas de la señal (C03).",
+      "must_communicate": "B junta las repeticiones y dicta los grupos de pulsos uno a uno; A traduce cada grupo con la tabla, dice en voz alta la barra, la conecta y confirma que su piloto dice CONECTADA.",
+      "rules": [
+        "Las barras se conectan de una en una.",
+        "Si se conecta una fuera de orden, se desconectan todas y se puede empezar otra vez.",
+        "La señal se repite en bucle sin límite."
+      ],
+      "steps": [
+        "B escucha las tres repeticiones, junta los grupos y se los dicta a A.",
+        "A traduce el grupo 1 (repetición 1), largo corto, con la tabla: SUR.",
+        "Grupo 2 (repeticiones 1 y 2): largo largo corto, OESTE.",
+        "Grupo 3 (repeticiones 2 y 3): corto largo, NORTE.",
+        "Grupo 4 (repetición 3): corto corto largo, ESTE; después corto corto corto, fin.",
+        "A conecta SUR, OESTE, NORTE y ESTE."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "SUR",
+          "OESTE",
+          "NORTE",
+          "ESTE"
+        ],
+        "normalize": "Lista de barras en el orden en que se conectan"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "NORTE",
+            "SUR",
+            "ESTE",
+            "OESTE"
+          ],
+          "why": "Es el orden en que están rotulados los interruptores, no el de la señal."
+        },
+        {
+          "value": [
+            "NORTE",
+            "OESTE",
+            "SUR",
+            "ESTE"
+          ],
+          "why": "Confunde corto largo (NORTE) con largo corto (SUR): intercambia los grupos 1 y 3."
+        },
+        {
+          "value": [
+            "OESTE",
+            "NORTE",
+            "ESTE"
+          ],
+          "why": "Usa solo la repetición 2 y la 3 y pierde el primer grupo."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C03",
+          "C04",
+          "C05"
+        ],
+        "coop_model": "M2",
+        "mechanism_id": "M02",
+        "check": "Cada barra se valida al conectarla contra la posición que le toca en la secuencia de C03 traducida con C04 (variante activa). La entrada viene de A y C03 debe estar descubierta por B."
+      },
+      "on_solve": {
+        "message": "Las cuatro barras quedan CONECTADAS y la estación vuelve a zumbar.",
+        "events": [
+          "E03",
+          "E04"
+        ],
+        "sets": [
+          "O02_CONNECTED"
+        ]
+      },
+      "on_fail": {
+        "message": "Las barras se desconectan con un chasquido sordo. Revisad el orden con la señal.",
+        "effect": "Las cuatro barras vuelven a DESCONECTADA; nada más cambia."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "La señal llega a B; la tabla de pulsos y los interruptores los tiene A.",
+        "Ninguna repetición está completa: junten las tres, porque los grupos siempre van en el mismo orden.",
+        "El primer grupo es largo corto: la barra SUR."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P07",
+        "P03"
+      ],
+      "reset_condition": "Las barras se desconectan solas tras un error. Un reinicio de zona deja las barras en POWERED y la señal en bucle desde el principio.",
+      "edge_cases": [
+        "A conecta barras antes de que B haya oído la señal: se permite, pero si falla vuelve todo a cero.",
+        "B no oye bien los pitidos: la lámpara y el texto de la pantalla dan la misma información.",
+        "A desconecta una barra a mitad: la secuencia vuelve a cero sin contar como fallo.",
+        "Desconexión de B a mitad: la secuencia de A se conserva en el servidor."
+      ],
+      "solution_proof": "Cada grupo aparece completo en al menos una repetición: el 1 en la primera, el 2 en la primera y la segunda, el 3 en la segunda y la tercera y el 4 en la tercera, seguido del fin. La tabla C04 asigna una sola barra a cada grupo, así que el orden es único: SUR, OESTE, NORTE, ESTE. A no oye la señal y B no tiene la tabla ni los interruptores."
+    },
+    {
+      "puzzle_id": "P07",
+      "name": "El cartucho fundido",
+      "room": "ROOM01",
+      "main": false,
+      "prerequisites": [
+        "P02_SOLVED"
+      ],
+      "narrative": "El rayo ha fundido un cartucho de protección del cuadro. Sin sustituirlo, el manual no permite reenganchar la antena.",
+      "objective": "Colocar en la ranura vacía un cartucho de repuesto de la misma clase.",
+      "situation": "A ve el panel de cartuchos con la placa de clase y el cajón de repuestos abierto.",
+      "required_objects": [
+        "O03",
+        "O04"
+      ],
+      "info_a": "La clase de la ranura (C06) y los repuestos disponibles (C07).",
+      "info_b": "El manual recuerda que el cartucho debe ser de la misma clase (C08); B puede decirlo, aunque la placa también lo indica.",
+      "must_communicate": "No es obligatorio; B puede recordar el primer paso del procedimiento.",
+      "rules": [
+        "Solo encaja el cartucho de la clase de la ranura.",
+        "Probar otro no gasta nada."
+      ],
+      "steps": [
+        "A lee la placa de la ranura: Clase 3.",
+        "A coge el repuesto de tres puntos.",
+        "A lo coloca en la ranura."
+      ],
+      "answer": {
+        "type": "combine",
+        "value": [
+          "O04_CLASE_3",
+          "O03"
+        ],
+        "normalize": "Cartucho de tres puntos (clase 3) del cajón O04 usado sobre O03"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "O04_CLASE_1",
+            "O03"
+          ],
+          "why": "El cartucho de clase 1 no encaja en una ranura de clase 3."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C06",
+          "C07"
+        ],
+        "coop_model": null,
+        "mechanism_id": null,
+        "check": "A usa el cartucho cuya clase coincide con la placa de la ranura fundida en C06 (variante activa) sobre O03 en estado FUSED."
+      },
+      "on_solve": {
+        "message": "El cartucho encaja con un clic y su piloto vuelve a CORRECTO.",
+        "events": [
+          "E05"
+        ],
+        "sets": [
+          "O03_REPAIRED",
+          "O04_USED"
+        ]
+      },
+      "on_fail": {
+        "message": "Ese cartucho no encaja en esta ranura.",
+        "effect": "Ninguno; el cartucho vuelve al cajón."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "Mira la placa de la ranura vacía.",
+        "El repuesto debe ser de la misma clase.",
+        "Usa el cartucho de tres puntos."
+      ],
+      "estimated_minutes": 2,
+      "unlocks": [
+        "P03"
+      ],
+      "reset_condition": "Reinicio de zona: el cartucho vuelve al cajón y la ranura a FUSED.",
+      "edge_cases": [
+        "A coloca el cartucho antes de que B lea el procedimiento: se acepta.",
+        "A intenta colocar un cartucho en una ranura correcta: no se puede, la ranura está ocupada."
+      ],
+      "solution_proof": "La placa de la ranura indica una sola clase y solo hay un repuesto de esa clase. Es un microacertijo de enlace que no cuenta como acertijo principal."
+    },
+    {
+      "puzzle_id": "P03",
+      "name": "El orden después del rayo",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "P07_SOLVED"
+      ],
+      "narrative": "El rayo ha soltado los relés de antena. El procedimiento tras descarga cambia el orden de reenganche, y el cambio depende de qué cartucho se fundió.",
+      "objective": "Enganchar los cuatro relés de antena en el orden que marca el procedimiento.",
+      "situation": "B está en el panel de reenganche, con el procedimiento en el manual. A ve en su panel qué cartucho se fundió y qué barra protegía. Los dos recuerdan el orden en que se conectaron las barras.",
+      "required_objects": [
+        "O11",
+        "O03"
+      ],
+      "info_a": "El cartucho fundido es F2, que protege la barra NORTE (C06).",
+      "info_b": "El procedimiento de la página 9 (C08) y la secuencia de la señal que reconstruyó (C03).",
+      "must_communicate": "A dice qué cartucho se fundió y qué barra protege; B lee el procedimiento, invierte en voz alta la secuencia de barras, mueve al final la barra protegida por el cartucho fundido y A confirma el resultado antes de que B enganche.",
+      "rules": [
+        "Los relés se enganchan de uno en uno.",
+        "Si se engancha uno fuera de orden, los cuatro vuelven a ABAJO.",
+        "No se puede enganchar antes de sustituir el cartucho."
+      ],
+      "steps": [
+        "A lee el panel de cartuchos: F2 fundido, protege NORTE.",
+        "B lee la página 9.",
+        "La última reconexión fue SUR, OESTE, NORTE, ESTE; al revés queda ESTE, NORTE, OESTE, SUR.",
+        "NORTE sale de su turno y pasa al final: ESTE, OESTE, SUR, NORTE.",
+        "B engancha ESTE, OESTE, SUR y NORTE."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "ESTE",
+          "OESTE",
+          "SUR",
+          "NORTE"
+        ],
+        "normalize": "Lista de relés en el orden en que se enganchan"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "ESTE",
+            "NORTE",
+            "OESTE",
+            "SUR"
+          ],
+          "why": "Invierte la secuencia pero no mueve al final la barra NORTE, protegida por el cartucho fundido."
+        },
+        {
+          "value": [
+            "SUR",
+            "OESTE",
+            "NORTE",
+            "ESTE"
+          ],
+          "why": "Repite el orden anterior al rayo; el procedimiento pide invertirlo."
+        },
+        {
+          "value": [
+            "NORTE",
+            "OESTE",
+            "SUR",
+            "ESTE"
+          ],
+          "why": "Mueve al final la barra ESTE porque confunde F2 con F4."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C06",
+          "C08",
+          "C03"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": "M03",
+        "check": "Cada relé se valida al engancharlo contra la secuencia de C03 (variante activa) invertida, con la barra protegida por el cartucho fundido de C06 (variante activa) movida al final. La entrada viene de B y C06 debe estar descubierta por A; O03 debe estar en REPAIRED."
+      },
+      "on_solve": {
+        "message": "Los cuatro relés quedan ENGANCHADOS. La puerta de la Sala del transmisor se abre.",
+        "events": [
+          "E06"
+        ],
+        "sets": [
+          "O11_ENGAGED"
+        ]
+      },
+      "on_fail": {
+        "message": "Los relés vuelven a ABAJO. Revisad el procedimiento tras descarga.",
+        "effect": "Los cuatro relés vuelven a ABAJO; las pistas se conservan."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "El procedimiento lo tiene B y el cartucho fundido lo ve A.",
+        "Inviertan la última secuencia de barras y luego miren qué barra protegía el cartucho fundido.",
+        "Al revés queda ESTE, NORTE, OESTE, SUR; NORTE pasa al final."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P04"
+      ],
+      "reset_condition": "Los relés vuelven a ABAJO tras un error. Un reinicio de zona los deja en DOWN y conserva el cartucho sustituido.",
+      "edge_cases": [
+        "B intenta enganchar antes de que A sustituya el cartucho: el panel muestra Cartucho fundido, sustituir antes y no cuenta como fallo.",
+        "B engancha y desengancha un relé: la secuencia vuelve a cero sin contar como fallo.",
+        "A se desconecta tras sustituir el cartucho: el estado REPAIRED se conserva."
+      ],
+      "solution_proof": "La secuencia anterior es única (P02) y su inversión también. C06 indica un único cartucho fundido, que protege una sola barra, NORTE, y el tercer paso de C08 la lleva al final. Resultado único: ESTE, OESTE, SUR, NORTE. B no sabe qué cartucho se fundió ni qué barra protege; A no tiene el procedimiento."
+    },
+    {
+      "puzzle_id": "P04",
+      "name": "La antena que llega",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P03_SOLVED"
+      ],
+      "narrative": "En la Sala del transmisor hay que elegir por qué antena sale el parte. El rayo y el hielo han dejado fuera de juego a dos de las tres.",
+      "objective": "Marcar en el dial de la consola de modulación el canal de la antena correcta y pulsar FIJAR.",
+      "situation": "A está en la consola de potencia, frente al tablero de antenas y el mapa de cobertura. B está en la consola de modulación con el dial, y tiene en el manual los alcances y canales.",
+      "required_objects": [
+        "O18",
+        "O19",
+        "O09"
+      ],
+      "info_a": "Estado de cada antena y distancia al repetidor de Peña Gris, 40 km (C09).",
+      "info_b": "Alcance y canal de cada antena y las reglas de hielo, daño y elección (C10).",
+      "must_communicate": "A describe el estado de cada antena y la distancia; B aplica las reglas en voz alta antena por antena; B marca el canal y A lo confirma antes de FIJAR.",
+      "rules": [
+        "El dial tiene tres ruedas del 0 al 9.",
+        "Se valida al pulsar FIJAR.",
+        "Fijar un canal incorrecto no daña nada."
+      ],
+      "steps": [
+        "A lee el tablero: Norte con hielo, Cresta en servicio, Collado dañada; repetidor a 40 km.",
+        "B lee la página 12.",
+        "Collado está dañada: no emite.",
+        "Norte con hielo alcanza 30 km, menos de 40: no llega.",
+        "Cresta alcanza 45 km: llega.",
+        "B marca 362 y pulsa FIJAR."
+      ],
+      "answer": {
+        "type": "code",
+        "value": "362",
+        "normalize": "Tres cifras sin espacios"
+      },
+      "wrong_answers": [
+        {
+          "value": "518",
+          "why": "Es el canal del Collado, la antena de mayor alcance, pero está dañada por el rayo."
+        },
+        {
+          "value": "147",
+          "why": "Es el canal de la antena Norte; con hielo solo alcanza 30 km y el repetidor está a 40."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C09",
+          "C10"
+        ],
+        "coop_model": "M2",
+        "mechanism_id": "M04",
+        "check": "El canal fijado por B debe ser el de la antena que funciona y alcanza la distancia de C09 según las reglas de C10 (variante activa); si llegan varias, la de mayor alcance efectivo. La entrada viene de B y C09 debe estar descubierta por A."
+      },
+      "on_solve": {
+        "message": "El canal queda fijado. El transmisor empieza a calentarse.",
+        "events": [
+          "E07"
+        ],
+        "sets": [
+          "O19_TUNED"
+        ]
+      },
+      "on_fail": {
+        "message": "La aguja del transmisor no se mueve: por ese canal no llegaréis al repetidor.",
+        "effect": "El dial se queda en el número marcado para corregirlo."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "El estado de las antenas lo ve A; los alcances están en el manual de B.",
+        "Descarten las antenas que no emiten o que no llegan a 40 km.",
+        "El hielo deja la antena Norte en 30 km; solo la Cresta llega."
+      ],
+      "estimated_minutes": 6,
+      "unlocks": [
+        "P05"
+      ],
+      "reset_condition": "El dial se conserva tras un fallo. Un reinicio de zona pone el dial a 000.",
+      "edge_cases": [
+        "B fija el canal antes de que A examine el tablero: se rechaza con el mensaje Falta el estado de las antenas y no cuenta como fallo.",
+        "A intenta tocar el dial: la consola de modulación solo responde a B.",
+        "B fija dos veces el canal correcto: la segunda no repite el evento."
+      ],
+      "solution_proof": "Con las reglas de C10 y los estados de C09: Collado dañada (no emite), Norte con hielo (60 / 2 = 30 km, menos de 40) y Cresta en servicio (45 km, más de 40). Solo llega la Cresta, canal 362. B no conoce el estado de las antenas ni la distancia y A no conoce alcances ni canales."
+    },
+    {
+      "puzzle_id": "P05",
+      "name": "En el aire a la vez",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P04_SOLVED"
+      ],
+      "narrative": "El transmisor está caliente. Para salir al aire hacen falta dos manos: la potencia en la consola oeste y la modulación en la este, pulsadas a la vez.",
+      "objective": "Pulsar a la vez la tecla de potencia correcta en la consola de potencia y la tecla de modulación correcta en la consola de modulación.",
+      "situation": "A ve la batería en su consola y tiene las teclas de potencia. B tiene en el manual qué potencia y qué modulación corresponden, y las teclas de modulación.",
+      "required_objects": [
+        "O17",
+        "O19"
+      ],
+      "info_a": "La batería está en RESERVA (C11) y la antena elegida es la Cresta (C09).",
+      "info_b": "La potencia de cada antena, la modulación según la batería y la regla de simultaneidad (C12).",
+      "must_communicate": "B dice a A qué potencia corresponde a la Cresta; A dice a B que la batería marca RESERVA; uno cuenta tres, dos, uno y pulsan a la vez.",
+      "rules": [
+        "Cada consola solo acepta a su operador.",
+        "Las dos teclas deben pulsarse con menos de 2 segundos de diferencia.",
+        "Si solo pulsa uno, la emisión no arranca y la pulsación se cancela al cerrarse la ventana."
+      ],
+      "steps": [
+        "B lee la página 13.",
+        "B dice: con la Cresta, potencia MEDIA, tecla cuadrado.",
+        "A dice: la batería marca RESERVA, así que modulación ESTRECHA, tecla de línea recta.",
+        "Cuentan tres, dos, uno.",
+        "A pulsa MEDIA y B pulsa ESTRECHA a la vez."
+      ],
+      "answer": {
+        "type": "simultaneous",
+        "value": {
+          "A": "MEDIA",
+          "B": "ESTRECHA"
+        },
+        "normalize": "Tecla pulsada por A en la consola de potencia y por B en la de modulación, dentro de la ventana"
+      },
+      "wrong_answers": [
+        {
+          "value": {
+            "A": "ALTA",
+            "B": "ESTRECHA"
+          },
+          "why": "ALTA es la potencia de la antena Norte; esta noche se emite por la Cresta."
+        },
+        {
+          "value": {
+            "A": "MEDIA",
+            "B": "ANCHA"
+          },
+          "why": "La batería está en RESERVA y el manual pide modulación ESTRECHA."
+        },
+        {
+          "value": {
+            "A": "MEDIA",
+            "B": "ESTRECHA",
+            "gap_ms": 3500
+          },
+          "why": "Teclas correctas, pero pulsadas con 3,5 segundos de diferencia, fuera de la ventana."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A",
+          "B"
+        ],
+        "requires_clues": [
+          "C11",
+          "C12",
+          "C09"
+        ],
+        "coop_model": "M3",
+        "mechanism_id": "M05",
+        "window_ms": 2000,
+        "check": "El servidor recibe la tecla de A y la de B con su marca de tiempo. Se acepta si A pulsó la potencia de la antena elegida en P04 y B la modulación que corresponde al indicador de C11 según C12 (variante activa), y la diferencia es de 2000 ms o menos."
+      },
+      "on_solve": {
+        "message": "Se enciende EN EL AIRE. Pico Albar vuelve a emitir.",
+        "events": [
+          "E08"
+        ],
+        "sets": [
+          "O16_ON_AIR",
+          "O17_ON_AIR",
+          "O19_ON_AIR"
+        ]
+      },
+      "on_fail": {
+        "message": "El transmisor no arranca. Comprobad las teclas y pulsad a la vez.",
+        "effect": "Se cancelan las dos pulsaciones; nada más cambia."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "A ve la batería y B sabe qué significa; B sabe la potencia y A tiene la tecla.",
+        "La potencia depende de la antena elegida y la modulación del indicador de batería.",
+        "A pulsa MEDIA y B ESTRECHA, a la vez, tras contar tres."
+      ],
+      "estimated_minutes": 5,
+      "unlocks": [
+        "P06"
+      ],
+      "reset_condition": "Tras un fallo se cancelan las pulsaciones. Un reinicio de zona deja las consolas en READY y TUNED.",
+      "edge_cases": [
+        "A pulsa y B pulsa 2,5 s después: fuera de ventana, se cancela sin contar como fallo de teclas.",
+        "Los dos pulsan dentro de la ventana con una tecla equivocada: falla y se indica en qué consola está el error.",
+        "Un jugador se desconecta con su pulsación en espera: la espera se cancela y vuelve a PUZZLE_ACTIVE al reconectar.",
+        "Un jugador pulsa dos teclas: cuenta solo la última dentro de la ventana."
+      ],
+      "solution_proof": "La antena de P04 es la Cresta, cuya potencia en C12 es MEDIA; el indicador de C11 marca RESERVA, cuya modulación en C12 es ESTRECHA. No hay otra combinación válida. A no tiene la tabla de potencias y B no ve la batería, y la ventana de 2 s exige que los dos actúen a la vez."
+    },
+    {
+      "puzzle_id": "P06",
+      "name": "Un solo mensaje",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P05_SOLVED"
+      ],
+      "narrative": "La estación está en el aire, pero el repetidor de Peña Gris solo puede reenviar un mensaje antes del amanecer.",
+      "objective": "Decidir juntos quién recibe el último parte de la noche.",
+      "situation": "A ve en la pantalla del repetidor qué puede hacer cada destinatario. B tiene en el libro de guardia lo que ha pasado esta noche. Cada uno vota en su consola.",
+      "required_objects": [
+        "O20",
+        "O12",
+        "O17",
+        "O19"
+      ],
+      "info_a": "Lo que pueden hacer Valle Hondo y Sorbe con el mensaje, y que el otro saldrá a mediodía (C13).",
+      "info_b": "Los excursionistas de la cabaña del Collado y la pregunta de Sorbe sobre la carretera (C14).",
+      "must_communicate": "Cada uno cuenta lo que sabe y deciden un destinatario.",
+      "rules": [
+        "Los dos votan en secreto.",
+        "Si votan distinto, se pide que hablen y vuelvan a votar.",
+        "Las dos opciones envían el mensaje y abren la salida."
+      ],
+      "steps": [
+        "A lee la pantalla del repetidor.",
+        "B lee el libro de guardia.",
+        "Hablan y votan la misma opción."
+      ],
+      "answer": {
+        "type": "decision",
+        "value": null,
+        "normalize": "Clave de opción",
+        "options": [
+          {
+            "key": "VALLE",
+            "label": "Enviar el parte al Refugio Valle Hondo",
+            "consequence": "El equipo de montaña sube al amanecer a la cabaña del Collado y acompaña a los excursionistas en la bajada."
+          },
+          {
+            "key": "SORBE",
+            "label": "Enviar el parte al Ayuntamiento de Sorbe",
+            "consequence": "Sorbe cierra la carretera del puerto antes de las ocho y el autobús de la escuela hace la ruta del valle."
+          }
+        ]
+      },
+      "wrong_answers": [],
+      "validation": {
+        "input_by": [
+          "A",
+          "B"
+        ],
+        "requires_clues": [
+          "C13",
+          "C14"
+        ],
+        "coop_model": "M6",
+        "mechanism_id": "M06",
+        "check": "Se acepta cuando el voto de A y el de B coinciden; se registra la opción elegida."
+      },
+      "on_solve": {
+        "message": "El mensaje sale hacia Peña Gris. La tormenta empieza a amainar.",
+        "events": [
+          "E09"
+        ],
+        "sets": []
+      },
+      "on_fail": {
+        "message": "Han votado distinto. Cuéntense lo que saben y voten otra vez.",
+        "effect": "Se borran los dos votos."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "A sabe qué puede hacer cada destinatario y B sabe qué ha pasado esta noche.",
+        "No hay opción incorrecta: el otro mensaje sale en el parte de mediodía.",
+        "Voten la misma opción en las dos consolas."
+      ],
+      "estimated_minutes": 3,
+      "unlocks": [],
+      "reset_condition": "Reinicio de zona: se borran los votos.",
+      "edge_cases": [
+        "Un jugador vota y el otro se desconecta: el voto se conserva hasta que vuelva.",
+        "Un jugador cambia su voto antes de que el otro vote: cuenta el último.",
+        "Se agota la batería durante la votación: se ofrece seguir sin reloj y los votos se conservan."
+      ],
+      "solution_proof": "Es una decisión compartida: cualquier opción en la que coincidan es válida, envía el mensaje y abre la salida; el otro destinatario recibe el aviso a mediodía, así que nadie queda desatendido. Solo cambia el epílogo."
+    }
+  ],
+  "coop_mechanisms": [
+    {
+      "mechanism_id": "M01",
+      "model": "M1",
+      "puzzle": "P01",
+      "title": "La palanca helada y la lógica del manual",
+      "why_not_solo": "A no sabe qué forma es cada entrada ni qué enciende cada piloto; B no ve las palancas ni sabe que una está helada, y sin ese dato hay dos soluciones.",
+      "info_a": "Formas de las palancas y la palanca helada.",
+      "info_b": "Correspondencia entre entradas y formas y las fórmulas de los pilotos.",
+      "communicate_a": "Qué palanca no se mueve y el orden de las formas.",
+      "communicate_b": "Las fórmulas y qué entrada es cada forma.",
+      "action_a": "Mover las palancas y pulsar PROBAR.",
+      "action_b": "Razonar la lógica en voz alta con A.",
+      "validation": "El servidor exige C01 descubierta por A, C02 por B y la entrada desde el cuadro de A.",
+      "miscommunication": "Si prueban la combinación que exige la palanca helada, no se puede formar y la ayuda de nivel 2 pide empezar por lo que no se puede cambiar.",
+      "anti_domination": "B entiende la lógica pero no la puede tocar; A la toca pero no la conoce.",
+      "skill_gap": "La tabla de verdad está escrita en frases; la ayuda de nivel 3 resuelve el primer paso del razonamiento."
+    },
+    {
+      "mechanism_id": "M02",
+      "model": "M2",
+      "puzzle": "P02",
+      "title": "El oído de B y las manos de A",
+      "why_not_solo": "La señal solo llega al receptor de B; la tabla de pulsos y los interruptores solo están en el cuadro de A.",
+      "info_a": "Interruptores de barra, su regla y la tabla de pulsos.",
+      "info_b": "Tres repeticiones de la señal.",
+      "communicate_a": "Qué barra nombra cada grupo, cuál acaba de conectar y si su piloto dice CONECTADA.",
+      "communicate_b": "Los grupos de pulsos de la señal, uno a uno.",
+      "action_a": "Traducir los grupos con la tabla y conectar las barras.",
+      "action_b": "Reconstruir la señal y dictar los grupos.",
+      "validation": "La entrada viene de A y C03 debe estar descubierta por B antes del primer intento válido.",
+      "miscommunication": "Si confunden corto largo con largo corto, las barras se desconectan y la ayuda de nivel 2 recuerda juntar las repeticiones.",
+      "anti_domination": "Quien escucha no tiene la tabla ni puede conectar, y quien traduce y conecta no puede escuchar.",
+      "skill_gap": "La señal se repite sin límite y siempre está escrita en texto; en modo fácil una repetición llega completa."
+    },
+    {
+      "mechanism_id": "M03",
+      "model": "M1",
+      "puzzle": "P03",
+      "title": "El procedimiento y la avería",
+      "why_not_solo": "El orden depende de qué cartucho se fundió, que solo ve A, y del procedimiento, que solo tiene B.",
+      "info_a": "Cartucho fundido y barra que protege.",
+      "info_b": "Procedimiento tras descarga y la secuencia anterior.",
+      "communicate_a": "Que se fundió F2 y protege NORTE.",
+      "communicate_b": "Los tres pasos del procedimiento y la secuencia invertida.",
+      "action_a": "Sustituir el cartucho y confirmar el orden.",
+      "action_b": "Enganchar los relés.",
+      "validation": "La entrada viene de B, exige C06 descubierta por A y O03 en REPAIRED.",
+      "miscommunication": "Si solo invierten la secuencia, los relés caen y la ayuda de nivel 2 recuerda el tercer paso.",
+      "anti_domination": "Aquí la entrada pasa a B después de dos acertijos en el cuadro de A.",
+      "skill_gap": "La inversión de cuatro elementos se puede hacer en voz alta paso a paso; la ayuda de nivel 3 da la secuencia invertida."
+    },
+    {
+      "mechanism_id": "M04",
+      "model": "M2",
+      "puzzle": "P04",
+      "title": "El tablero de A y el dial de B",
+      "why_not_solo": "El estado de las antenas y la distancia solo se ven en la consola de A; los alcances, canales y el dial están en el lado de B.",
+      "info_a": "Estado de las tres antenas y distancia al repetidor.",
+      "info_b": "Alcances, canales y reglas.",
+      "communicate_a": "El estado de cada antena y los 40 km.",
+      "communicate_b": "Qué antena queda y su canal.",
+      "action_a": "Observar el tablero y confirmar el canal.",
+      "action_b": "Marcar el canal y pulsar FIJAR.",
+      "validation": "La entrada viene de B y C09 debe estar descubierta por A.",
+      "miscommunication": "Si eligen la antena de más alcance sin mirar su estado, la aguja no se mueve y el dial se conserva para corregir.",
+      "anti_domination": "A observa y valida, B decide con las reglas y ejecuta.",
+      "skill_gap": "La única cuenta es dividir 60 entre 2; la ayuda de nivel 3 la da hecha."
+    },
+    {
+      "mechanism_id": "M05",
+      "model": "M3",
+      "puzzle": "P05",
+      "title": "Potencia y modulación a la vez",
+      "why_not_solo": "Las dos teclas están en consolas distintas que solo acepta su operador, deben pulsarse dentro de 2 s y cada uno necesita un dato del otro para elegir la suya.",
+      "info_a": "Batería en RESERVA.",
+      "info_b": "Tabla de potencia y modulación.",
+      "communicate_a": "Que la batería marca RESERVA.",
+      "communicate_b": "Que la Cresta lleva potencia MEDIA.",
+      "action_a": "Pulsar MEDIA en la consola de potencia.",
+      "action_b": "Pulsar ESTRECHA en la consola de modulación.",
+      "validation": "El servidor compara las marcas de tiempo (ventana de 2000 ms) y las dos teclas.",
+      "miscommunication": "Si uno pulsa la tecla equivocada se indica en qué consola está el error; si pulsan a destiempo, se cancela sin castigo.",
+      "anti_domination": "Las dos pulsaciones valen lo mismo y ninguna emisión arranca con una sola.",
+      "skill_gap": "En modo fácil la ventana es de 3,5 s y aparece una cuenta atrás compartida."
+    },
+    {
+      "mechanism_id": "M06",
+      "model": "M6",
+      "puzzle": "P06",
+      "title": "Quién recibe el último parte",
+      "why_not_solo": "A sabe qué puede hacer cada destinatario y B sabe qué pasó esta noche; el envío exige los dos votos iguales.",
+      "info_a": "Pantalla del repetidor.",
+      "info_b": "Libro de guardia.",
+      "communicate_a": "Qué puede hacer Valle Hondo y qué puede hacer Sorbe.",
+      "communicate_b": "La situación de los excursionistas y del autobús.",
+      "action_a": "Votar en la consola de potencia.",
+      "action_b": "Votar en la consola de modulación.",
+      "validation": "Solo se aplica una opción cuando los dos votos coinciden.",
+      "miscommunication": "Si votan distinto se borran los votos y se pide hablar; no hay penalización.",
+      "anti_domination": "El voto es secreto hasta que votan los dos.",
+      "skill_gap": "No hay respuesta correcta; solo hace falta ponerse de acuerdo."
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "START",
+      "to": "C01",
+      "condition": "A examina el cuadro de arranque",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C02",
+      "condition": "B consulta el manual",
+      "type": "required"
+    },
+    {
+      "from": "C01",
+      "to": "P01",
+      "condition": "A describe las palancas y la escarcha",
+      "type": "required"
+    },
+    {
+      "from": "C02",
+      "to": "P01",
+      "condition": "B lee la lógica",
+      "type": "required"
+    },
+    {
+      "from": "P01",
+      "to": "C03",
+      "condition": "El receptor recibe la señal",
+      "type": "required"
+    },
+    {
+      "from": "C03",
+      "to": "P02",
+      "condition": "B reconstruye la señal",
+      "type": "required"
+    },
+    {
+      "from": "C04",
+      "to": "P02",
+      "condition": "A traduce los pulsos",
+      "type": "required"
+    },
+    {
+      "from": "C05",
+      "to": "P02",
+      "condition": "A conoce la regla de las barras",
+      "type": "required"
+    },
+    {
+      "from": "P02",
+      "to": "E04",
+      "condition": "Cae el rayo",
+      "type": "required"
+    },
+    {
+      "from": "E04",
+      "to": "C06",
+      "condition": "A ve el cartucho fundido",
+      "type": "required"
+    },
+    {
+      "from": "E04",
+      "to": "C07",
+      "condition": "Se abre el cajón de repuestos",
+      "type": "required"
+    },
+    {
+      "from": "C06",
+      "to": "P07",
+      "condition": "A lee la clase de la ranura",
+      "type": "required"
+    },
+    {
+      "from": "C07",
+      "to": "P07",
+      "condition": "A elige el repuesto",
+      "type": "required"
+    },
+    {
+      "from": "P07",
+      "to": "P03",
+      "condition": "Cartucho sustituido",
+      "type": "required"
+    },
+    {
+      "from": "C06",
+      "to": "P03",
+      "condition": "A comunica la barra protegida",
+      "type": "required"
+    },
+    {
+      "from": "C08",
+      "to": "P03",
+      "condition": "B aplica el procedimiento",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "ROOM03",
+      "condition": "Se abre la Sala del transmisor",
+      "type": "required"
+    },
+    {
+      "from": "ROOM03",
+      "to": "C09",
+      "condition": "A examina el tablero de antenas",
+      "type": "required"
+    },
+    {
+      "from": "C09",
+      "to": "P04",
+      "condition": "A comunica estados y distancia",
+      "type": "required"
+    },
+    {
+      "from": "C10",
+      "to": "P04",
+      "condition": "B aplica alcances y canales",
+      "type": "required"
+    },
+    {
+      "from": "P04",
+      "to": "P05",
+      "condition": "Transmisor caliente",
+      "type": "required"
+    },
+    {
+      "from": "C11",
+      "to": "P05",
+      "condition": "A comunica la batería",
+      "type": "required"
+    },
+    {
+      "from": "C12",
+      "to": "P05",
+      "condition": "B comunica potencia y modulación",
+      "type": "required"
+    },
+    {
+      "from": "P05",
+      "to": "C13",
+      "condition": "La pantalla del repetidor se enciende",
+      "type": "required"
+    },
+    {
+      "from": "C13",
+      "to": "P06",
+      "condition": "A cuenta los destinos",
+      "type": "required"
+    },
+    {
+      "from": "C14",
+      "to": "P06",
+      "condition": "B cuenta el libro de guardia",
+      "type": "required"
+    },
+    {
+      "from": "P06",
+      "to": "O21",
+      "condition": "Se abre la puerta de la escalera",
+      "type": "required"
+    },
+    {
+      "from": "O21",
+      "to": "ESCAPE",
+      "condition": "Los dos bajan a la sala común",
+      "type": "required"
+    }
+  ],
+  "state_transitions": [
+    {
+      "from": "INTRO",
+      "to": "EXPLORATION",
+      "event": "player.ready x2",
+      "conditions": "Los dos pulsan Listo o saltan la intro",
+      "validations": "Ambos jugadores conectados y asignados",
+      "effects": "Arranca la batería de 50 min y suena el aviso automático (E01)",
+      "message": "Batería de emergencia activada. Autonomía: cincuenta minutos."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "PUZZLE_ACTIVE",
+      "event": "A abre el cuadro de arranque",
+      "conditions": "P01 disponible",
+      "validations": "Jugador A",
+      "effects": "Muestra las cuatro palancas y los pilotos",
+      "message": "Cuadro de arranque auxiliar"
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "VALIDATING",
+      "event": "A pulsa PROBAR",
+      "conditions": "Cualquier combinación",
+      "validations": "validatePuzzle(P01)",
+      "effects": "Bloquea las palancas mientras valida",
+      "message": "Probando…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Combinación no segura",
+      "conditions": "Algún piloto distinto del exigido",
+      "validations": "Contador de fallos",
+      "effects": "Muestra los pilotos 5 s",
+      "message": "El generador no arranca."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P01 correcto",
+      "conditions": "Combinación segura",
+      "validations": "C01 y C02 descubiertas",
+      "effects": "E02",
+      "message": "El generador auxiliar arranca."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "EXPLORATION",
+      "event": "Fin de E02",
+      "conditions": "Quedan acertijos",
+      "validations": "Ninguna",
+      "effects": "Receptor encendido",
+      "message": "Llega una señal entrecortada."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P02 correcto",
+      "conditions": "Cuarta barra en su turno",
+      "validations": "C03 descubierta por B",
+      "effects": "E03 y, tras 4 s, E04",
+      "message": "Las barras están conectadas."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Fin de E04 (rayo)",
+      "conditions": "Cartucho fundido",
+      "validations": "Ninguna",
+      "effects": "Relés en DOWN, panel de cartuchos en FUSED y cajón abierto",
+      "message": "Un rayo ha caído cerca de la antena. Seguid el procedimiento tras descarga."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P03 correcto",
+      "conditions": "Cuarto relé en su turno",
+      "validations": "C06 descubierta por A; O03 en REPAIRED",
+      "effects": "E06",
+      "message": "Antena enganchada."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "ROOM_UNLOCKED",
+      "event": "Fin de E06",
+      "conditions": "exit_conditions de ROOM01 y ROOM02 cumplidas",
+      "validations": "Ninguna",
+      "effects": "Carga ROOM03 y abre DOOR01 y DOOR02",
+      "message": "La Sala del transmisor está abierta."
+    },
+    {
+      "from": "ROOM_UNLOCKED",
+      "to": "EXPLORATION",
+      "event": "Los dos entran o pasan 20 s",
+      "conditions": "Escena cargada",
+      "validations": "Ninguna",
+      "effects": "Consolas visibles",
+      "message": "Elegid la antena."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "Una tecla de P05",
+      "conditions": "Falta la tecla del otro",
+      "validations": "Jugador en su consola",
+      "effects": "Abre la ventana de 2000 ms",
+      "message": "Esperando a tu pareja…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "VALIDATING",
+      "event": "Segunda tecla dentro de la ventana",
+      "conditions": "Diferencia de 2000 ms o menos",
+      "validations": "validateSimultaneous(P05)",
+      "effects": "Compara las dos teclas",
+      "message": "Saliendo al aire…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Ventana caducada",
+      "conditions": "Pasan 2000 ms sin la segunda tecla",
+      "validations": "Hora del servidor",
+      "effects": "Cancela la pulsación sin contar fallo",
+      "message": "Hay que pulsar a la vez. Contad tres y probad otra vez."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "Un voto de P06",
+      "conditions": "Falta el voto del otro",
+      "validations": "Jugador con C13 o C14",
+      "effects": "Guarda el voto oculto",
+      "message": "Esperando el voto de tu pareja…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "VALIDATING",
+      "event": "Segundo voto",
+      "conditions": "Los dos votaron",
+      "validations": "submitDecision(P06)",
+      "effects": "Compara votos",
+      "message": "Comprobando…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Votos distintos",
+      "conditions": "Opciones distintas",
+      "validations": "Ninguna",
+      "effects": "Borra los votos",
+      "message": "Han votado distinto. Hablen y voten otra vez."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "FINAL_SEQUENCE",
+      "event": "P06 resuelto",
+      "conditions": "Votos coincidentes",
+      "validations": "Ninguna",
+      "effects": "E09: envío, fin de la tormenta y apertura de la escalera",
+      "message": "El último parte sale hacia Peña Gris."
+    },
+    {
+      "from": "FINAL_SEQUENCE",
+      "to": "COMPLETED",
+      "event": "escape.confirm x2",
+      "conditions": "Los dos cruzan la puerta de la escalera",
+      "validations": "O21 en OPEN",
+      "effects": "Calcula el final según P06",
+      "message": "Pico Albar ha cumplido su guardia."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "FAILED",
+      "event": "timer.expired",
+      "conditions": "Batería a cero en modo con reloj",
+      "validations": "Hora del servidor",
+      "effects": "E11: modo de ahorro",
+      "message": "La batería entra en modo de ahorro. ¿Reiniciar la zona o seguir sin reloj?"
+    },
+    {
+      "from": "FAILED",
+      "to": "EXPLORATION",
+      "event": "Elegir Modo sin reloj",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Oculta el reloj y conserva el progreso",
+      "message": "La batería aguanta en reserva. Seguid a vuestro ritmo."
+    },
+    {
+      "from": "FAILED",
+      "to": "RESETTING",
+      "event": "Elegir reiniciar zona",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Aplica reset_rules de la zona actual",
+      "message": "Reiniciando la zona…"
+    },
+    {
+      "from": "RESETTING",
+      "to": "EXPLORATION",
+      "event": "Zona restaurada",
+      "conditions": "Estado restaurado",
+      "validations": "Ninguna",
+      "effects": "Batería con 15 min extra",
+      "message": "Zona reiniciada."
+    },
+    {
+      "from": "ANY",
+      "to": "PAUSED",
+      "event": "game.pause",
+      "conditions": "Cualquiera pulsa Pausa",
+      "validations": "Ninguna",
+      "effects": "Congela la batería, las ventanas de simultaneidad, la señal en bucle y las entradas",
+      "message": "Pausado."
+    },
+    {
+      "from": "PAUSED",
+      "to": "EXPLORATION",
+      "event": "game.resume x2",
+      "conditions": "Los dos pulsan Reanudar",
+      "validations": "Ambos conectados",
+      "effects": "Reanuda la batería y la señal donde quedaron",
+      "message": "Seguimos."
+    }
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "trigger": [
+        "START"
+      ],
+      "prev_state": "INTRO",
+      "action": "La voz automática anuncia el corte y la autonomía de la batería",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "O05"
+      ],
+      "duration_s": 12,
+      "audio": "A06",
+      "visual": null,
+      "end_condition": "Termina el aviso",
+      "on_interrupt": "Si se pausa, se reanuda donde se quedó; el texto ya está en el historial",
+      "repeat": "Se puede volver a oír desde el menú de ayuda"
+    },
+    {
+      "event_id": "E02",
+      "trigger": [
+        "P01_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Arranca el generador auxiliar: se encienden el plafón, el flexo y el receptor, que empieza a reproducir la señal en bucle",
+      "affects": [
+        "O01",
+        "O02",
+        "O10",
+        "ROOM01",
+        "ROOM02"
+      ],
+      "duration_s": 6,
+      "audio": "A04",
+      "visual": "V01",
+      "end_condition": "O10 en ON y O02 en POWERED",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez; la señal sigue en bucle hasta P02"
+    },
+    {
+      "event_id": "E03",
+      "trigger": [
+        "P02_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Las cuatro barras quedan conectadas y la estación zumba",
+      "affects": [
+        "O02",
+        "ROOM01"
+      ],
+      "duration_s": 4,
+      "audio": "A05",
+      "visual": null,
+      "end_condition": "O02 en CONNECTED",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E04",
+      "trigger": [
+        "P02_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Rayo simulado: aviso de descarga cercana, destello suave y trueno amortiguado; se funde un cartucho, caen los relés de antena y se abre el cajón de repuestos",
+      "affects": [
+        "O03",
+        "O04",
+        "O11",
+        "ROOM01",
+        "ROOM02"
+      ],
+      "duration_s": 8,
+      "audio": "A07",
+      "visual": "V02",
+      "end_condition": "O03 en FUSED, O04 en OPEN y O11 en DOWN",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez por partida (se repite tras un reinicio de zona)"
+    },
+    {
+      "event_id": "E05",
+      "trigger": [
+        "P07_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El cartucho nuevo encaja y el panel de reenganche de B muestra Listo para reenganchar",
+      "affects": [
+        "O03",
+        "O11"
+      ],
+      "duration_s": 3,
+      "audio": "A08",
+      "visual": null,
+      "end_condition": "O03 en REPAIRED",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E06",
+      "trigger": [
+        "P03_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Los relés quedan enganchados y se abren las dos puertas de la Sala del transmisor",
+      "affects": [
+        "O11",
+        "DOOR01",
+        "DOOR02",
+        "ROOM03"
+      ],
+      "duration_s": 5,
+      "audio": "A08",
+      "visual": null,
+      "end_condition": "ROOM03 accesible",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E07",
+      "trigger": [
+        "P04_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El transmisor se calienta: sube la aguja de temperatura y las consolas pasan a listas",
+      "affects": [
+        "O16",
+        "O17",
+        "O19"
+      ],
+      "duration_s": 6,
+      "audio": "A09",
+      "visual": "V03",
+      "end_condition": "O16 en WARM y O17 en READY",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E08",
+      "trigger": [
+        "P05_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Se enciende EN EL AIRE y la pantalla del repetidor muestra los dos destinatarios",
+      "affects": [
+        "O16",
+        "O20"
+      ],
+      "duration_s": 6,
+      "audio": "A12",
+      "visual": "V04",
+      "end_condition": "O20 en LIVE",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E09",
+      "trigger": [
+        "P06_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El mensaje sale, la tormenta amaina, entra la luz del amanecer y se abre la puerta de la escalera",
+      "affects": [
+        "ROOM03",
+        "O21",
+        "DOOR05"
+      ],
+      "duration_s": 20,
+      "audio": "A13",
+      "visual": "V05",
+      "end_condition": "O21 en OPEN",
+      "on_interrupt": "La puerta queda abierta",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E10",
+      "trigger": [
+        "IDLE_120"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "La voz automática ofrece la ayuda de nivel 1 del acertijo activo (C15 al principio)",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03"
+      ],
+      "duration_s": 5,
+      "audio": "A06",
+      "visual": null,
+      "end_condition": "Aviso mostrado",
+      "on_interrupt": "Se descarta",
+      "repeat": "Cada 2 min sin progreso, como máximo una vez por nivel de ayuda"
+    },
+    {
+      "event_id": "E11",
+      "trigger": [
+        "TIMER_EXPIRED"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "La batería entra en modo de ahorro: luces al mínimo y oferta de reiniciar zona o seguir sin reloj",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03",
+        "O05"
+      ],
+      "duration_s": 8,
+      "audio": "A06",
+      "visual": "V06",
+      "end_condition": "Los dos eligen",
+      "on_interrupt": "Se vuelve a mostrar la elección",
+      "repeat": "Una vez por partida con reloj"
+    }
+  ],
+  "dialogues": [
+    {
+      "dialogue_id": "D01",
+      "speaker": "Voz automática de la estación",
+      "text": "Corte de suministro. Batería de emergencia activada. Autonomía: cincuenta minutos.",
+      "trigger": "E01",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D02",
+      "speaker": "Narrador",
+      "text": "La linterna ilumina un cuadro de palancas. Una de ellas brilla de escarcha.",
+      "trigger": "START",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D03",
+      "speaker": "Narrador",
+      "text": "El receptor está mudo. Sobre la mesa, el manual técnico de la estación, grueso como un listín.",
+      "trigger": "START",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D04",
+      "speaker": "Narrador",
+      "text": "El viento golpea la caseta, pero las paredes aguantan. Estáis a cubierto.",
+      "trigger": "START",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D05",
+      "speaker": "Sistema",
+      "text": "El generador auxiliar arranca. Se encienden las luces.",
+      "trigger": "E02",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D06",
+      "speaker": "Baliza de Valle Hondo",
+      "text": "Valle Hondo para Pico Albar, secuencia de reconexión de barras, cuatro grupos y fin.",
+      "trigger": "E02",
+      "audience": "B",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D07",
+      "speaker": "Sistema",
+      "text": "Las cuatro barras están conectadas.",
+      "trigger": "E03",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D08",
+      "speaker": "Voz automática de la estación",
+      "text": "Atención: descarga cercana en tres segundos.",
+      "trigger": "E04",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D09",
+      "speaker": "Narrador",
+      "text": "Un destello blanco en el ventanuco y un trueno largo, amortiguado por la madera. Un piloto del panel de cartuchos muestra un aspa.",
+      "trigger": "E04",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D10",
+      "speaker": "Narrador",
+      "text": "La ventana se ilumina un instante. Los cuatro relés del panel de reenganche caen con un clac.",
+      "trigger": "E04",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D11",
+      "speaker": "Voz automática de la estación",
+      "text": "Antena desenganchada. Aplicad el procedimiento tras descarga, página nueve del manual.",
+      "trigger": "E04",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D12",
+      "speaker": "Sistema",
+      "text": "Cartucho sustituido. Panel de reenganche listo.",
+      "trigger": "E05",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D13",
+      "speaker": "Sistema",
+      "text": "Antena enganchada. La puerta de la Sala del transmisor se abre.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D14",
+      "speaker": "Voz automática de la estación",
+      "text": "Canal fijado. Transmisor en calentamiento.",
+      "trigger": "E07",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D15",
+      "speaker": "Sistema",
+      "text": "El transmisor no arranca. Comprobad las teclas y pulsad a la vez.",
+      "trigger": "P05",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D16",
+      "speaker": "Voz automática de la estación",
+      "text": "En el aire. Enlace con el repetidor de Peña Gris establecido.",
+      "trigger": "E08",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D17",
+      "speaker": "Operadora de Peña Gris (grabación)",
+      "text": "Aquí Peña Gris. Os recibo. Me queda batería para reenviar un solo mensaje antes del amanecer. Decidid a quién.",
+      "trigger": "E08",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D18",
+      "speaker": "Sistema",
+      "text": "Han votado distinto. Cuéntense lo que saben y voten otra vez.",
+      "trigger": "P06",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D19",
+      "speaker": "Operadora de Peña Gris (grabación)",
+      "text": "Recibido y reenviado. El otro aviso sale en el parte de mediodía. Buen trabajo, Pico Albar.",
+      "trigger": "E09",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D20",
+      "speaker": "Narrador",
+      "text": "El viento se calma. Por el ventanal entra la primera luz del día.",
+      "trigger": "E09",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D21",
+      "speaker": "Voz automática de la estación",
+      "text": "Cada uno de vosotros ve una parte del sistema. Antes de tocar nada, contaos lo que tenéis delante.",
+      "trigger": "E10",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D22",
+      "speaker": "Voz automática de la estación",
+      "text": "Batería en modo de ahorro. Podéis reiniciar esta zona o seguir sin reloj. No se pierde nada de lo resuelto.",
+      "trigger": "E11",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D23",
+      "speaker": "Libro de guardia",
+      "text": "19:00. Dos excursionistas en la cabaña del Collado. Están bien, con leña y comida para dos días.",
+      "trigger": "C14_DISCOVERED",
+      "audience": "B",
+      "channel": "document"
+    }
+  ],
+  "audio_cues": [
+    {
+      "audio_id": "A01",
+      "type": "ambient",
+      "description": "Viento fuerte contra madera y crujidos de la caseta, sin golpes bruscos",
+      "loop": true,
+      "subtitle": "[viento contra la caseta]"
+    },
+    {
+      "audio_id": "A02",
+      "type": "music",
+      "description": "Pulso grave de sintetizador y cuerdas tenues; tensión moderada que sube un poco tras el rayo",
+      "loop": true,
+      "subtitle": null
+    },
+    {
+      "audio_id": "A03",
+      "type": "ambient",
+      "description": "Estática suave de radio y viento lejano",
+      "loop": true,
+      "subtitle": "[estática suave]"
+    },
+    {
+      "audio_id": "A04",
+      "type": "sfx",
+      "description": "Generador que tose y arranca con un ronroneo constante",
+      "loop": false,
+      "subtitle": "[arranca el generador]"
+    },
+    {
+      "audio_id": "A05",
+      "type": "sfx",
+      "description": "Zumbido eléctrico que sube con cada barra conectada",
+      "loop": false,
+      "subtitle": "[zumbido de barras]"
+    },
+    {
+      "audio_id": "A06",
+      "type": "voice",
+      "description": "Voz automática de la estación, neutra y serena",
+      "loop": false,
+      "subtitle": "Ver diálogos"
+    },
+    {
+      "audio_id": "A07",
+      "type": "sfx",
+      "description": "Aviso de tres pitidos, trueno largo con volumen limitado y caída de relés; sin golpe súbito",
+      "loop": false,
+      "subtitle": "[pitidos de aviso, trueno lejano]"
+    },
+    {
+      "audio_id": "A08",
+      "type": "sfx",
+      "description": "Clic firme de cartucho o relé que encaja",
+      "loop": false,
+      "subtitle": "[clic]"
+    },
+    {
+      "audio_id": "A09",
+      "type": "sfx",
+      "description": "Zumbido grave del transmisor al calentarse",
+      "loop": false,
+      "subtitle": "[el transmisor se calienta]"
+    },
+    {
+      "audio_id": "A10",
+      "type": "ambient",
+      "description": "Eco de sala alta con viento al otro lado del ventanal",
+      "loop": true,
+      "subtitle": "[viento tras el ventanal]"
+    },
+    {
+      "audio_id": "A11",
+      "type": "music",
+      "description": "Tema de la estación: piano y cuerdas, más luminoso que A02",
+      "loop": true,
+      "subtitle": null
+    },
+    {
+      "audio_id": "A12",
+      "type": "sfx",
+      "description": "Tono limpio de portadora y voz de Peña Gris con grano de radio",
+      "loop": false,
+      "subtitle": "[tono de emisión]"
+    },
+    {
+      "audio_id": "A13",
+      "type": "music",
+      "description": "Final: cuerdas que se abren y viento que se apaga",
+      "loop": false,
+      "subtitle": "[la tormenta amaina]"
+    },
+    {
+      "audio_id": "A14",
+      "type": "sfx",
+      "description": "Pitidos cortos y largos de la baliza entre ruido de estática",
+      "loop": true,
+      "subtitle": "[pulsos: ver texto en pantalla]"
+    },
+    {
+      "audio_id": "A15",
+      "type": "sfx",
+      "description": "Chasquido sordo y suave de error",
+      "loop": false,
+      "subtitle": "[chasquido sordo]"
+    }
+  ],
+  "visual_effects": [
+    {
+      "vfx_id": "V01",
+      "description": "Las luces se encienden de una en una con un breve calentamiento",
+      "reduced_motion_alt": "Las luces se encienden todas a la vez"
+    },
+    {
+      "vfx_id": "V02",
+      "description": "Destello único y suave en las ventanas (subida de luminancia limitada al 30 % durante 0,3 s) tras un aviso de 3 s",
+      "reduced_motion_alt": "Las ventanas cambian a un tono más claro durante 1 s sin destello y aparece el texto Rayo cercano"
+    },
+    {
+      "vfx_id": "V03",
+      "description": "La aguja de temperatura del transmisor sube lentamente",
+      "reduced_motion_alt": "La aguja aparece directamente en su posición final"
+    },
+    {
+      "vfx_id": "V04",
+      "description": "El rótulo EN EL AIRE se ilumina con un fundido de un segundo",
+      "reduced_motion_alt": "El rótulo se enciende sin fundido"
+    },
+    {
+      "vfx_id": "V05",
+      "description": "La nieve del ventanal se calma y entra luz rosada de amanecer",
+      "reduced_motion_alt": "Imagen fija del amanecer sin partículas"
+    },
+    {
+      "vfx_id": "V06",
+      "description": "Las luces bajan despacio al mínimo de ahorro",
+      "reduced_motion_alt": "Cambio de iluminación sin transición"
+    },
+    {
+      "vfx_id": "V07",
+      "description": "Destellos cortos y largos de la lámpara de pulsos del receptor",
+      "reduced_motion_alt": "La lámpara no destella: se muestra el texto corto o largo de cada pulso"
+    }
+  ],
+  "endings": [
+    {
+      "ending_id": "END01",
+      "name": "La última transmisión",
+      "type": "main",
+      "condition": [
+        "O21_OPEN"
+      ],
+      "text": "Los dos bajan a la sala común. La estufa calienta, la radio susurra y el barómetro sube hacia Variable. Pico Albar ha enviado su parte."
+    },
+    {
+      "ending_id": "END02",
+      "name": "Bajada al amanecer",
+      "type": "decision",
+      "condition": [
+        "P06_OPT_VALLE",
+        "O21_OPEN"
+      ],
+      "text": "A las ocho, la radio de la sala común trae la voz del equipo de Valle Hondo: Ya estamos con los excursionistas. Bajamos juntos por el camino del Collado. A mediodía, Sorbe confirma que la quitanieves llegó antes que el autobús."
+    },
+    {
+      "ending_id": "END03",
+      "name": "La carretera cerrada",
+      "type": "decision",
+      "condition": [
+        "P06_OPT_SORBE",
+        "O21_OPEN"
+      ],
+      "text": "A las siete y media, Sorbe responde: Carretera del puerto cerrada, el autobús va por el valle. A mediodía, el guarda del parque sube en su ronda a la cabaña del Collado y baja con los dos excursionistas."
+    }
+  ],
+  "replay_tips": [
+    "Intercambien los papeles: quien manejó el cuadro, que escuche la señal.",
+    "Elijan el otro destinatario para ver el otro epílogo.",
+    "Prueben el modo difícil: la señal solo se repite dos veces por minuto y los pilotos no se muestran tras PROBAR.",
+    "Jueguen una variante: cambian la señal, el cartucho que funde el rayo o el estado de las antenas."
+  ],
+  "variants": [
+    {
+      "variant_id": "VAR01",
+      "description": "Cambia la secuencia de la señal y con ella el orden de reenganche tras el rayo",
+      "overrides": {
+        "clues": {
+          "C03": {
+            "content": "Señal automática de la base Valle Hondo, transcrita por el receptor: Valle Hondo para Pico Albar, secuencia de reconexión de barras, cuatro grupos y fin. Repetición 1: largo largo corto / corto corto largo / [ruido] / [ruido] / [ruido]. Repetición 2: [ruido] / corto corto largo / largo corto / [ruido] / [ruido]. Repetición 3: [ruido] / [ruido] / largo corto / corto largo / corto corto corto.",
+            "alt_text": "Grupos en texto: 1 largo largo corto; 2 corto corto largo; 3 largo corto; 4 corto largo; fin corto corto corto. Los cortes se marcan como [ruido]."
+          }
+        },
+        "puzzles": {
+          "P02": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "OESTE",
+                "ESTE",
+                "SUR",
+                "NORTE"
+              ],
+              "normalize": "Igual que la base"
+            },
+            "hints": [
+              "La señal llega a B; la tabla de pulsos y los interruptores los tiene A.",
+              "Ninguna repetición está completa: junten las tres, porque los grupos siempre van en el mismo orden.",
+              "El primer grupo es largo largo corto: la barra OESTE."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "NORTE",
+                  "SUR",
+                  "ESTE",
+                  "OESTE"
+                ],
+                "why": "Es el orden de los interruptores."
+              },
+              {
+                "value": [
+                  "OESTE",
+                  "ESTE",
+                  "NORTE",
+                  "SUR"
+                ],
+                "why": "Confunde largo corto (SUR) con corto largo (NORTE)."
+              },
+              {
+                "value": [
+                  "ESTE",
+                  "SUR",
+                  "NORTE"
+                ],
+                "why": "Usa solo las repeticiones 2 y 3 y pierde el primer grupo."
+              }
+            ],
+            "steps": [
+              "B escucha las tres repeticiones, junta los grupos y se los dicta a A.",
+              "A traduce el grupo 1 (repetición 1), largo largo corto, con la tabla: OESTE.",
+              "Grupo 2 (repeticiones 1 y 2): corto corto largo, ESTE.",
+              "Grupo 3 (repeticiones 2 y 3): largo corto, SUR.",
+              "Grupo 4 (repetición 3): corto largo, NORTE; después corto corto corto, fin.",
+              "A conecta OESTE, ESTE, SUR y NORTE."
+            ],
+            "solution_proof": "Cada grupo aparece completo en al menos una repetición y la tabla C04 asigna una sola barra a cada uno, así que el orden es único: OESTE, ESTE, SUR, NORTE. A no oye la señal y B no tiene la tabla ni los interruptores."
+          },
+          "P03": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "SUR",
+                "ESTE",
+                "OESTE",
+                "NORTE"
+              ],
+              "normalize": "Igual que la base"
+            },
+            "hints": [
+              "El procedimiento lo tiene B y el cartucho fundido lo ve A.",
+              "Inviertan la última secuencia de barras y luego miren qué barra protegía el cartucho fundido.",
+              "Al revés queda NORTE, SUR, ESTE, OESTE; NORTE pasa al final."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "NORTE",
+                  "SUR",
+                  "ESTE",
+                  "OESTE"
+                ],
+                "why": "Invierte pero no mueve NORTE al final."
+              },
+              {
+                "value": [
+                  "OESTE",
+                  "ESTE",
+                  "SUR",
+                  "NORTE"
+                ],
+                "why": "Repite el orden anterior al rayo."
+              },
+              {
+                "value": [
+                  "NORTE",
+                  "SUR",
+                  "OESTE",
+                  "ESTE"
+                ],
+                "why": "Mueve al final ESTE porque confunde F2 con F4."
+              }
+            ],
+            "steps": [
+              "A lee el panel de cartuchos: F2 fundido, protege NORTE.",
+              "B lee la página 9.",
+              "La última reconexión fue OESTE, ESTE, SUR, NORTE; al revés queda NORTE, SUR, ESTE, OESTE.",
+              "NORTE sale de su turno y pasa al final: SUR, ESTE, OESTE, NORTE.",
+              "B engancha SUR, ESTE, OESTE y NORTE."
+            ],
+            "solution_proof": "La secuencia anterior es única (P02 en esta variante: OESTE, ESTE, SUR, NORTE) y su inversión también. C06 indica un único cartucho fundido, F2, que protege NORTE, y el tercer paso de C08 la lleva al final. Resultado único: SUR, ESTE, OESTE, NORTE."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR02",
+      "description": "El rayo funde otro cartucho",
+      "overrides": {
+        "clues": {
+          "C06": {
+            "content": "Panel de cartuchos tras el rayo. F1 protege la barra OESTE: aspa, FUNDIDO. F2 protege la barra NORTE: círculo, CORRECTO. F3 protege la barra SUR: círculo, CORRECTO. F4 protege la barra ESTE: círculo, CORRECTO. Placa de la ranura de F1: Clase 3.",
+            "alt_text": "Lista en texto: F1 Oeste fundido, clase 3; F2 Norte correcto; F3 Sur correcto; F4 Este correcto."
+          }
+        },
+        "puzzles": {
+          "P03": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "ESTE",
+                "NORTE",
+                "SUR",
+                "OESTE"
+              ],
+              "normalize": "Igual que la base"
+            },
+            "hints": [
+              "El procedimiento lo tiene B y el cartucho fundido lo ve A.",
+              "Inviertan la última secuencia de barras y luego miren qué barra protegía el cartucho fundido.",
+              "Al revés queda ESTE, NORTE, OESTE, SUR; OESTE pasa al final."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "ESTE",
+                  "NORTE",
+                  "OESTE",
+                  "SUR"
+                ],
+                "why": "Invierte la secuencia pero no mueve al final la barra OESTE, protegida por el cartucho fundido."
+              },
+              {
+                "value": [
+                  "SUR",
+                  "OESTE",
+                  "NORTE",
+                  "ESTE"
+                ],
+                "why": "Repite el orden anterior al rayo; el procedimiento pide invertirlo."
+              },
+              {
+                "value": [
+                  "ESTE",
+                  "OESTE",
+                  "SUR",
+                  "NORTE"
+                ],
+                "why": "Mueve al final NORTE porque confunde F1 con F2."
+              }
+            ],
+            "steps": [
+              "A lee el panel de cartuchos: F1 fundido, protege OESTE.",
+              "B lee la página 9.",
+              "La última reconexión fue SUR, OESTE, NORTE, ESTE; al revés queda ESTE, NORTE, OESTE, SUR.",
+              "OESTE sale de su turno y pasa al final: ESTE, NORTE, SUR, OESTE.",
+              "B engancha ESTE, NORTE, SUR y OESTE."
+            ],
+            "solution_proof": "La secuencia anterior es única (P02) y su inversión también. C06 indica un único cartucho fundido, F1, que protege OESTE, y el tercer paso de C08 la lleva al final. Resultado único: ESTE, NORTE, SUR, OESTE. B no sabe qué cartucho se fundió ni qué barra protege; A no tiene el procedimiento."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR03",
+      "description": "Cambia el estado de las antenas y con él el canal y la potencia",
+      "overrides": {
+        "clues": {
+          "C09": {
+            "content": "Tablero de antenas. Antena Norte: círculo y texto EN SERVICIO. Antena Cresta: copo de nieve y texto HIELO. Antena Collado: aspa y texto DAÑADA POR EL RAYO. Mapa de cobertura: el repetidor de Peña Gris está a 40 km de la estación.",
+            "alt_text": "Lista en texto: Norte en servicio, Cresta con hielo, Collado dañada; repetidor a 40 km."
+          }
+        },
+        "puzzles": {
+          "P04": {
+            "answer": {
+              "type": "code",
+              "value": "147",
+              "normalize": "Tres cifras sin espacios"
+            },
+            "hints": [
+              "El estado de las antenas lo ve A; los alcances están en el manual de B.",
+              "Descarten las antenas que no emiten o que no llegan a 40 km.",
+              "El hielo deja la Cresta en 22,5 km; solo la Norte llega."
+            ],
+            "wrong_answers": [
+              {
+                "value": "518",
+                "why": "Collado está dañada por el rayo."
+              },
+              {
+                "value": "362",
+                "why": "Es el canal de la Cresta; con hielo solo alcanza 22,5 km y el repetidor está a 40."
+              }
+            ],
+            "steps": [
+              "A lee el tablero: Norte en servicio, Cresta con hielo, Collado dañada; repetidor a 40 km.",
+              "B lee la página 12.",
+              "Collado está dañada: no emite.",
+              "Cresta con hielo alcanza 22,5 km, menos de 40: no llega.",
+              "Norte alcanza 60 km: llega.",
+              "B marca 147 y pulsa FIJAR."
+            ],
+            "solution_proof": "Con las reglas de C10 y los estados de C09 de esta variante: Collado dañada (no emite), Cresta con hielo (45 / 2 = 22,5 km, menos de 40) y Norte en servicio (60 km, más de 40). Solo llega la Norte, canal 147. B no conoce el estado de las antenas ni la distancia y A no conoce alcances ni canales."
+          },
+          "P05": {
+            "answer": {
+              "type": "simultaneous",
+              "value": {
+                "A": "ALTA",
+                "B": "ESTRECHA"
+              },
+              "normalize": "Igual que la base"
+            },
+            "hints": [
+              "A ve la batería y B sabe qué significa; B sabe la potencia y A tiene la tecla.",
+              "La potencia depende de la antena elegida y la modulación del indicador de batería.",
+              "A pulsa ALTA y B ESTRECHA, a la vez, tras contar tres."
+            ],
+            "wrong_answers": [
+              {
+                "value": {
+                  "A": "MEDIA",
+                  "B": "ESTRECHA"
+                },
+                "why": "MEDIA es la potencia de la Cresta; esta noche se emite por la Norte."
+              },
+              {
+                "value": {
+                  "A": "ALTA",
+                  "B": "ANCHA"
+                },
+                "why": "La batería está en RESERVA: modulación ESTRECHA."
+              },
+              {
+                "value": {
+                  "A": "ALTA",
+                  "B": "ESTRECHA",
+                  "gap_ms": 3500
+                },
+                "why": "Fuera de la ventana de 2 s."
+              }
+            ],
+            "steps": [
+              "B lee la página 13.",
+              "B dice: con la Norte, potencia ALTA, tecla círculo.",
+              "A dice: la batería marca RESERVA, así que modulación ESTRECHA, tecla de línea recta.",
+              "Cuentan tres, dos, uno.",
+              "A pulsa ALTA y B pulsa ESTRECHA a la vez."
+            ],
+            "solution_proof": "La antena de P04 en esta variante es la Norte, cuya potencia en C12 es ALTA; el indicador de C11 marca RESERVA, cuya modulación en C12 es ESTRECHA. No hay otra combinación válida. A no tiene la tabla de potencias y B no ve la batería, y la ventana de 2 s exige que los dos actúen a la vez."
+          }
+        }
+      }
+    }
+  ],
+  "difficulty_tuning": {
+    "easy": [
+      "La palanca helada tiene además una etiqueta E1 visible para A.",
+      "Una de las tres repeticiones de la señal llega completa.",
+      "La ventana de P05 se amplía a 3500 ms y aparece una cuenta atrás compartida.",
+      "La ayuda de nivel 1 se ofrece a los 90 s de inactividad."
+    ],
+    "hard": [
+      "Los pilotos no se encienden tras PROBAR si la combinación falla; solo se oye el chasquido.",
+      "La señal solo se repite dos veces por minuto (el texto se conserva en el registro de B).",
+      "El tablero de antenas no muestra la distancia: A debe medirla en el mapa de cobertura con su escala.",
+      "La ventana de P05 baja a 1200 ms.",
+      "La ayuda solo se ofrece si se pide."
+    ]
+  },
+  "reset_rules": [
+    {
+      "scope": "puzzle",
+      "target": "P01",
+      "restores": "Todas las palancas abajo y pilotos apagados",
+      "keeps": "Pistas C01 y C02"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P02",
+      "restores": "Las cuatro barras desconectadas y la señal desde el principio",
+      "keeps": "Pistas C03, C04 y C05 y el generador en marcha"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P03",
+      "restores": "Los cuatro relés en ABAJO",
+      "keeps": "El cartucho sustituido y las pistas C06 y C08"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM01",
+      "restores": "P01, P02 y P07 sin resolver si la Sala del transmisor no se ha abierto; palancas abajo, barras desconectadas y cartucho en el cajón",
+      "keeps": "Las pistas del manual descubiertas por B"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM02",
+      "restores": "P03 sin resolver y relés en ABAJO",
+      "keeps": "P01, P02 y P07 resueltos y todas las pistas"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM03",
+      "restores": "P04, P05 y P06 sin resolver, dial a 000, consolas bloqueadas y votos borrados",
+      "keeps": "Todo lo resuelto en ROOM01 y ROOM02 y las pistas C01 a C08"
+    },
+    {
+      "scope": "full",
+      "target": "ALL",
+      "restores": "Estado inicial completo e intro, batería a 50 min",
+      "keeps": "Nada salvo los ajustes de accesibilidad"
+    }
+  ],
+  "test_cases": [
+    {
+      "test_id": "T01",
+      "category": 1,
+      "title": "Inicio correcto",
+      "steps": [
+        "Cargar ER02",
+        "A y B pulsan Listo"
+      ],
+      "expected": "A en ROOM01, B en ROOM02, batería en 50:00, E01 suena una vez, receptor apagado",
+      "covers": [
+        "ROOM01",
+        "ROOM02",
+        "E01",
+        "O05"
+      ]
+    },
+    {
+      "test_id": "T02",
+      "category": 2,
+      "title": "Todas las pistas obligatorias se pueden descubrir",
+      "steps": [
+        "Recorrer la ruta de victoria",
+        "Revisar el registro de pistas de cada jugador"
+      ],
+      "expected": "C01 a C14 descubiertas por su jugador; C15 solo aparece tras inactividad",
+      "covers": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14"
+      ]
+    },
+    {
+      "test_id": "T03",
+      "category": 3,
+      "title": "P01 correcto",
+      "steps": [
+        "A sube círculo y cuadrado",
+        "A pulsa PROBAR"
+      ],
+      "expected": "P01 resuelto, E02 una vez, O10 en ON, C03 disponible para B",
+      "covers": [
+        "P01",
+        "M01",
+        "E02",
+        "O10"
+      ]
+    },
+    {
+      "test_id": "T04",
+      "category": 4,
+      "title": "P01 con ALERTA encendida",
+      "steps": [
+        "A sube círculo, rombo y cuadrado",
+        "A pulsa PROBAR"
+      ],
+      "expected": "Rechazo; los pilotos muestran ARRANQUE y ALERTA durante 5 s; fails = 1",
+      "covers": [
+        "P01"
+      ]
+    },
+    {
+      "test_id": "T05",
+      "category": 5,
+      "title": "Subir la palanca helada",
+      "steps": [
+        "A intenta subir la palanca del triángulo"
+      ],
+      "expected": "La palanca no se mueve, se muestra Helada y no cuenta como intento",
+      "covers": [
+        "P01",
+        "O01",
+        "C01"
+      ]
+    },
+    {
+      "test_id": "T06",
+      "category": 3,
+      "title": "P02 correcto",
+      "steps": [
+        "Resolver P01",
+        "A conecta SUR, OESTE, NORTE, ESTE"
+      ],
+      "expected": "P02 resuelto, E03 y E04 en ese orden, O03 en FUSED, O11 en DOWN",
+      "covers": [
+        "P02",
+        "M02",
+        "E03",
+        "E04"
+      ]
+    },
+    {
+      "test_id": "T07",
+      "category": 4,
+      "title": "P02 en el orden del rótulo",
+      "steps": [
+        "A conecta NORTE como primera barra"
+      ],
+      "expected": "Se desconectan todas al primer error; fails = 1",
+      "covers": [
+        "P02"
+      ]
+    },
+    {
+      "test_id": "T08",
+      "category": 12,
+      "title": "Reenganchar antes de sustituir el cartucho",
+      "steps": [
+        "Resolver P02",
+        "B intenta enganchar ESTE"
+      ],
+      "expected": "Rechazo LOCKED con el mensaje Cartucho fundido, sustituir antes; no cuenta como fallo",
+      "covers": [
+        "P03",
+        "P07",
+        "O11"
+      ]
+    },
+    {
+      "test_id": "T09",
+      "category": 3,
+      "title": "Microacertijo del cartucho",
+      "steps": [
+        "A coge el cartucho de clase 3 y lo coloca en la ranura de F2"
+      ],
+      "expected": "O03 en REPAIRED, O04 en USED y E05",
+      "covers": [
+        "P07",
+        "O03",
+        "O04",
+        "E05"
+      ]
+    },
+    {
+      "test_id": "T10",
+      "category": 6,
+      "title": "P03 sin mover la barra protegida y después correcto",
+      "steps": [
+        "B engancha ESTE, NORTE",
+        "B engancha ESTE, OESTE, SUR, NORTE"
+      ],
+      "expected": "Primer intento rechazado al enganchar NORTE en segundo lugar; segundo resuelve P03 y abre ROOM03",
+      "covers": [
+        "P03",
+        "M03",
+        "E06",
+        "ROOM03"
+      ]
+    },
+    {
+      "test_id": "T11",
+      "category": 6,
+      "title": "P04 sin que A haya examinado el tablero",
+      "steps": [
+        "B marca 362 y pulsa FIJAR sin C09 descubierta"
+      ],
+      "expected": "Rechazo MISSING_CLUE Falta el estado de las antenas; no cuenta como fallo",
+      "covers": [
+        "P04",
+        "M04",
+        "C09"
+      ]
+    },
+    {
+      "test_id": "T12",
+      "category": 4,
+      "title": "P04 con el canal del Collado y luego correcto",
+      "steps": [
+        "B fija 518",
+        "B fija 362"
+      ],
+      "expected": "Primero rechazo con el dial conservado; después P04 resuelto y E07",
+      "covers": [
+        "P04",
+        "M04",
+        "E07"
+      ]
+    },
+    {
+      "test_id": "T13",
+      "category": 7,
+      "title": "Emisión dentro de la ventana",
+      "steps": [
+        "A pulsa MEDIA",
+        "B pulsa ESTRECHA 900 ms después"
+      ],
+      "expected": "WAITING_FOR_PARTNER durante 900 ms y después P05 resuelto y E08",
+      "covers": [
+        "P05",
+        "M05",
+        "E08"
+      ]
+    },
+    {
+      "test_id": "T14",
+      "category": 7,
+      "title": "Emisión fuera de la ventana",
+      "steps": [
+        "A pulsa MEDIA",
+        "B pulsa ESTRECHA 2500 ms después"
+      ],
+      "expected": "La espera caduca a los 2000 ms, vuelve a PUZZLE_ACTIVE sin contar fallo",
+      "covers": [
+        "P05",
+        "M05"
+      ]
+    },
+    {
+      "test_id": "T15",
+      "category": 4,
+      "title": "Emisión con potencia equivocada",
+      "steps": [
+        "A pulsa ALTA y B ESTRECHA a la vez"
+      ],
+      "expected": "Rechazo, D15 y se indica que el error está en la consola de potencia",
+      "covers": [
+        "P05",
+        "D15"
+      ]
+    },
+    {
+      "test_id": "T16",
+      "category": 6,
+      "title": "Votos distintos en P06",
+      "steps": [
+        "A vota VALLE",
+        "B vota SORBE"
+      ],
+      "expected": "Se borran los votos y aparece D18",
+      "covers": [
+        "P06",
+        "M06",
+        "D18"
+      ]
+    },
+    {
+      "test_id": "T17",
+      "category": 11,
+      "title": "Final con aviso a Valle Hondo",
+      "steps": [
+        "Resolver todo y votar VALLE los dos",
+        "Cruzar la puerta de la escalera"
+      ],
+      "expected": "COMPLETED con END01 y END02 en el resumen",
+      "covers": [
+        "P06",
+        "M06",
+        "END01",
+        "END02",
+        "O21",
+        "E09"
+      ]
+    },
+    {
+      "test_id": "T18",
+      "category": 11,
+      "title": "Final con aviso a Sorbe",
+      "steps": [
+        "Resolver todo y votar SORBE los dos",
+        "Cruzar la puerta"
+      ],
+      "expected": "COMPLETED con END01 y END03",
+      "covers": [
+        "END01",
+        "END03",
+        "P06"
+      ]
+    },
+    {
+      "test_id": "T19",
+      "category": 8,
+      "title": "Doble envío de la última barra",
+      "steps": [
+        "A conecta ESTE dos veces con el mismo actionId y luego con otro"
+      ],
+      "expected": "E03 y E04 se disparan una sola vez; la segunda respuesta es ALREADY_SOLVED y no se funde un segundo cartucho",
+      "covers": [
+        "P02",
+        "E04"
+      ]
+    },
+    {
+      "test_id": "T20",
+      "category": 9,
+      "title": "Pausa durante el rayo",
+      "steps": [
+        "Resolver P02",
+        "A pausa durante E04",
+        "Reanudar los dos"
+      ],
+      "expected": "La batería se congela; al reanudar O03 está en FUSED, O11 en DOWN y el cajón abierto",
+      "covers": [
+        "E04",
+        "O03",
+        "O04",
+        "O11"
+      ]
+    },
+    {
+      "test_id": "T21",
+      "category": 10,
+      "title": "Reinicio completo",
+      "steps": [
+        "Resolver P01 a P04",
+        "Reinicio completo"
+      ],
+      "expected": "Palancas abajo, barras desconectadas, cartucho F2 en NORMAL, ROOM03 cerrada y batería a 50:00",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P07"
+      ]
+    },
+    {
+      "test_id": "T22",
+      "category": 13,
+      "title": "Desconexión de B durante la señal",
+      "steps": [
+        "A conecta SUR y OESTE",
+        "B se desconecta 30 s y vuelve"
+      ],
+      "expected": "Las dos barras siguen conectadas, la señal sigue en bucle y B recibe C03 completa en su registro",
+      "covers": [
+        "P02",
+        "O02",
+        "C03"
+      ]
+    },
+    {
+      "test_id": "T23",
+      "category": 14,
+      "title": "Señal y pilotos sin audio ni color",
+      "steps": [
+        "Activar subtítulos, sin sonido y modo sin color",
+        "Leer C03 y C06"
+      ],
+      "expected": "La señal se lee como texto corto y largo y la lámpara destella o, con movimiento reducido, muestra texto; los cartuchos se distinguen por palabra y forma (círculo o aspa)",
+      "covers": [
+        "C03",
+        "C06",
+        "V07",
+        "V02"
+      ]
+    },
+    {
+      "test_id": "T24",
+      "category": 15,
+      "title": "Validador de rutas sin salida",
+      "steps": [
+        "Ejecutar validate.mjs ER02"
+      ],
+      "expected": "Todos los acertijos principales, objetivos y finales alcanzables",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    }
+  ],
+  "resources": {
+    "models_3d": [
+      "Caseta de montaña con sala de cuadros, cabina de radio y sala del transmisor",
+      "Cuadro de arranque con cuatro palancas de formas",
+      "Interruptores de barra rotulados",
+      "Panel de cuatro cartuchos ficticios y cajón de repuestos",
+      "Receptor de onda corta con lámpara de pulsos",
+      "Manual técnico de anillas",
+      "Panel de reenganche con cuatro relés",
+      "Libro de guardia en atril",
+      "Armario del transmisor con aguja y rótulo EN EL AIRE",
+      "Consolas de potencia y modulación con teclas de formas",
+      "Tablero de antenas con mapa de cobertura",
+      "Estufa, taquilla, termo, banderines, vitrina de válvulas y barómetro"
+    ],
+    "textures": [
+      "Madera de caseta",
+      "Metal pintado de cuadro",
+      "Escarcha",
+      "Nieve pegada al cristal",
+      "Papel de manual y libro de guardia"
+    ],
+    "sounds": [
+      "A01 a A15"
+    ],
+    "animations": [
+      "Palancas",
+      "Interruptores de barra",
+      "Cartucho encajando",
+      "Relés cayendo y enganchando",
+      "Aguja del transmisor",
+      "Nieve en el ventanal y amanecer"
+    ],
+    "ui": [
+      "Cuadro con palancas y pilotos tras PROBAR",
+      "Receptor con transcripción de pulsos",
+      "Manual navegable con índice",
+      "Panel de relés",
+      "Dial de tres ruedas",
+      "Teclas de potencia y modulación con indicador de espera de la pareja",
+      "Votación oculta de dos opciones"
+    ],
+    "vfx": [
+      "V01 a V07"
+    ],
+    "dialogue_lines": 23,
+    "mechanisms": [
+      "Combinación lógica de palancas",
+      "Secuencia de barras a partir de señal fragmentada",
+      "Usar objeto sobre objeto",
+      "Secuencia de relés con orden modificado",
+      "Selección de canal por reglas",
+      "Pulsación simultánea",
+      "Votación compartida"
+    ]
+  }
+}

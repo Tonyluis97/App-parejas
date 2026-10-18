@@ -1,0 +1,4683 @@
+{
+  "scenario_id": "ER04",
+  "title": "El tren de medianoche",
+  "version": "1.0.0",
+  "players": 2,
+  "genre": "Misterio de época (años 30 ficticios)",
+  "synopsis": "Invierno de 1934, en una línea ferroviaria inventada. El Expreso Lucerna da vueltas sin tripulación por el Lazo de Orsa, un bucle con un túnel que se repite cada cuatro minutos. Si nadie programa su telemando, a la 01:08 saldrá hacia un apeadero abandonado. El Jugador A explora la cabina y el furgón; el Jugador B investiga el coche cama y el coche salón. Siguiendo el rastro que dejó el ilusionista Gran Morel, reconstruyen la ruta, abren su baúl, confirman la vía en el túnel, esquivan un mercancías y eligen en qué estación llegar.",
+  "difficulty": "medium",
+  "estimated_duration_minutes": 50,
+  "phase_minutes": {
+    "awakening": 4,
+    "discovery": 13,
+    "complication": 15,
+    "climax": 12,
+    "escape": 6
+  },
+  "competencies": [
+    "Aritmética de horarios (distancia, velocidad y tiempo)",
+    "Orientación en mapas y cambio de perspectiva",
+    "Deducción a partir de documentos",
+    "Observación bajo tiempo limitado",
+    "Comunicación precisa",
+    "Toma de decisiones compartida"
+  ],
+  "initial_conditions": "A despierta en la cabina del automotor, a la que llegó buscando al personal; la puerta trasera se ha cerrado con la cerradura horaria del regulador. B despierta en el compartimento 5 del coche cama; la puerta al coche salón está cerrada con la misma cerradura. No queda nadie más a bordo. El reloj de la cabina está parado. Los dos se hablan por el interfono de servicio del tren, que en el juego es la llamada de voz. Cada cuatro minutos el tren cruza el túnel del lazo durante 40 segundos.",
+  "initial_state": "INITIALIZING",
+  "objectives": [
+    {
+      "objective_id": "OBJ01",
+      "text": "Poner en hora el reloj patrón y reconstruir la ruta de salida del lazo",
+      "required": true,
+      "completed_when": [
+        "P01_SOLVED",
+        "P02_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ02",
+      "text": "Confirmar la ruta en el túnel y programar el cruce con el mercancías",
+      "required": true,
+      "completed_when": [
+        "P03_SOLVED",
+        "P04_SOLVED",
+        "P05_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ03",
+      "text": "Elegir la estación de llegada y bajar al andén",
+      "required": true,
+      "completed_when": [
+        "P06_SOLVED",
+        "O08_OPEN",
+        "O36_OPEN"
+      ]
+    },
+    {
+      "objective_id": "OBJ04",
+      "text": "Hacer volar la paloma de cuerda del Gran Morel",
+      "required": false,
+      "completed_when": [
+        "P07_SOLVED"
+      ]
+    }
+  ],
+  "win_condition": {
+    "type": "all_required_objectives_completed",
+    "required_objectives": [
+      "OBJ01",
+      "OBJ02",
+      "OBJ03"
+    ]
+  },
+  "fail_condition": {
+    "type": "timer_expired",
+    "minutes": 50,
+    "consequence": "Faltan dos minutos para la salida automática: el regulador toma la vía del Apeadero de los Pinos y el tren se detiene allí con suavidad. Los jugadores eligen reiniciar la zona actual o seguir en Modo sin reloj: el telemando puede seguir programándose desde el apeadero y el tren vuelve al lazo. No se pierde ningún acertijo resuelto."
+  },
+  "reset_condition": "Cualquiera de los dos pulsa Reiniciar zona y el otro lo confirma; también se ofrece al agotarse el reloj. El reinicio completo vuelve al estado inicial y repite la intro.",
+  "narrative": {
+    "intro": "Noche de nieve, 1934. Un automotor aerodinámico color crema y granate sale de un túnel y vuelve a entrar en él, dando vueltas alrededor de una montaña. En el coche salón, un gramófono gira sin disco. En la cabina, el reloj está parado y no se mueve.",
+    "reason": "La pareja viaja en el Expreso Lucerna hacia la costa. En la parada técnica de Mirabel, el jefe de estación anunció por error que el tren quedaba fuera de servicio y todo el pasaje cambió de tren. Ellos dormían y nadie los vio. Poco después, el regulador automático del Lucerna tomó el mando y llevó el tren al Lazo de Orsa, donde espera órdenes.",
+    "initial_situation": "A se despertó, fue hacia delante buscando al personal y la puerta de la cabina se cerró a su espalda. B está en su compartimento. Por el interfono descubren que no hay nadie más. Una placa de la cabina explica que, sin órdenes, a la 01:08 el tren saldrá del lazo por la vía programada: la del Apeadero de los Pinos, cerrado desde hace años.",
+    "goal": "Poner en hora el reloj patrón, reconstruir la ruta con el mapa, abrir el baúl del Gran Morel, confirmar la ruta con las balizas del túnel, elegir el apartadero donde esperar al mercancías y decidir si llegan a Valdeplata o a Puerto Alba.",
+    "first_discovery": "A encuentra el reloj parado y la cinta del registrador con los kilómetros recorridos; B encuentra en su compartimento el horario de invierno con las velocidades de marcha. Solo con las dos cosas se puede saber qué hora es.",
+    "progression": [
+      "Con el reloj patrón en hora se abren las cerraduras horarias: A puede pasar al furgón y B al coche salón, donde despierta el telemando.",
+      "A sabe qué palanca mueve cada cruce y B tiene el mapa turístico de la línea. Juntos deciden hacia qué lado poner cada aguja.",
+      "En el furgón, A encuentra el baúl del Gran Morel. La combinación depende de la litera de su ayudante, que B encuentra en la hoja de reservas.",
+      "Dentro del baúl, el cuaderno de Morel explica qué balizas del túnel confirman la ruta. A las ve desde el parabrisas y B las marca en la consola antes de salir del túnel.",
+      "El teletipo del salón anuncia un mercancías por la vía única. Con el horario y la placa del regulador eligen el apartadero donde esperar.",
+      "Aparece la carta de Morel. La pareja decide la estación de llegada."
+    ],
+    "obstacles": [
+      "El reloj está parado y el horario no sirve por sí solo: el tren salió de Mirabel con retraso.",
+      "El selector del salón solo numera las palancas, y el tablero de la cabina no dice adónde lleva cada lado.",
+      "El mapa tiene el norte arriba, pero las palancas se entienden mirando hacia donde avanza el tren.",
+      "Las balizas solo se ven en la oscuridad del túnel, 40 segundos cada cuatro minutos.",
+      "Un mercancías ocupa la vía única: si eligen mal el apartadero, el bloqueo automático los dejará parados horas."
+    ],
+    "revelations": [
+      "Nadie abandonó a la pareja: el parte del maquinista muestra que la tripulación creía el tren vacío.",
+      "El Gran Morel programó la ruta hacia los Pinos como despedida del pueblo donde estrenó su primer número, pero se arrepintió y dejó pistas para corregirla.",
+      "El baúl no guarda trucos de escenario, sino el número que Morel y su hermana Elvira nunca llegaron a estrenar."
+    ],
+    "climax": "Con la ruta confirmada y el apartadero elegido, solo falta la palanca de la Bifurcación de Orsa. A lee el parte del maquinista y B la carta de Morel. Votan la estación y el telemando cierra la hoja de marcha.",
+    "escape_scene": "A la 01:08 el Lucerna sale del lazo, cruza el Pinar y las Minas, espera en el apartadero mientras pasa el mercancías y sigue hacia la estación elegida. Fundido al amanecer: los frenos suspiran, las puertas de la cabina y del salón se abren y A y B bajan al andén, donde se encuentran.",
+    "epilogue": "El jefe de la estación los recibe con café y una manta. Escucha la historia del tren que daba vueltas y anota en el libro de incidencias: Llegada sin tripulación, con dos viajeros que supieron leer el horario."
+  },
+  "rooms": [
+    {
+      "room_id": "ROOM01",
+      "name": "Cabina del automotor",
+      "description": "Cabina estrecha de madera barnizada y latón con un gran parabrisas curvo. Pupitre con el reloj patrón, el registrador de marcha, el tablero de cruces del telemando y el selector de apartadero.",
+      "dimensions_m": {
+        "w": 3.2,
+        "d": 4.5,
+        "h": 2.6
+      },
+      "layout": "Parabrisas en el frente (pared norte). Pupitre bajo el parabrisas con el reloj a la izquierda, el tablero de cruces en el centro y el registrador a la derecha; selector de apartadero junto al registrador. Placa del regulador en la pared oeste. Puerta lateral de salida en la pared este. Puerta al furgón en la pared sur. Gorra colgada junto a la puerta trasera.",
+      "access": {
+        "A": true,
+        "B": false
+      },
+      "view": {
+        "A": "Toda la cabina y la vía delante por el parabrisas; en el túnel, las balizas.",
+        "B": "No la ve; oye a A por el interfono de servicio."
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR01",
+          "wall": "south",
+          "position": {
+            "x": 1.6,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM02",
+          "opens_when": [
+            "P01_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR02",
+          "wall": "east",
+          "position": {
+            "x": 3.2,
+            "y": 0,
+            "z": 2.5
+          },
+          "to": "EXIT",
+          "opens_when": [
+            "E09_DONE"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "north",
+          "position": {
+            "x": 1.6,
+            "y": 1.6,
+            "z": 4.5
+          },
+          "note": "Parabrisas curvo: nieve y montaña fuera del túnel; balizas dentro del túnel"
+        },
+        {
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 1.6,
+            "z": 3.0
+          },
+          "note": "Ventanilla lateral con escarcha; no es interactiva"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L01",
+          "type": "Lámpara de pupitre con pantalla de latón",
+          "position": {
+            "x": 1.6,
+            "y": 2.3,
+            "z": 3.8
+          },
+          "color": "#FFE7B0",
+          "intensity": 0.6,
+          "note": "Se apaga en el túnel"
+        },
+        {
+          "light_id": "L02",
+          "type": "Luz azul de túnel (piloto de emergencia)",
+          "position": {
+            "x": 1.6,
+            "y": 2.5,
+            "z": 2.2
+          },
+          "color": "#7F9CFF",
+          "intensity": 0.25,
+          "note": "Solo encendida en el túnel"
+        },
+        {
+          "light_id": "L03",
+          "type": "Reflejo del faro frontal",
+          "position": {
+            "x": 1.6,
+            "y": 1.0,
+            "z": 4.5
+          },
+          "color": "#FFF6D8",
+          "intensity": 0.4,
+          "note": "Ilumina la vía; en el túnel deja ver las balizas"
+        }
+      ],
+      "ambient_sound": "A01",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E04",
+          "change": "Túnel: la lámpara se apaga, se enciende la luz azul y por el parabrisas pasan las balizas"
+        },
+        {
+          "event": "E02",
+          "change": "El reloj patrón arranca y la puerta al furgón se desbloquea"
+        },
+        {
+          "event": "E09",
+          "change": "Luz del amanecer por el parabrisas y la puerta lateral se abre al andén"
+        }
+      ],
+      "objects": [
+        "O01",
+        "O02",
+        "O03",
+        "O04",
+        "O05",
+        "O06",
+        "O07",
+        "O08",
+        "O09",
+        "O10",
+        "O11"
+      ],
+      "puzzles": [
+        "P01",
+        "P05"
+      ],
+      "exit_conditions": [
+        "P01_SOLVED"
+      ],
+      "engine_notes": "Escena interior con cámara en primera persona y balanceo suave desactivable. El exterior del parabrisas es una textura en bucle de 4 minutos: 200 s de montaña nevada y 40 s de túnel. El ciclo del túnel lo marca el servidor (evento E04) para que A y B lo vean a la vez. Las balizas son sprites con forma y texto; su estado fijo o intermitente también se escribe en el registro de A."
+    },
+    {
+      "room_id": "ROOM02",
+      "name": "Furgón de equipajes",
+      "description": "Furgón de madera con sacas de correo, una bicicleta colgada y, en el centro, el gran baúl negro del Gran Morel con candado de cuatro ruedas. En la pared hay un tubo de correspondencia que llega al coche cama.",
+      "dimensions_m": {
+        "w": 2.8,
+        "d": 12,
+        "h": 2.6
+      },
+      "layout": "Puerta a la cabina en la pared norte. Baúl en el centro (z 6). Sacas de correo al norte, jaulas vacías al este, bicicleta en la pared oeste. Tubo de correspondencia en la esquina sureste. Puerta de intercomunicación con el coche cama en la pared sur, cerrada hasta la llegada.",
+      "access": {
+        "A": true,
+        "B": false
+      },
+      "view": {
+        "A": "Todo el furgón.",
+        "B": "No lo ve; puede recibir lo que A envíe por el tubo de correspondencia."
+      },
+      "unlocked_when": [
+        "P01_SOLVED"
+      ],
+      "doors": [
+        {
+          "door_id": "DOOR03",
+          "wall": "north",
+          "position": {
+            "x": 1.4,
+            "y": 0,
+            "z": 12
+          },
+          "to": "ROOM01",
+          "opens_when": []
+        },
+        {
+          "door_id": "DOOR04",
+          "wall": "south",
+          "position": {
+            "x": 1.4,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "E09_DONE"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 1.7,
+            "z": 8
+          },
+          "note": "Ventanuco con barrotes; no es interactivo"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L04",
+          "type": "Bombilla con rejilla",
+          "position": {
+            "x": 1.4,
+            "y": 2.5,
+            "z": 6
+          },
+          "color": "#FFD8A0",
+          "intensity": 0.5,
+          "note": "Se apaga en el túnel"
+        },
+        {
+          "light_id": "L05",
+          "type": "Luz azul de túnel",
+          "position": {
+            "x": 1.4,
+            "y": 2.5,
+            "z": 2
+          },
+          "color": "#7F9CFF",
+          "intensity": 0.2,
+          "note": "Solo en el túnel"
+        }
+      ],
+      "ambient_sound": "A03",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E04",
+          "change": "Túnel: bombilla apagada y luz azul tenue"
+        },
+        {
+          "event": "E05",
+          "change": "El baúl se abre con un muelle y deja ver el cuaderno y la paloma de cuerda"
+        }
+      ],
+      "objects": [
+        "O12",
+        "O13",
+        "O14",
+        "O15",
+        "O16",
+        "O17",
+        "O18",
+        "O19"
+      ],
+      "puzzles": [
+        "P03"
+      ],
+      "exit_conditions": [
+        "P03_SOLVED"
+      ],
+      "engine_notes": "Furgón como escena contigua a la cabina, cargada al desbloquear DOOR01. El candado del baúl es una interfaz de cuatro ruedas 0–9. El tubo de correspondencia es un disparador que mueve un objeto del inventario de A a O24 en el coche cama (cambio de estado en el servidor, sin física)."
+    },
+    {
+      "room_id": "ROOM03",
+      "name": "Coche cama",
+      "description": "Coche cama de caoba con pasillo al este y cinco compartimentos al oeste, numerados del 1 (norte) al 5 (sur), más la cabina del revisor al extremo sur.",
+      "dimensions_m": {
+        "w": 2.8,
+        "d": 20,
+        "h": 2.7
+      },
+      "layout": "Pasillo de x 2,0 a 2,8. Compartimentos de x 0 a 2,0: 1 (z 16,6–20), 2 (z 13,2–16,6), 3 (z 9,8–13,2), 4 (z 6,4–9,8), 5 (z 3,0–6,4); cabina del revisor (z 0–3,0). Cartel de la función en la pared del pasillo frente al compartimento 3. Salida del tubo de correspondencia en el extremo norte del pasillo. Puerta al furgón al norte (cerrada) y al coche salón al sur.",
+      "access": {
+        "A": false,
+        "B": true
+      },
+      "view": {
+        "A": "No lo ve; oye a B por el interfono.",
+        "B": "Todo el coche cama, compartimento por compartimento."
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR05",
+          "wall": "north",
+          "position": {
+            "x": 1.4,
+            "y": 0,
+            "z": 20
+          },
+          "to": "ROOM02",
+          "opens_when": [
+            "E09_DONE"
+          ]
+        },
+        {
+          "door_id": "DOOR06",
+          "wall": "south",
+          "position": {
+            "x": 1.4,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM04",
+          "opens_when": [
+            "P01_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 1.5,
+            "z": 4.7
+          },
+          "note": "Ventanillas de cada compartimento con cortinilla; fuera, nieve o la pared del túnel"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L06",
+          "type": "Apliques del pasillo",
+          "position": {
+            "x": 2.4,
+            "y": 2.5,
+            "z": 10
+          },
+          "color": "#FFE2B8",
+          "intensity": 0.5,
+          "note": "Se apagan en el túnel"
+        },
+        {
+          "light_id": "L07",
+          "type": "Lámpara de lectura del compartimento 5",
+          "position": {
+            "x": 0.3,
+            "y": 1.6,
+            "z": 5
+          },
+          "color": "#FFF0C8",
+          "intensity": 0.4,
+          "note": "Permanece encendida a baja intensidad en el túnel"
+        },
+        {
+          "light_id": "L08",
+          "type": "Luz azul de túnel",
+          "position": {
+            "x": 2.4,
+            "y": 2.6,
+            "z": 15
+          },
+          "color": "#7F9CFF",
+          "intensity": 0.2,
+          "note": "Solo en el túnel"
+        }
+      ],
+      "ambient_sound": "A04",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E04",
+          "change": "Túnel: los apliques se apagan y queda la luz azul; las ventanillas se oscurecen"
+        },
+        {
+          "event": "E02",
+          "change": "La cerradura horaria de la puerta sur se abre con un chasquido"
+        }
+      ],
+      "objects": [
+        "O20",
+        "O21",
+        "O22",
+        "O23",
+        "O24",
+        "O25",
+        "O26",
+        "O27"
+      ],
+      "puzzles": [
+        "P07"
+      ],
+      "exit_conditions": [
+        "P01_SOLVED"
+      ],
+      "engine_notes": "Escena alargada con puertas correderas de compartimento abiertas. Cada compartimento es una subzona con su propia lámpara. Las pistas de papel se abren a pantalla completa con texto seleccionable para lector de pantalla."
+    },
+    {
+      "room_id": "ROOM04",
+      "name": "Coche salón",
+      "description": "Coche salón con butacas, un piano pequeño y, al extremo norte, el pupitre del jefe de tren con el selector de ruta, la consola del telemando y un teletipo.",
+      "dimensions_m": {
+        "w": 2.8,
+        "d": 20,
+        "h": 2.7
+      },
+      "layout": "Puerta al coche cama en la pared norte. Pupitre del jefe de tren junto a ella: selector de ruta en el centro, consola a su izquierda, manual encima y teletipo a la derecha. Mapa turístico enmarcado en la pared oeste junto al pupitre y reglamento debajo. Mesas con copas en el centro, espejo en la pared este, piano al sur. Puerta del andén en la pared este, cerca del extremo sur.",
+      "access": {
+        "A": false,
+        "B": true
+      },
+      "view": {
+        "A": "No lo ve; oye a B por el interfono.",
+        "B": "Todo el salón."
+      },
+      "unlocked_when": [
+        "P01_SOLVED"
+      ],
+      "doors": [
+        {
+          "door_id": "DOOR07",
+          "wall": "north",
+          "position": {
+            "x": 1.4,
+            "y": 0,
+            "z": 20
+          },
+          "to": "ROOM03",
+          "opens_when": []
+        },
+        {
+          "door_id": "DOOR08",
+          "wall": "east",
+          "position": {
+            "x": 2.8,
+            "y": 0,
+            "z": 5
+          },
+          "to": "EXIT",
+          "opens_when": [
+            "E09_DONE"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 1.5,
+            "z": 10
+          },
+          "note": "Ventanales panorámicos; en el túnel reflejan el salón"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L09",
+          "type": "Lámparas de mesa con flecos",
+          "position": {
+            "x": 1.4,
+            "y": 1.2,
+            "z": 12
+          },
+          "color": "#FFD9A0",
+          "intensity": 0.5,
+          "note": "Se apagan en el túnel"
+        },
+        {
+          "light_id": "L10",
+          "type": "Flexo del pupitre",
+          "position": {
+            "x": 1.4,
+            "y": 1.5,
+            "z": 19
+          },
+          "color": "#FFF1D6",
+          "intensity": 0.5,
+          "note": "Sigue encendido en el túnel para que B use la consola"
+        },
+        {
+          "light_id": "L11",
+          "type": "Luz azul de túnel",
+          "position": {
+            "x": 1.4,
+            "y": 2.6,
+            "z": 8
+          },
+          "color": "#7F9CFF",
+          "intensity": 0.2,
+          "note": "Solo en el túnel; deja ver la frase fosforescente del espejo"
+        }
+      ],
+      "ambient_sound": "A05",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E04",
+          "change": "Túnel: el salón queda en luz azul, el espejo muestra una frase fosforescente y la consola admite entradas"
+        },
+        {
+          "event": "E06",
+          "change": "El teletipo imprime el aviso del mercancías 412 (complicación)"
+        },
+        {
+          "event": "E07",
+          "change": "La carta de Morel cae del marco del mapa"
+        },
+        {
+          "event": "E09",
+          "change": "Luz del amanecer por los ventanales y la puerta del andén se abre"
+        }
+      ],
+      "objects": [
+        "O28",
+        "O29",
+        "O30",
+        "O31",
+        "O32",
+        "O33",
+        "O34",
+        "O35",
+        "O36",
+        "O37",
+        "O38"
+      ],
+      "puzzles": [
+        "P02",
+        "P04",
+        "P06"
+      ],
+      "exit_conditions": [
+        "P06_SOLVED"
+      ],
+      "engine_notes": "El selector de ruta tiene tres palancas IZQ/DER; la tercera está bloqueada por servidor hasta P06. La consola del telemando tiene cinco teclas con forma (círculo, triángulo, cuadrado, rombo, estrella) y solo acepta entradas mientras E04 está activo o en los 30 s siguientes. El teletipo es una animación de papel que sale con texto real legible."
+    }
+  ],
+  "players_data": {
+    "player_a": {
+      "role": "Viajero en la cabina: máquinas, vía y furgón",
+      "view": "Reloj, registrador, tablero de cruces, placa del regulador, parabrisas y furgón. No ve los documentos del pasaje ni el salón.",
+      "initial_location": "ROOM01",
+      "initial_clues": [],
+      "initial_inventory": []
+    },
+    "player_b": {
+      "role": "Viajero en los coches de pasaje: documentos y telemando",
+      "view": "Compartimentos, horario, reservas, mapa, reglamento, consola y selector de ruta. No ve la vía ni el furgón.",
+      "initial_location": "ROOM03",
+      "initial_clues": [],
+      "initial_inventory": []
+    }
+  },
+  "objects": [
+    {
+      "object_id": "O01",
+      "name": "Reloj patrón del pupitre",
+      "visual": "Reloj redondo de esfera blanca y números romanos, parado, con dos ruedecillas para ponerlo en hora",
+      "room": "ROOM01",
+      "position": {
+        "x": 1.0,
+        "y": 1.5,
+        "z": 4.2
+      },
+      "category": "use",
+      "states": [
+        "STOPPED",
+        "SET"
+      ],
+      "initial_state": "STOPPED",
+      "action": "Examinar / poner en hora",
+      "activation_condition": [],
+      "result": "Examinar guarda C01; la hora introducida se valida en P01",
+      "transitions": [],
+      "clue": "C01",
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "SET",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O02",
+      "name": "Registrador de marcha",
+      "visual": "Caja de latón con una cinta de papel perforado que sale por una ranura",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.4,
+        "y": 1.0,
+        "z": 4.0
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer la cinta",
+      "activation_condition": [],
+      "result": "Guarda C02",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C02",
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O03",
+      "name": "Tablero de cruces del telemando",
+      "visual": "Panel negro con tres pilotos numerados, cada uno con una placa de esmalte y una flecha IZQ/DER",
+      "room": "ROOM01",
+      "position": {
+        "x": 1.6,
+        "y": 1.4,
+        "z": 4.3
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda C05",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C05",
+      "puzzle": "P02",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O04",
+      "name": "Placa del regulador y perfil de la línea",
+      "visual": "Placa de bronce atornillada en la pared oeste con un dibujo de la vía y sus kilómetros",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.1,
+        "y": 1.6,
+        "z": 2.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda C12",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C12",
+      "puzzle": "P05",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O05",
+      "name": "Selector de apartadero",
+      "visual": "Rueda de latón con tres posiciones grabadas: Molino, Ermita, Orsa; y un pulsador Programar",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.2,
+        "y": 1.0,
+        "z": 3.6
+      },
+      "category": "use",
+      "states": [
+        "IDLE",
+        "PROGRAMMED"
+      ],
+      "initial_state": "IDLE",
+      "action": "Elegir apartadero y pulsar Programar",
+      "activation_condition": [
+        "P04_SOLVED"
+      ],
+      "result": "Envía el apartadero elegido al telemando",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P05",
+      "authorized": "A",
+      "final_state": "PROGRAMMED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O06",
+      "name": "Parabrisas frontal",
+      "visual": "Cristal curvo; en el túnel se ven pasar balizas con forma junto a la vía",
+      "room": "ROOM01",
+      "position": {
+        "x": 1.6,
+        "y": 1.6,
+        "z": 4.45
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Mirar durante el túnel",
+      "activation_condition": [],
+      "result": "Durante el túnel con la ruta enviada guarda C07",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C07",
+      "puzzle": "P04",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O07",
+      "name": "Parte del maquinista",
+      "visual": "Carpeta de cartón con hojas mecanografiadas y un sello de la Compañía",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.6,
+        "y": 0.9,
+        "z": 3.2
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C15",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C15",
+      "puzzle": "P06",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O08",
+      "name": "Puerta lateral de la cabina",
+      "visual": "Puerta de chapa con ventanuco y asidero de latón",
+      "room": "ROOM01",
+      "position": {
+        "x": 3.2,
+        "y": 0,
+        "z": 2.5
+      },
+      "category": "exit",
+      "states": [
+        "LOCKED",
+        "OPEN"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Bajar al andén",
+      "activation_condition": [
+        "E09_DONE"
+      ],
+      "result": "A baja al andén",
+      "transitions": [
+        {
+          "to": "OPEN",
+          "when": [
+            "E09_DONE"
+          ],
+          "by": "A"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "A",
+      "final_state": "OPEN",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O09",
+      "name": "Silbato de latón",
+      "visual": "Tirador de silbato colgado del techo",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.8,
+        "y": 2.2,
+        "z": 4.2
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O10",
+      "name": "Termo y taza del maquinista",
+      "visual": "Termo de esmalte verde y taza con café frío",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.4,
+        "y": 0.9,
+        "z": 3.6
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O11",
+      "name": "Gorra colgada",
+      "visual": "Gorra de maquinista con la insignia de la Compañía del Ferrocarril de Orsa",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.1,
+        "y": 1.8,
+        "z": 0.8
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O12",
+      "name": "Baúl del Gran Morel",
+      "visual": "Baúl negro con estrellas pintadas y candado de cuatro ruedas numeradas",
+      "room": "ROOM02",
+      "position": {
+        "x": 1.4,
+        "y": 0,
+        "z": 6
+      },
+      "category": "locked",
+      "states": [
+        "LOCKED",
+        "OPEN"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Girar las ruedas del candado",
+      "activation_condition": [],
+      "result": "Se abre con el código de P03",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P03",
+      "authorized": "A",
+      "final_state": "OPEN",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O13",
+      "name": "Etiqueta del baúl",
+      "visual": "Etiqueta de cartón atada al asa con letra elegante",
+      "room": "ROOM02",
+      "position": {
+        "x": 1.4,
+        "y": 0.8,
+        "z": 6.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C03",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C03",
+      "puzzle": "P03",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O14",
+      "name": "Cuaderno de funciones de Morel",
+      "visual": "Cuaderno de tapas rojas con dibujos de balizas y notas",
+      "room": "ROOM02",
+      "position": {
+        "x": 1.4,
+        "y": 0.6,
+        "z": 6
+      },
+      "category": "examine",
+      "states": [
+        "HIDDEN",
+        "VISIBLE",
+        "EXAMINED"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Leer",
+      "activation_condition": [
+        "P03_SOLVED"
+      ],
+      "result": "Guarda C08",
+      "transitions": [
+        {
+          "to": "VISIBLE",
+          "when": [
+            "P03_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "EXAMINED",
+          "when": [
+            "O14_VISIBLE"
+          ],
+          "by": "A"
+        }
+      ],
+      "clue": "C08",
+      "puzzle": "P04",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O15",
+      "name": "Paloma de cuerda",
+      "visual": "Paloma mecánica de hojalata plateada con una tarjeta atada a la pata",
+      "room": "ROOM02",
+      "position": {
+        "x": 1.5,
+        "y": 0.6,
+        "z": 6
+      },
+      "category": "collect",
+      "states": [
+        "HIDDEN",
+        "VISIBLE",
+        "COLLECTED",
+        "SENT"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Recoger / meter en el tubo",
+      "activation_condition": [
+        "P03_SOLVED"
+      ],
+      "result": "Guarda C17; se puede enviar por el tubo",
+      "transitions": [
+        {
+          "to": "VISIBLE",
+          "when": [
+            "P03_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "COLLECTED",
+          "when": [
+            "O15_VISIBLE"
+          ],
+          "by": "A"
+        },
+        {
+          "to": "SENT",
+          "when": [
+            "O15_COLLECTED",
+            "C17_DISCOVERED"
+          ],
+          "by": "A"
+        }
+      ],
+      "clue": "C17",
+      "puzzle": "P07",
+      "authorized": "A",
+      "final_state": "SENT",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O16",
+      "name": "Tubo de correspondencia (furgón)",
+      "visual": "Tubo de latón con tapa y una palanca de envío rotulada Coche cama",
+      "room": "ROOM02",
+      "position": {
+        "x": 2.7,
+        "y": 1.3,
+        "z": 1
+      },
+      "category": "use",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Meter un objeto y enviar",
+      "activation_condition": [],
+      "result": "Envía el objeto al coche cama",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P07",
+      "authorized": "A",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O17",
+      "name": "Sacas de correo",
+      "visual": "Sacas de lona con el sello de Correos y etiquetas de destino",
+      "room": "ROOM02",
+      "position": {
+        "x": 0.5,
+        "y": 0,
+        "z": 10
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O18",
+      "name": "Bicicleta colgada",
+      "visual": "Bicicleta negra colgada de dos ganchos con una etiqueta de equipaje",
+      "room": "ROOM02",
+      "position": {
+        "x": 0.1,
+        "y": 1.5,
+        "z": 3
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O19",
+      "name": "Jaulas vacías",
+      "visual": "Jaulas de mimbre para aves de corral, vacías",
+      "room": "ROOM02",
+      "position": {
+        "x": 2.3,
+        "y": 0,
+        "z": 9
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O20",
+      "name": "Horario de invierno",
+      "visual": "Folleto plegado de la Compañía con tablas de horas y una nota a lápiz",
+      "room": "ROOM03",
+      "position": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 4.6
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C04",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C04",
+      "puzzle": "P01",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O21",
+      "name": "Hoja de reservas del revisor",
+      "visual": "Hoja pautada en una tablilla con pinza, en la cabina del revisor",
+      "room": "ROOM03",
+      "position": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C10",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C10",
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O22",
+      "name": "Cartel de la función",
+      "visual": "Cartel a dos tintas con un mago de chistera y una joven con capa",
+      "room": "ROOM03",
+      "position": {
+        "x": 2.75,
+        "y": 1.5,
+        "z": 11
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C11",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C11",
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O23",
+      "name": "Llave de cuerda",
+      "visual": "Llave pequeña de mariposa olvidada en la litera del compartimento 4",
+      "room": "ROOM03",
+      "position": {
+        "x": 0.8,
+        "y": 0.7,
+        "z": 8.0
+      },
+      "category": "collect",
+      "states": [
+        "DEFAULT",
+        "COLLECTED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Recoger",
+      "activation_condition": [],
+      "result": "Pasa al inventario de B y guarda C18",
+      "transitions": [
+        {
+          "to": "COLLECTED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C18",
+      "puzzle": "P07",
+      "authorized": "B",
+      "final_state": "COLLECTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O24",
+      "name": "Paloma en el tubo (coche cama)",
+      "visual": "La paloma de hojalata dentro del cajetín de llegada del tubo",
+      "room": "ROOM03",
+      "position": {
+        "x": 2.7,
+        "y": 1.3,
+        "z": 19.5
+      },
+      "category": "combine",
+      "states": [
+        "HIDDEN",
+        "ARRIVED",
+        "FLYING"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Darle cuerda con la llave",
+      "activation_condition": [],
+      "result": "Con la llave, la paloma bate las alas",
+      "transitions": [
+        {
+          "to": "ARRIVED",
+          "when": [
+            "O15_SENT"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P07",
+      "authorized": "B",
+      "final_state": "FLYING",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O25",
+      "name": "Maletas en las rejillas",
+      "visual": "Maletas de cuero y sombrereras olvidadas en las rejillas",
+      "room": "ROOM03",
+      "position": {
+        "x": 1.0,
+        "y": 2.1,
+        "z": 15
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O26",
+      "name": "Lámparas de litera",
+      "visual": "Lámparas con pantalla de cristal esmerilado",
+      "room": "ROOM03",
+      "position": {
+        "x": 0.3,
+        "y": 1.6,
+        "z": 7
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O27",
+      "name": "Cortinillas de terciopelo",
+      "visual": "Cortinillas granates con borlas doradas",
+      "room": "ROOM03",
+      "position": {
+        "x": 0.05,
+        "y": 1.4,
+        "z": 12
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O28",
+      "name": "Selector de ruta del jefe de tren",
+      "visual": "Tres palancas de madera numeradas 1, 2 y 3, cada una con posiciones IZQ y DER, y un pulsador Enviar ruta",
+      "room": "ROOM04",
+      "position": {
+        "x": 1.4,
+        "y": 1.0,
+        "z": 18.8
+      },
+      "category": "use",
+      "states": [
+        "IDLE",
+        "SENT"
+      ],
+      "initial_state": "IDLE",
+      "action": "Mover palancas y pulsar Enviar ruta",
+      "activation_condition": [
+        "P01_SOLVED"
+      ],
+      "result": "Envía la ruta al telemando",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "SENT",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O29",
+      "name": "Mapa turístico de la Compañía",
+      "visual": "Mapa enmarcado a color con dibujos de pinos, minas, campanarios y un faro; rosa de los vientos en la esquina",
+      "room": "ROOM04",
+      "position": {
+        "x": 0.05,
+        "y": 1.5,
+        "z": 17
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda C06",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C06",
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O30",
+      "name": "Consola del telemando",
+      "visual": "Caja de nogal con cinco teclas de baquelita con forma: círculo, triángulo, cuadrado, rombo y estrella",
+      "room": "ROOM04",
+      "position": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 18.8
+      },
+      "category": "use",
+      "states": [
+        "IDLE",
+        "CONFIRMED"
+      ],
+      "initial_state": "IDLE",
+      "action": "Pulsar teclas durante el túnel",
+      "activation_condition": [
+        "P02_SOLVED"
+      ],
+      "result": "Envía la secuencia de confirmación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P04",
+      "authorized": "B",
+      "final_state": "CONFIRMED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O31",
+      "name": "Manual del telemando",
+      "visual": "Librito de tapas grises atado a la consola con un cordel",
+      "room": "ROOM04",
+      "position": {
+        "x": 1.8,
+        "y": 0.9,
+        "z": 18.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C09",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C09",
+      "puzzle": "P04",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O32",
+      "name": "Aviso del teletipo",
+      "visual": "Tira de papel que sale del teletipo con un aviso de circulación",
+      "room": "ROOM04",
+      "position": {
+        "x": 2.6,
+        "y": 1.1,
+        "z": 18
+      },
+      "category": "examine",
+      "states": [
+        "HIDDEN",
+        "VISIBLE",
+        "EXAMINED"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Leer",
+      "activation_condition": [
+        "P04_SOLVED"
+      ],
+      "result": "Guarda C13",
+      "transitions": [
+        {
+          "to": "VISIBLE",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "EXAMINED",
+          "when": [
+            "O32_VISIBLE"
+          ],
+          "by": "B"
+        }
+      ],
+      "clue": "C13",
+      "puzzle": "P05",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O33",
+      "name": "Reglamento de vía única",
+      "visual": "Cartel enmarcado con el artículo 14 del reglamento de circulación",
+      "room": "ROOM04",
+      "position": {
+        "x": 0.05,
+        "y": 1.2,
+        "z": 15
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Leer",
+      "activation_condition": [],
+      "result": "Guarda C14",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C14",
+      "puzzle": "P05",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O34",
+      "name": "Carta del Gran Morel",
+      "visual": "Sobre lacrado con una estrella, caído del marco del mapa",
+      "room": "ROOM04",
+      "position": {
+        "x": 1.4,
+        "y": 0.8,
+        "z": 16
+      },
+      "category": "examine",
+      "states": [
+        "HIDDEN",
+        "VISIBLE",
+        "EXAMINED"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Leer",
+      "activation_condition": [
+        "P05_SOLVED"
+      ],
+      "result": "Guarda C16",
+      "transitions": [
+        {
+          "to": "VISIBLE",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "EXAMINED",
+          "when": [
+            "O34_VISIBLE"
+          ],
+          "by": "B"
+        }
+      ],
+      "clue": "C16",
+      "puzzle": "P06",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O35",
+      "name": "Espejo del salón",
+      "visual": "Espejo biselado; en el túnel aparece una frase fosforescente",
+      "room": "ROOM04",
+      "position": {
+        "x": 2.75,
+        "y": 1.5,
+        "z": 10
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Mirar en el túnel",
+      "activation_condition": [],
+      "result": "Guarda C19",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C19",
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O36",
+      "name": "Puerta del andén",
+      "visual": "Puerta de doble hoja con cristal grabado y estribo plegable",
+      "room": "ROOM04",
+      "position": {
+        "x": 2.8,
+        "y": 0,
+        "z": 5
+      },
+      "category": "exit",
+      "states": [
+        "LOCKED",
+        "OPEN"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Bajar al andén",
+      "activation_condition": [
+        "E09_DONE"
+      ],
+      "result": "B baja al andén",
+      "transitions": [
+        {
+          "to": "OPEN",
+          "when": [
+            "E09_DONE"
+          ],
+          "by": "B"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "B",
+      "final_state": "OPEN",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O37",
+      "name": "Piano pequeño",
+      "visual": "Piano vertical con la tapa abierta y una partitura de vals",
+      "room": "ROOM04",
+      "position": {
+        "x": 0.8,
+        "y": 0,
+        "z": 2.5
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O38",
+      "name": "Mesas con copas",
+      "visual": "Mesas redondas con mantel blanco y copas que tintinean",
+      "room": "ROOM04",
+      "position": {
+        "x": 1.4,
+        "y": 0,
+        "z": 12
+      },
+      "category": "decorative",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Ambientación",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 0
+    }
+  ],
+  "clues": [
+    {
+      "clue_id": "C01",
+      "content": "El reloj patrón está parado en las 23:56. Una etiqueta de la Compañía dice: El reloj se detiene cuando el regulador automático toma el mando. Póngase en hora antes de dar órdenes al telemando.",
+      "alt_text": "Texto y voz: reloj parado en las veintitrés cincuenta y seis.",
+      "location": "O01",
+      "discovery": "A examina el reloj del pupitre",
+      "player": "A",
+      "puzzle": "P01",
+      "reveals": "La hora en que se paró el reloj",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C02",
+      "content": "Cinta del registrador, última línea, impresa al abrirse la puerta de la cabina: Poste kilométrico 146, Salida del Lazo. Recorrido desde la parada del reloj: 15 km. Hora: sin dato (reloj parado).",
+      "alt_text": "Texto y voz: kilómetro 146; 15 kilómetros desde que se paró el reloj.",
+      "location": "O02",
+      "discovery": "A lee la cinta del registrador",
+      "player": "A",
+      "puzzle": "P01",
+      "reveals": "Cuántos kilómetros se han recorrido desde que se paró el reloj",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O02_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C03",
+      "content": "Etiqueta del baúl: Baúl n.º 3 del Gran Morel. Mi ayudante sabe abrirlo: la combinación es el número de su coche, el de su compartimento y el de su litera, y al final la suma de los tres.",
+      "alt_text": "Texto y voz.",
+      "location": "O13",
+      "discovery": "A lee la etiqueta del asa",
+      "player": "A",
+      "puzzle": "P03",
+      "reveals": "Cómo se forma la combinación del baúl",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O13_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C04",
+      "content": "Horario de invierno de 1934, Expreso Lucerna, Mirabel – Puerto Alba. Velocidad de marcha: de 06:00 a 22:00, 60 km/h; de 22:00 a 06:00, marcha nocturna a 45 km/h. Mirabel, km 113: llegada 22:50, salida 23:05. Valdeplata, km 190. Puerto Alba, km 214. Nota a lápiz del revisor: Esta noche salimos de Mirabel con retraso; hora sin anotar.",
+      "alt_text": "Tabla leída en voz y en texto grande: día 60, noche 45 kilómetros por hora; salida de Mirabel con retraso no anotado.",
+      "location": "O20",
+      "discovery": "B lee el folleto en su compartimento",
+      "player": "B",
+      "puzzle": "P01",
+      "reveals": "La velocidad nocturna y que el horario de Mirabel no sirve esta noche",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O20_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C05",
+      "content": "Tablero de cruces del telemando. Piloto 1: Cruce de las Minas, km 157. Piloto 2: Cruce del Pinar, km 148. Piloto 3: Bifurcación de Orsa, km 178, bloqueado hasta confirmar la ruta. IZQ y DER se entienden mirando hacia donde avanza el tren. Ahora: 1 en IZQ, 2 en DER.",
+      "alt_text": "Lista en voz y texto: palanca 1, Minas; palanca 2, Pinar; palanca 3, Bifurcación. Izquierda y derecha según la marcha.",
+      "location": "O03",
+      "discovery": "A examina el tablero",
+      "player": "A",
+      "puzzle": "P02",
+      "reveals": "Qué palanca mueve cada cruce y cómo se leen IZQ y DER",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O03_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C06",
+      "content": "Mapa turístico de la Compañía, con el norte arriba. Desde la Salida de Poniente del Lazo de Orsa la línea corre hacia el oeste. En el Cruce del Pinar, un ramal sube hacia el norte hasta el Apeadero de los Pinos, cerrado desde 1929; la línea principal sigue por el sur. En el Cruce de las Minas, un ramal baja hacia el sur hasta las Minas de Orsa, cerradas a viajeros; la línea principal sigue por el norte. En la Bifurcación de Orsa, el ramal norte lleva a Valdeplata y el sur a Puerto Alba.",
+      "alt_text": "Descripción en texto y voz de cada cruce con sus ramales norte y sur; los dibujos de pino, mina, campanario y faro llevan su nombre escrito.",
+      "location": "O29",
+      "discovery": "B examina el mapa del salón",
+      "player": "B",
+      "puzzle": "P02",
+      "reveals": "Hacia qué lado sigue la línea principal en cada cruce",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O29_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C07",
+      "content": "Balizas del túnel del lazo, vistas desde el parabrisas, en el orden en que pasan: 1 círculo con luz fija; 2 triángulo con luz intermitente; 3 cuadrado con luz intermitente; 4 rombo con luz fija; 5 estrella con luz intermitente; 6 círculo con luz intermitente. Se repiten igual en cada vuelta.",
+      "alt_text": "Lista en texto y voz con la forma y la palabra fija o intermitente de cada baliza; se guarda en el registro de A tras el primer túnel.",
+      "location": "O06",
+      "discovery": "A mira por el parabrisas durante un túnel después de enviar la ruta",
+      "player": "A",
+      "puzzle": "P04",
+      "reveals": "Qué balizas pasan, en qué orden y cuáles parpadean",
+      "depends_on": [],
+      "enabled_when": [
+        "P02_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "P02_SOLVED",
+        "E04_DONE",
+        "O06_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C08",
+      "content": "Cuaderno de funciones de Morel: Mis balizas de confirmación son las que parpadean. Las de luz fija son señales normales de la Compañía y no cuentan.",
+      "alt_text": "Texto y voz.",
+      "location": "O14",
+      "discovery": "A lee el cuaderno del baúl",
+      "player": "A",
+      "puzzle": "P04",
+      "reveals": "Que solo cuentan las balizas intermitentes",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O14_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C09",
+      "content": "Manual del telemando, página 9: Para confirmar la ruta, marque en la consola los símbolos de confirmación en orden inverso al de su paso por el túnel. La consola solo acepta la marca durante el túnel o en los 30 segundos siguientes.",
+      "alt_text": "Texto y voz.",
+      "location": "O31",
+      "discovery": "B lee el manual atado a la consola",
+      "player": "B",
+      "puzzle": "P04",
+      "reveals": "El orden inverso y la ventana del túnel",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O31_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C10",
+      "content": "Hoja de reservas del revisor, coche cama n.º 2. Compartimento 1, litera 1: Sr. Bastián Roca. Compartimento 1, litera 2: Sra. Carmen Vidal. Compartimento 3, litera 2: Sr. Gran Morel. Compartimento 4, litera 1: Srta. Clara Vidal. Compartimento 5, literas 1 y 2: billete doble sin nombres anotados. Todos bajaron en Mirabel salvo el billete doble.",
+      "alt_text": "Tabla en texto y voz con compartimento, litera y nombre.",
+      "location": "O21",
+      "discovery": "B lee la tablilla de la cabina del revisor",
+      "player": "B",
+      "puzzle": "P03",
+      "reveals": "Dónde viajaba cada pasajero",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O21_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C11",
+      "content": "Cartel de la función: El Gran Morel y su fiel ayudante, la señorita Clara, presentan La Desaparición del Tren. Teatro del Pinar, temporada de 1929.",
+      "alt_text": "Texto y voz con la descripción del cartel.",
+      "location": "O22",
+      "discovery": "B lee el cartel del pasillo",
+      "player": "B",
+      "puzzle": "P03",
+      "reveals": "Quién es la ayudante de Morel",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O22_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C12",
+      "content": "Placa del regulador: Sin órdenes, el tren sale del lazo a la 01:08 por la Salida de Poniente, km 146, y toma la vía programada. Perfil de la línea tras la salida: vía única con apartaderos en el km 152 (Molino), el km 161 (Ermita) y el km 170 (Orsa); Bifurcación de Orsa en el km 178.",
+      "alt_text": "Texto y voz; el perfil se muestra como una línea con marcas y kilómetros.",
+      "location": "O04",
+      "discovery": "A examina la placa de la pared oeste",
+      "player": "A",
+      "puzzle": "P05",
+      "reveals": "Hora y punto de salida del lazo y kilómetros de los apartaderos",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O04_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C13",
+      "content": "Aviso de circulación n.º 7, por teletipo: El mercancías 412 saldrá de la Bifurcación de Orsa, km 178, a la 01:22, por la vía única en dirección al Lazo, a 30 km/h.",
+      "alt_text": "Texto y voz.",
+      "location": "O32",
+      "discovery": "B lee la tira del teletipo",
+      "player": "B",
+      "puzzle": "P05",
+      "reveals": "Salida y velocidad del mercancías",
+      "depends_on": [],
+      "enabled_when": [
+        "P04_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O32_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C14",
+      "content": "Reglamento de vía única, artículo 14: Cuando un tren de viajeros y un mercancías circulan en sentidos opuestos, el de viajeros espera en el apartadero más lejano al que llegue antes que el mercancías. Si llegan a la vez, se considera que el mercancías llegó primero.",
+      "alt_text": "Texto y voz.",
+      "location": "O33",
+      "discovery": "B lee el cartel del reglamento",
+      "player": "B",
+      "puzzle": "P05",
+      "reveals": "La regla para elegir apartadero",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O33_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C15",
+      "content": "Parte del maquinista, última hoja: Mirabel, 23:20. Nos comunican que el Lucerna queda fuera de servicio y el pasaje pasa al tren de socorro. Comprobado: coches vacíos. Destino oficial: Puerto Alba, final de línea, con telégrafo y oficina de objetos perdidos; la Compañía espera el tren para la revista de la mañana.",
+      "alt_text": "Texto y voz.",
+      "location": "O07",
+      "discovery": "A lee la carpeta del pupitre",
+      "player": "A",
+      "puzzle": "P06",
+      "reveals": "Qué ofrece llegar a Puerto Alba y que nadie abandonó a los viajeros a propósito",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O07_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C16",
+      "content": "Carta del Gran Morel: A quien haya llegado hasta aquí. Cambié la ruta hacia los Pinos para despedirme del teatro donde empecé, y me arrepentí tarde. Mi hermana Elvira lleva la cantina de la estación de Valdeplata. Si el tren para allí, dadle mi baúl: dentro está el número que nunca estrenamos. Si preferís Puerto Alba, la Compañía se lo hará llegar igualmente.",
+      "alt_text": "Texto y voz.",
+      "location": "O34",
+      "discovery": "B lee la carta caída del marco",
+      "player": "B",
+      "puzzle": "P06",
+      "reveals": "Qué ofrece llegar a Valdeplata",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O34_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C17",
+      "content": "Tarjeta atada a la paloma: Dale cuerda quien tenga la llave pequeña. Viaja bien por el tubo de correspondencia.",
+      "alt_text": "Texto y voz.",
+      "location": "O15",
+      "discovery": "A recoge la paloma del baúl",
+      "player": "A",
+      "puzzle": "P07",
+      "reveals": "Que la paloma necesita la llave y puede enviarse por el tubo",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O15_COLLECTED"
+      ]
+    },
+    {
+      "clue_id": "C18",
+      "content": "Llave pequeña de mariposa, de las que dan cuerda a juguetes. Tiene grabada una estrella como la del baúl de Morel.",
+      "alt_text": "Texto y voz.",
+      "location": "O23",
+      "discovery": "B recoge la llave en el compartimento 4",
+      "player": "B",
+      "puzzle": "P07",
+      "reveals": "Una llave de cuerda de Morel",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O23_COLLECTED"
+      ]
+    },
+    {
+      "clue_id": "C19",
+      "content": "En el túnel, sobre el espejo del salón brilla una frase fosforescente: El mapa mira al norte; las palancas miran adonde va el tren.",
+      "alt_text": "Texto y voz; la frase queda en el registro de B aunque no se vea en la oscuridad.",
+      "location": "O35",
+      "discovery": "B mira el espejo durante un túnel",
+      "player": "B",
+      "puzzle": "P02",
+      "reveals": "Recordatorio de la diferencia de perspectiva entre mapa y palancas",
+      "depends_on": [],
+      "enabled_when": [
+        "ROOM04_UNLOCKED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "E04_DONE",
+        "O35_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C20",
+      "content": "Nota del sistema con la voz de Morel en el gramófono: Un buen truco siempre necesita dos manos. Contad lo que veis antes de tocar nada.",
+      "alt_text": "Texto y voz.",
+      "location": "O30",
+      "discovery": "El sistema la ofrece tras 2 minutos sin progreso",
+      "player": "B",
+      "puzzle": "P04",
+      "reveals": "Ayuda general de comunicación",
+      "depends_on": [],
+      "enabled_when": [
+        "ROOM04_UNLOCKED"
+      ],
+      "help_level": 1,
+      "discovered_when": [
+        "IDLE_120"
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "puzzle_id": "P01",
+      "name": "El reloj parado",
+      "room": "ROOM01",
+      "main": true,
+      "prerequisites": [
+        "START"
+      ],
+      "narrative": "El telemando no acepta órdenes sin la hora exacta, y el reloj patrón se paró cuando el regulador tomó el mando.",
+      "objective": "Poner el reloj patrón en la hora de la última anotación del registrador.",
+      "situation": "A tiene el reloj parado y la cinta. B tiene el horario con las velocidades de marcha.",
+      "required_objects": [
+        "O01",
+        "O02",
+        "O20"
+      ],
+      "info_a": "Hora en que se paró el reloj (C01) y kilómetros recorridos desde entonces (C02).",
+      "info_b": "Velocidad nocturna y aviso de retraso en Mirabel (C04).",
+      "must_communicate": "A dice 23:56 y 15 km; B dice que de noche se va a 45 km/h; calculan 20 minutos.",
+      "rules": [
+        "La hora se introduce como HH:MM.",
+        "Tras tres fallos, el reloj se bloquea 20 segundos."
+      ],
+      "steps": [
+        "A lee el reloj (23:56) y la cinta (15 km).",
+        "B lee el horario: marcha nocturna a 45 km/h, es decir 3 km cada 4 minutos.",
+        "15 km a 45 km/h son 20 minutos.",
+        "23:56 + 20 min = 00:16.",
+        "A pone el reloj en 00:16."
+      ],
+      "answer": {
+        "type": "code",
+        "value": "00:16",
+        "normalize": "Hora en formato HH:MM con dos cifras"
+      },
+      "wrong_answers": [
+        {
+          "value": "00:11",
+          "why": "Usa la velocidad de día (60 km/h): 15 minutos. Son más de las 22:00, así que rige la nocturna."
+        },
+        {
+          "value": "23:49",
+          "why": "Parte de la salida programada de Mirabel (23:05) y 33 km; el revisor anotó que esa noche salieron con retraso."
+        },
+        {
+          "value": "23:56",
+          "why": "Es la hora en que se paró el reloj, no la actual."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C01",
+          "C02",
+          "C04"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": "M01",
+        "window_ms": null,
+        "check": "La hora de A debe ser la de C01 más los km de C02 divididos por la velocidad nocturna de C04 (variante activa)."
+      },
+      "on_solve": {
+        "message": "El reloj arranca con un tic seco. Las cerraduras horarias se abren.",
+        "events": [
+          "E02"
+        ],
+        "sets": [
+          "O01_SET"
+        ]
+      },
+      "on_fail": {
+        "message": "El regulador no reconoce esa hora. La aguja vuelve a las 23:56.",
+        "effect": "El reloj vuelve a STOPPED."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 20
+      },
+      "hints": [
+        "A sabe cuándo se paró el reloj y cuánto se ha recorrido; B sabe a qué velocidad.",
+        "De noche el tren va a 45 km/h: 3 km cada 4 minutos.",
+        "15 km son 20 minutos: 23:56 más 20 minutos."
+      ],
+      "estimated_minutes": 5,
+      "unlocks": [
+        "P02",
+        "P03"
+      ],
+      "reset_condition": "Reinicio de zona: el reloj vuelve a 23:56 y las puertas horarias se cierran.",
+      "edge_cases": [
+        "A escribe 0:16: se normaliza a 00:16.",
+        "A pone la hora antes de hablar con B: se valida igual.",
+        "B se desconecta: A puede seguir intentando; el horario queda en el registro de B al volver."
+      ],
+      "solution_proof": "C04 fija 45 km/h entre las 22:00 y las 06:00, y las 23:56 están en ese tramo. 15 km a 0,75 km por minuto son exactamente 20 minutos; 23:56 + 0:20 = 00:16. La salida de Mirabel no sirve porque el revisor anotó retraso sin hora. A no tiene la velocidad y B no tiene la hora ni los kilómetros."
+    },
+    {
+      "puzzle_id": "P02",
+      "name": "El mapa sin palancas",
+      "room": "ROOM04",
+      "main": true,
+      "prerequisites": [
+        "P01_SOLVED"
+      ],
+      "narrative": "El telemando está despierto, pero la ruta programada lleva a un apeadero cerrado. Hay que mover las agujas del Pinar y de las Minas.",
+      "objective": "Poner las palancas 1 y 2 del selector para seguir siempre la línea principal.",
+      "situation": "B está ante el selector, que solo numera las palancas. A tiene en la cabina el tablero que dice qué cruce mueve cada una. El mapa del salón tiene el norte arriba.",
+      "required_objects": [
+        "O28",
+        "O29",
+        "O03"
+      ],
+      "info_a": "Palanca 1 es el Cruce de las Minas y palanca 2 el del Pinar; IZQ y DER según la marcha (C05).",
+      "info_b": "Hacia dónde sigue la línea principal en cada cruce, con el norte arriba y la marcha hacia el oeste (C06).",
+      "must_communicate": "A dice qué cruce mueve cada palanca; B cuenta qué lado es la línea principal y los dos traducen norte y sur a derecha e izquierda mirando hacia el oeste.",
+      "rules": [
+        "Las palancas se pueden mover libremente; solo se valida al pulsar Enviar ruta.",
+        "La palanca 3 está bloqueada."
+      ],
+      "steps": [
+        "A lee el tablero: palanca 1, Minas; palanca 2, Pinar.",
+        "B lee el mapa: en el Pinar la principal va por el sur; en las Minas, por el norte.",
+        "Mirando hacia el oeste, el norte queda a la derecha y el sur a la izquierda.",
+        "Pinar (palanca 2) en IZQ; Minas (palanca 1) en DER.",
+        "B pulsa Enviar ruta."
+      ],
+      "answer": {
+        "type": "position",
+        "value": {
+          "PALANCA_1": "DER",
+          "PALANCA_2": "IZQ"
+        },
+        "normalize": "Posición de cada palanca al pulsar Enviar ruta"
+      },
+      "wrong_answers": [
+        {
+          "value": {
+            "PALANCA_1": "IZQ",
+            "PALANCA_2": "DER"
+          },
+          "why": "Supone que la palanca 1 es el primer cruce (Pinar), o lee el norte como izquierda: es la ruta programada hacia los Pinos."
+        },
+        {
+          "value": {
+            "PALANCA_1": "DER",
+            "PALANCA_2": "DER"
+          },
+          "why": "Acierta las Minas pero en el Pinar toma el ramal norte, hacia el apeadero cerrado."
+        },
+        {
+          "value": {
+            "PALANCA_1": "IZQ",
+            "PALANCA_2": "IZQ"
+          },
+          "why": "Acierta el Pinar pero en las Minas toma el ramal sur, cerrado a viajeros."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C05",
+          "C06"
+        ],
+        "coop_model": "M4",
+        "mechanism_id": "M02",
+        "window_ms": null,
+        "check": "Al pulsar Enviar ruta, cada palanca se compara con el lado de la línea principal de C06, traducido a IZQ/DER con marcha hacia el oeste y asignado según la numeración de C05."
+      },
+      "on_solve": {
+        "message": "El telemando acepta la ruta y pide confirmación en el próximo túnel.",
+        "events": [
+          "E03"
+        ],
+        "sets": [
+          "O28_SENT"
+        ]
+      },
+      "on_fail": {
+        "message": "El telemando rechaza la ruta: lleva a una vía cerrada.",
+        "effect": "Las palancas se quedan donde están."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 15
+      },
+      "hints": [
+        "El selector solo numera las palancas; A sabe qué cruce mueve cada una.",
+        "Mirando hacia el oeste, el norte queda a la derecha.",
+        "Palanca 1 (Minas) a DER y palanca 2 (Pinar) a IZQ."
+      ],
+      "estimated_minutes": 6,
+      "unlocks": [
+        "P04"
+      ],
+      "reset_condition": "Reinicio de acertijo: palanca 1 en IZQ y palanca 2 en DER, como al principio.",
+      "edge_cases": [
+        "B mueve la palanca 3: no se mueve y aparece Bloqueada hasta confirmar la ruta.",
+        "B envía dos veces la ruta correcta: la segunda se ignora.",
+        "A se desconecta: B puede enviar; se valida igual."
+      ],
+      "solution_proof": "C06 da el lado de la línea principal en cada cruce (Pinar sur, Minas norte) y la marcha hacia el oeste; mirando al oeste, norte es DER y sur es IZQ. C05 asigna la palanca 1 a las Minas y la 2 al Pinar, al revés del orden de paso. La única combinación que evita los dos ramales cerrados es 1 DER y 2 IZQ. B no conoce la numeración y A no tiene el mapa."
+    },
+    {
+      "puzzle_id": "P03",
+      "name": "El baúl del Gran Morel",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "P01_SOLVED"
+      ],
+      "narrative": "En el furgón espera el baúl del ilusionista que cambió la ruta. Su etiqueta habla de una ayudante.",
+      "objective": "Abrir el candado de cuatro ruedas del baúl.",
+      "situation": "A tiene el baúl y su etiqueta. B tiene la hoja de reservas y el cartel de la función.",
+      "required_objects": [
+        "O12",
+        "O13",
+        "O21",
+        "O22"
+      ],
+      "info_a": "La regla de la combinación (C03).",
+      "info_b": "Quién es la ayudante (C11) y dónde viajaba cada pasajero (C10).",
+      "must_communicate": "A lee la regla; B identifica a Clara Vidal y dicta coche 2, compartimento 4, litera 1; suman 7.",
+      "rules": [
+        "Cuatro ruedas de 0 a 9.",
+        "Tras tres fallos el candado se bloquea 20 segundos."
+      ],
+      "steps": [
+        "A lee la etiqueta.",
+        "B lee el cartel: la ayudante es la señorita Clara.",
+        "B busca en la hoja: Srta. Clara Vidal, coche 2, compartimento 4, litera 1.",
+        "2 + 4 + 1 = 7.",
+        "A marca 2417."
+      ],
+      "answer": {
+        "type": "code",
+        "value": "2417",
+        "normalize": "Cuatro cifras sin espacios"
+      },
+      "wrong_answers": [
+        {
+          "value": "2125",
+          "why": "Es la litera de Carmen Vidal: mismo apellido, pero la ayudante es Clara."
+        },
+        {
+          "value": "2327",
+          "why": "Es la litera del propio Morel."
+        },
+        {
+          "value": "2410",
+          "why": "Pone la suma como una cifra más en lugar de la cuarta rueda: debe ser 7."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C03",
+          "C10",
+          "C11"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": "M03",
+        "window_ms": null,
+        "check": "El código de A debe ser coche, compartimento y litera de la persona de C10 que coincide con la ayudante de C11, más su suma, según C03 (variante activa)."
+      },
+      "on_solve": {
+        "message": "El candado cede con un clic y la tapa se levanta sola con un muelle.",
+        "events": [
+          "E05"
+        ],
+        "sets": [
+          "O12_OPEN"
+        ]
+      },
+      "on_fail": {
+        "message": "Las ruedas giran en falso. Esa no es la litera de la ayudante.",
+        "effect": "Las ruedas vuelven a 0000."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 20
+      },
+      "hints": [
+        "A tiene la regla del candado y B los papeles de los pasajeros.",
+        "Hay dos Vidal: el cartel dice cuál es la ayudante.",
+        "Clara Vidal: coche 2, compartimento 4, litera 1."
+      ],
+      "estimated_minutes": 5,
+      "unlocks": [
+        "P04",
+        "P07"
+      ],
+      "reset_condition": "Reinicio de zona: el baúl se cierra con su contenido dentro.",
+      "edge_cases": [
+        "A prueba códigos al azar: tras tres fallos hay bloqueo de 20 s, sin otra penalización.",
+        "Doble envío del código correcto: se procesa una vez."
+      ],
+      "solution_proof": "C11 llama a la ayudante señorita Clara; en C10 solo hay una Clara, la Srta. Clara Vidal del coche 2, compartimento 4, litera 1. Con C03 la combinación es 2, 4, 1 y 2 + 4 + 1 = 7: 2417. Carmen Vidal y Morel no son la ayudante. A no tiene los papeles y B no sabe la regla ni ve el baúl."
+    },
+    {
+      "puzzle_id": "P04",
+      "name": "Las balizas del túnel",
+      "room": "ROOM04",
+      "main": true,
+      "prerequisites": [
+        "P02_SOLVED",
+        "P03_SOLVED"
+      ],
+      "narrative": "El telemando pide confirmar la ruta con las balizas que Morel instaló en el túnel del lazo. Solo se ven desde la cabina, y la consola está en el salón.",
+      "objective": "Marcar en la consola los símbolos de confirmación en el orden correcto durante un túnel.",
+      "situation": "Cada 4 minutos el tren entra 40 segundos en el túnel. A ve las balizas por el parabrisas. B tiene la consola y su manual.",
+      "required_objects": [
+        "O06",
+        "O14",
+        "O30",
+        "O31"
+      ],
+      "info_a": "Las seis balizas en orden con su forma y si son fijas o intermitentes (C07); que solo cuentan las intermitentes (C08).",
+      "info_b": "Que se marcan en orden inverso y solo durante el túnel o 30 s después (C09).",
+      "must_communicate": "A dicta las balizas intermitentes en el orden en que pasan; B las invierte y las marca antes de que se cierre la ventana.",
+      "rules": [
+        "La consola solo acepta entradas durante el túnel o en los 30 s siguientes.",
+        "Las balizas se repiten igual en cada túnel.",
+        "Un error borra la secuencia; se puede repetir en el mismo túnel si queda tiempo."
+      ],
+      "steps": [
+        "A lee el cuaderno de Morel.",
+        "En un túnel, A observa: círculo fijo, triángulo intermitente, cuadrado intermitente, rombo fijo, estrella intermitente, círculo intermitente.",
+        "A se queda con las intermitentes: triángulo, cuadrado, estrella, círculo.",
+        "B lee el manual: orden inverso.",
+        "Dentro de la ventana, B marca círculo, estrella, cuadrado, triángulo."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "CIRCULO",
+          "ESTRELLA",
+          "CUADRADO",
+          "TRIANGULO"
+        ],
+        "normalize": "Teclas pulsadas en orden"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "TRIANGULO",
+            "CUADRADO",
+            "ESTRELLA",
+            "CIRCULO"
+          ],
+          "why": "Es el orden de paso, sin invertir."
+        },
+        {
+          "value": [
+            "CIRCULO",
+            "ESTRELLA",
+            "ROMBO",
+            "CUADRADO",
+            "TRIANGULO",
+            "CIRCULO"
+          ],
+          "why": "Incluye las balizas fijas, que no cuentan."
+        },
+        {
+          "value": [
+            "CIRCULO",
+            "ESTRELLA",
+            "CUADRADO"
+          ],
+          "why": "Falta una baliza: A dictó solo las tres últimas."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C07",
+          "C08",
+          "C09"
+        ],
+        "coop_model": "M2",
+        "mechanism_id": "M04",
+        "window_ms": null,
+        "check": "La secuencia de B, hecha con E04 activo o en los 30 s siguientes, debe ser la de las balizas intermitentes de C07 en orden inverso (variante activa)."
+      },
+      "on_solve": {
+        "message": "La consola emite un timbre doble: ruta confirmada. El teletipo empieza a teclear.",
+        "events": [
+          "E06"
+        ],
+        "sets": [
+          "O30_CONFIRMED"
+        ]
+      },
+      "on_fail": {
+        "message": "Timbre grave: confirmación no válida. Las balizas volverán en el próximo túnel.",
+        "effect": "Se borra la secuencia."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 4,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "A ve las balizas y B sabe cómo marcarlas.",
+        "Solo cuentan las que parpadean y se marcan al revés.",
+        "Círculo, estrella, cuadrado, triángulo."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P05"
+      ],
+      "reset_condition": "Reinicio de acertijo: se borra la secuencia; los túneles siguen su ciclo.",
+      "edge_cases": [
+        "B marca fuera de la ventana: la consola no responde y muestra Espere al túnel.",
+        "El túnel acaba a mitad de la secuencia: B tiene 30 s más para terminarla.",
+        "Pausa durante el túnel: al reanudar, el túnel continúa con el tiempo que le quedaba.",
+        "A se desconecta: B puede usar lo que A ya dictó; las balizas quedan en el registro de A."
+      ],
+      "solution_proof": "C08 descarta las balizas fijas 1 y 4 de C07; quedan triángulo, cuadrado, estrella y círculo, en ese orden de paso. C09 manda invertir: círculo, estrella, cuadrado, triángulo. El círculo fijo no cuenta, así que el círculo aparece una sola vez. A ve las balizas pero no tiene la consola ni la regla del orden; B tiene la consola pero no ve la vía."
+    },
+    {
+      "puzzle_id": "P05",
+      "name": "El cruce del mercancías",
+      "room": "ROOM01",
+      "main": true,
+      "prerequisites": [
+        "P04_SOLVED"
+      ],
+      "narrative": "Complicación: el teletipo anuncia un mercancías por la vía única. El regulador necesita saber en qué apartadero esperar.",
+      "objective": "Programar el apartadero correcto en el selector de la cabina.",
+      "situation": "A tiene la placa del regulador con la hora de salida y los kilómetros, y el selector. B tiene el aviso del mercancías, el reglamento y el horario.",
+      "required_objects": [
+        "O04",
+        "O05",
+        "O32",
+        "O33"
+      ],
+      "info_a": "Salida del lazo a la 01:08 desde el km 146 y apartaderos en los km 152, 161 y 170 (C12).",
+      "info_b": "Mercancías desde el km 178 a la 01:22 a 30 km/h (C13); regla del apartadero más lejano (C14); 45 km/h de noche (C04).",
+      "must_communicate": "Comparan, apartadero por apartadero, a qué hora llega cada tren y aplican el artículo 14.",
+      "rules": [
+        "Tres posiciones: Molino, Ermita, Orsa.",
+        "Si llegan a la vez, cuenta como si el mercancías llegara antes.",
+        "Tras tres fallos el selector se bloquea 20 segundos."
+      ],
+      "steps": [
+        "Lucerna a 45 km/h desde el km 146 a la 01:08: Molino (6 km) 01:16; Ermita (15 km) 01:28; Orsa (24 km) 01:40.",
+        "Mercancías a 30 km/h desde el km 178 a la 01:22: Orsa (8 km) 01:38; Ermita (17 km) 01:56; Molino (26 km) 02:14.",
+        "Orsa: el mercancías llega antes (01:38 frente a 01:40), no vale.",
+        "Ermita: el Lucerna llega antes (01:28 frente a 01:56), y es la más lejana que cumple.",
+        "A elige Ermita y pulsa Programar."
+      ],
+      "answer": {
+        "type": "code",
+        "value": "ERMITA",
+        "normalize": "Nombre del apartadero en mayúsculas"
+      },
+      "wrong_answers": [
+        {
+          "value": "ORSA",
+          "why": "Usa 60 km/h: llegaría a las 01:32, pero de noche se va a 45 km/h y se llega a las 01:40, después del mercancías."
+        },
+        {
+          "value": "MOLINO",
+          "why": "Es seguro pero no es el más lejano posible, como pide el artículo 14."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C04",
+          "C12",
+          "C13",
+          "C14"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": null,
+        "window_ms": null,
+        "check": "El apartadero de A debe ser el de mayor kilómetro de C12 en el que la hora de llegada del Lucerna (01:08 + distancia / 45 km/h) sea estrictamente anterior a la del mercancías de C13 (variante activa)."
+      },
+      "on_solve": {
+        "message": "El regulador anota el apartadero de espera. Del marco del mapa cae un sobre.",
+        "events": [
+          "E07"
+        ],
+        "sets": [
+          "O05_PROGRAMMED"
+        ]
+      },
+      "on_fail": {
+        "message": "El bloqueo automático no acepta ese apartadero.",
+        "effect": "El selector vuelve a Molino."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 20
+      },
+      "hints": [
+        "A tiene la salida y los kilómetros; B el mercancías y la regla.",
+        "Calculen la hora de cada tren en cada apartadero: 45 km/h son 3 km cada 4 minutos y 30 km/h, 1 km cada 2 minutos.",
+        "En Orsa el mercancías llega a las 01:38 y el Lucerna a las 01:40: la respuesta es Ermita."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P06"
+      ],
+      "reset_condition": "Reinicio de acertijo: el selector vuelve a Molino; el aviso sigue en el salón.",
+      "edge_cases": [
+        "A programa antes de que llegue el aviso: el selector está desactivado hasta P04.",
+        "Doble pulsación de Programar: se procesa una vez."
+      ],
+      "solution_proof": "A 45 km/h (C04) el Lucerna recorre 6, 15 y 24 km en 8, 20 y 32 min: 01:16, 01:28 y 01:40. A 30 km/h el mercancías recorre 8, 17 y 26 km en 16, 34 y 52 min desde la 01:22: 01:38, 01:56 y 02:14. Orsa queda descartada por dos minutos y Ermita es la más lejana que cumple. A no tiene el mercancías ni la regla; B no tiene la hora de salida ni los kilómetros."
+    },
+    {
+      "puzzle_id": "P06",
+      "name": "La estación de llegada",
+      "room": "ROOM04",
+      "main": true,
+      "prerequisites": [
+        "P05_SOLVED"
+      ],
+      "narrative": "Solo falta la palanca de la Bifurcación de Orsa. Las dos estaciones son buenas; cada una cierra la historia de una manera.",
+      "objective": "Decidir juntos si el Lucerna llega a Valdeplata o a Puerto Alba.",
+      "situation": "A lee el parte del maquinista; B la carta del Gran Morel. Los dos votan en su pantalla y el telemando mueve la palanca 3.",
+      "required_objects": [
+        "O07",
+        "O34",
+        "O28"
+      ],
+      "info_a": "Qué espera en Puerto Alba (C15).",
+      "info_b": "Qué espera en Valdeplata (C16).",
+      "must_communicate": "Cada uno cuenta lo que ha leído y eligen.",
+      "rules": [
+        "Los dos votan en secreto.",
+        "Si votan distinto, se pide hablar y votar otra vez.",
+        "Las dos estaciones llevan a un final completo."
+      ],
+      "steps": [
+        "A lee el parte.",
+        "B lee la carta.",
+        "Votan la misma estación."
+      ],
+      "answer": {
+        "type": "decision",
+        "value": null,
+        "normalize": "Clave de opción",
+        "options": [
+          {
+            "key": "VALDEPLATA",
+            "label": "Llegar a Valdeplata",
+            "consequence": "El telemando pone la palanca 3 en DER (ramal norte); entregan el baúl a Elvira en la cantina."
+          },
+          {
+            "key": "PUERTO_ALBA",
+            "label": "Llegar a Puerto Alba",
+            "consequence": "El telemando pone la palanca 3 en IZQ (ramal sur); la Compañía recibe el tren y envía el baúl a Valdeplata."
+          }
+        ]
+      },
+      "wrong_answers": [],
+      "validation": {
+        "input_by": [
+          "A",
+          "B"
+        ],
+        "requires_clues": [
+          "C15",
+          "C16"
+        ],
+        "coop_model": "M6",
+        "mechanism_id": "M05",
+        "window_ms": null,
+        "check": "Se acepta cuando los dos votos coinciden; se guarda la opción y se fija la palanca 3."
+      },
+      "on_solve": {
+        "message": "La palanca 3 se mueve sola. El telemando cierra la hoja de marcha.",
+        "events": [
+          "E08"
+        ],
+        "sets": []
+      },
+      "on_fail": {
+        "message": "Han elegido estaciones distintas. Cuéntense lo que han leído y voten otra vez.",
+        "effect": "Se borran los votos."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "A tiene el parte y B la carta.",
+        "No hay estación equivocada.",
+        "Voten la misma en las dos pantallas."
+      ],
+      "estimated_minutes": 3,
+      "unlocks": [],
+      "reset_condition": "Reinicio de zona: se borran los votos.",
+      "edge_cases": [
+        "Un jugador vota y el otro se desconecta: el voto se guarda.",
+        "Cambiar el voto antes de que vote el otro: cuenta el último."
+      ],
+      "solution_proof": "Es una decisión compartida: cualquier estación en la que coincidan es válida y no penaliza."
+    },
+    {
+      "puzzle_id": "P07",
+      "name": "La paloma de cuerda",
+      "room": "ROOM03",
+      "main": false,
+      "prerequisites": [
+        "O24_ARRIVED"
+      ],
+      "narrative": "En el baúl de Morel hay una paloma de hojalata. Su llave se quedó en la litera de la ayudante.",
+      "objective": "Enviar la paloma por el tubo y darle cuerda en el coche cama.",
+      "situation": "A tiene la paloma y el tubo del furgón; B encontró una llave pequeña en el compartimento 4.",
+      "required_objects": [
+        "O15",
+        "O16",
+        "O23",
+        "O24"
+      ],
+      "info_a": "La tarjeta de la paloma (C17).",
+      "info_b": "La llave de cuerda (C18).",
+      "must_communicate": "A avisa de que envía la paloma; B la recoge y le da cuerda.",
+      "rules": [
+        "Es opcional.",
+        "Se puede hacer en cualquier momento antes de la llegada."
+      ],
+      "steps": [
+        "A recoge la paloma y la mete en el tubo.",
+        "B recoge la llave.",
+        "B usa la llave sobre la paloma en el tubo."
+      ],
+      "answer": {
+        "type": "combine",
+        "value": [
+          "O23",
+          "O24"
+        ],
+        "normalize": "Objeto del inventario usado sobre el objeto destino"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "O20",
+            "O24"
+          ],
+          "why": "El horario no da cuerda."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C17",
+          "C18"
+        ],
+        "coop_model": null,
+        "mechanism_id": null,
+        "window_ms": null,
+        "check": "B tiene O23 en COLLECTED y lo usa sobre O24 en ARRIVED."
+      },
+      "on_solve": {
+        "message": "La paloma bate las alas y recorre el pasillo con un zumbido de cuerda.",
+        "events": [
+          "E12"
+        ],
+        "sets": [
+          "O24_FLYING"
+        ]
+      },
+      "on_fail": {
+        "message": "Eso no le da cuerda.",
+        "effect": "Ninguno."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "En el baúl había algo más que un cuaderno.",
+        "El tubo de correspondencia llega al coche cama.",
+        "La llave pequeña está en la litera del compartimento 4."
+      ],
+      "estimated_minutes": 2,
+      "unlocks": [],
+      "reset_condition": "Reinicio de zona: la paloma vuelve al baúl y la llave al compartimento 4.",
+      "edge_cases": [
+        "B recoge la llave antes de que llegue la paloma: se guarda en el inventario.",
+        "A envía otro objeto por el tubo: el tubo solo admite la paloma."
+      ],
+      "solution_proof": "Solo hay una paloma y una llave de cuerda. Es opcional y añade un detalle al final."
+    }
+  ],
+  "coop_mechanisms": [
+    {
+      "mechanism_id": "M01",
+      "model": "M1",
+      "puzzle": "P01",
+      "title": "Reloj y horario",
+      "why_not_solo": "La hora de parada y los kilómetros están en la cabina; la velocidad nocturna está en el horario del compartimento.",
+      "info_a": "23:56 y 15 km.",
+      "info_b": "45 km/h de noche y salida de Mirabel con retraso.",
+      "communicate_a": "La hora del reloj y la cinta.",
+      "communicate_b": "La velocidad que rige de noche.",
+      "action_a": "Poner el reloj en hora.",
+      "action_b": "Hacer o comprobar el cálculo.",
+      "validation": "Solo se acepta con C01 y C02 (A) y C04 (B) descubiertas y la entrada de A.",
+      "miscommunication": "Si usan 60 km/h o la salida de Mirabel, el reloj vuelve a 23:56 y la ayuda 2 recuerda la marcha nocturna.",
+      "anti_domination": "Cada uno tiene un dato indispensable; el reloj solo lo toca A.",
+      "skill_gap": "La cuenta es 15 km a 3 km cada 4 minutos; la ayuda 3 da los 20 minutos."
+    },
+    {
+      "mechanism_id": "M02",
+      "model": "M4",
+      "puzzle": "P02",
+      "title": "Norte en el mapa, derecha en la vía",
+      "why_not_solo": "El mapa no dice qué palanca es cada cruce y el tablero no dice adónde lleva cada lado.",
+      "info_a": "Numeración de palancas y lectura según la marcha.",
+      "info_b": "Ramales norte y sur de cada cruce y marcha hacia el oeste.",
+      "communicate_a": "Palanca 1 Minas, palanca 2 Pinar.",
+      "communicate_b": "Pinar principal al sur, Minas principal al norte.",
+      "action_a": "Comprobar en el tablero los pilotos tras el envío.",
+      "action_b": "Mover las palancas y enviar.",
+      "validation": "Solo se acepta 1 DER y 2 IZQ con C05 y C06 descubiertas.",
+      "miscommunication": "Si ponen la ruta hacia los Pinos, el telemando la rechaza sin penalización y el espejo recuerda la perspectiva.",
+      "anti_domination": "B mueve las palancas, pero solo A sabe cuál es cada una.",
+      "skill_gap": "Se muestra una rosa de los vientos girada en modo fácil."
+    },
+    {
+      "mechanism_id": "M03",
+      "model": "M1",
+      "puzzle": "P03",
+      "title": "La etiqueta y las reservas",
+      "why_not_solo": "La regla está en el baúl y los datos del pasaje en el coche cama.",
+      "info_a": "Regla: coche, compartimento, litera y suma.",
+      "info_b": "Cartel y hoja de reservas.",
+      "communicate_a": "Cómo se forma el código.",
+      "communicate_b": "Quién es la ayudante y su litera.",
+      "action_a": "Girar el candado.",
+      "action_b": "Buscar a la ayudante.",
+      "validation": "Código 2417 con C03 (A) y C10 y C11 (B) descubiertas.",
+      "miscommunication": "Si eligen a Carmen Vidal, el candado no abre y la ayuda 2 menciona los dos Vidal.",
+      "anti_domination": "B deduce y A ejecuta; ninguno tiene los dos lados.",
+      "skill_gap": "La suma es de una cifra; la deducción se basa en un nombre de pila."
+    },
+    {
+      "mechanism_id": "M04",
+      "model": "M2",
+      "puzzle": "P04",
+      "title": "Vigía en el túnel",
+      "why_not_solo": "Las balizas solo se ven desde la cabina y la consola solo está en el salón.",
+      "info_a": "Balizas y regla de las intermitentes.",
+      "info_b": "Orden inverso y ventana del túnel.",
+      "communicate_a": "Las cuatro intermitentes en orden de paso.",
+      "communicate_b": "Cuándo marca y el orden invertido.",
+      "action_a": "Observar y dictar.",
+      "action_b": "Marcar en la consola.",
+      "validation": "Secuencia invertida de intermitentes dentro de la ventana, con C07 descubierta por A.",
+      "miscommunication": "Si fallan, el próximo túnel repite las mismas balizas; no se pierde nada.",
+      "anti_domination": "A no puede pulsar y B no puede ver.",
+      "skill_gap": "En modo fácil la ventana se amplía a 60 s tras el túnel y A tiene la lista desde el primer paso."
+    },
+    {
+      "mechanism_id": "M05",
+      "model": "M6",
+      "puzzle": "P06",
+      "title": "¿Valdeplata o Puerto Alba?",
+      "why_not_solo": "Cada uno ha leído lo que ofrece una estación; el voto exige a los dos.",
+      "info_a": "Parte del maquinista.",
+      "info_b": "Carta de Morel.",
+      "communicate_a": "Qué espera en Puerto Alba.",
+      "communicate_b": "Qué espera en Valdeplata.",
+      "action_a": "Votar.",
+      "action_b": "Votar.",
+      "validation": "Se aplica solo cuando los dos votos coinciden.",
+      "miscommunication": "Votos distintos se borran sin penalización.",
+      "anti_domination": "Voto secreto hasta que votan los dos.",
+      "skill_gap": "No hay respuesta correcta."
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "START",
+      "to": "C01",
+      "condition": "A examina el reloj",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C02",
+      "condition": "A lee la cinta",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C04",
+      "condition": "B lee el horario",
+      "type": "required"
+    },
+    {
+      "from": "C01",
+      "to": "P01",
+      "condition": "A comunica la hora de parada",
+      "type": "required"
+    },
+    {
+      "from": "C02",
+      "to": "P01",
+      "condition": "A comunica los km",
+      "type": "required"
+    },
+    {
+      "from": "C04",
+      "to": "P01",
+      "condition": "B comunica la velocidad",
+      "type": "required"
+    },
+    {
+      "from": "P01",
+      "to": "ROOM02",
+      "condition": "Se abre la puerta al furgón",
+      "type": "required"
+    },
+    {
+      "from": "P01",
+      "to": "ROOM04",
+      "condition": "Se abre la puerta al salón",
+      "type": "required"
+    },
+    {
+      "from": "C05",
+      "to": "P02",
+      "condition": "A comunica la numeración",
+      "type": "required"
+    },
+    {
+      "from": "C06",
+      "to": "P02",
+      "condition": "B lee el mapa",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C10",
+      "condition": "B lee la hoja de reservas",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C11",
+      "condition": "B lee el cartel",
+      "type": "required"
+    },
+    {
+      "from": "C03",
+      "to": "P03",
+      "condition": "A comunica la regla",
+      "type": "required"
+    },
+    {
+      "from": "C10",
+      "to": "P03",
+      "condition": "B dicta la litera",
+      "type": "required"
+    },
+    {
+      "from": "C11",
+      "to": "P03",
+      "condition": "B identifica a la ayudante",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "C08",
+      "condition": "El baúl contiene el cuaderno",
+      "type": "required"
+    },
+    {
+      "from": "P02",
+      "to": "C07",
+      "condition": "Con la ruta enviada se encienden las balizas",
+      "type": "required"
+    },
+    {
+      "from": "E04",
+      "to": "C07",
+      "condition": "Las balizas solo se ven en el túnel",
+      "type": "required"
+    },
+    {
+      "from": "C07",
+      "to": "P04",
+      "condition": "A dicta las balizas",
+      "type": "required"
+    },
+    {
+      "from": "C08",
+      "to": "P04",
+      "condition": "A filtra las intermitentes",
+      "type": "required"
+    },
+    {
+      "from": "C09",
+      "to": "P04",
+      "condition": "B invierte el orden",
+      "type": "required"
+    },
+    {
+      "from": "P04",
+      "to": "C13",
+      "condition": "El teletipo imprime el aviso",
+      "type": "required"
+    },
+    {
+      "from": "C12",
+      "to": "P05",
+      "condition": "A comunica salida y apartaderos",
+      "type": "required"
+    },
+    {
+      "from": "C13",
+      "to": "P05",
+      "condition": "B comunica el mercancías",
+      "type": "required"
+    },
+    {
+      "from": "C14",
+      "to": "P05",
+      "condition": "B comunica la regla",
+      "type": "required"
+    },
+    {
+      "from": "P05",
+      "to": "C16",
+      "condition": "Cae la carta de Morel",
+      "type": "required"
+    },
+    {
+      "from": "C15",
+      "to": "P06",
+      "condition": "A cuenta el parte",
+      "type": "required"
+    },
+    {
+      "from": "C16",
+      "to": "P06",
+      "condition": "B cuenta la carta",
+      "type": "required"
+    },
+    {
+      "from": "P06",
+      "to": "E09",
+      "condition": "El tren llega a la estación elegida",
+      "type": "required"
+    },
+    {
+      "from": "E09",
+      "to": "ESCAPE",
+      "condition": "Los dos bajan al andén",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "P07",
+      "condition": "La paloma está en el baúl",
+      "type": "optional"
+    },
+    {
+      "from": "P07",
+      "to": "ESCAPE",
+      "condition": "Añade un detalle al final",
+      "type": "optional"
+    }
+  ],
+  "state_transitions": [
+    {
+      "from": "INITIALIZING",
+      "to": "INTRO",
+      "event": "session.start",
+      "conditions": "Dos jugadores conectados",
+      "validations": "A en ROOM01, B en ROOM03",
+      "effects": "Carga cabina y coche cama",
+      "message": "Expreso Lucerna, invierno de 1934."
+    },
+    {
+      "from": "INTRO",
+      "to": "EXPLORATION",
+      "event": "player.ready x2",
+      "conditions": "Los dos pulsan Listo o saltan la intro",
+      "validations": "Ambos conectados",
+      "effects": "Arranca el reloj de 50 min y el ciclo de túneles E04; E01",
+      "message": "No queda nadie a bordo. El reloj está parado."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "PUZZLE_ACTIVE",
+      "event": "A abre las ruedecillas del reloj",
+      "conditions": "P01 disponible",
+      "validations": "Jugador A",
+      "effects": "Muestra el reloj ampliado",
+      "message": "Reloj patrón"
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "VALIDATING",
+      "event": "A confirma la hora",
+      "conditions": "Hora con formato HH:MM",
+      "validations": "validatePuzzle(P01)",
+      "effects": "Bloquea el reloj mientras valida",
+      "message": "Comprobando…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Hora incorrecta",
+      "conditions": "Distinta de la solución",
+      "validations": "Contador de fallos",
+      "effects": "El reloj vuelve a la hora en que se paró (C01)",
+      "message": "El regulador no reconoce esa hora."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P01 correcto",
+      "conditions": "00:16 en la variante base",
+      "validations": "C01, C02 y C04 descubiertas",
+      "effects": "E02",
+      "message": "El reloj arranca."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "ROOM_UNLOCKED",
+      "event": "Fin de E02",
+      "conditions": "Exit_conditions de ROOM01 y ROOM03",
+      "validations": "Ninguna",
+      "effects": "Abre DOOR01 (furgón) y DOOR06 (salón)",
+      "message": "Las cerraduras horarias se abren."
+    },
+    {
+      "from": "ROOM_UNLOCKED",
+      "to": "EXPLORATION",
+      "event": "A entra en el furgón o B en el salón",
+      "conditions": "Escena cargada",
+      "validations": "Ninguna",
+      "effects": "Activa selector de ruta y baúl",
+      "message": "El telemando despierta."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "VALIDATING",
+      "event": "B pulsa Enviar ruta",
+      "conditions": "P01 resuelto",
+      "validations": "validatePuzzle(P02)",
+      "effects": "Bloquea las palancas",
+      "message": "Enviando ruta…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P02 correcto",
+      "conditions": "1 DER, 2 IZQ",
+      "validations": "C05 y C06 descubiertas",
+      "effects": "E03: balizas activas en el próximo túnel",
+      "message": "Ruta aceptada. Confírmenla en el túnel."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Empieza E04 con P02 resuelto",
+      "conditions": "Túnel activo",
+      "validations": "Ninguna",
+      "effects": "La consola admite entradas 40 s + 30 s",
+      "message": "EN TÚNEL"
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "EXPLORATION",
+      "event": "Se cierra la ventana del túnel",
+      "conditions": "Pasaron 30 s tras E04 sin secuencia válida",
+      "validations": "Ninguna",
+      "effects": "Se borra la secuencia parcial",
+      "message": "Fuera del túnel. Las balizas volverán en 4 minutos."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P04 correcto",
+      "conditions": "Secuencia invertida dentro de ventana",
+      "validations": "C07, C08 y C09 descubiertas",
+      "effects": "E06: el teletipo imprime el aviso",
+      "message": "Ruta confirmada."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P05 correcto",
+      "conditions": "Ermita en la variante base",
+      "validations": "C04, C12, C13 y C14 descubiertas",
+      "effects": "E07: cae la carta de Morel",
+      "message": "Espera programada en el apartadero."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "Un voto de P06",
+      "conditions": "Falta el voto del otro",
+      "validations": "Jugador con C15 o C16",
+      "effects": "Guarda el voto oculto",
+      "message": "Esperando el voto de tu pareja…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "VALIDATING",
+      "event": "Segundo voto",
+      "conditions": "Los dos votaron",
+      "validations": "submitDecision",
+      "effects": "Compara votos",
+      "message": "Comprobando…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Votos distintos",
+      "conditions": "Estaciones distintas",
+      "validations": "Ninguna",
+      "effects": "Borra los votos",
+      "message": "Han elegido estaciones distintas. Hablen y voten otra vez."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "FINAL_SEQUENCE",
+      "event": "P06 resuelto",
+      "conditions": "Votos coincidentes",
+      "validations": "Ninguna",
+      "effects": "E08 y E09: salida del lazo, viaje y llegada",
+      "message": "Hoja de marcha completa."
+    },
+    {
+      "from": "FINAL_SEQUENCE",
+      "to": "COMPLETED",
+      "event": "escape.confirm x2",
+      "conditions": "A baja por O08 y B por O36",
+      "validations": "O08 y O36 en OPEN",
+      "effects": "Calcula el final según P06 y P07",
+      "message": "Han llegado."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "FAILED",
+      "event": "timer.expired",
+      "conditions": "Reloj a cero en modo con reloj",
+      "validations": "Hora del servidor",
+      "effects": "E11",
+      "message": "El regulador toma la vía de los Pinos. ¿Reiniciar la zona o seguir sin reloj?"
+    },
+    {
+      "from": "FAILED",
+      "to": "EXPLORATION",
+      "event": "Elegir Modo sin reloj",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "El tren espera en los Pinos y vuelve al lazo; se conserva todo",
+      "message": "Sigan a su ritmo."
+    },
+    {
+      "from": "FAILED",
+      "to": "RESETTING",
+      "event": "Elegir reiniciar zona",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Aplica reset_rules",
+      "message": "Reiniciando…"
+    },
+    {
+      "from": "RESETTING",
+      "to": "EXPLORATION",
+      "event": "Zona restaurada",
+      "conditions": "Estado restaurado",
+      "validations": "Ninguna",
+      "effects": "Reloj con 15 min extra",
+      "message": "Zona reiniciada."
+    },
+    {
+      "from": "ANY",
+      "to": "PAUSED",
+      "event": "game.pause",
+      "conditions": "Cualquiera pulsa Pausa",
+      "validations": "Ninguna",
+      "effects": "Congela el reloj y el ciclo de túneles",
+      "message": "Pausado."
+    },
+    {
+      "from": "PAUSED",
+      "to": "EXPLORATION",
+      "event": "game.resume x2",
+      "conditions": "Los dos pulsan Continuar",
+      "validations": "Ambos conectados",
+      "effects": "Reanuda el ciclo de túneles donde se quedó",
+      "message": "Continuamos."
+    }
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "trigger": [
+        "START"
+      ],
+      "prev_state": "INTRO",
+      "action": "El registrador imprime su línea de control y suena el gramófono del salón con la voz de Morel",
+      "affects": [
+        "O02",
+        "ROOM01",
+        "ROOM03"
+      ],
+      "duration_s": 20,
+      "audio": "A11",
+      "visual": null,
+      "end_condition": "Termina el disco",
+      "on_interrupt": "El texto queda en el historial",
+      "repeat": "Se puede volver a escuchar desde el historial"
+    },
+    {
+      "event_id": "E02",
+      "trigger": [
+        "P01_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El reloj arranca y se abren las cerraduras horarias del furgón y del salón",
+      "affects": [
+        "O01",
+        "DOOR01",
+        "DOOR06",
+        "ROOM02",
+        "ROOM04"
+      ],
+      "duration_s": 4,
+      "audio": "A07",
+      "visual": null,
+      "end_condition": "Puertas abiertas",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E03",
+      "trigger": [
+        "P02_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El telemando acepta la ruta y enciende las balizas de confirmación del túnel",
+      "affects": [
+        "O28",
+        "O03",
+        "O06"
+      ],
+      "duration_s": 3,
+      "audio": "A08",
+      "visual": null,
+      "end_condition": "Balizas activas",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E04",
+      "trigger": [
+        "START"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "Túnel del lazo: las luces se apagan, se enciende la luz azul, aparecen las balizas y la frase del espejo; la consola admite entradas",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03",
+        "ROOM04",
+        "O06",
+        "O30",
+        "O35"
+      ],
+      "duration_s": 40,
+      "audio": "A06",
+      "visual": "V01",
+      "end_condition": "Salida del túnel a los 40 s",
+      "on_interrupt": "En pausa se congela; al reanudar sigue el tiempo restante",
+      "repeat": "Cada 240 s durante toda la partida"
+    },
+    {
+      "event_id": "E05",
+      "trigger": [
+        "P03_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El baúl se abre con un muelle y muestra el cuaderno y la paloma",
+      "affects": [
+        "O12",
+        "O14",
+        "O15"
+      ],
+      "duration_s": 3,
+      "audio": "A09",
+      "visual": null,
+      "end_condition": "O14 y O15 en VISIBLE",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E06",
+      "trigger": [
+        "P04_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Complicación: el teletipo imprime el aviso del mercancías 412 y el selector de apartadero se activa",
+      "affects": [
+        "O32",
+        "O05"
+      ],
+      "duration_s": 8,
+      "audio": "A10",
+      "visual": null,
+      "end_condition": "O32 en VISIBLE",
+      "on_interrupt": "El aviso queda impreso",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E07",
+      "trigger": [
+        "P05_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Cae la carta de Morel del marco del mapa",
+      "affects": [
+        "O34"
+      ],
+      "duration_s": 3,
+      "audio": null,
+      "visual": null,
+      "end_condition": "O34 en VISIBLE",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E08",
+      "trigger": [
+        "P06_SOLVED"
+      ],
+      "prev_state": "FINAL_SEQUENCE",
+      "action": "La palanca 3 se mueve sola; fundido a la 01:08 y el tren sale del lazo, espera en el apartadero programado y sigue hacia la estación elegida",
+      "affects": [
+        "O28",
+        "ROOM01",
+        "ROOM04"
+      ],
+      "duration_s": 25,
+      "audio": "A13",
+      "visual": "V04",
+      "end_condition": "El tren frena en la estación",
+      "on_interrupt": "Se salta al final del viaje",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E09",
+      "trigger": [
+        "E08_DONE"
+      ],
+      "prev_state": "FINAL_SEQUENCE",
+      "action": "Llegada: frenos suaves, luz del amanecer y se abren la puerta de la cabina y la del andén",
+      "affects": [
+        "O08",
+        "O36",
+        "DOOR02",
+        "DOOR08",
+        "DOOR04",
+        "DOOR05"
+      ],
+      "duration_s": 8,
+      "audio": "A16",
+      "visual": "V04",
+      "end_condition": "O08 y O36 en OPEN",
+      "on_interrupt": "Las puertas quedan abiertas",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E10",
+      "trigger": [
+        "IDLE_150"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "Suena un fragmento del gramófono con la ayuda de nivel 1 del acertijo activo",
+      "affects": [
+        "ROOM01",
+        "ROOM04"
+      ],
+      "duration_s": 6,
+      "audio": "A11",
+      "visual": null,
+      "end_condition": "Aviso mostrado",
+      "on_interrupt": "Se descarta",
+      "repeat": "Cada 150 s sin progreso, una vez por nivel"
+    },
+    {
+      "event_id": "E11",
+      "trigger": [
+        "TIMER_EXPIRED"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "El regulador anuncia la salida hacia los Pinos; se ofrece reiniciar zona o seguir sin reloj",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03",
+        "ROOM04"
+      ],
+      "duration_s": 8,
+      "audio": null,
+      "visual": "V05",
+      "end_condition": "Los dos eligen",
+      "on_interrupt": "Se vuelve a mostrar la elección",
+      "repeat": "Una vez por partida con reloj"
+    },
+    {
+      "event_id": "E12",
+      "trigger": [
+        "P07_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La paloma de cuerda recorre el pasillo del coche cama",
+      "affects": [
+        "O24"
+      ],
+      "duration_s": 5,
+      "audio": "A15",
+      "visual": "V06",
+      "end_condition": "La paloma se posa en la rejilla",
+      "on_interrupt": "Queda posada",
+      "repeat": "Una sola vez"
+    }
+  ],
+  "dialogues": [
+    {
+      "dialogue_id": "D01",
+      "speaker": "Narrador",
+      "text": "Expreso Lucerna, invierno de 1934. El tren da vueltas a la montaña y nadie lo conduce.",
+      "trigger": "START",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D02",
+      "speaker": "Gran Morel (gramófono)",
+      "text": "Buenas noches, distinguido público. Si me oís, es que el tren os ha elegido como últimos espectadores.",
+      "trigger": "E01",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D03",
+      "speaker": "Gran Morel (gramófono)",
+      "text": "Todo buen truco necesita dos manos: una que mira y otra que actúa. No os separéis… aunque estéis en vagones distintos.",
+      "trigger": "E01",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D04",
+      "speaker": "Narrador",
+      "text": "El reloj del pupitre está parado. La aguja no se mueve.",
+      "trigger": "C01_DISCOVERED",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D05",
+      "speaker": "Narrador",
+      "text": "Sobre la mesita del compartimento hay un horario de invierno con una nota a lápiz.",
+      "trigger": "C04_DISCOVERED",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D06",
+      "speaker": "Narrador",
+      "text": "El tren entra en el túnel. Las luces se apagan y todo queda en azul.",
+      "trigger": "E04",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D07",
+      "speaker": "Narrador",
+      "text": "Tic. El reloj patrón arranca y, en algún lugar del tren, dos cerraduras se abren.",
+      "trigger": "E02",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D08",
+      "speaker": "Placa del regulador",
+      "text": "Sin órdenes, el tren sale del lazo a la 01:08 por la vía programada.",
+      "trigger": "C12_DISCOVERED",
+      "audience": "A",
+      "channel": "document"
+    },
+    {
+      "dialogue_id": "D09",
+      "speaker": "Narrador",
+      "text": "El mapa del salón tiene una rosa de los vientos dorada. El norte, arriba.",
+      "trigger": "C06_DISCOVERED",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D10",
+      "speaker": "Telemando",
+      "text": "Ruta recibida. Confirme con las balizas del próximo túnel.",
+      "trigger": "E03",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D11",
+      "speaker": "Telemando",
+      "text": "Ruta no válida: conduce a una vía cerrada.",
+      "trigger": "P02",
+      "audience": "B",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D12",
+      "speaker": "Narrador",
+      "text": "La etiqueta del baúl está escrita con tinta violeta y letra de artista.",
+      "trigger": "C03_DISCOVERED",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D13",
+      "speaker": "Narrador",
+      "text": "La tapa del baúl salta con un muelle. Dentro huele a terciopelo y aceite de reloj.",
+      "trigger": "E05",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D14",
+      "speaker": "Cuaderno de Morel",
+      "text": "Mis balizas son las que parpadean. Las demás no cuentan.",
+      "trigger": "C08_DISCOVERED",
+      "audience": "A",
+      "channel": "document"
+    },
+    {
+      "dialogue_id": "D15",
+      "speaker": "Narrador",
+      "text": "En el espejo del salón brilla una frase que antes no estaba.",
+      "trigger": "C19_DISCOVERED",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D16",
+      "speaker": "Telemando",
+      "text": "Ruta confirmada.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D17",
+      "speaker": "Teletipo",
+      "text": "Aviso de circulación número siete: mercancías 412 en vía única.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D18",
+      "speaker": "Narrador",
+      "text": "Nada de choques: el bloqueo automático nunca deja dos trenes en la misma vía. Pero elegir mal el apartadero puede costar horas.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D19",
+      "speaker": "Narrador",
+      "text": "Un sobre lacrado con una estrella cae del marco del mapa.",
+      "trigger": "E07",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D20",
+      "speaker": "Gran Morel (carta)",
+      "text": "Cambié la ruta para despedirme del teatro donde empecé, y me arrepentí tarde.",
+      "trigger": "C16_DISCOVERED",
+      "audience": "B",
+      "channel": "document"
+    },
+    {
+      "dialogue_id": "D21",
+      "speaker": "Narrador",
+      "text": "A la 01:08 el Lucerna deja el lazo. En el apartadero, el mercancías pasa despacio, con sus faroles rojos.",
+      "trigger": "E08",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D22",
+      "speaker": "Narrador",
+      "text": "Valdeplata amanece con olor a pan. En la cantina, una mujer con el pelo recogido mira el baúl y sonríe.",
+      "trigger": "P06_OPT_VALDEPLATA",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D23",
+      "speaker": "Narrador",
+      "text": "Puerto Alba amanece con gaviotas. El jefe de estación levanta la gorra al ver bajar a dos viajeros.",
+      "trigger": "P06_OPT_PUERTO_ALBA",
+      "audience": "AB",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D24",
+      "speaker": "Regulador",
+      "text": "Faltan dos minutos para la salida programada hacia los Pinos.",
+      "trigger": "E11",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D25",
+      "speaker": "Gran Morel (gramófono)",
+      "text": "Un truco nunca sale si cada mano va a lo suyo. Contad lo que veis.",
+      "trigger": "E10",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    }
+  ],
+  "audio_cues": [
+    {
+      "audio_id": "A01",
+      "type": "ambient",
+      "description": "Traqueteo rítmico del automotor y zumbido del motor desde la cabina",
+      "loop": true,
+      "subtitle": "[traqueteo del tren]"
+    },
+    {
+      "audio_id": "A02",
+      "type": "music",
+      "description": "Piano de salón lento con contrabajo, al estilo de los años treinta, muy bajo",
+      "loop": true,
+      "subtitle": null
+    },
+    {
+      "audio_id": "A03",
+      "type": "ambient",
+      "description": "Traqueteo y crujidos de madera en el furgón",
+      "loop": true,
+      "subtitle": "[crujidos de madera]"
+    },
+    {
+      "audio_id": "A04",
+      "type": "ambient",
+      "description": "Traqueteo amortiguado y cortinillas que se balancean",
+      "loop": true,
+      "subtitle": "[traqueteo suave]"
+    },
+    {
+      "audio_id": "A05",
+      "type": "ambient",
+      "description": "Traqueteo con tintineo de copas",
+      "loop": true,
+      "subtitle": "[tintineo de copas]"
+    },
+    {
+      "audio_id": "A06",
+      "type": "sfx",
+      "description": "Cambio de sonido al entrar en el túnel: eco y rumor grave, sin estruendo",
+      "loop": false,
+      "subtitle": "[entramos en el túnel]"
+    },
+    {
+      "audio_id": "A07",
+      "type": "sfx",
+      "description": "Tic del reloj que arranca y chasquido de cerraduras",
+      "loop": false,
+      "subtitle": "[tic; se abren cerraduras]"
+    },
+    {
+      "audio_id": "A08",
+      "type": "sfx",
+      "description": "Palancas de madera y relé del telemando",
+      "loop": false,
+      "subtitle": "[clac de palancas]"
+    },
+    {
+      "audio_id": "A09",
+      "type": "sfx",
+      "description": "Candado que cede y muelle de tapa",
+      "loop": false,
+      "subtitle": "[clic; la tapa se abre]"
+    },
+    {
+      "audio_id": "A10",
+      "type": "sfx",
+      "description": "Teletipo tecleando",
+      "loop": false,
+      "subtitle": "[el teletipo teclea]"
+    },
+    {
+      "audio_id": "A11",
+      "type": "voice",
+      "description": "Voz del Gran Morel en disco de gramófono, con crepitar suave",
+      "loop": false,
+      "subtitle": "Gran Morel (gramófono)"
+    },
+    {
+      "audio_id": "A12",
+      "type": "sfx",
+      "description": "Teclas de baquelita y timbre doble o grave de la consola",
+      "loop": false,
+      "subtitle": "[teclas; timbre]"
+    },
+    {
+      "audio_id": "A13",
+      "type": "music",
+      "description": "Tema de viaje: piano y cuerdas que aceleran suavemente",
+      "loop": false,
+      "subtitle": null
+    },
+    {
+      "audio_id": "A14",
+      "type": "sfx",
+      "description": "Silbido neumático del tubo de correspondencia",
+      "loop": false,
+      "subtitle": "[silbido del tubo]"
+    },
+    {
+      "audio_id": "A15",
+      "type": "sfx",
+      "description": "Aleteo mecánico y zumbido de cuerda",
+      "loop": false,
+      "subtitle": "[aleteo de hojalata]"
+    },
+    {
+      "audio_id": "A16",
+      "type": "sfx",
+      "description": "Frenos suaves, vapor de la calefacción y campana de estación",
+      "loop": false,
+      "subtitle": "[frenos; campana de estación]"
+    }
+  ],
+  "visual_effects": [
+    {
+      "vfx_id": "V01",
+      "description": "Entrada en el túnel: fundido de las luces cálidas a azul y balizas que pasan por el parabrisas",
+      "reduced_motion_alt": "Cambio de luz instantáneo y lista de balizas en un panel fijo, sin movimiento"
+    },
+    {
+      "vfx_id": "V02",
+      "description": "Balizas fijas e intermitentes con su forma",
+      "reduced_motion_alt": "Las intermitentes muestran la palabra Parpadea junto a la forma, sin destello"
+    },
+    {
+      "vfx_id": "V03",
+      "description": "Frase fosforescente que se aviva en el espejo",
+      "reduced_motion_alt": "La frase aparece fija con contraste alto"
+    },
+    {
+      "vfx_id": "V04",
+      "description": "Viaje acelerado: paisaje nevado, mercancías que pasa y amanecer en el andén",
+      "reduced_motion_alt": "Tres imágenes fijas con fundido: salida, apartadero y llegada"
+    },
+    {
+      "vfx_id": "V05",
+      "description": "Las luces del tren bajan a ámbar mientras el regulador anuncia la salida",
+      "reduced_motion_alt": "Cambio directo a ámbar con aviso en texto"
+    },
+    {
+      "vfx_id": "V06",
+      "description": "La paloma de hojalata vuela por el pasillo",
+      "reduced_motion_alt": "La paloma aparece posada en la rejilla con un brillo breve"
+    }
+  ],
+  "endings": [
+    {
+      "ending_id": "END01",
+      "name": "Llegada al amanecer",
+      "type": "main",
+      "condition": [
+        "P06_SOLVED",
+        "E09_DONE"
+      ],
+      "text": "El Lucerna se detiene sin una sacudida. A baja de la cabina y B del salón, y se encuentran en el andén."
+    },
+    {
+      "ending_id": "END02",
+      "name": "Valdeplata",
+      "type": "decision",
+      "condition": [
+        "P06_OPT_VALDEPLATA",
+        "E09_DONE"
+      ],
+      "text": "Elvira abre el baúl de su hermano en la cantina y encuentra el guion del número que nunca estrenaron. Promete representarlo en el teatro del pueblo y os invita al estreno."
+    },
+    {
+      "ending_id": "END03",
+      "name": "Puerto Alba",
+      "type": "decision",
+      "condition": [
+        "P06_OPT_PUERTO_ALBA",
+        "E09_DONE"
+      ],
+      "text": "La Compañía recibe el tren con mantas y un desayuno en la cantina del puerto. El periódico de la mañana titula: El tren que dio vueltas toda la noche llega a su destino. El baúl sale ese mismo día hacia Valdeplata."
+    },
+    {
+      "ending_id": "END04",
+      "name": "La paloma de Morel",
+      "type": "alternative",
+      "condition": [
+        "P07_SOLVED",
+        "E09_DONE"
+      ],
+      "text": "Se añade al final: al abrirse las puertas, la paloma de hojalata sale volando hasta el reloj de la estación y se queda allí, como si hubiera sido siempre parte del truco."
+    }
+  ],
+  "replay_tips": [
+    "Intercambien los papeles: quien estuvo en la cabina, que investigue los coches de pasaje.",
+    "Elijan la otra estación para ver el otro final.",
+    "Busquen la llave de cuerda y la paloma si no las encontraron.",
+    "En modo difícil las balizas pasan una sola vez por túnel y no quedan en el registro."
+  ],
+  "variants": [
+    {
+      "variant_id": "VAR01",
+      "description": "El mercancías sale cuatro minutos más tarde",
+      "overrides": {
+        "clues": {
+          "C13": {
+            "content": "Aviso de circulación n.º 7, por teletipo: El mercancías 412 saldrá de la Bifurcación de Orsa, km 178, a la 01:26, por la vía única en dirección al Lazo, a 30 km/h.",
+            "alt_text": "Mercancías desde el km 178 a la 01:26, a 30 km/h."
+          }
+        },
+        "puzzles": {
+          "P05": {
+            "answer": {
+              "type": "code",
+              "value": "ORSA",
+              "normalize": "Igual que la base. El mercancías llega a Orsa a la 01:42 y el Lucerna a la 01:40: Orsa es la más lejana que cumple."
+            },
+            "steps": [
+              "Lucerna a 45 km/h desde el km 146 a la 01:08: Molino (6 km) 01:16; Ermita (15 km) 01:28; Orsa (24 km) 01:40.",
+              "Mercancías a 30 km/h desde el km 178 a la 01:26: Orsa (8 km) 01:42; Ermita (17 km) 02:00; Molino (26 km) 02:18.",
+              "Orsa: el Lucerna llega antes (01:40 frente a 01:42) y es la más lejana que cumple.",
+              "A elige Orsa y pulsa Programar."
+            ],
+            "hints": [
+              "A tiene la salida y los kilómetros; B el mercancías y la regla.",
+              "Calculen la hora de cada tren en cada apartadero: 45 km/h son 3 km cada 4 minutos y 30 km/h, 1 km cada 2 minutos.",
+              "En Orsa el mercancías llega a la 01:42 y el Lucerna a la 01:40: la respuesta es Orsa."
+            ],
+            "wrong_answers": [
+              {
+                "value": "ERMITA",
+                "why": "Es segura pero no la más lejana: en Orsa el Lucerna llega a la 01:40 y el mercancías a la 01:42."
+              },
+              {
+                "value": "MOLINO",
+                "why": "Es segura pero no la más lejana."
+              }
+            ],
+            "solution_proof": "A 45 km/h (C04) el Lucerna recorre 6, 15 y 24 km en 8, 20 y 32 min: 01:16, 01:28 y 01:40. A 30 km/h el mercancías recorre 8, 17 y 26 km en 16, 34 y 52 min desde la 01:26: 01:42, 02:00 y 02:18. En los tres apartaderos llega antes el Lucerna, y Orsa es el más lejano. A no tiene el mercancías ni la regla; B no tiene la hora de salida ni los kilómetros."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR02",
+      "description": "La ayudante viaja en otra litera",
+      "overrides": {
+        "clues": {
+          "C10": {
+            "content": "Hoja de reservas del revisor, coche cama n.º 2. Compartimento 1, litera 1: Sr. Bastián Roca. Compartimento 1, litera 2: Sra. Carmen Vidal. Compartimento 3, litera 1: Srta. Clara Vidal. Compartimento 4, litera 2: Sr. Gran Morel. Compartimento 5, literas 1 y 2: billete doble sin nombres anotados. Todos bajaron en Mirabel salvo el billete doble.",
+            "alt_text": "Tabla: Clara Vidal en el compartimento 3, litera 1; Morel en el 4, litera 2; Carmen Vidal en el 1, litera 2."
+          }
+        },
+        "puzzles": {
+          "P03": {
+            "answer": {
+              "type": "code",
+              "value": "2316",
+              "normalize": "Igual que la base. 2, 3, 1 y 2 + 3 + 1 = 6."
+            },
+            "steps": [
+              "A lee la etiqueta.",
+              "B lee el cartel: la ayudante es la señorita Clara.",
+              "B busca en la hoja: Srta. Clara Vidal, coche 2, compartimento 3, litera 1.",
+              "2 + 3 + 1 = 6.",
+              "A marca 2316."
+            ],
+            "hints": [
+              "A tiene la regla del candado y B los papeles de los pasajeros.",
+              "Hay dos Vidal: el cartel dice cuál es la ayudante.",
+              "Clara Vidal: coche 2, compartimento 3, litera 1."
+            ],
+            "wrong_answers": [
+              {
+                "value": "2125",
+                "why": "Es la litera de Carmen Vidal."
+              },
+              {
+                "value": "2428",
+                "why": "Es la litera del propio Morel."
+              },
+              {
+                "value": "2310",
+                "why": "Pone 0 en lugar de la suma: debe ser 6."
+              }
+            ],
+            "solution_proof": "C11 llama a la ayudante señorita Clara; en C10 solo hay una Clara, la Srta. Clara Vidal del coche 2, compartimento 3, litera 1. Con C03 la combinación es 2, 3, 1 y 2 + 3 + 1 = 6: 2316. Carmen Vidal y Morel no son la ayudante. A no tiene los papeles y B no sabe la regla ni ve el baúl."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR03",
+      "description": "El reloj se paró antes",
+      "overrides": {
+        "clues": {
+          "C01": {
+            "content": "El reloj patrón está parado en las 23:46. Una etiqueta de la Compañía dice: El reloj se detiene cuando el regulador automático toma el mando. Póngase en hora antes de dar órdenes al telemando.",
+            "alt_text": "Reloj parado en las veintitrés cuarenta y seis."
+          },
+          "C02": {
+            "content": "Cinta del registrador, última línea, impresa al abrirse la puerta de la cabina: Poste kilométrico 146, Salida del Lazo. Recorrido desde la parada del reloj: 18 km. Hora: sin dato (reloj parado).",
+            "alt_text": "Kilómetro 146; 18 kilómetros desde que se paró el reloj."
+          }
+        },
+        "puzzles": {
+          "P01": {
+            "answer": {
+              "type": "code",
+              "value": "00:10",
+              "normalize": "Igual que la base. 18 km a 45 km/h son 24 min: 23:46 + 24 = 00:10."
+            },
+            "steps": [
+              "A lee el reloj (23:46) y la cinta (18 km).",
+              "B lee el horario: marcha nocturna a 45 km/h, es decir 3 km cada 4 minutos.",
+              "18 km a 45 km/h son 24 minutos.",
+              "23:46 + 24 min = 00:10.",
+              "A pone el reloj en 00:10."
+            ],
+            "hints": [
+              "A sabe cuándo se paró el reloj y cuánto se ha recorrido; B sabe a qué velocidad.",
+              "De noche el tren va a 45 km/h: 3 km cada 4 minutos.",
+              "18 km son 24 minutos: 23:46 más 24 minutos."
+            ],
+            "wrong_answers": [
+              {
+                "value": "00:04",
+                "why": "Usa 60 km/h: 18 minutos; de noche rige 45 km/h."
+              },
+              {
+                "value": "23:49",
+                "why": "Parte de la salida programada de Mirabel; salieron con retraso."
+              },
+              {
+                "value": "23:46",
+                "why": "Es la hora en que se paró el reloj."
+              }
+            ],
+            "solution_proof": "C04 fija 45 km/h entre las 22:00 y las 06:00, y las 23:46 están en ese tramo. 18 km a 0,75 km por minuto son exactamente 24 minutos; 23:46 + 0:24 = 00:10. La salida de Mirabel no sirve porque el revisor anotó retraso sin hora. A no tiene la velocidad y B no tiene la hora ni los kilómetros."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR04",
+      "description": "Cambian las balizas del túnel",
+      "overrides": {
+        "clues": {
+          "C07": {
+            "content": "Balizas del túnel del lazo, vistas desde el parabrisas, en el orden en que pasan: 1 triángulo con luz fija; 2 estrella con luz intermitente; 3 rombo con luz intermitente; 4 círculo con luz fija; 5 cuadrado con luz intermitente; 6 triángulo con luz intermitente. Se repiten igual en cada vuelta.",
+            "alt_text": "Triángulo fija, estrella intermitente, rombo intermitente, círculo fija, cuadrado intermitente, triángulo intermitente."
+          }
+        },
+        "puzzles": {
+          "P04": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "TRIANGULO",
+                "CUADRADO",
+                "ROMBO",
+                "ESTRELLA"
+              ],
+              "normalize": "Igual que la base: intermitentes estrella, rombo, cuadrado, triángulo, invertidas."
+            },
+            "steps": [
+              "A lee el cuaderno de Morel.",
+              "En un túnel, A observa: triángulo fijo, estrella intermitente, rombo intermitente, círculo fijo, cuadrado intermitente, triángulo intermitente.",
+              "A se queda con las intermitentes: estrella, rombo, cuadrado, triángulo.",
+              "B lee el manual: orden inverso.",
+              "Dentro de la ventana, B marca triángulo, cuadrado, rombo, estrella."
+            ],
+            "hints": [
+              "A ve las balizas y B sabe cómo marcarlas.",
+              "Solo cuentan las que parpadean y se marcan al revés.",
+              "Triángulo, cuadrado, rombo, estrella."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "ESTRELLA",
+                  "ROMBO",
+                  "CUADRADO",
+                  "TRIANGULO"
+                ],
+                "why": "Orden de paso, sin invertir."
+              },
+              {
+                "value": [
+                  "TRIANGULO",
+                  "CUADRADO",
+                  "CIRCULO",
+                  "ROMBO",
+                  "ESTRELLA",
+                  "TRIANGULO"
+                ],
+                "why": "Incluye las balizas fijas."
+              },
+              {
+                "value": [
+                  "TRIANGULO",
+                  "CUADRADO",
+                  "ROMBO"
+                ],
+                "why": "Falta una baliza."
+              }
+            ],
+            "solution_proof": "C08 descarta las balizas fijas 1 y 4 de C07; quedan estrella, rombo, cuadrado y triángulo, en ese orden de paso. C09 manda invertir: triángulo, cuadrado, rombo, estrella. El triángulo fijo no cuenta, así que el triángulo aparece una sola vez. A ve las balizas pero no tiene la consola ni la regla del orden; B tiene la consola pero no ve la vía."
+          }
+        }
+      }
+    }
+  ],
+  "difficulty_tuning": {
+    "easy": [
+      "La consola admite entradas hasta 60 s después del túnel.",
+      "Las balizas quedan en el registro de A desde el primer túnel, aunque la ruta no esté enviada.",
+      "El mapa muestra una rosa de los vientos girada hacia el oeste junto al selector.",
+      "La ayuda de nivel 1 se ofrece a los 90 s de inactividad."
+    ],
+    "hard": [
+      "Las balizas no quedan en el registro: hay que verlas en cada túnel (la alternativa accesible se mantiene si está activada).",
+      "La hoja de reservas incluye una tercera Vidal, Clotilde, y el cartel da solo la inicial C. y el oficio de ayudante; la etiqueta añade que la ayudante viajaba sola en su compartimento, lo que descarta a Clotilde.",
+      "El selector de apartadero se bloquea 40 s tras dos fallos.",
+      "La ayuda solo se ofrece si se pide."
+    ]
+  },
+  "reset_rules": [
+    {
+      "scope": "puzzle",
+      "target": "P01",
+      "restores": "Reloj en la hora de parada de C01",
+      "keeps": "Pistas C01, C02 y C04"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P02",
+      "restores": "Palanca 1 en IZQ y palanca 2 en DER",
+      "keeps": "Pistas C05 y C06"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P04",
+      "restores": "Secuencia de la consola vacía",
+      "keeps": "Ruta enviada y balizas en el registro"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM02",
+      "restores": "Baúl cerrado con cuaderno y paloma dentro",
+      "keeps": "Reloj en hora y todo lo resuelto en el salón"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM04",
+      "restores": "P02, P04 y P06 sin resolver, aviso y carta sin imprimir ni caer, votos borrados",
+      "keeps": "Reloj en hora, baúl abierto"
+    },
+    {
+      "scope": "full",
+      "target": "ALL",
+      "restores": "Estado inicial completo, reloj de partida y ciclo de túneles; se repite la intro",
+      "keeps": "Ajustes de accesibilidad y dificultad"
+    }
+  ],
+  "test_cases": [
+    {
+      "test_id": "T01",
+      "category": 1,
+      "title": "Inicio correcto",
+      "steps": [
+        "Cargar ER04",
+        "A y B pulsan Listo"
+      ],
+      "expected": "A en ROOM01, B en ROOM03, reloj de partida en 50:00, E01 una vez, E04 cada 240 s",
+      "covers": [
+        "ROOM01",
+        "ROOM03",
+        "E01",
+        "E04"
+      ]
+    },
+    {
+      "test_id": "T02",
+      "category": 2,
+      "title": "Pistas obligatorias descubribles",
+      "steps": [
+        "Recorrer la ruta de victoria"
+      ],
+      "expected": "C01–C19 descubiertas por su jugador; C20 solo por inactividad",
+      "covers": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16"
+      ]
+    },
+    {
+      "test_id": "T03",
+      "category": 3,
+      "title": "P01 a las 00:16",
+      "steps": [
+        "A introduce 00:16"
+      ],
+      "expected": "P01 resuelto, E02, DOOR01 y DOOR06 abiertas",
+      "covers": [
+        "P01",
+        "M01",
+        "E02"
+      ]
+    },
+    {
+      "test_id": "T04",
+      "category": 4,
+      "title": "P01 con velocidad de día",
+      "steps": [
+        "A introduce 00:11"
+      ],
+      "expected": "Rechazo, reloj a 23:56, fallo 1",
+      "covers": [
+        "P01"
+      ]
+    },
+    {
+      "test_id": "T05",
+      "category": 5,
+      "title": "Enviar ruta antes de poner el reloj",
+      "steps": [
+        "B intenta entrar en ROOM04 sin P01"
+      ],
+      "expected": "La puerta horaria no se abre",
+      "covers": [
+        "P02",
+        "ROOM04"
+      ]
+    },
+    {
+      "test_id": "T06",
+      "category": 3,
+      "title": "P02 correcto",
+      "steps": [
+        "B pone 1 DER, 2 IZQ y pulsa Enviar"
+      ],
+      "expected": "P02 resuelto, E03 una vez",
+      "covers": [
+        "P02",
+        "M02",
+        "E03"
+      ]
+    },
+    {
+      "test_id": "T07",
+      "category": 6,
+      "title": "P02 con la numeración por orden de paso",
+      "steps": [
+        "B pone 1 IZQ, 2 DER y envía"
+      ],
+      "expected": "Rechazo de ruta cerrada; las palancas se quedan",
+      "covers": [
+        "P02",
+        "C05"
+      ]
+    },
+    {
+      "test_id": "T08",
+      "category": 3,
+      "title": "P03 código 2417",
+      "steps": [
+        "A marca 2417"
+      ],
+      "expected": "Baúl abierto, E05, O14 y O15 VISIBLE",
+      "covers": [
+        "P03",
+        "M03",
+        "E05"
+      ]
+    },
+    {
+      "test_id": "T09",
+      "category": 4,
+      "title": "P03 con Carmen Vidal",
+      "steps": [
+        "A marca 2125"
+      ],
+      "expected": "Rechazo, ruedas a 0000",
+      "covers": [
+        "P03",
+        "C11"
+      ]
+    },
+    {
+      "test_id": "T10",
+      "category": 7,
+      "title": "P04 dentro y fuera de la ventana del túnel",
+      "steps": [
+        "B marca la secuencia correcta 20 s después de salir del túnel",
+        "Repetir 45 s después de salir"
+      ],
+      "expected": "La primera se acepta; la segunda se rechaza con Espere al túnel",
+      "covers": [
+        "P04",
+        "M04",
+        "E04"
+      ]
+    },
+    {
+      "test_id": "T11",
+      "category": 6,
+      "title": "P04 en orden de paso",
+      "steps": [
+        "B marca triángulo, cuadrado, estrella, círculo en el túnel"
+      ],
+      "expected": "Timbre grave, secuencia borrada",
+      "covers": [
+        "P04",
+        "C09"
+      ]
+    },
+    {
+      "test_id": "T12",
+      "category": 3,
+      "title": "P05 Ermita",
+      "steps": [
+        "A elige Ermita y pulsa Programar"
+      ],
+      "expected": "P05 resuelto, E07, O34 VISIBLE",
+      "covers": [
+        "P05",
+        "E07",
+        "O05"
+      ]
+    },
+    {
+      "test_id": "T13",
+      "category": 4,
+      "title": "P05 Orsa",
+      "steps": [
+        "A elige Orsa"
+      ],
+      "expected": "Rechazo; selector vuelve a Molino",
+      "covers": [
+        "P05",
+        "C04"
+      ]
+    },
+    {
+      "test_id": "T14",
+      "category": 6,
+      "title": "Votos distintos en P06",
+      "steps": [
+        "A vota PUERTO_ALBA",
+        "B vota VALDEPLATA"
+      ],
+      "expected": "Votos borrados sin penalización",
+      "covers": [
+        "P06",
+        "M05"
+      ]
+    },
+    {
+      "test_id": "T15",
+      "category": 11,
+      "title": "Final en Valdeplata con paloma",
+      "steps": [
+        "Resolver P07",
+        "Votar VALDEPLATA",
+        "Bajar los dos"
+      ],
+      "expected": "COMPLETED con END01, END02 y END04",
+      "covers": [
+        "END01",
+        "END02",
+        "END04",
+        "P07",
+        "E08",
+        "E09",
+        "O08",
+        "O36"
+      ]
+    },
+    {
+      "test_id": "T16",
+      "category": 11,
+      "title": "Final en Puerto Alba",
+      "steps": [
+        "Votar PUERTO_ALBA",
+        "Bajar los dos"
+      ],
+      "expected": "COMPLETED con END01 y END03",
+      "covers": [
+        "END01",
+        "END03",
+        "E09"
+      ]
+    },
+    {
+      "test_id": "T17",
+      "category": 8,
+      "title": "Doble envío de la ruta",
+      "steps": [
+        "B pulsa Enviar ruta dos veces con la ruta correcta"
+      ],
+      "expected": "E03 se dispara una vez",
+      "covers": [
+        "P02",
+        "E03"
+      ]
+    },
+    {
+      "test_id": "T18",
+      "category": 9,
+      "title": "Pausa durante un túnel",
+      "steps": [
+        "Pausar a los 20 s de túnel",
+        "Reanudar"
+      ],
+      "expected": "Quedan 20 s de túnel y la ventana sigue abierta; el reloj no avanzó",
+      "covers": [
+        "E04",
+        "P04"
+      ]
+    },
+    {
+      "test_id": "T19",
+      "category": 10,
+      "title": "Reinicio completo",
+      "steps": [
+        "Con P04 resuelto, pedir reinicio completo"
+      ],
+      "expected": "Reloj parado, baúl cerrado, palancas iniciales, intro repetida",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04"
+      ]
+    },
+    {
+      "test_id": "T20",
+      "category": 12,
+      "title": "Balizas antes de enviar la ruta",
+      "steps": [
+        "A mira el parabrisas en un túnel sin P02"
+      ],
+      "expected": "No aparecen balizas de confirmación; C07 no se guarda",
+      "covers": [
+        "C07",
+        "O06",
+        "P04"
+      ]
+    },
+    {
+      "test_id": "T21",
+      "category": 13,
+      "title": "Desconexión de A en el túnel",
+      "steps": [
+        "A dicta dos balizas y se desconecta",
+        "Vuelve al siguiente túnel"
+      ],
+      "expected": "La secuencia parcial de B se borra al cerrar la ventana; C07 sigue en el registro de A",
+      "covers": [
+        "P04",
+        "C07"
+      ]
+    },
+    {
+      "test_id": "T22",
+      "category": 14,
+      "title": "Pistas sin color ni audio",
+      "steps": [
+        "Activar lector de pantalla y modo sin color",
+        "Revisar C06, C07 y C13"
+      ],
+      "expected": "Balizas con forma y palabra fija o intermitente; mapa descrito en texto; aviso legible",
+      "covers": [
+        "C06",
+        "C07",
+        "C13",
+        "V02"
+      ]
+    },
+    {
+      "test_id": "T23",
+      "category": 15,
+      "title": "Validador de rutas sin salida",
+      "steps": [
+        "Ejecutar validate.mjs ER04 y revisar variantes"
+      ],
+      "expected": "Todos los acertijos alcanzables; cada variante cambia pista y respuesta",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "test_id": "T24",
+      "category": 5,
+      "title": "Programar apartadero antes del aviso",
+      "steps": [
+        "A pulsa Programar sin P04"
+      ],
+      "expected": "Selector desactivado",
+      "covers": [
+        "P05",
+        "O05"
+      ]
+    }
+  ],
+  "resources": {
+    "models_3d": [
+      "Cabina de automotor de 1934 con pupitre",
+      "Reloj patrón, registrador y tablero de cruces",
+      "Furgón con baúl, sacas y tubo neumático",
+      "Coche cama con cinco compartimentos",
+      "Coche salón con pupitre, consola, teletipo, piano y espejo",
+      "Paloma de hojalata",
+      "Andén de estación"
+    ],
+    "textures": [
+      "Madera barnizada y latón",
+      "Papel de horario y teletipo",
+      "Terciopelo granate",
+      "Nieve y roca de túnel"
+    ],
+    "sounds": [
+      "A01 a A16"
+    ],
+    "animations": [
+      "Reloj que arranca",
+      "Palancas",
+      "Candado y tapa",
+      "Teletipo",
+      "Ciclo de túnel",
+      "Paloma volando",
+      "Llegada al andén"
+    ],
+    "ui": [
+      "Reloj con ruedecillas",
+      "Selector de tres palancas",
+      "Consola de cinco teclas con indicador EN TÚNEL",
+      "Candado de cuatro ruedas",
+      "Selector de apartadero",
+      "Votación oculta"
+    ],
+    "vfx": [
+      "V01 a V06"
+    ],
+    "dialogue_lines": 25,
+    "mechanisms": [
+      "Hora calculada",
+      "Selector de agujas",
+      "Código de candado",
+      "Secuencia con ventana temporal",
+      "Selector de apartadero",
+      "Votación compartida",
+      "Envío por tubo"
+    ]
+  }
+}

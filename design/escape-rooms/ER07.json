@@ -1,0 +1,4861 @@
+{
+  "scenario_id": "ER07",
+  "title": "La estación submarina",
+  "version": "1.0.0",
+  "players": 2,
+  "genre": "Ciencia ficción técnica",
+  "synopsis": "La estación de investigación Abisal-3 ha entrado en modo seguro tras un fallo en su celda principal. La tripulación ya está a salvo en el buque de superficie y solo quedan dos visitantes. A supervisa el módulo de energía y B maneja la navegación y el mapa de compartimentos. Con la energía de reserva justa, deben repartirla, abrir una ruta hasta el muelle, activar el protocolo de evacuación y elegir cómo salir.",
+  "difficulty": "medium",
+  "estimated_duration_minutes": 55,
+  "phase_minutes": {
+    "awakening": 5,
+    "discovery": 14,
+    "complication": 16,
+    "climax": 14,
+    "escape": 6
+  },
+  "competencies": [
+    "Gestión de recursos limitados",
+    "Priorización de tareas",
+    "Comunicación técnica precisa",
+    "Lectura de mapas y rutas",
+    "Coordinación en tiempo real",
+    "Toma de decisiones compartida"
+  ],
+  "initial_conditions": "A empieza en el Módulo de energía con el bastidor de celdas, el panel de distribución y el tablero de escotillas. B empieza en el Puente de navegación con la consola de cámaras, la carpeta del protocolo y el mapa de compartimentos. Las escotillas interiores están cerradas y la estación funciona con luz de emergencia. El soporte vital está garantizado en todo momento. La llamada de voz está abierta; en la ficción, hablan por el intercomunicador de la estación.",
+  "initial_state": "INITIALIZING",
+  "objectives": [
+    {
+      "objective_id": "OBJ01",
+      "text": "Conectar la reserva de energía y repartirla según el protocolo EVAC-3",
+      "required": true,
+      "completed_when": [
+        "P01_SOLVED",
+        "P02_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ02",
+      "text": "Abrir una ruta de escotillas hasta el Muelle de evacuación",
+      "required": true,
+      "completed_when": [
+        "P03_SOLVED",
+        "P04_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ03",
+      "text": "Activar el protocolo de evacuación y completar el prelanzamiento",
+      "required": true,
+      "completed_when": [
+        "P05_SOLVED",
+        "P06_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ04",
+      "text": "Elegir vehículo y embarcar juntos",
+      "required": true,
+      "completed_when": [
+        "P07_SOLVED",
+        "O30_OPEN"
+      ]
+    },
+    {
+      "objective_id": "OBJ05",
+      "text": "Llevar los plantones de hidroponía en la caja estanca",
+      "required": false,
+      "completed_when": [
+        "P08_SOLVED"
+      ]
+    }
+  ],
+  "win_condition": {
+    "type": "all_required_objectives_completed",
+    "required_objectives": [
+      "OBJ01",
+      "OBJ02",
+      "OBJ03",
+      "OBJ04"
+    ]
+  },
+  "fail_condition": {
+    "type": "timer_expired",
+    "minutes": 55,
+    "consequence": "La reserva entra en modo de espera: CORAL mantiene el soporte vital y las luces, y ofrece seguir en Modo sin reloj o reiniciar la zona actual. No se pierde ningún acertijo resuelto."
+  },
+  "reset_condition": "Cualquiera de los dos pulsa Reiniciar zona y el otro lo confirma; también se ofrece al agotarse el reloj. El reinicio completo vuelve al estado inicial y a la intro.",
+  "narrative": {
+    "intro": "Plano exterior lento: una estación en forma de anillo descansa sobre el fondo marino, iluminada por peces linterna. Un letrero en el casco dice ABISAL-3. Dentro, las luces blancas parpadean y pasan a un tono ámbar tranquilo. Una voz serena anuncia: Modo seguro activado. Soporte vital estable. La cámara recorre un pasillo con escotillas cerradas hasta dos salas separadas por varios compartimentos.",
+    "reason": "La pareja participa en una noche de divulgación científica en Abisal-3. La tripulación subió al buque Albatros en el relevo de la tarde y la pareja esperaba la lanzadera de la mañana. De madrugada, la celda de marea principal se detiene por un fallo y la estación entra en modo seguro: la lanzadera no puede acoplarse hasta que el muelle tenga energía.",
+    "initial_situation": "A se ha quedado en el Módulo de energía, donde estaba viendo los paneles, y B en el Puente de navegación. Las escotillas interiores se han cerrado por protocolo. CORAL, la voz de asistencia de la estación, explica que la reserva de baterías está desconectada y que, con ella, se puede activar el protocolo de evacuación EVAC-3 y salir en uno de los vehículos del muelle.",
+    "goal": "Conectar la reserva justa, repartir la energía por prioridades, abrir una ruta de escotillas hasta el Muelle de evacuación, activar el protocolo con las dos llaves, completar el prelanzamiento y elegir juntos entre el minisubmarino y la cápsula.",
+    "first_discovery": "A lee en la placa del bastidor cuántas unidades da cada celda y cuántas necesita el protocolo. B, en la consola de cámaras, ve que dos celdas tienen la carcasa caliente. Ninguno puede conectar la reserva sin lo que ve el otro.",
+    "progression": [
+      "Con la reserva conectada, la consola de asignación del puente se enciende: B tiene el orden de prioridades del protocolo y A sabe cuánto consume cada sistema.",
+      "Los sistemas esenciales vuelven; la iluminación de pasillos se queda fuera del reparto y los compartimentos quedan con tiras fosforescentes.",
+      "El tablero de escotillas de A muestra el coste de cada escotilla y el mapa de B muestra cómo se conectan los compartimentos. Programan la ruta más barata y B entra en los compartimentos.",
+      "Cuando B llega a Hidroponía, la última escotilla de la ruta se sella por precaución. El tablero de A no lo detecta y el control remoto se bloquea: B introduce un desvío en el panel local.",
+      "En el muelle, cada llave del protocolo tiene escrito el dato que necesita la otra. Las giran a la vez.",
+      "El prelanzamiento exige ordenar cinco tareas con las reglas de circuitos de A y la carta de salida de B.",
+      "Con los dos vehículos listos, la pareja decide si sale en el minisubmarino con el archivo de muestras o en la cápsula directa a la superficie."
+    ],
+    "obstacles": [
+      "Dos celdas de reserva tienen la carcasa caliente y solo se ve en la cámara térmica del puente.",
+      "La energía no llega para todo: hay que dejar fuera algunos sistemas.",
+      "La escotilla final de la ruta se sella mientras B está en Hidroponía y el tablero de A sigue mostrándola disponible.",
+      "Las llaves del protocolo tienen el dato cruzado: cada una dice lo que necesita la otra."
+    ],
+    "revelations": [
+      "La celda de marea no se averió sola: la ingeniera Maren Ibarra la dejó en mantenimiento programado y el relevo se adelantó, así que nadie la reconectó.",
+      "CORAL selló la escotilla de Hidroponía por condensación en la junta: una medida preventiva, no un peligro.",
+      "El archivo de muestras de dos años está guardado en la bodega del minisubmarino, por si alguien decide llevárselo."
+    ],
+    "climax": "Con el protocolo activado y el prelanzamiento completo, los dos vehículos esperan en sus cunas. A lee la ficha técnica y B el mensaje del Albatros. Votan a la vez sin ver el voto del otro.",
+    "escape_scene": "La pasarela de embarque se despliega con luz azul. Los dos suben al vehículo elegido, se sientan uno junto al otro y confirman la salida. La grúa suelta la cuna con suavidad y el vehículo se aleja del muelle mientras las luces de Abisal-3 pasan a modo de espera.",
+    "epilogue": "Desde la ventanilla ven el anillo de la estación iluminado por los peces linterna. La voz de Maren Ibarra llega por la radio: Gracias por cuidar de mi estación. Mañana vuelvo a encender la celda; la próxima visita, os la enseño con todas las luces."
+  },
+  "rooms": [
+    {
+      "room_id": "ROOM01",
+      "name": "Módulo de energía",
+      "description": "Sala técnica rectangular con el bastidor de seis celdas de reserva, un panel de distribución con ocho sistemas, el tablero de escotillas y un ojo de buey hacia el fondo marino. Luz ámbar de emergencia.",
+      "dimensions_m": {
+        "w": 8,
+        "d": 6,
+        "h": 3.2
+      },
+      "layout": "Bastidor de celdas en la pared oeste con su placa a la izquierda. Panel de distribución en la pared norte, centro. Tablero de escotillas en la pared este. Terminal de registro de la ingeniera en una mesa al sureste. Ojo de buey en la pared sur, a la izquierda. Puerta del ascensor de servicio en la pared sur, a la derecha. Conductos en el techo y taquilla en la esquina sureste.",
+      "access": {
+        "A": true,
+        "B": false
+      },
+      "view": {
+        "A": "Todo el módulo: celdas, placa, panel de distribución, tablero de escotillas y terminal. No ve el puente ni los compartimentos.",
+        "B": "No lo ve; solo oye a A por el intercomunicador y puede pedirle que lea los paneles"
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR01",
+          "wall": "south",
+          "position": {
+            "x": 6.5,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM04",
+          "opens_when": [
+            "P04_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "south",
+          "position": {
+            "x": 2,
+            "y": 1.6,
+            "z": 0
+          },
+          "note": "Ojo de buey con peces linterna; decorativo"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L01",
+          "type": "Plafones de emergencia",
+          "position": {
+            "x": 4,
+            "y": 3.1,
+            "z": 3
+          },
+          "color": "#FFB347",
+          "intensity": 0.45,
+          "note": "Luz ámbar continua desde el inicio; nunca parpadea tras la intro"
+        },
+        {
+          "light_id": "L02",
+          "type": "Retroiluminación de paneles",
+          "position": {
+            "x": 4,
+            "y": 1.4,
+            "z": 5.8
+          },
+          "color": "#9FE8FF",
+          "intensity": 0.3,
+          "note": "El panel de distribución y el tablero se iluminan al recibir energía"
+        },
+        {
+          "light_id": "L03",
+          "type": "Indicadores del bastidor",
+          "position": {
+            "x": 0.4,
+            "y": 1.2,
+            "z": 3
+          },
+          "color": "#B8FFB0",
+          "intensity": 0.2,
+          "note": "Cada celda conectada muestra un círculo encendido y la palabra CONECTADA"
+        }
+      ],
+      "ambient_sound": "A01",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E02",
+          "change": "El bastidor zumba bajo; los plafones pasan de ámbar a blanco cálido y la retroiluminación del panel se enciende"
+        },
+        {
+          "event": "E03",
+          "change": "El tablero de escotillas se enciende con la tabla de costes"
+        },
+        {
+          "event": "E05",
+          "change": "El tablero muestra el aviso de sellado preventivo y el candado de control remoto"
+        },
+        {
+          "event": "E06",
+          "change": "La puerta del ascensor de servicio se abre hacia el muelle"
+        }
+      ],
+      "objects": [
+        "O01",
+        "O02",
+        "O03",
+        "O04",
+        "O05",
+        "O06",
+        "O07",
+        "O08"
+      ],
+      "puzzles": [
+        "P01"
+      ],
+      "exit_conditions": [
+        "P04_SOLVED"
+      ],
+      "engine_notes": "Escena independiente para A. Los paneles son superficies de interfaz en el mundo (canvas de UI o render-to-texture) que se abren a pantalla completa al examinarlos. El bastidor tiene seis interruptores con estado propio sincronizado por el servidor. Las celdas se identifican por número, no por color. El tablero de escotillas es la entrada de P03 y cambia de estado a REMOTE_LOCKED tras E05."
+    },
+    {
+      "room_id": "ROOM02",
+      "name": "Puente de navegación",
+      "description": "Sala de mando con un gran ventanal al fondo marino, la consola de cámaras, la consola de asignación de energía, el mapa de compartimentos en la pared y la carpeta del protocolo EVAC-3.",
+      "dimensions_m": {
+        "w": 7,
+        "d": 6,
+        "h": 3
+      },
+      "layout": "Ventanal panorámico en la pared norte. Consola de cámaras bajo el ventanal, a la izquierda; consola de asignación en el centro, bajo el ventanal. Sillón del piloto en el centro. Carpeta del protocolo en el atril central. Mapa de compartimentos en la pared este. Mesa de cartas náuticas al suroeste. Escotilla hacia los compartimentos en la pared este, al sur del mapa.",
+      "access": {
+        "A": false,
+        "B": true
+      },
+      "view": {
+        "A": "No lo ve; solo oye a B por el intercomunicador",
+        "B": "Todo el puente: cámaras, protocolo, consola de asignación y mapa"
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR02",
+          "wall": "east",
+          "position": {
+            "x": 7,
+            "y": 0,
+            "z": 1.5
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "north",
+          "position": {
+            "x": 3.5,
+            "y": 1.5,
+            "z": 6
+          },
+          "note": "Ventanal con fondo marino y peces linterna; no interactivo"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L04",
+          "type": "Luz de consola",
+          "position": {
+            "x": 3.5,
+            "y": 1.2,
+            "z": 5.5
+          },
+          "color": "#7FD4FF",
+          "intensity": 0.35,
+          "note": "Ilumina las consolas; suficiente para leer"
+        },
+        {
+          "light_id": "L05",
+          "type": "Luz exterior del ventanal",
+          "position": {
+            "x": 3.5,
+            "y": 2.5,
+            "z": 5.9
+          },
+          "color": "#2E6FA8",
+          "intensity": 0.2,
+          "note": "Reflejo azul del agua; ondula suavemente"
+        },
+        {
+          "light_id": "L06",
+          "type": "Tiras fosforescentes del suelo",
+          "position": {
+            "x": 3.5,
+            "y": 0.05,
+            "z": 3
+          },
+          "color": "#C8FFB0",
+          "intensity": 0.15,
+          "note": "Se vuelven la guía principal tras E03, cuando la iluminación de pasillos queda fuera del reparto"
+        }
+      ],
+      "ambient_sound": "A03",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E02",
+          "change": "La consola de asignación se enciende con los ocho interruptores de sistema"
+        },
+        {
+          "event": "E03",
+          "change": "Los plafones del techo se apagan y quedan la luz de consolas y las tiras fosforescentes"
+        },
+        {
+          "event": "E04",
+          "change": "La escotilla este se abre y B pasa a los compartimentos"
+        }
+      ],
+      "objects": [
+        "O09",
+        "O10",
+        "O11",
+        "O12",
+        "O13",
+        "O14",
+        "O15"
+      ],
+      "puzzles": [
+        "P02",
+        "P03"
+      ],
+      "exit_conditions": [
+        "P03_SOLVED"
+      ],
+      "engine_notes": "Escena independiente para B. La consola de cámaras muestra una imagen térmica estilizada del bastidor de A con números grandes y patrones (liso o rayas diagonales con triángulo), nunca solo color. P03 pertenece a esta zona porque la ruta se planifica con el mapa del puente, aunque la entrada la haga A en su tablero."
+    },
+    {
+      "room_id": "ROOM03",
+      "name": "Anillo de compartimentos",
+      "description": "Sector del anillo con cinco compartimentos unidos por escotillas numeradas: Comedor, Laboratorio, Hidroponía, Almacén y Enfermería. Con la iluminación de pasillos fuera del reparto, solo brillan las tiras fosforescentes y las luces de cultivo de Hidroponía.",
+      "dimensions_m": {
+        "w": 16,
+        "d": 10,
+        "h": 3
+      },
+      "layout": "Comedor al noroeste y Laboratorio al suroeste, junto a las escotillas que vienen del puente (pared oeste). Hidroponía en la franja central, de oeste a este, con el panel local de escotillas y la bandeja de plantones. Almacén al noreste y Enfermería al sureste. En la pared este, tres escotillas al muelle: E7 desde el Almacén (norte), E8 desde Hidroponía (centro) y E9 desde la Enfermería (sur).",
+      "access": {
+        "A": false,
+        "B": true
+      },
+      "view": {
+        "A": "Solo el esquema del tablero: escotillas E1 a E9 con su coste y su estado según los sensores; no ve los compartimentos",
+        "B": "Los compartimentos, las escotillas con su número pintado y su estado real"
+      },
+      "unlocked_when": [
+        "P03_SOLVED"
+      ],
+      "doors": [
+        {
+          "door_id": "DOOR03",
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.5
+          },
+          "to": "ROOM02",
+          "opens_when": [
+            "P03_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR04",
+          "wall": "east",
+          "position": {
+            "x": 16,
+            "y": 0,
+            "z": 1.5
+          },
+          "to": "ROOM04",
+          "opens_when": [
+            "P04_SOLVED"
+          ]
+        }
+      ],
+      "windows": [],
+      "lighting": [
+        {
+          "light_id": "L07",
+          "type": "Tiras fosforescentes",
+          "position": {
+            "x": 8,
+            "y": 0.05,
+            "z": 5
+          },
+          "color": "#C8FFB0",
+          "intensity": 0.18,
+          "note": "Marcan los pasillos; cada escotilla tiene su número en pintura luminosa"
+        },
+        {
+          "light_id": "L08",
+          "type": "Luces de cultivo de Hidroponía",
+          "position": {
+            "x": 8,
+            "y": 2.6,
+            "z": 5
+          },
+          "color": "#E8B0FF",
+          "intensity": 0.4,
+          "note": "Las únicas luces de techo encendidas; tienen batería propia"
+        },
+        {
+          "light_id": "L09",
+          "type": "Baliza de escotilla sellada",
+          "position": {
+            "x": 15.8,
+            "y": 2.2,
+            "z": 5
+          },
+          "color": "#FFD34D",
+          "intensity": 0.5,
+          "note": "Se enciende fija en E05 sobre E8, con el texto SELLADA y bandas diagonales"
+        }
+      ],
+      "ambient_sound": "A04",
+      "music": "A12",
+      "dynamic_changes": [
+        {
+          "event": "E04",
+          "change": "Se abren en orden las escotillas de la ruta programada y B avanza hasta Hidroponía"
+        },
+        {
+          "event": "E05",
+          "change": "La escotilla E8 se sella con un golpe sordo; se enciende la baliza fija y se cierran las escotillas abiertas detrás de B"
+        },
+        {
+          "event": "E06",
+          "change": "Se abren las escotillas del desvío y se ilumina la salida al muelle"
+        }
+      ],
+      "objects": [
+        "O16",
+        "O17",
+        "O18",
+        "O19",
+        "O20",
+        "O21",
+        "O22"
+      ],
+      "puzzles": [
+        "P04"
+      ],
+      "exit_conditions": [
+        "P04_SOLVED"
+      ],
+      "engine_notes": "Escena cargada al resolver P03. Los compartimentos son subzonas de una misma escena con triggers de paso por cada escotilla. Las escotillas son objetos animados con estados CERRADA, ABIERTA y SELLADA mostrados con texto y forma (candado, bandas) además del color. B no puede volver al puente durante E05 para evitar estados ambiguos."
+    },
+    {
+      "room_id": "ROOM04",
+      "name": "Muelle de evacuación",
+      "description": "Hangar alto con dos cunas: el minisubmarino Tamboril y la cápsula Boya-7. Dos llaves del protocolo en pedestales opuestos, la consola de prelanzamiento, los paneles del muelle y una pasarela de embarque plegada.",
+      "dimensions_m": {
+        "w": 14,
+        "d": 10,
+        "h": 5
+      },
+      "layout": "Llegada de B por la escotilla oeste-sur desde los compartimentos y de A por el ascensor de servicio en la pared oeste. Llave de energía en un pedestal al oeste; llave de navegación al este, a 10 m. Consola de prelanzamiento al sureste. Esquema de circuitos en la pared oeste y carta de salida en la pared este. Ficha técnica al suroeste y mensaje del Albatros al sureste, en pantallas que se encienden al final. Cunas al norte: minisubmarino a la izquierda, cápsula a la derecha. Pasarela de embarque entre ambas. Caja estanca en el centro. Grúa en el techo, al norte.",
+      "access": {
+        "A": true,
+        "B": true
+      },
+      "view": {
+        "A": "Todo el muelle, pero desde su pedestal la carta de salida queda lejos y en penumbra hasta que B la lee",
+        "B": "Todo el muelle, pero desde su pedestal el esquema de circuitos queda lejos y en penumbra hasta que A lo lee"
+      },
+      "unlocked_when": [
+        "P04_SOLVED"
+      ],
+      "doors": [
+        {
+          "door_id": "DOOR05",
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 1.5
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "P04_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR06",
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 6.5
+          },
+          "to": "ROOM01",
+          "opens_when": [
+            "P04_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR07",
+          "wall": "north",
+          "position": {
+            "x": 7,
+            "y": 0,
+            "z": 10
+          },
+          "to": "EXIT",
+          "opens_when": [
+            "P07_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "north",
+          "position": {
+            "x": 7,
+            "y": 3.5,
+            "z": 10
+          },
+          "note": "Compuerta exterior del muelle con un visor; se ve el agua azul oscura"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L10",
+          "type": "Focos de techo del muelle",
+          "position": {
+            "x": 7,
+            "y": 4.8,
+            "z": 5
+          },
+          "color": "#FFFFFF",
+          "intensity": 0.3,
+          "note": "Tenues hasta E07; con el protocolo activo suben a 0,8"
+        },
+        {
+          "light_id": "L11",
+          "type": "Luces de los pedestales de llave",
+          "position": {
+            "x": 7,
+            "y": 1.2,
+            "z": 5
+          },
+          "color": "#FFD34D",
+          "intensity": 0.4,
+          "note": "Un anillo luminoso alrededor de cada llave se llena mientras dura la ventana de sincronía"
+        },
+        {
+          "light_id": "L12",
+          "type": "Focos de salida",
+          "position": {
+            "x": 7,
+            "y": 3,
+            "z": 9.8
+          },
+          "color": "#9FE8FF",
+          "intensity": 0.6,
+          "note": "Se encienden en el prelanzamiento, tras la tarea FOCOS"
+        }
+      ],
+      "ambient_sound": "A05",
+      "music": "A06",
+      "dynamic_changes": [
+        {
+          "event": "E07",
+          "change": "Los focos del techo suben, la grúa coloca los dos vehículos en sus cunas y se encienden el esquema de circuitos y la carta de salida"
+        },
+        {
+          "event": "E08",
+          "change": "Los focos de salida iluminan la compuerta y se encienden la ficha técnica y el mensaje del Albatros"
+        },
+        {
+          "event": "E09",
+          "change": "La pasarela se despliega hacia el vehículo elegido y la compuerta exterior pasa a verde con el texto LISTA"
+        }
+      ],
+      "objects": [
+        "O23",
+        "O24",
+        "O25",
+        "O26",
+        "O27",
+        "O28",
+        "O29",
+        "O30",
+        "O31",
+        "O32",
+        "O33",
+        "O34",
+        "O35"
+      ],
+      "puzzles": [
+        "P05",
+        "P06",
+        "P07",
+        "P08"
+      ],
+      "exit_conditions": [
+        "P07_SOLVED",
+        "O30_OPEN"
+      ],
+      "engine_notes": "Escena compartida: los dos avatares están presentes. Las llaves están a 10 m para que no se puedan girar las dos desde un mismo punto; cada pedestal solo responde a su jugador. La ventana de sincronía se mide con la hora del servidor. Los vehículos son modelos con animación de cuna y no requieren física de agua: la salida es una cinemática."
+    }
+  ],
+  "players_data": {
+    "player_a": {
+      "role": "Supervisor del módulo de energía",
+      "view": "Bastidor de celdas, placa del bastidor, panel de distribución, tablero de escotillas y terminal de la ingeniera. No ve la cámara térmica, el protocolo, el mapa ni los compartimentos.",
+      "initial_location": "ROOM01",
+      "initial_clues": [],
+      "initial_inventory": []
+    },
+    "player_b": {
+      "role": "Navegante con el mapa de compartimentos",
+      "view": "Consola de cámaras, protocolo EVAC-3, consola de asignación, mapa de compartimentos y, después, los compartimentos. No ve la placa del bastidor, los consumos ni los costes de las escotillas.",
+      "initial_location": "ROOM02",
+      "initial_clues": [],
+      "initial_inventory": []
+    }
+  },
+  "objects": [
+    {
+      "object_id": "O01",
+      "name": "Bastidor de celdas de reserva",
+      "visual": "Armario metálico con seis celdas numeradas del 1 al 6 en grande; cada una tiene un interruptor con las posiciones CONECTADA y SUELTA y un botón Confirmar conexión",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.4,
+        "y": 0,
+        "z": 3
+      },
+      "category": "coop",
+      "states": [
+        "DISCONNECTED",
+        "CONNECTED"
+      ],
+      "initial_state": "DISCONNECTED",
+      "action": "Poner interruptores en CONECTADA y pulsar Confirmar conexión",
+      "activation_condition": [],
+      "result": "Si las celdas suman 48 unidades y ninguna tiene aviso, la reserva se conecta; si no, todos los interruptores vuelven a SUELTA",
+      "transitions": [
+        {
+          "to": "CONNECTED",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "CONNECTED",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O02",
+      "name": "Placa del bastidor",
+      "visual": "Placa grabada junto al bastidor con una tabla de seis filas y una regla en letra grande",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.1,
+        "y": 1.5,
+        "z": 1.6
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Abre la placa a pantalla completa y guarda la pista C01",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C01",
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O03",
+      "name": "Panel de distribución",
+      "visual": "Panel ancho con ocho sistemas, cada uno con su icono, su nombre y su consumo en unidades en una ventanilla",
+      "room": "ROOM01",
+      "position": {
+        "x": 4,
+        "y": 1.4,
+        "z": 5.9
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda la pista C03",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C03",
+      "puzzle": "P02",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O04",
+      "name": "Tablero de escotillas",
+      "visual": "Pantalla vertical con la lista de escotillas E1 a E9, su coste, su estado según los sensores y un teclado para programar rutas",
+      "room": "ROOM01",
+      "position": {
+        "x": 7.9,
+        "y": 1.4,
+        "z": 3
+      },
+      "category": "coop",
+      "states": [
+        "OFFLINE",
+        "ONLINE",
+        "REMOTE_LOCKED"
+      ],
+      "initial_state": "OFFLINE",
+      "action": "Examinar y programar una ruta de escotillas en orden",
+      "activation_condition": [
+        "P02_SOLVED"
+      ],
+      "result": "Con energía muestra C05 y acepta una ruta; tras el sellado muestra C08 y bloquea el control remoto",
+      "transitions": [
+        {
+          "to": "ONLINE",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "REMOTE_LOCKED",
+          "when": [
+            "P03_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C05",
+      "puzzle": "P03",
+      "authorized": "A",
+      "final_state": "REMOTE_LOCKED",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O05",
+      "name": "Terminal de registro de la ingeniera",
+      "visual": "Portátil reforzado sobre la mesa con una pegatina: Diario de Maren Ibarra",
+      "room": "ROOM01",
+      "position": {
+        "x": 5.5,
+        "y": 0.9,
+        "z": 1.2
+      },
+      "category": "narrative",
+      "states": [
+        "STANDBY",
+        "PLAYED"
+      ],
+      "initial_state": "STANDBY",
+      "action": "Reproducir el diario",
+      "activation_condition": [],
+      "result": "Reproduce los diálogos D03 y D04 y los guarda en el historial; también es la voz de las ayudas de CORAL",
+      "transitions": [
+        {
+          "to": "PLAYED",
+          "when": [
+            "START"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "A",
+      "final_state": "PLAYED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O06",
+      "name": "Conductos de refrigeración",
+      "visual": "Tubos plateados con etiquetas de mantenimiento recorriendo el techo",
+      "room": "ROOM01",
+      "position": {
+        "x": 4,
+        "y": 2.9,
+        "z": 3
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O07",
+      "name": "Taquilla de visitantes",
+      "visual": "Taquilla abierta con dos chaquetas de la estación y un termo con una pegatina de un pulpo sonriente",
+      "room": "ROOM01",
+      "position": {
+        "x": 7.4,
+        "y": 0,
+        "z": 0.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O08",
+      "name": "Ojo de buey",
+      "visual": "Ventana redonda con remaches; fuera pasan peces linterna",
+      "room": "ROOM01",
+      "position": {
+        "x": 2,
+        "y": 1.6,
+        "z": 0.05
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O09",
+      "name": "Consola de cámaras",
+      "visual": "Pantalla con cuatro cámaras; la cámara térmica del módulo de energía muestra el bastidor con las celdas numeradas",
+      "room": "ROOM02",
+      "position": {
+        "x": 1.5,
+        "y": 1,
+        "z": 5.6
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar la cámara térmica",
+      "activation_condition": [],
+      "result": "Guarda la pista C02; la imagen se actualiza en directo",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C02",
+      "puzzle": "P01",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O10",
+      "name": "Carpeta del protocolo EVAC-3",
+      "visual": "Carpeta naranja sobre el atril central con la portada EVAC-3, Reparto de energía de reserva",
+      "room": "ROOM02",
+      "position": {
+        "x": 3.5,
+        "y": 0.9,
+        "z": 2.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda la pista C04",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C04",
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O11",
+      "name": "Consola de asignación de energía",
+      "visual": "Consola con ocho interruptores de sistema, cada uno con icono y nombre, y un botón Firmar reparto; arriba, un contador de unidades libres",
+      "room": "ROOM02",
+      "position": {
+        "x": 3.5,
+        "y": 1,
+        "z": 5.5
+      },
+      "category": "coop",
+      "states": [
+        "LOCKED",
+        "READY",
+        "ASSIGNED"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Activar sistemas y pulsar Firmar reparto",
+      "activation_condition": [
+        "P01_SOLVED"
+      ],
+      "result": "Si el reparto cumple el protocolo, los sistemas elegidos reciben energía",
+      "transitions": [
+        {
+          "to": "READY",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "ASSIGNED",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "ASSIGNED",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O12",
+      "name": "Mapa de compartimentos",
+      "visual": "Mapa iluminado del sector con el Puente, cinco compartimentos y el Muelle unidos por líneas con los números de escotilla",
+      "room": "ROOM02",
+      "position": {
+        "x": 6.9,
+        "y": 1.6,
+        "z": 3.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda la pista C06",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C06",
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O13",
+      "name": "Sillón del piloto",
+      "visual": "Sillón giratorio con reposabrazos acolchados",
+      "room": "ROOM02",
+      "position": {
+        "x": 3.5,
+        "y": 0,
+        "z": 4
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O14",
+      "name": "Ventanal panorámico",
+      "visual": "Cristal curvo con el fondo marino; de vez en cuando pasa una raya despacio",
+      "room": "ROOM02",
+      "position": {
+        "x": 3.5,
+        "y": 1.5,
+        "z": 5.95
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O15",
+      "name": "Mesa de cartas náuticas",
+      "visual": "Mesa inclinada con cartas del fondo marino y un compás de puntas",
+      "room": "ROOM02",
+      "position": {
+        "x": 1.2,
+        "y": 0,
+        "z": 1.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O16",
+      "name": "Escotilla E8",
+      "visual": "Escotilla redonda con el número E8 en pintura luminosa; tras el sellado muestra bandas diagonales, un candado grande y el texto SELLADA",
+      "room": "ROOM03",
+      "position": {
+        "x": 15.8,
+        "y": 0,
+        "z": 5
+      },
+      "category": "examine",
+      "states": [
+        "PROGRAMMED",
+        "SEALED"
+      ],
+      "initial_state": "PROGRAMMED",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Tras E05 está sellada; examinarla guarda la pista C07",
+      "transitions": [
+        {
+          "to": "SEALED",
+          "when": [
+            "P03_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C07",
+      "puzzle": "P04",
+      "authorized": "B",
+      "final_state": "SEALED",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O17",
+      "name": "Panel local de escotillas",
+      "visual": "Panel de pared en Hidroponía con nueve teclas E1 a E9 y un botón Abrir ruta",
+      "room": "ROOM03",
+      "position": {
+        "x": 9,
+        "y": 1.2,
+        "z": 5.8
+      },
+      "category": "coop",
+      "states": [
+        "IDLE",
+        "ROUTED"
+      ],
+      "initial_state": "IDLE",
+      "action": "Marcar escotillas en orden y pulsar Abrir ruta",
+      "activation_condition": [
+        "P03_SOLVED"
+      ],
+      "result": "Si la ruta es la de menor coste posible y no supera 10 unidades, las escotillas se abren",
+      "transitions": [
+        {
+          "to": "ROUTED",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P04",
+      "authorized": "B",
+      "final_state": "ROUTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O18",
+      "name": "Bandeja de plantones",
+      "visual": "Bandeja de cultivo con doce plantones de lechuga marina bajo una tapa transparente y una etiqueta atada",
+      "room": "ROOM03",
+      "position": {
+        "x": 8,
+        "y": 1,
+        "z": 4.3
+      },
+      "category": "collect",
+      "states": [
+        "FOUND",
+        "COLLECTED",
+        "STORED"
+      ],
+      "initial_state": "FOUND",
+      "action": "Recoger",
+      "activation_condition": [],
+      "result": "Pasa al inventario de B y guarda la pista C15",
+      "transitions": [
+        {
+          "to": "COLLECTED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C15",
+      "puzzle": "P08",
+      "authorized": "B",
+      "final_state": "STORED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O19",
+      "name": "Mesas del comedor",
+      "visual": "Mesas plegables con bandejas recogidas y un tablero de ajedrez a medias",
+      "room": "ROOM03",
+      "position": {
+        "x": 2.5,
+        "y": 0,
+        "z": 7.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O20",
+      "name": "Cultivos hidropónicos",
+      "visual": "Torres de cultivo con hojas verdes bajo luz violeta",
+      "room": "ROOM03",
+      "position": {
+        "x": 6.5,
+        "y": 0,
+        "z": 5.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O21",
+      "name": "Estanterías del almacén",
+      "visual": "Estanterías con cajas etiquetadas: Repuestos, Filtros, Mantas",
+      "room": "ROOM03",
+      "position": {
+        "x": 13.5,
+        "y": 0,
+        "z": 8.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O22",
+      "name": "Sala de descanso de la enfermería",
+      "visual": "Dos sillones reclinables con mantas dobladas y un botiquín cerrado en la pared",
+      "room": "ROOM03",
+      "position": {
+        "x": 13.5,
+        "y": 0,
+        "z": 1.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O23",
+      "name": "Llave de energía",
+      "visual": "Pedestal oeste con una llave grande, un selector de cuatro posiciones numeradas del 1 al 4 y una placa grabada",
+      "room": "ROOM04",
+      "position": {
+        "x": 2,
+        "y": 1.1,
+        "z": 5
+      },
+      "category": "coop",
+      "states": [
+        "LOCKED",
+        "TURNED"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Elegir posición del selector y girar la llave",
+      "activation_condition": [],
+      "result": "Si las dos llaves giran dentro de la ventana con los selectores correctos, se activa el protocolo",
+      "transitions": [
+        {
+          "to": "TURNED",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C09",
+      "puzzle": "P05",
+      "authorized": "A",
+      "final_state": "TURNED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O24",
+      "name": "Llave de navegación",
+      "visual": "Pedestal este con una llave grande, un selector de cuatro posiciones numeradas del 1 al 4 y una placa grabada",
+      "room": "ROOM04",
+      "position": {
+        "x": 12,
+        "y": 1.1,
+        "z": 5
+      },
+      "category": "coop",
+      "states": [
+        "LOCKED",
+        "TURNED"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Elegir posición del selector y girar la llave",
+      "activation_condition": [],
+      "result": "Si las dos llaves giran dentro de la ventana con los selectores correctos, se activa el protocolo",
+      "transitions": [
+        {
+          "to": "TURNED",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C10",
+      "puzzle": "P05",
+      "authorized": "B",
+      "final_state": "TURNED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O25",
+      "name": "Consola de prelanzamiento",
+      "visual": "Consola con cinco botones grandes, cada uno con icono y nombre: BALIZA, SONAR, TOMA, FOCOS, ESCOTILLA, y una casilla de orden encima",
+      "room": "ROOM04",
+      "position": {
+        "x": 9,
+        "y": 1,
+        "z": 2
+      },
+      "category": "coop",
+      "states": [
+        "LOCKED",
+        "READY",
+        "DONE"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Pulsar las cinco tareas en orden y confirmar",
+      "activation_condition": [
+        "P05_SOLVED"
+      ],
+      "result": "Si el orden cumple todas las reglas, los dos vehículos quedan listos",
+      "transitions": [
+        {
+          "to": "READY",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "DONE",
+          "when": [
+            "P06_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P06",
+      "authorized": "B",
+      "final_state": "DONE",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O26",
+      "name": "Esquema de circuitos del muelle",
+      "visual": "Panel en la pared oeste con el esquema de la toma de carga, el sonar del vehículo y los focos de salida",
+      "room": "ROOM04",
+      "position": {
+        "x": 0.1,
+        "y": 1.6,
+        "z": 3
+      },
+      "category": "examine",
+      "states": [
+        "DARK",
+        "LIT"
+      ],
+      "initial_state": "DARK",
+      "action": "Examinar",
+      "activation_condition": [
+        "P05_SOLVED"
+      ],
+      "result": "Con el protocolo activo se ilumina y guarda la pista C11",
+      "transitions": [
+        {
+          "to": "LIT",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C11",
+      "puzzle": "P06",
+      "authorized": "A",
+      "final_state": "LIT",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O27",
+      "name": "Carta de salida del muelle",
+      "visual": "Panel en la pared este con la maniobra de salida, la baliza y la escotilla interior",
+      "room": "ROOM04",
+      "position": {
+        "x": 13.9,
+        "y": 1.6,
+        "z": 3
+      },
+      "category": "examine",
+      "states": [
+        "DARK",
+        "LIT"
+      ],
+      "initial_state": "DARK",
+      "action": "Examinar",
+      "activation_condition": [
+        "P05_SOLVED"
+      ],
+      "result": "Con el protocolo activo se ilumina y guarda la pista C12",
+      "transitions": [
+        {
+          "to": "LIT",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C12",
+      "puzzle": "P06",
+      "authorized": "B",
+      "final_state": "LIT",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O28",
+      "name": "Ficha técnica de los vehículos",
+      "visual": "Pantalla al suroeste con los dibujos del minisubmarino y de la cápsula y sus datos",
+      "room": "ROOM04",
+      "position": {
+        "x": 3,
+        "y": 1.2,
+        "z": 1
+      },
+      "category": "examine",
+      "states": [
+        "HIDDEN",
+        "VISIBLE"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Examinar",
+      "activation_condition": [
+        "P06_SOLVED"
+      ],
+      "result": "Guarda la pista C13",
+      "transitions": [
+        {
+          "to": "VISIBLE",
+          "when": [
+            "P06_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C13",
+      "puzzle": "P07",
+      "authorized": "A",
+      "final_state": "VISIBLE",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O29",
+      "name": "Mensaje del buque Albatros",
+      "visual": "Pantalla de radio al sureste con un mensaje escrito y una carta de superficie",
+      "room": "ROOM04",
+      "position": {
+        "x": 11,
+        "y": 1.2,
+        "z": 1
+      },
+      "category": "examine",
+      "states": [
+        "HIDDEN",
+        "VISIBLE"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Examinar",
+      "activation_condition": [
+        "P06_SOLVED"
+      ],
+      "result": "Guarda la pista C14",
+      "transitions": [
+        {
+          "to": "VISIBLE",
+          "when": [
+            "P06_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C14",
+      "puzzle": "P07",
+      "authorized": "B",
+      "final_state": "VISIBLE",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O30",
+      "name": "Pasarela de embarque",
+      "visual": "Pasarela plegada entre las dos cunas con barandillas y luces azules en el suelo",
+      "room": "ROOM04",
+      "position": {
+        "x": 7,
+        "y": 0,
+        "z": 8
+      },
+      "category": "exit",
+      "states": [
+        "LOCKED",
+        "OPEN"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Embarcar",
+      "activation_condition": [
+        "P07_SOLVED"
+      ],
+      "result": "Se despliega hacia el vehículo elegido; cada jugador confirma su embarque",
+      "transitions": [
+        {
+          "to": "OPEN",
+          "when": [
+            "P07_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "OPEN",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O31",
+      "name": "Minisubmarino Tamboril",
+      "visual": "Vehículo amarillo y redondeado de dos plazas, con una bodega bajo los asientos y el nombre Tamboril en el casco",
+      "room": "ROOM04",
+      "position": {
+        "x": 4.5,
+        "y": 0,
+        "z": 8.5
+      },
+      "category": "narrative",
+      "states": [
+        "DOCKED",
+        "BOARDING"
+      ],
+      "initial_state": "DOCKED",
+      "action": "Ver de cerca",
+      "activation_condition": [],
+      "result": "Si se elige, abre su escotilla para el embarque",
+      "transitions": [
+        {
+          "to": "BOARDING",
+          "when": [
+            "P07_OPT_MINISUB"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "BOARDING",
+      "interact_radius_m": 2
+    },
+    {
+      "object_id": "O32",
+      "name": "Cápsula Boya-7",
+      "visual": "Cápsula blanca vertical de dos plazas con franjas reflectantes y el rótulo Boya-7",
+      "room": "ROOM04",
+      "position": {
+        "x": 9.5,
+        "y": 0,
+        "z": 8.5
+      },
+      "category": "narrative",
+      "states": [
+        "DOCKED",
+        "BOARDING"
+      ],
+      "initial_state": "DOCKED",
+      "action": "Ver de cerca",
+      "activation_condition": [],
+      "result": "Si se elige, abre su escotilla para el embarque",
+      "transitions": [
+        {
+          "to": "BOARDING",
+          "when": [
+            "P07_OPT_CAPSULA"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "BOARDING",
+      "interact_radius_m": 2
+    },
+    {
+      "object_id": "O33",
+      "name": "Caja estanca de muestras",
+      "visual": "Caja de transporte con asa, cierre de palanca y el rótulo Muestras vivas",
+      "room": "ROOM04",
+      "position": {
+        "x": 7,
+        "y": 0.5,
+        "z": 4
+      },
+      "category": "combine",
+      "states": [
+        "EMPTY",
+        "FILLED"
+      ],
+      "initial_state": "EMPTY",
+      "action": "Colocar objeto",
+      "activation_condition": [
+        "P04_SOLVED"
+      ],
+      "result": "Con la bandeja de plantones dentro, la caja se cierra y viaja con la pareja",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P08",
+      "authorized": "B",
+      "final_state": "FILLED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O34",
+      "name": "Grúa del muelle",
+      "visual": "Grúa de techo con brazo articulado y luces de posición",
+      "room": "ROOM04",
+      "position": {
+        "x": 7,
+        "y": 4.5,
+        "z": 9
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O35",
+      "name": "Redes y boyas de repuesto",
+      "visual": "Rollos de red y boyas naranjas colgados en la pared norte",
+      "room": "ROOM04",
+      "position": {
+        "x": 12.5,
+        "y": 1,
+        "z": 9.8
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    }
+  ],
+  "clues": [
+    {
+      "clue_id": "C01",
+      "content": "Bastidor de reserva. Celda 1: 12 unidades. Celda 2: 20 unidades. Celda 3: 16 unidades. Celda 4: 8 unidades. Celda 5: 24 unidades. Celda 6: 28 unidades. El protocolo EVAC-3 necesita exactamente 48 unidades: conectar celdas hasta sumar 48, ni una más ni una menos. No conectar nunca una celda que la cámara térmica marque con aviso: el bastidor se desconectaría entero.",
+      "alt_text": "Tabla leída en voz y en texto grande: celda 1, 12; celda 2, 20; celda 3, 16; celda 4, 8; celda 5, 24; celda 6, 28. Objetivo: 48 exactas. Prohibido conectar celdas con aviso térmico.",
+      "location": "O02",
+      "discovery": "A examina la placa junto al bastidor",
+      "player": "A",
+      "puzzle": "P01",
+      "reveals": "Las unidades de cada celda, el objetivo de 48 y la prohibición de celdas con aviso",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O02_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C02",
+      "content": "Cámara térmica del módulo de energía. Celda 1: patrón liso, ESTABLE. Celda 2: rayas diagonales con triángulo, AVISO: CARCASA CALIENTE. Celda 3: patrón liso, ESTABLE. Celda 4: patrón liso, ESTABLE. Celda 5: rayas diagonales con triángulo, AVISO: CARCASA CALIENTE. Celda 6: patrón liso, ESTABLE.",
+      "alt_text": "Lista en texto y voz: celdas 1, 3, 4 y 6 estables; celdas 2 y 5 con aviso de carcasa caliente. El aviso se marca con rayas diagonales y un triángulo, no solo con color.",
+      "location": "O09",
+      "discovery": "B examina la cámara térmica en la consola de cámaras",
+      "player": "B",
+      "puzzle": "P01",
+      "reveals": "Qué celdas no se pueden conectar",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O09_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C03",
+      "content": "Panel de distribución. Consumo de cada sistema en unidades: Soporte vital 14. Esclusas y escotillas 10. Sonar de navegación 9. Baliza de superficie 5. Grúa del muelle 8. Iluminación de pasillos 6. Calefacción de camarotes 7. Laboratorio de muestras 12.",
+      "alt_text": "Ocho filas con icono, nombre y número: Soporte vital 14, Esclusas 10, Sonar 9, Baliza 5, Grúa 8, Iluminación 6, Calefacción 7, Laboratorio 12.",
+      "location": "O03",
+      "discovery": "A examina el panel de distribución",
+      "player": "A",
+      "puzzle": "P02",
+      "reveals": "Cuánto consume cada sistema",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O03_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C04",
+      "content": "Protocolo EVAC-3, reparto de energía de reserva. Encender los sistemas siguiendo este orden de prioridad: 1 Soporte vital. 2 Esclusas y escotillas. 3 Sonar de navegación. 4 Baliza de superficie. 5 Grúa del muelle. 6 Iluminación de pasillos. 7 Calefacción de camarotes. 8 Laboratorio de muestras. Si un sistema ya no cabe en la energía que queda, se salta y se sigue con el siguiente. Nunca se supera la energía conectada en el bastidor.",
+      "alt_text": "Lista numerada del 1 al 8 en texto grande con la regla: ir en orden, saltar lo que no quepa, no pasarse del total del bastidor.",
+      "location": "O10",
+      "discovery": "B examina la carpeta del protocolo",
+      "player": "B",
+      "puzzle": "P02",
+      "reveals": "El orden de prioridad y la regla de reparto",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O10_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C05",
+      "content": "Tablero de escotillas. Coste de apertura en unidades del circuito de esclusas: E1 2. E2 1. E3 3. E4 4. E5 2. E6 3. E7 4. E8 3. E9 5. Regla del circuito: programar una sola ruta desde el Puente hasta el Muelle, la de menor coste total. El circuito tiene 10 unidades y nunca puede gastar más. Las escotillas se programan en el orden en que se cruzan.",
+      "alt_text": "Tabla de nueve filas, de E1 a E9, con su coste: 2, 1, 3, 4, 2, 3, 4, 3, 5. Regla: ruta de menor coste, máximo 10, en orden de paso.",
+      "location": "O04",
+      "discovery": "A examina el tablero cuando recibe energía",
+      "player": "A",
+      "puzzle": "P03",
+      "reveals": "El coste de cada escotilla y la regla de la ruta",
+      "depends_on": [],
+      "enabled_when": [
+        "P02_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O04_ONLINE"
+      ]
+    },
+    {
+      "clue_id": "C06",
+      "content": "Mapa de compartimentos. E1 une el Puente con el Comedor. E2 une el Puente con el Laboratorio. E3 une el Comedor con el Almacén. E4 une el Comedor con Hidroponía. E5 une el Laboratorio con Hidroponía. E6 une el Laboratorio con la Enfermería. E7 une el Almacén con el Muelle. E8 une Hidroponía con el Muelle. E9 une la Enfermería con el Muelle.",
+      "alt_text": "Lista de conexiones leída en voz y mostrada como texto, además del dibujo: cada escotilla con los dos lugares que une.",
+      "location": "O12",
+      "discovery": "B examina el mapa de la pared este",
+      "player": "B",
+      "puzzle": "P03",
+      "reveals": "Qué compartimentos une cada escotilla",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O12_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C07",
+      "content": "La escotilla E8 está sellada: bandas diagonales, candado grande y el texto SELLADO PREVENTIVO, CONDENSACIÓN EN LA JUNTA. No se abre desde aquí. Las escotillas por las que has pasado se han cerrado detrás de ti. Estás en Hidroponía.",
+      "alt_text": "Texto: E8 sellada, no se puede usar. Escotillas anteriores cerradas. Posición actual: Hidroponía.",
+      "location": "O16",
+      "discovery": "B examina la escotilla E8 tras el sellado",
+      "player": "B",
+      "puzzle": "P04",
+      "reveals": "Que E8 no se puede usar y desde dónde hay que salir",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O16_SEALED"
+      ]
+    },
+    {
+      "clue_id": "C08",
+      "content": "Aviso del tablero: Sellado preventivo en Hidroponía. El circuito de esclusas se ha reiniciado: vuelve a tener 10 unidades y las escotillas abiertas se han cerrado; volver a abrir una cuesta lo que indica la tabla. Control remoto bloqueado: la nueva ruta se introduce en el panel local de la zona. Estado de E8 según el sensor: DISPONIBLE (sensor sin señal).",
+      "alt_text": "Texto del aviso en grande: circuito a 10 unidades, escotillas cerradas, mismos costes, ruta en el panel local, E8 aparece disponible porque el sensor no responde.",
+      "location": "O04",
+      "discovery": "Aparece en el tablero de A con el sellado",
+      "player": "A",
+      "puzzle": "P04",
+      "reveals": "El presupuesto de 10 unidades tras el reinicio y que la entrada pasa al panel local",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O04_REMOTE_LOCKED"
+      ]
+    },
+    {
+      "clue_id": "C09",
+      "content": "Placa de la llave de energía (operador oeste): Coloque el selector en el número de la bahía activa y gire a la vez que la llave de navegación. Para el operador este: la toma del muelle está conectada en la fase 2.",
+      "alt_text": "Texto grande: selector oeste igual a la bahía activa, que indica la otra placa. Dato para el otro pedestal: fase 2.",
+      "location": "O23",
+      "discovery": "A examina la placa de su pedestal",
+      "player": "A",
+      "puzzle": "P05",
+      "reveals": "La fase que necesita B",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C10",
+      "content": "Placa de la llave de navegación (operador este): Coloque el selector en el número de fase de la toma del muelle y gire a la vez que la llave de energía. Para el operador oeste: la bahía activa es la 3.",
+      "alt_text": "Texto grande: selector este igual a la fase, que indica la otra placa. Dato para el otro pedestal: bahía 3.",
+      "location": "O24",
+      "discovery": "B examina la placa de su pedestal",
+      "player": "B",
+      "puzzle": "P05",
+      "reveals": "La bahía que necesita A",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C11",
+      "content": "Esquema de circuitos del muelle. El sonar del vehículo se calibra con la toma de carga puesta: calibrar el SONAR antes de retirar la TOMA. Los FOCOS de salida comparten circuito con la toma de carga: solo se encienden después de retirar la TOMA.",
+      "alt_text": "Dos reglas en texto grande con flechas: SONAR antes de TOMA; TOMA antes de FOCOS.",
+      "location": "O26",
+      "discovery": "A examina el esquema cuando se ilumina",
+      "player": "A",
+      "puzzle": "P06",
+      "reveals": "El orden SONAR, TOMA, FOCOS",
+      "depends_on": [],
+      "enabled_when": [
+        "P05_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O26_LIT"
+      ]
+    },
+    {
+      "clue_id": "C12",
+      "content": "Carta de salida del muelle. La BALIZA de superficie se activa la primera de todas: sin ella el sonar no tiene referencia. La ESCOTILLA interior del muelle se cierra la última, cuando las demás tareas están hechas.",
+      "alt_text": "Dos reglas en texto grande: BALIZA la primera; ESCOTILLA la última.",
+      "location": "O27",
+      "discovery": "B examina la carta cuando se ilumina",
+      "player": "B",
+      "puzzle": "P06",
+      "reveals": "Qué tarea va primera y cuál última",
+      "depends_on": [],
+      "enabled_when": [
+        "P05_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O27_LIT"
+      ]
+    },
+    {
+      "clue_id": "C13",
+      "content": "Ficha técnica. Minisubmarino Tamboril: dos plazas; viaje tranquilo de unos 40 minutos siguiendo la baliza hasta el buque Albatros; tiene bodega con el archivo de muestras de la estación ya cargado. Cápsula Boya-7: dos plazas; sube recta en unos 12 minutos y flota junto a la baliza hasta que la recoge la lancha del Albatros; no tiene bodega. Los dos vehículos están revisados y son igual de seguros.",
+      "alt_text": "Dos tarjetas con icono y texto: Tamboril, 40 minutos, lleva el archivo; Boya-7, 12 minutos, sin bodega. Ambos seguros.",
+      "location": "O28",
+      "discovery": "A examina la ficha cuando se enciende",
+      "player": "A",
+      "puzzle": "P07",
+      "reveals": "Qué ofrece cada vehículo",
+      "depends_on": [],
+      "enabled_when": [
+        "P06_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O28_VISIBLE"
+      ]
+    },
+    {
+      "clue_id": "C14",
+      "content": "Mensaje del Albatros: Aquí Nuria Sol, operadora del Albatros. La tripulación de Abisal-3 está a bordo y bien. Os esperamos con chocolate caliente. Si venís en el Tamboril y traéis el archivo de muestras, la ingeniera Ibarra os lo agradecerá: son dos años de trabajo. Si preferís la Boya-7, la lancha os recoge en cuanto salgáis a la superficie y el archivo se recupera en la próxima visita. Las dos opciones nos parecen bien.",
+      "alt_text": "Mensaje en texto: tripulación a salvo; Tamboril lleva el archivo; Boya-7 es más rápida y el archivo se recupera después; ambas opciones son válidas.",
+      "location": "O29",
+      "discovery": "B examina la pantalla de radio cuando se enciende",
+      "player": "B",
+      "puzzle": "P07",
+      "reveals": "Qué supone cada opción para la tripulación",
+      "depends_on": [],
+      "enabled_when": [
+        "P06_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O29_VISIBLE"
+      ]
+    },
+    {
+      "clue_id": "C15",
+      "content": "Etiqueta de la bandeja: Plantones de lechuga marina, ensayo 14. Si hay que evacuar, que viajen en la caja estanca del muelle. Maren.",
+      "alt_text": "Texto de la etiqueta en grande.",
+      "location": "O18",
+      "discovery": "B recoge la bandeja en Hidroponía",
+      "player": "B",
+      "puzzle": "P08",
+      "reveals": "Que los plantones pueden viajar en la caja estanca",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O18_COLLECTED"
+      ]
+    },
+    {
+      "clue_id": "C16",
+      "content": "CORAL: Las celdas con aviso solo se ven en la cámara térmica del puente. Comparen la placa del bastidor con lo que ve la cámara.",
+      "alt_text": "Subtítulo y registro de eventos con la misma frase.",
+      "location": "O05",
+      "discovery": "Ayuda contextual si pasan 2 minutos sin progreso en P01",
+      "player": "AB",
+      "puzzle": "P01",
+      "reveals": "Que B debe mirar la cámara térmica y A la placa",
+      "depends_on": [],
+      "enabled_when": [
+        "IDLE_120"
+      ],
+      "help_level": 1,
+      "discovered_when": [
+        "IDLE_120"
+      ]
+    },
+    {
+      "clue_id": "C17",
+      "content": "CORAL: Lo que se ve en el compartimento manda sobre lo que dice un sensor sin señal. Busquen la ruta más barata que no pase por la escotilla sellada.",
+      "alt_text": "Subtítulo y registro de eventos con la misma frase.",
+      "location": "O05",
+      "discovery": "Ayuda contextual si pasan 2 minutos sin progreso en P04",
+      "player": "AB",
+      "puzzle": "P04",
+      "reveals": "Que hay que fiarse de lo que ve B y descartar E8",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED",
+        "IDLE_120"
+      ],
+      "help_level": 1,
+      "discovered_when": [
+        "IDLE_120"
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "puzzle_id": "P01",
+      "name": "Las celdas de reserva",
+      "room": "ROOM01",
+      "main": true,
+      "prerequisites": [
+        "START"
+      ],
+      "narrative": "La reserva tiene energía de sobra, pero dos celdas están calientes y conectarlas haría saltar el bastidor. El protocolo pide una cantidad exacta.",
+      "objective": "Conectar celdas sanas que sumen exactamente 48 unidades.",
+      "situation": "A está ante el bastidor con seis interruptores y la placa con las unidades de cada celda. B ve en la consola de cámaras la imagen térmica del mismo bastidor.",
+      "required_objects": [
+        "O01",
+        "O02",
+        "O09"
+      ],
+      "info_a": "Unidades de cada celda y el objetivo de 48 (C01): 1:12, 2:20, 3:16, 4:8, 5:24, 6:28.",
+      "info_b": "Qué celdas tienen aviso térmico (C02): la 2 y la 5.",
+      "must_communicate": "B dice qué celdas tienen aviso; A descarta esas, busca la combinación de las sanas que suma 48 y la repite en voz alta antes de confirmar; B comprueba en la cámara que no ha conectado ninguna con aviso.",
+      "rules": [
+        "Los interruptores se mueven libremente; solo cuenta lo que está en CONECTADA al pulsar Confirmar conexión.",
+        "Si la suma no es 48 o hay una celda con aviso, todos vuelven a SUELTA sin más consecuencias.",
+        "No hay daño ni peligro: el bastidor solo se niega a conectar."
+      ],
+      "steps": [
+        "B examina la cámara térmica y lee los avisos.",
+        "A examina la placa del bastidor.",
+        "Descartan las celdas 2 y 5.",
+        "Con 12, 16, 8 y 28 buscan la suma 48: 12 + 8 + 28.",
+        "A pone en CONECTADA las celdas 1, 4 y 6 y confirma."
+      ],
+      "answer": {
+        "type": "set",
+        "value": [
+          "1",
+          "4",
+          "6"
+        ],
+        "normalize": "Conjunto de números de celda en CONECTADA al confirmar, sin orden"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "2",
+            "6"
+          ],
+          "why": "Suma 48, pero la celda 2 tiene aviso térmico."
+        },
+        {
+          "value": [
+            "3",
+            "4",
+            "5"
+          ],
+          "why": "Suma 48, pero la celda 5 tiene aviso térmico."
+        },
+        {
+          "value": [
+            "1",
+            "3",
+            "6"
+          ],
+          "why": "Son celdas sanas, pero suman 56, no 48."
+        },
+        {
+          "value": [
+            "1",
+            "3",
+            "4"
+          ],
+          "why": "Son celdas sanas, pero suman 36."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C01",
+          "C02"
+        ],
+        "coop_model": "M2",
+        "mechanism_id": "M01",
+        "check": "Al pulsar Confirmar conexión, el conjunto de celdas en CONECTADA debe sumar exactamente el objetivo de C01 y no contener ninguna celda con aviso en C02 (variante activa). Se exige C02 descubierta por B antes del intento."
+      },
+      "on_solve": {
+        "message": "El bastidor zumba con suavidad: reserva conectada, 48 unidades disponibles.",
+        "events": [
+          "E02"
+        ],
+        "sets": [
+          "O01_CONNECTED"
+        ]
+      },
+      "on_fail": {
+        "message": "El bastidor se niega a conectar y los interruptores vuelven a SUELTA. Revisen la suma y los avisos de la cámara.",
+        "effect": "Los seis interruptores vuelven a SUELTA; nada más cambia."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "A tiene las unidades y B ve qué celdas están calientes: compártanlo.",
+        "Quiten primero las celdas con aviso; con las que quedan, busquen una suma exacta de 48.",
+        "La celda más grande sana es la 6, con 28: les faltan 20 con las demás sanas."
+      ],
+      "estimated_minutes": 6,
+      "unlocks": [
+        "P02"
+      ],
+      "reset_condition": "Tras un fallo los interruptores vuelven a SUELTA. Un reinicio de zona deja el bastidor en DISCONNECTED.",
+      "edge_cases": [
+        "A confirma antes de que B haya visto la cámara: se rechaza con el mensaje Falta la comprobación térmica y no cuenta como fallo.",
+        "A deja una celda a medio mover: solo cuentan las que están del todo en CONECTADA.",
+        "Doble pulsación de Confirmar con el mismo actionId: se ignora la segunda.",
+        "B se desconecta tras leer la cámara: la pista sigue en su registro y A puede confirmar."
+      ],
+      "solution_proof": "Las celdas sanas son 1 (12), 3 (16), 4 (8) y 6 (28). Sus sumas posibles: parejas 28, 20, 40, 24, 44, 36; tríos 36, 52, 48 (1, 4 y 6) y 56; las cuatro, 64. Solo {1, 4, 6} da 48. Las combinaciones {2, 6}, {3, 4, 5} y {1, 2, 3} también suman 48 pero usan celdas con aviso. A no ve los avisos y B no ve las unidades."
+    },
+    {
+      "puzzle_id": "P02",
+      "name": "El reparto de energía",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "P01_SOLVED"
+      ],
+      "narrative": "Con 48 unidades no se puede encender todo. El protocolo dice qué va primero, pero no cuánto gasta cada cosa.",
+      "objective": "Encender exactamente los sistemas que el protocolo EVAC-3 permite con 48 unidades.",
+      "situation": "B está ante la consola de asignación con ocho interruptores de sistema y el protocolo. A tiene en su panel el consumo de cada sistema.",
+      "required_objects": [
+        "O11",
+        "O03",
+        "O10"
+      ],
+      "info_a": "El consumo de cada sistema (C03) y el total disponible, 48 (C01).",
+      "info_b": "El orden de prioridad y la regla de saltar lo que no cabe (C04).",
+      "must_communicate": "B lee los sistemas en orden de prioridad; A responde con el consumo y la energía que queda tras cada uno; los dos deciden qué entra y qué se salta.",
+      "rules": [
+        "Se puede activar y desactivar libremente antes de firmar.",
+        "El contador de unidades libres solo se muestra a A, en su panel; la consola de B solo muestra encendido o apagado.",
+        "Al firmar, el reparto debe coincidir con el protocolo."
+      ],
+      "steps": [
+        "Soporte vital 14: quedan 34.",
+        "Esclusas 10: quedan 24.",
+        "Sonar 9: quedan 15.",
+        "Baliza 5: quedan 10.",
+        "Grúa 8: quedan 2.",
+        "Iluminación 6, Calefacción 7 y Laboratorio 12 no caben: se saltan.",
+        "B activa Soporte vital, Esclusas, Sonar, Baliza y Grúa y firma."
+      ],
+      "answer": {
+        "type": "set",
+        "value": [
+          "SOPORTE",
+          "ESCLUSAS",
+          "SONAR",
+          "BALIZA",
+          "GRUA"
+        ],
+        "normalize": "Conjunto de sistemas activos al firmar, sin tildes ni orden"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "SOPORTE",
+            "ESCLUSAS",
+            "SONAR",
+            "BALIZA",
+            "ILUMINACION"
+          ],
+          "why": "Salta la Grúa, que sí cabía (quedaban 10 y gasta 8); el protocolo no permite saltar un sistema que cabe."
+        },
+        {
+          "value": [
+            "SOPORTE",
+            "ESCLUSAS",
+            "LABORATORIO",
+            "BALIZA",
+            "CALEFACCION"
+          ],
+          "why": "Suma 48 exactas, pero se salta el Sonar y la Grúa, que tienen más prioridad."
+        },
+        {
+          "value": [
+            "SOPORTE",
+            "ESCLUSAS",
+            "SONAR",
+            "BALIZA",
+            "GRUA",
+            "ILUMINACION"
+          ],
+          "why": "Suma 52 y supera las 48 unidades del bastidor."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C01",
+          "C03",
+          "C04"
+        ],
+        "coop_model": null,
+        "mechanism_id": null,
+        "check": "Al pulsar Firmar reparto se aplica el algoritmo de C04 con los consumos de C03 y el total de C01: recorrer la lista en orden, incluir cada sistema si su consumo no supera lo que queda. El conjunto activo debe ser exactamente el resultado."
+      },
+      "on_solve": {
+        "message": "Reparto firmado. Soporte vital, esclusas, sonar, baliza y grúa con energía. La iluminación de pasillos queda en reserva.",
+        "events": [
+          "E03"
+        ],
+        "sets": [
+          "O11_ASSIGNED"
+        ]
+      },
+      "on_fail": {
+        "message": "El protocolo no acepta este reparto. Revisen el orden y lo que queda tras cada sistema.",
+        "effect": "Los interruptores se quedan como estaban para corregirlos."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "B tiene el orden y A los consumos: vayan sistema por sistema.",
+        "Resten cada consumo de 48 en el orden del protocolo y salten solo lo que no quepa en lo que queda.",
+        "Tras la Baliza quedan 10 unidades: la Grúa, con 8, sí entra."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P03"
+      ],
+      "reset_condition": "Un reinicio de zona apaga los ocho interruptores y devuelve la consola a READY.",
+      "edge_cases": [
+        "B firma antes de que A haya leído el panel de distribución: se rechaza con el mensaje Faltan los consumos del módulo y no cuenta como fallo.",
+        "B activa un sistema y lo desactiva: solo cuenta el estado al firmar.",
+        "Se pulsa Firmar dos veces: la segunda se ignora mientras valida."
+      ],
+      "solution_proof": "El algoritmo de C04 es determinista: con 48 y los consumos de C03 da 34, 24, 15, 10 y 2 tras Soporte, Esclusas, Sonar, Baliza y Grúa; los tres últimos sistemas gastan 6, 7 y 12, más que las 2 que quedan. El resultado es único. B no conoce los consumos y A no conoce el orden ni la regla de salto."
+    },
+    {
+      "puzzle_id": "P03",
+      "name": "La ruta de las escotillas",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "P02_SOLVED"
+      ],
+      "narrative": "El circuito de esclusas tiene energía para abrir una sola ruta hasta el muelle. Hay que elegir la más barata.",
+      "objective": "Programar la ruta de menor coste desde el Puente hasta el Muelle.",
+      "situation": "A tiene el tablero con el coste de cada escotilla, pero sin saber qué une cada una. B tiene el mapa con las conexiones, pero sin costes.",
+      "required_objects": [
+        "O04",
+        "O12"
+      ],
+      "info_a": "Coste de E1 a E9 y la regla de menor coste con máximo 10 (C05).",
+      "info_b": "Qué compartimentos une cada escotilla (C06).",
+      "must_communicate": "B describe los caminos posibles del Puente al Muelle; A suma los costes de cada uno; acuerdan el más barato y A lo programa en el orden de paso mientras B lo repite.",
+      "rules": [
+        "Se programa una lista de escotillas en el orden en que se cruzan.",
+        "La ruta debe empezar en el Puente y acabar en el Muelle, sin saltos.",
+        "Solo se acepta la ruta de menor coste total."
+      ],
+      "steps": [
+        "B lee las conexiones del mapa.",
+        "A lee los costes.",
+        "Calculan: E1-E3-E7 = 9; E1-E4-E8 = 9; E2-E5-E8 = 6; E2-E6-E9 = 9; las rutas largas cuestan 14 o más.",
+        "A programa E2, E5, E8 y pulsa Programar."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "E2",
+          "E5",
+          "E8"
+        ],
+        "normalize": "Lista de escotillas en orden de paso, en mayúsculas"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "E1",
+            "E3",
+            "E7"
+          ],
+          "why": "Es una ruta válida, pero cuesta 9 y hay otra de 6."
+        },
+        {
+          "value": [
+            "E2",
+            "E6",
+            "E9"
+          ],
+          "why": "Cuesta 9; no es la más barata."
+        },
+        {
+          "value": [
+            "E8",
+            "E5",
+            "E2"
+          ],
+          "why": "Es la ruta correcta al revés: no empieza en el Puente."
+        },
+        {
+          "value": [
+            "E2",
+            "E8"
+          ],
+          "why": "E2 llega al Laboratorio y E8 sale de Hidroponía: la ruta tiene un salto."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C05",
+          "C06"
+        ],
+        "coop_model": null,
+        "mechanism_id": null,
+        "check": "El servidor calcula todas las rutas simples del Puente al Muelle con el grafo de C06 y los costes de C05 (variante activa) y acepta solo la de coste mínimo, en orden de paso."
+      },
+      "on_solve": {
+        "message": "Ruta programada. Se abren las escotillas: B puede pasar a los compartimentos.",
+        "events": [
+          "E04",
+          "E05"
+        ],
+        "sets": []
+      },
+      "on_fail": {
+        "message": "El tablero rechaza la ruta: no es continua o hay una más barata.",
+        "effect": "La lista programada se borra; las pistas se conservan."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "A tiene los costes y B el mapa: sumen los caminos completos.",
+        "Hay cuatro caminos de tres escotillas del Puente al Muelle; tres cuestan lo mismo.",
+        "La ruta empieza por E2, que solo cuesta 1."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P04"
+      ],
+      "reset_condition": "Tras un fallo se borra la lista. Un reinicio de zona devuelve el tablero a ONLINE y cierra las escotillas.",
+      "edge_cases": [
+        "A programa antes de que B lea el mapa: se rechaza con Falta el mapa y no cuenta como fallo.",
+        "A introduce una escotilla dos veces seguidas: se ignora la repetición.",
+        "Se pulsa Programar con la lista vacía: no ocurre nada."
+      ],
+      "solution_proof": "Con el grafo de C06 hay seis caminos simples del Puente al Muelle: E1-E3-E7 (9), E1-E4-E8 (9), E2-E5-E8 (6), E2-E6-E9 (9), E1-E4-E5-E6-E9 (16) y E2-E5-E4-E3-E7 (14). El mínimo, 6, es único. A no sabe qué une cada escotilla y B no conoce los costes."
+    },
+    {
+      "puzzle_id": "P04",
+      "name": "El desvío",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P03_SOLVED"
+      ],
+      "narrative": "B ya está en Hidroponía cuando la última escotilla de la ruta se sella por precaución. El tablero de A sigue diciendo que está disponible.",
+      "objective": "Abrir desde el panel local la ruta más barata de Hidroponía al Muelle sin pasar por E8.",
+      "situation": "B está en Hidroponía ante la escotilla sellada y el panel local. A ve en su tablero el aviso de reinicio y E8 como DISPONIBLE.",
+      "required_objects": [
+        "O16",
+        "O17",
+        "O04"
+      ],
+      "info_a": "Costes (C05) y el aviso de reinicio: 10 unidades, escotillas cerradas, entrada en el panel local, E8 DISPONIBLE según un sensor sin señal (C08).",
+      "info_b": "El mapa (C06) y lo que ve: E8 sellada y su posición en Hidroponía (C07).",
+      "must_communicate": "B avisa de que E8 está sellada aunque el tablero diga lo contrario; A confirma que el circuito vuelve a tener 10 unidades y dicta costes; B propone caminos desde Hidroponía y A los suma; B introduce el desvío.",
+      "rules": [
+        "La ruta empieza en Hidroponía y acaba en el Muelle.",
+        "E8 no se puede usar.",
+        "Todas las escotillas cuestan de nuevo su valor, incluidas las ya cruzadas.",
+        "La ruta debe ser la de menor coste y no superar 10 unidades."
+      ],
+      "steps": [
+        "B examina E8 y la describe.",
+        "A lee el aviso del tablero.",
+        "Calculan: E5-E6-E9 = 10; E4-E3-E7 = 11, se pasa del límite; las rutas por el Puente cuestan 12 o más.",
+        "B marca E5, E6, E9 en el panel local y pulsa Abrir ruta."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "E5",
+          "E6",
+          "E9"
+        ],
+        "normalize": "Lista de escotillas en orden de paso, en mayúsculas"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "E8"
+          ],
+          "why": "El tablero de A la muestra disponible, pero está sellada: el panel local la rechaza."
+        },
+        {
+          "value": [
+            "E4",
+            "E3",
+            "E7"
+          ],
+          "why": "Cuesta 11 y el circuito solo tiene 10."
+        },
+        {
+          "value": [
+            "E6",
+            "E9"
+          ],
+          "why": "B está en Hidroponía: E6 sale del Laboratorio, falta cruzar E5 primero."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C05",
+          "C06",
+          "C07",
+          "C08"
+        ],
+        "coop_model": "M4",
+        "mechanism_id": "M02",
+        "check": "El servidor calcula las rutas simples de Hidroponía al Muelle sin E8, con los costes de C05 (variante activa), descarta las que superan 10 y acepta solo la de menor coste. Exige C07 descubierta por B y C08 por A."
+      },
+      "on_solve": {
+        "message": "Desvío aceptado. Las escotillas se abren en orden y se enciende la señal del muelle.",
+        "events": [
+          "E06"
+        ],
+        "sets": [
+          "O17_ROUTED"
+        ]
+      },
+      "on_fail": {
+        "message": "El panel local rechaza la ruta. Comprueben la escotilla sellada, el límite de 10 y que empiece en Hidroponía.",
+        "effect": "La lista se borra; nada más cambia."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "Lo que ve B en la escotilla y lo que dice el tablero de A no coinciden: ¿de qué se fían?",
+        "Empiecen en Hidroponía, sin E8, y con 10 unidades como máximo.",
+        "Volver al Laboratorio por E5 es parte de la ruta buena."
+      ],
+      "estimated_minutes": 8,
+      "unlocks": [
+        "P05",
+        "P08"
+      ],
+      "reset_condition": "Tras un fallo se borra la lista. Un reinicio de zona devuelve a B a Hidroponía con E8 sellada y el panel en IDLE.",
+      "edge_cases": [
+        "A intenta programar desde su tablero: se muestra Control remoto bloqueado y no cuenta como fallo.",
+        "B intenta volver al Puente: las escotillas están cerradas tras el reinicio del circuito; se indica que use el panel local.",
+        "B se desconecta durante el sellado: al volver, aparece en Hidroponía con E8 sellada y C07 en su registro."
+      ],
+      "solution_proof": "Desde Hidroponía y sin E8 hay cuatro caminos simples al Muelle: E5-E6-E9 (2 + 3 + 5 = 10), E4-E3-E7 (4 + 3 + 4 = 11), E4-E1-E2-E6-E9 (15) y E5-E2-E1-E3-E7 (12). Solo E5-E6-E9 no supera 10, así que es a la vez la única válida y la más barata. A no ve que E8 está sellada y B no conoce los costes ni el límite."
+    },
+    {
+      "puzzle_id": "P05",
+      "name": "Las dos llaves del protocolo",
+      "room": "ROOM04",
+      "main": true,
+      "prerequisites": [
+        "P04_SOLVED"
+      ],
+      "narrative": "El protocolo EVAC-3 solo se activa con dos llaves giradas a la vez desde pedestales separados. Cada placa guarda el dato que necesita el otro pedestal.",
+      "objective": "Poner cada selector en su posición y girar las dos llaves dentro de la misma ventana.",
+      "situation": "A está en el pedestal oeste y B en el este, a 10 m. Cada uno lee en su placa el número que debe usar el otro.",
+      "required_objects": [
+        "O23",
+        "O24"
+      ],
+      "info_a": "Su placa dice que su selector va en la bahía activa y que el dato para B es la fase 2 (C09).",
+      "info_b": "Su placa dice que su selector va en la fase y que el dato para A es la bahía 3 (C10).",
+      "must_communicate": "Cada uno lee al otro el dato de su placa; los dos ponen su selector y acuerdan una cuenta atrás en voz alta para girar.",
+      "rules": [
+        "Cada selector va en el número que la placa del otro pedestal da para él.",
+        "Las dos llaves deben girarse con una diferencia máxima de 2 segundos.",
+        "Si solo gira una, vuelve sola a su sitio cuando acaba la ventana.",
+        "Un selector mal puesto hace que la llave no gire, sin penalización."
+      ],
+      "steps": [
+        "A lee su placa y dice: fase 2.",
+        "B lee su placa y dice: bahía 3.",
+        "A pone su selector en 3 y B el suyo en 2.",
+        "Cuentan tres, dos, uno y giran a la vez."
+      ],
+      "answer": {
+        "type": "simultaneous",
+        "value": {
+          "A": {
+            "selector": 3,
+            "press": "GIRAR_LLAVE"
+          },
+          "B": {
+            "selector": 2,
+            "press": "GIRAR_LLAVE"
+          }
+        },
+        "normalize": "Posición del selector de cada jugador en el momento de girar y diferencia de tiempo entre giros"
+      },
+      "wrong_answers": [
+        {
+          "value": {
+            "A": {
+              "selector": 2,
+              "press": "GIRAR_LLAVE"
+            },
+            "B": {
+              "selector": 3,
+              "press": "GIRAR_LLAVE"
+            }
+          },
+          "why": "Cada uno ha usado el dato de su propia placa, que es el del otro."
+        },
+        {
+          "value": {
+            "A": {
+              "selector": 3,
+              "press": "GIRAR_LLAVE"
+            },
+            "B": {
+              "selector": 2,
+              "press": "NINGUNA"
+            }
+          },
+          "why": "Solo gira A: la ventana se cierra y la llave vuelve."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A",
+          "B"
+        ],
+        "requires_clues": [
+          "C09",
+          "C10"
+        ],
+        "coop_model": "M3",
+        "mechanism_id": "M03",
+        "window_ms": 2000,
+        "check": "El servidor registra cada giro con su marca de tiempo y la posición del selector. Se acepta si A gira con el selector en la bahía de C10 y B con el selector en la fase de C09 (variante activa) y la diferencia entre giros es de 2000 ms o menos."
+      },
+      "on_solve": {
+        "message": "Protocolo EVAC-3 activado. Los focos del muelle se encienden y la grúa coloca los vehículos en sus cunas.",
+        "events": [
+          "E07"
+        ],
+        "sets": [
+          "O23_TURNED",
+          "O24_TURNED"
+        ]
+      },
+      "on_fail": {
+        "message": "La llave vuelve a su sitio. Comprueben los selectores y giren a la vez.",
+        "effect": "Las dos llaves vuelven a LOCKED; los selectores se quedan como estaban."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 4,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "Cada placa tiene un dato para el otro pedestal: léanselo.",
+        "A pone el número de la bahía; B, el de la fase.",
+        "Cuenten en voz alta tres, dos, uno y giren en el uno."
+      ],
+      "estimated_minutes": 5,
+      "unlocks": [
+        "P06"
+      ],
+      "reset_condition": "Tras una ventana fallida las llaves vuelven solas. Un reinicio de zona devuelve las llaves a LOCKED y los selectores a 1.",
+      "edge_cases": [
+        "A gira y B gira 2,4 s después: fuera de ventana, se informa la diferencia de tiempo y no cuenta como fallo de selector.",
+        "Uno de los dos gira varias veces durante la ventana: cuenta solo el primer giro.",
+        "Un jugador se desconecta con la llave girada: la ventana se cancela y la llave vuelve cuando reconecta.",
+        "Con latencia alta se usa la marca de tiempo del cliente sincronizada con el servidor, con margen de 150 ms."
+      ],
+      "solution_proof": "Cada placa da un único número para el otro pedestal: fase 2 en la de A y bahía 3 en la de B. La regla de cada selector remite al dato de la otra placa, así que A debe usar 3 y B 2. Invertirlos es el error típico y se rechaza. La ventana de 2 s obliga a coordinarse en tiempo real."
+    },
+    {
+      "puzzle_id": "P06",
+      "name": "Lista de prelanzamiento",
+      "room": "ROOM04",
+      "main": true,
+      "prerequisites": [
+        "P05_SOLVED"
+      ],
+      "narrative": "Los vehículos están en sus cunas. Antes de soltar amarras hay cinco tareas, y el orden importa.",
+      "objective": "Ejecutar las cinco tareas del prelanzamiento en el único orden que cumple todas las reglas.",
+      "situation": "B está en la consola de prelanzamiento con cinco botones. A está junto al esquema de circuitos y B junto a la carta de salida.",
+      "required_objects": [
+        "O25",
+        "O26",
+        "O27"
+      ],
+      "info_a": "Reglas de circuitos (C11): SONAR antes de TOMA; TOMA antes de FOCOS.",
+      "info_b": "Reglas de navegación (C12): BALIZA la primera; ESCOTILLA la última.",
+      "must_communicate": "A dicta sus dos reglas y B las suyas; juntos colocan las tareas y B repite el orden completo antes de confirmar.",
+      "rules": [
+        "Se pulsan las cinco tareas una vez cada una y después Confirmar.",
+        "Antes de confirmar se puede borrar la lista.",
+        "Si el orden no cumple las cuatro reglas, la consola lo rechaza y se borra."
+      ],
+      "steps": [
+        "B lee la carta: BALIZA primera, ESCOTILLA última.",
+        "A lee el esquema: SONAR, luego TOMA, luego FOCOS.",
+        "Orden: BALIZA, SONAR, TOMA, FOCOS, ESCOTILLA.",
+        "B lo pulsa y confirma."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "BALIZA",
+          "SONAR",
+          "TOMA",
+          "FOCOS",
+          "ESCOTILLA"
+        ],
+        "normalize": "Lista de tareas en el orden pulsado, en mayúsculas"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "BALIZA",
+            "TOMA",
+            "SONAR",
+            "FOCOS",
+            "ESCOTILLA"
+          ],
+          "why": "Retira la toma antes de calibrar el sonar."
+        },
+        {
+          "value": [
+            "SONAR",
+            "BALIZA",
+            "TOMA",
+            "FOCOS",
+            "ESCOTILLA"
+          ],
+          "why": "La baliza tiene que ir la primera."
+        },
+        {
+          "value": [
+            "BALIZA",
+            "SONAR",
+            "FOCOS",
+            "TOMA",
+            "ESCOTILLA"
+          ],
+          "why": "Los focos solo se encienden después de retirar la toma."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C11",
+          "C12"
+        ],
+        "coop_model": null,
+        "mechanism_id": null,
+        "check": "La lista confirmada debe cumplir a la vez las reglas de C11 y C12; el servidor comprueba que coincide con el único orden que las cumple."
+      },
+      "on_solve": {
+        "message": "Prelanzamiento completo. Los dos vehículos están listos.",
+        "events": [
+          "E08"
+        ],
+        "sets": [
+          "O25_DONE"
+        ]
+      },
+      "on_fail": {
+        "message": "La consola rechaza el orden. Repasen las cuatro reglas.",
+        "effect": "La lista se borra; las pistas se conservan."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "A tiene dos reglas y B otras dos: hacen falta las cuatro.",
+        "La carta de B fija la primera y la última; el esquema de A ordena las tres del medio.",
+        "Las tres del medio van SONAR, TOMA, FOCOS."
+      ],
+      "estimated_minutes": 5,
+      "unlocks": [
+        "P07"
+      ],
+      "reset_condition": "Tras un fallo se borra la lista. Un reinicio de zona devuelve la consola a READY.",
+      "edge_cases": [
+        "B pulsa la misma tarea dos veces: la segunda se ignora.",
+        "B confirma con menos de cinco tareas: no se valida y se indica cuántas faltan, sin contar fallo.",
+        "B confirma antes de que A haya leído el esquema: se rechaza con el mensaje Faltan las reglas de circuitos y no cuenta como fallo."
+      ],
+      "solution_proof": "C12 fija BALIZA en la posición 1 y ESCOTILLA en la 5. C11 impone SONAR antes de TOMA y TOMA antes de FOCOS, así que las posiciones 2, 3 y 4 solo pueden ser SONAR, TOMA y FOCOS. El orden es único. Con solo C12 quedarían 6 órdenes posibles en el medio; con solo C11, la baliza y la escotilla podrían ir en cualquier hueco."
+    },
+    {
+      "puzzle_id": "P07",
+      "name": "Minisubmarino o cápsula",
+      "room": "ROOM04",
+      "main": true,
+      "prerequisites": [
+        "P06_SOLVED"
+      ],
+      "narrative": "Los dos vehículos son seguros. Uno es más rápido; el otro puede llevarse el trabajo de dos años de la estación.",
+      "objective": "Elegir juntos en qué vehículo salir.",
+      "situation": "A tiene la ficha técnica y B el mensaje del Albatros. Votan en sus pantallas sin ver el voto del otro.",
+      "required_objects": [
+        "O28",
+        "O29",
+        "O31",
+        "O32"
+      ],
+      "info_a": "Qué ofrece cada vehículo (C13).",
+      "info_b": "Qué opina la tripulación del Albatros (C14).",
+      "must_communicate": "Cada uno resume lo que ha leído y deciden juntos.",
+      "rules": [
+        "Votan los dos.",
+        "Si votan distinto, se borran los votos y se pide que hablen.",
+        "Las dos opciones son válidas y llevan a la salida."
+      ],
+      "steps": [
+        "A lee la ficha técnica.",
+        "B lee el mensaje del Albatros.",
+        "Hablan y votan la misma opción."
+      ],
+      "answer": {
+        "type": "decision",
+        "value": null,
+        "normalize": "Clave de opción",
+        "options": [
+          {
+            "key": "MINISUB",
+            "label": "Minisubmarino Tamboril",
+            "consequence": "Viaje tranquilo de 40 minutos hasta el Albatros con el archivo de muestras en la bodega."
+          },
+          {
+            "key": "CAPSULA",
+            "label": "Cápsula Boya-7",
+            "consequence": "Subida directa de 12 minutos; la lancha los recoge en la superficie y el archivo se recupera en otra visita."
+          }
+        ]
+      },
+      "wrong_answers": [],
+      "validation": {
+        "input_by": [
+          "A",
+          "B"
+        ],
+        "requires_clues": [
+          "C13",
+          "C14"
+        ],
+        "coop_model": "M6",
+        "mechanism_id": "M04",
+        "check": "Se acepta cuando los votos de A y B coinciden; se guarda la opción elegida."
+      },
+      "on_solve": {
+        "message": "Decisión tomada. La pasarela se despliega hacia el vehículo elegido.",
+        "events": [
+          "E09"
+        ],
+        "sets": [
+          "O30_OPEN"
+        ]
+      },
+      "on_fail": {
+        "message": "Han votado distinto. Cuéntense lo que han leído y voten otra vez.",
+        "effect": "Se borran los dos votos."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "A sabe qué ofrece cada vehículo y B qué dice la tripulación.",
+        "No hay opción incorrecta: los dos vehículos son seguros.",
+        "Voten la misma opción en las dos pantallas."
+      ],
+      "estimated_minutes": 3,
+      "unlocks": [],
+      "reset_condition": "Un reinicio de zona borra los votos y pliega la pasarela.",
+      "edge_cases": [
+        "Un jugador vota y el otro se desconecta: el voto se conserva hasta que vuelva.",
+        "Un jugador cambia su voto antes de que el otro vote: cuenta el último.",
+        "Se agota el reloj durante la votación: se ofrece Modo sin reloj y los votos se conservan."
+      ],
+      "solution_proof": "Es una decisión compartida: cualquier opción en la que coincidan es válida. Solo cambia el epílogo; ninguna opción castiga."
+    },
+    {
+      "puzzle_id": "P08",
+      "name": "Los plantones de Maren",
+      "room": "ROOM04",
+      "main": false,
+      "prerequisites": [
+        "P04_SOLVED"
+      ],
+      "narrative": "En Hidroponía hay una bandeja de plantones de un ensayo que Maren no quiere perder.",
+      "objective": "Llevar la bandeja de plantones a la caja estanca del muelle.",
+      "situation": "B recoge la bandeja en Hidroponía y la lleva al muelle. A puede abrir la caja con la palanca del lado oeste.",
+      "required_objects": [
+        "O18",
+        "O33"
+      ],
+      "info_a": "A ve desde su lado la caja estanca y su rótulo Muestras vivas.",
+      "info_b": "B tiene la bandeja y la etiqueta (C15).",
+      "must_communicate": "B pregunta dónde está la caja; A se la señala en el muelle.",
+      "rules": [
+        "Es opcional y no bloquea nada.",
+        "Se puede hacer en cualquier momento antes de embarcar."
+      ],
+      "steps": [
+        "B recoge la bandeja.",
+        "B la lleva al muelle.",
+        "B la coloca en la caja estanca."
+      ],
+      "answer": {
+        "type": "combine",
+        "value": [
+          "O18",
+          "O33"
+        ],
+        "normalize": "Objeto del inventario usado sobre el objeto destino"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "O18",
+            "O25"
+          ],
+          "why": "La consola de prelanzamiento no guarda nada."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C15"
+        ],
+        "coop_model": null,
+        "mechanism_id": null,
+        "check": "B tiene O18 en COLLECTED y lo usa sobre O33 en EMPTY."
+      },
+      "on_solve": {
+        "message": "La caja se cierra con un clic. Los plantones viajarán con ustedes.",
+        "events": [
+          "E12"
+        ],
+        "sets": [
+          "O18_STORED",
+          "O33_FILLED"
+        ]
+      },
+      "on_fail": {
+        "message": "Eso no va ahí.",
+        "effect": "Ninguno."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "Hay algo vivo en Hidroponía.",
+        "La etiqueta dice dónde debe viajar.",
+        "La caja estanca está en el centro del muelle."
+      ],
+      "estimated_minutes": 2,
+      "unlocks": [],
+      "reset_condition": "Reinicio de zona: la bandeja vuelve a Hidroponía y la caja queda vacía.",
+      "edge_cases": [
+        "B recoge la bandeja después de abrir el desvío: puede volver a Hidroponía porque las escotillas del desvío siguen abiertas.",
+        "B intenta guardarla después de embarcar: ya no se ofrece."
+      ],
+      "solution_proof": "Solo hay una bandeja y una caja estanca; la etiqueta indica el destino. Es opcional y añade un detalle al epílogo."
+    }
+  ],
+  "coop_mechanisms": [
+    {
+      "mechanism_id": "M01",
+      "model": "M2",
+      "puzzle": "P01",
+      "title": "Vigía térmico y operador del bastidor",
+      "why_not_solo": "Los avisos térmicos solo se ven en la cámara del puente y los interruptores y las unidades solo están en el módulo de energía.",
+      "info_a": "Unidades de cada celda y objetivo de 48.",
+      "info_b": "Qué celdas tienen aviso.",
+      "communicate_a": "Las unidades y la combinación que propone.",
+      "communicate_b": "Las celdas con aviso y la confirmación en la cámara.",
+      "action_a": "Mover interruptores y confirmar.",
+      "action_b": "Observar la cámara en directo y avisar si A toca una celda con aviso.",
+      "validation": "La entrada viene de A y exige C02 descubierta por B; la cámara de B refleja en directo la posición de cada interruptor.",
+      "miscommunication": "Si A conecta una celda con aviso, el bastidor se niega, los interruptores vuelven y la ayuda sugiere repasar la cámara.",
+      "anti_domination": "Quien observa no puede tocar el bastidor y quien lo toca no ve la cámara.",
+      "skill_gap": "La suma es pequeña; la ayuda de nivel 3 da la celda mayor sin dar las otras."
+    },
+    {
+      "mechanism_id": "M02",
+      "model": "M4",
+      "puzzle": "P04",
+      "title": "Lo que dice el sensor y lo que ve el navegante",
+      "why_not_solo": "El tablero de A muestra E8 disponible y tiene los costes; solo B ve que está sellada y sabe dónde está.",
+      "info_a": "Costes, presupuesto de 10 y estado erróneo de E8.",
+      "info_b": "E8 sellada, posición en Hidroponía y mapa de conexiones.",
+      "communicate_a": "Que el circuito tiene 10 unidades y el coste de cada escotilla.",
+      "communicate_b": "Que E8 está sellada y qué caminos salen de Hidroponía.",
+      "action_a": "Sumar costes y descartar rutas por encima de 10.",
+      "action_b": "Introducir la ruta en el panel local.",
+      "validation": "La entrada viene de B en el panel local y exige C07 de B y C08 de A.",
+      "miscommunication": "Si se fían del tablero y marcan E8, el panel muestra la escotilla sellada; si eligen la ruta de 11, se indica el límite de 10.",
+      "anti_domination": "En P03 programó A; aquí la entrada pasa a B y A hace el cálculo.",
+      "skill_gap": "Son sumas de tres números; la ayuda de nivel 3 da la primera escotilla."
+    },
+    {
+      "mechanism_id": "M03",
+      "model": "M3",
+      "puzzle": "P05",
+      "title": "Dos llaves a la vez",
+      "why_not_solo": "Los pedestales están a 10 m y cada uno solo responde a su jugador; además, cada placa tiene el dato del otro.",
+      "info_a": "La fase para B.",
+      "info_b": "La bahía para A.",
+      "communicate_a": "Fase 2.",
+      "communicate_b": "Bahía 3.",
+      "action_a": "Selector en 3 y girar la llave en el momento acordado.",
+      "action_b": "Selector en 2 y girar la llave en el momento acordado.",
+      "validation": "Dos giros con diferencia de 2000 ms o menos y selectores correctos, medidos en el servidor.",
+      "miscommunication": "Si cruzan los datos, las llaves no giran y se indica que cada placa habla del otro pedestal; si giran a destiempo se muestra la diferencia en segundos.",
+      "anti_domination": "Ninguno puede activar el protocolo solo; las dos acciones pesan igual.",
+      "skill_gap": "La ventana de 2 s es amplia; en modo fácil sube a 3 s y aparece una cuenta atrás compartida."
+    },
+    {
+      "mechanism_id": "M04",
+      "model": "M6",
+      "puzzle": "P07",
+      "title": "Elegir la salida",
+      "why_not_solo": "A conoce los vehículos y B lo que dice la tripulación; la votación exige a los dos.",
+      "info_a": "Ficha técnica.",
+      "info_b": "Mensaje del Albatros.",
+      "communicate_a": "Qué ofrece cada vehículo.",
+      "communicate_b": "Qué opina la tripulación.",
+      "action_a": "Votar.",
+      "action_b": "Votar.",
+      "validation": "Solo se aplica una opción cuando los dos votos coinciden.",
+      "miscommunication": "Si votan distinto, se borran los votos y se pide hablar; sin penalización.",
+      "anti_domination": "El voto es secreto hasta que votan los dos.",
+      "skill_gap": "No hay respuesta correcta; solo hace falta acordar."
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "START",
+      "to": "C01",
+      "condition": "A examina la placa del bastidor",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C02",
+      "condition": "B examina la cámara térmica",
+      "type": "required"
+    },
+    {
+      "from": "C01",
+      "to": "P01",
+      "condition": "A comunica las unidades",
+      "type": "required"
+    },
+    {
+      "from": "C02",
+      "to": "P01",
+      "condition": "B comunica los avisos",
+      "type": "required"
+    },
+    {
+      "from": "P01",
+      "to": "O11",
+      "condition": "La consola de asignación se enciende",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C03",
+      "condition": "A examina el panel de distribución",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C04",
+      "condition": "B examina el protocolo",
+      "type": "required"
+    },
+    {
+      "from": "C03",
+      "to": "P02",
+      "condition": "A dicta consumos",
+      "type": "required"
+    },
+    {
+      "from": "C04",
+      "to": "P02",
+      "condition": "B dicta prioridades",
+      "type": "required"
+    },
+    {
+      "from": "P02",
+      "to": "C05",
+      "condition": "El tablero de escotillas recibe energía",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C06",
+      "condition": "B examina el mapa",
+      "type": "required"
+    },
+    {
+      "from": "C05",
+      "to": "P03",
+      "condition": "A suma costes",
+      "type": "required"
+    },
+    {
+      "from": "C06",
+      "to": "P03",
+      "condition": "B describe conexiones",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "ROOM03",
+      "condition": "B entra en los compartimentos",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "E05",
+      "condition": "Sellado preventivo de E8",
+      "type": "required"
+    },
+    {
+      "from": "E05",
+      "to": "C07",
+      "condition": "B examina E8 sellada",
+      "type": "required"
+    },
+    {
+      "from": "E05",
+      "to": "C08",
+      "condition": "A lee el aviso del tablero",
+      "type": "required"
+    },
+    {
+      "from": "C07",
+      "to": "P04",
+      "condition": "B informa del sellado",
+      "type": "required"
+    },
+    {
+      "from": "C08",
+      "to": "P04",
+      "condition": "A informa del presupuesto",
+      "type": "required"
+    },
+    {
+      "from": "P04",
+      "to": "ROOM04",
+      "condition": "Los dos llegan al muelle",
+      "type": "required"
+    },
+    {
+      "from": "ROOM04",
+      "to": "P05",
+      "condition": "Pedestales accesibles",
+      "type": "required"
+    },
+    {
+      "from": "P05",
+      "to": "C11",
+      "condition": "Se ilumina el esquema",
+      "type": "required"
+    },
+    {
+      "from": "P05",
+      "to": "C12",
+      "condition": "Se ilumina la carta",
+      "type": "required"
+    },
+    {
+      "from": "C11",
+      "to": "P06",
+      "condition": "A dicta reglas de circuito",
+      "type": "required"
+    },
+    {
+      "from": "C12",
+      "to": "P06",
+      "condition": "B dicta reglas de salida",
+      "type": "required"
+    },
+    {
+      "from": "P06",
+      "to": "C13",
+      "condition": "Se enciende la ficha técnica",
+      "type": "required"
+    },
+    {
+      "from": "P06",
+      "to": "C14",
+      "condition": "Llega el mensaje del Albatros",
+      "type": "required"
+    },
+    {
+      "from": "C13",
+      "to": "P07",
+      "condition": "A resume los vehículos",
+      "type": "required"
+    },
+    {
+      "from": "C14",
+      "to": "P07",
+      "condition": "B resume el mensaje",
+      "type": "required"
+    },
+    {
+      "from": "P07",
+      "to": "O30",
+      "condition": "Se despliega la pasarela",
+      "type": "required"
+    },
+    {
+      "from": "O30",
+      "to": "ESCAPE",
+      "condition": "Los dos confirman el embarque",
+      "type": "required"
+    },
+    {
+      "from": "P04",
+      "to": "P08",
+      "condition": "B puede llevar la bandeja al muelle",
+      "type": "optional"
+    },
+    {
+      "from": "P08",
+      "to": "ESCAPE",
+      "condition": "Añade los plantones al epílogo",
+      "type": "optional"
+    }
+  ],
+  "state_transitions": [
+    {
+      "from": "INITIALIZING",
+      "to": "INTRO",
+      "event": "session.loaded",
+      "conditions": "Los dos jugadores conectados y con rol asignado",
+      "validations": "Rol A y rol B distintos",
+      "effects": "Reproduce la intro exterior de la estación",
+      "message": "Abisal-3. Modo seguro activado."
+    },
+    {
+      "from": "INTRO",
+      "to": "EXPLORATION",
+      "event": "player.ready x2",
+      "conditions": "Los dos pulsan Listo o saltan la intro",
+      "validations": "Ambos conectados",
+      "effects": "Arranca el reloj de 55 min; E01 reproduce a CORAL y el diario de Maren",
+      "message": "Soporte vital estable. Reserva desconectada."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "PUZZLE_ACTIVE",
+      "event": "A abre el bastidor",
+      "conditions": "P01 disponible",
+      "validations": "Jugador A",
+      "effects": "Muestra los seis interruptores",
+      "message": "Bastidor de reserva"
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "VALIDATING",
+      "event": "A pulsa Confirmar conexión",
+      "conditions": "Al menos una celda en CONECTADA",
+      "validations": "validatePuzzle(P01) con C02 descubierta por B",
+      "effects": "Bloquea los interruptores mientras valida",
+      "message": "Comprobando bastidor…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Combinación rechazada",
+      "conditions": "Suma distinta de 48 o celda con aviso",
+      "validations": "Contador de fallos",
+      "effects": "Interruptores a SUELTA",
+      "message": "El bastidor se niega a conectar."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P01 correcto",
+      "conditions": "Celdas 1, 4 y 6",
+      "validations": "C01 y C02 descubiertas",
+      "effects": "E02",
+      "message": "Reserva conectada: 48 unidades."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "EXPLORATION",
+      "event": "Fin de E02",
+      "conditions": "Consola de asignación en READY",
+      "validations": "Ninguna",
+      "effects": "Música con una capa más",
+      "message": "La consola de asignación del puente está lista."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P02 correcto",
+      "conditions": "Reparto según protocolo",
+      "validations": "C01, C03 y C04 en el servidor",
+      "effects": "E03: tablero de escotillas en línea, pasillos en penumbra",
+      "message": "Reparto firmado."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P03 correcto",
+      "conditions": "Ruta de menor coste",
+      "validations": "C05 y C06 descubiertas",
+      "effects": "E04 y E05",
+      "message": "Ruta programada."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "ROOM_UNLOCKED",
+      "event": "Fin de E04",
+      "conditions": "Exit_conditions de ROOM02 cumplidas",
+      "validations": "Ninguna",
+      "effects": "Carga ROOM03 y mueve a B por la ruta hasta Hidroponía",
+      "message": "Entrando en los compartimentos."
+    },
+    {
+      "from": "ROOM_UNLOCKED",
+      "to": "EXPLORATION",
+      "event": "Fin de E05 (complicación)",
+      "conditions": "B en Hidroponía, E8 sellada",
+      "validations": "O16 en SEALED y O04 en REMOTE_LOCKED",
+      "effects": "Muestra C07 a B y C08 a A",
+      "message": "Sellado preventivo en Hidroponía. Busquen un desvío."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P04 correcto",
+      "conditions": "Ruta sin E8, de 10 o menos y mínima",
+      "validations": "C07 de B y C08 de A",
+      "effects": "E06: escotillas del desvío y ascensor de A abiertos",
+      "message": "Desvío aceptado."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "ROOM_UNLOCKED",
+      "event": "Fin de E06",
+      "conditions": "Exit_conditions de ROOM03 y ROOM01 cumplidas",
+      "validations": "Ninguna",
+      "effects": "Carga ROOM04 para los dos",
+      "message": "Muelle de evacuación."
+    },
+    {
+      "from": "ROOM_UNLOCKED",
+      "to": "EXPLORATION",
+      "event": "Los dos llegan al muelle",
+      "conditions": "Avatares en ROOM04",
+      "validations": "Ninguna",
+      "effects": "Pedestales activos",
+      "message": "Dos llaves esperan en sus pedestales."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "Primer giro de llave en P05",
+      "conditions": "Falta el giro del otro",
+      "validations": "Selector registrado",
+      "effects": "Abre la ventana de 2000 ms y llena el anillo luminoso",
+      "message": "Llave girada. Esperando la otra llave…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "VALIDATING",
+      "event": "Segundo giro dentro de la ventana",
+      "conditions": "Diferencia de 2000 ms o menos",
+      "validations": "Selectores según C09 y C10",
+      "effects": "Compara selectores",
+      "message": "Comprobando llaves…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Ventana agotada",
+      "conditions": "Pasan 2000 ms sin el segundo giro",
+      "validations": "Hora del servidor",
+      "effects": "La llave girada vuelve a LOCKED",
+      "message": "Demasiado separado. Cuenten juntos y giren a la vez."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P05 correcto",
+      "conditions": "Selectores 3 y 2 dentro de la ventana",
+      "validations": "Ninguna adicional",
+      "effects": "E07",
+      "message": "Protocolo EVAC-3 activado."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P06 correcto",
+      "conditions": "Orden único de tareas",
+      "validations": "C11 y C12 descubiertas",
+      "effects": "E08",
+      "message": "Prelanzamiento completo."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "Un voto de P07",
+      "conditions": "Falta el voto del otro",
+      "validations": "Jugador con C13 o C14",
+      "effects": "Guarda el voto oculto",
+      "message": "Esperando el voto de tu pareja…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "VALIDATING",
+      "event": "Segundo voto",
+      "conditions": "Los dos votaron",
+      "validations": "submitDecision",
+      "effects": "Compara votos",
+      "message": "Comprobando…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Votos distintos",
+      "conditions": "Opciones distintas",
+      "validations": "Ninguna",
+      "effects": "Borra los votos",
+      "message": "Han votado distinto. Hablen y voten otra vez."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "FINAL_SEQUENCE",
+      "event": "P07 resuelto",
+      "conditions": "Votos coincidentes",
+      "validations": "Ninguna",
+      "effects": "E09: pasarela hacia el vehículo elegido",
+      "message": "Embarquen cuando estén listos."
+    },
+    {
+      "from": "FINAL_SEQUENCE",
+      "to": "COMPLETED",
+      "event": "escape.confirm x2",
+      "conditions": "Los dos confirman el embarque",
+      "validations": "O30 en OPEN",
+      "effects": "Cinemática de salida y final según P07 y P08",
+      "message": "Rumbo a la superficie."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "FAILED",
+      "event": "timer.expired",
+      "conditions": "Reloj a cero en modo con reloj",
+      "validations": "Hora del servidor",
+      "effects": "E11: modo de espera",
+      "message": "La reserva entra en modo de espera. ¿Seguir sin reloj o reiniciar la zona?"
+    },
+    {
+      "from": "FAILED",
+      "to": "EXPLORATION",
+      "event": "Elegir Modo sin reloj",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Oculta el reloj; conserva todo",
+      "message": "Sigan a su ritmo. El soporte vital está garantizado."
+    },
+    {
+      "from": "FAILED",
+      "to": "RESETTING",
+      "event": "Elegir reiniciar zona",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Aplica reset_rules de la zona actual",
+      "message": "Reiniciando la zona…"
+    },
+    {
+      "from": "RESETTING",
+      "to": "EXPLORATION",
+      "event": "Zona restaurada",
+      "conditions": "Estado restaurado",
+      "validations": "Ninguna",
+      "effects": "Reloj con 15 min extra",
+      "message": "Zona reiniciada."
+    },
+    {
+      "from": "ANY",
+      "to": "PAUSED",
+      "event": "game.pause",
+      "conditions": "Cualquiera pulsa Pausa",
+      "validations": "Ninguna",
+      "effects": "Congela el reloj, las ventanas de sincronía y las entradas",
+      "message": "Pausado."
+    },
+    {
+      "from": "PAUSED",
+      "to": "EXPLORATION",
+      "event": "game.resume x2",
+      "conditions": "Los dos pulsan Reanudar",
+      "validations": "Ambos conectados",
+      "effects": "Vuelve al estado anterior a la pausa; una ventana de P05 abierta se cancela sin fallo",
+      "message": "Reanudado."
+    }
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "trigger": [
+        "START"
+      ],
+      "prev_state": "INTRO",
+      "action": "CORAL saluda y el terminal de A reproduce el diario de Maren Ibarra",
+      "affects": [
+        "O05",
+        "ROOM01",
+        "ROOM02"
+      ],
+      "duration_s": 30,
+      "audio": "A07",
+      "visual": null,
+      "end_condition": "Termina el diario",
+      "on_interrupt": "Si se pausa, se reanuda donde se quedó; el texto ya está en el historial",
+      "repeat": "A puede volver a reproducirlo desde el terminal"
+    },
+    {
+      "event_id": "E02",
+      "trigger": [
+        "P01_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El bastidor se conecta, la luz del módulo pasa a blanco cálido y la consola de asignación del puente se enciende",
+      "affects": [
+        "O01",
+        "O11",
+        "ROOM01",
+        "ROOM02"
+      ],
+      "duration_s": 6,
+      "audio": "A08",
+      "visual": "V01",
+      "end_condition": "O01 en CONNECTED y O11 en READY",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E03",
+      "trigger": [
+        "P02_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Los sistemas elegidos arrancan; se apagan los plafones de pasillo y quedan las tiras fosforescentes; el tablero de escotillas se enciende",
+      "affects": [
+        "O04",
+        "O11",
+        "ROOM02",
+        "ROOM03"
+      ],
+      "duration_s": 8,
+      "audio": "A09",
+      "visual": "V02",
+      "end_condition": "O04 en ONLINE",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E04",
+      "trigger": [
+        "P03_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Las escotillas de la ruta se abren en orden y B avanza hasta Hidroponía",
+      "affects": [
+        "DOOR02",
+        "ROOM03"
+      ],
+      "duration_s": 12,
+      "audio": "A10",
+      "visual": "V03",
+      "end_condition": "B en Hidroponía",
+      "on_interrupt": "Si B se desconecta, aparece en Hidroponía al volver",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E05",
+      "trigger": [
+        "P03_SOLVED"
+      ],
+      "prev_state": "ROOM_UNLOCKED",
+      "action": "Complicación: la escotilla E8 se sella por condensación en la junta; el circuito se reinicia a 10 unidades, se cierran las escotillas abiertas y el control remoto de A se bloquea",
+      "affects": [
+        "O16",
+        "O04",
+        "O17",
+        "ROOM03",
+        "ROOM01"
+      ],
+      "duration_s": 6,
+      "audio": "A11",
+      "visual": "V04",
+      "end_condition": "O16 en SEALED y O04 en REMOTE_LOCKED",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E06",
+      "trigger": [
+        "P04_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Se abren las escotillas del desvío y el ascensor de servicio de A; los dos llegan al muelle",
+      "affects": [
+        "O17",
+        "DOOR01",
+        "DOOR04",
+        "ROOM04"
+      ],
+      "duration_s": 12,
+      "audio": "A10",
+      "visual": "V03",
+      "end_condition": "A y B en ROOM04",
+      "on_interrupt": "Quien se desconecte aparece en el muelle al volver",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E07",
+      "trigger": [
+        "P05_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Protocolo EVAC-3 activo: suben los focos, la grúa coloca los vehículos y se iluminan el esquema y la carta",
+      "affects": [
+        "O23",
+        "O24",
+        "O25",
+        "O26",
+        "O27",
+        "ROOM04"
+      ],
+      "duration_s": 15,
+      "audio": "A12",
+      "visual": "V05",
+      "end_condition": "O26 y O27 en LIT y O25 en READY",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E08",
+      "trigger": [
+        "P06_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Los focos de salida se encienden y aparecen la ficha técnica y el mensaje del Albatros",
+      "affects": [
+        "O25",
+        "O28",
+        "O29",
+        "ROOM04"
+      ],
+      "duration_s": 6,
+      "audio": "A13",
+      "visual": null,
+      "end_condition": "O28 y O29 en VISIBLE",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E09",
+      "trigger": [
+        "P07_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La pasarela se despliega hacia el vehículo elegido y la compuerta exterior pasa a LISTA",
+      "affects": [
+        "O30",
+        "O31",
+        "O32",
+        "DOOR07"
+      ],
+      "duration_s": 20,
+      "audio": "A06",
+      "visual": "V06",
+      "end_condition": "O30 en OPEN",
+      "on_interrupt": "La pasarela queda desplegada",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E10",
+      "trigger": [
+        "IDLE_120"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "CORAL ofrece la ayuda de nivel 1 del acertijo activo",
+      "affects": [
+        "O05",
+        "ROOM01",
+        "ROOM02",
+        "ROOM03",
+        "ROOM04"
+      ],
+      "duration_s": 5,
+      "audio": "A07",
+      "visual": null,
+      "end_condition": "Aviso mostrado",
+      "on_interrupt": "Se descarta",
+      "repeat": "Cada 2 min sin progreso, una vez por nivel de ayuda"
+    },
+    {
+      "event_id": "E11",
+      "trigger": [
+        "TIMER_EXPIRED"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "La reserva entra en modo de espera y se ofrecen Modo sin reloj o reiniciar zona",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03",
+        "ROOM04"
+      ],
+      "duration_s": 8,
+      "audio": "A07",
+      "visual": null,
+      "end_condition": "Los dos eligen",
+      "on_interrupt": "Se vuelve a mostrar la elección",
+      "repeat": "Una vez por partida con reloj"
+    },
+    {
+      "event_id": "E12",
+      "trigger": [
+        "P08_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La caja estanca se cierra con los plantones dentro",
+      "affects": [
+        "O18",
+        "O33"
+      ],
+      "duration_s": 3,
+      "audio": "A14",
+      "visual": null,
+      "end_condition": "O33 en FILLED",
+      "on_interrupt": "Queda cerrada",
+      "repeat": "Una sola vez"
+    }
+  ],
+  "dialogues": [
+    {
+      "dialogue_id": "D01",
+      "speaker": "CORAL",
+      "text": "Buenas noches. Soy CORAL, el asistente de Abisal-3. La estación está en modo seguro. El soporte vital funciona y no corren ningún peligro.",
+      "trigger": "START",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D02",
+      "speaker": "CORAL",
+      "text": "Para salir hay que activar el protocolo de evacuación. Necesito energía de la reserva y una ruta hasta el muelle.",
+      "trigger": "START",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D03",
+      "speaker": "Maren Ibarra (diario)",
+      "text": "Diario de la ingeniera jefa. Dejo la celda de marea en mantenimiento hasta mañana. Si alguien necesita la reserva, que mire la placa del bastidor y no conecte nada caliente.",
+      "trigger": "E01",
+      "audience": "A",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D04",
+      "speaker": "Maren Ibarra (diario)",
+      "text": "La cámara térmica del bastidor se ve desde el puente. Siempre lo hacemos en pareja: uno mira, otro conecta.",
+      "trigger": "E01",
+      "audience": "A",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D05",
+      "speaker": "Narrador",
+      "text": "Estás en el puente. Por el ventanal pasan peces linterna. La escotilla hacia los compartimentos está cerrada.",
+      "trigger": "START",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D06",
+      "speaker": "Narrador",
+      "text": "Estás en el módulo de energía. Seis celdas esperan en su bastidor. Tu pareja está en el puente, al otro lado del anillo.",
+      "trigger": "START",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D07",
+      "speaker": "CORAL",
+      "text": "Reserva conectada: 48 unidades. La consola de asignación del puente está lista.",
+      "trigger": "E02",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D08",
+      "speaker": "CORAL",
+      "text": "Reparto firmado. La iluminación de pasillos queda en reserva; sigan las tiras del suelo.",
+      "trigger": "E03",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D09",
+      "speaker": "CORAL",
+      "text": "Tablero de escotillas en línea. Programen una sola ruta: la de menor coste.",
+      "trigger": "E03",
+      "audience": "A",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D10",
+      "speaker": "Sistema",
+      "text": "Ruta programada. Las escotillas se abren.",
+      "trigger": "E04",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D11",
+      "speaker": "CORAL",
+      "text": "Aviso tranquilo: detecto condensación en la junta de la escotilla de Hidroponía. La sello por precaución.",
+      "trigger": "E05",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D12",
+      "speaker": "CORAL",
+      "text": "He reiniciado el circuito de esclusas: vuelve a tener 10 unidades. El control remoto queda bloqueado; usen el panel local.",
+      "trigger": "E05",
+      "audience": "AB",
+      "channel": "document"
+    },
+    {
+      "dialogue_id": "D13",
+      "speaker": "Narrador",
+      "text": "La escotilla del muelle se cierra delante de ti con un golpe sordo. Las bandas diagonales se encienden. Las que cruzaste también se han cerrado.",
+      "trigger": "E05",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D14",
+      "speaker": "Sistema",
+      "text": "Desvío aceptado. El ascensor de servicio baja al muelle.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D15",
+      "speaker": "CORAL",
+      "text": "Bienvenidos al muelle. El protocolo exige dos llaves giradas a la vez. Lean las placas: cada una habla del otro pedestal.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D16",
+      "speaker": "Sistema",
+      "text": "Demasiado separado. Cuenten juntos y giren a la vez.",
+      "trigger": "P05",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D17",
+      "speaker": "CORAL",
+      "text": "Protocolo EVAC-3 activado. Coloco los vehículos en sus cunas. Falta el prelanzamiento.",
+      "trigger": "E07",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D18",
+      "speaker": "CORAL",
+      "text": "Prelanzamiento completo. Los dos vehículos están listos y son igual de seguros. La elección es suya.",
+      "trigger": "E08",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D19",
+      "speaker": "Nuria Sol (radio del Albatros)",
+      "text": "Aquí el Albatros. Os vemos en el sonar. Tomaos el tiempo que necesitéis.",
+      "trigger": "E08",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D20",
+      "speaker": "Sistema",
+      "text": "Han votado distinto. Cuéntense lo que han leído y voten otra vez.",
+      "trigger": "P07",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D21",
+      "speaker": "CORAL",
+      "text": "Pasarela desplegada. Ha sido un placer. Dejo la estación en espera hasta que vuelva la tripulación.",
+      "trigger": "E09",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D22",
+      "speaker": "CORAL",
+      "text": "Si necesitan una pista, pídanmela. Mientras tanto, cuéntense lo que ve cada uno.",
+      "trigger": "E10",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D23",
+      "speaker": "CORAL",
+      "text": "La reserva entra en modo de espera. El soporte vital sigue activo. ¿Continuamos sin reloj o reinicio la zona?",
+      "trigger": "E11",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D24",
+      "speaker": "Narrador",
+      "text": "La caja estanca se cierra. Los plantones de Maren viajarán con ustedes.",
+      "trigger": "E12",
+      "audience": "AB",
+      "channel": "subtitle"
+    }
+  ],
+  "audio_cues": [
+    {
+      "audio_id": "A01",
+      "type": "ambient",
+      "description": "Zumbido bajo de máquinas y goteo lejano de condensación",
+      "loop": true,
+      "subtitle": "[zumbido de máquinas]"
+    },
+    {
+      "audio_id": "A02",
+      "type": "music",
+      "description": "Pads electrónicos lentos con un pulso suave, en tono menor amable",
+      "loop": true,
+      "subtitle": null
+    },
+    {
+      "audio_id": "A03",
+      "type": "ambient",
+      "description": "Pitidos suaves de consolas y el murmullo del agua contra el ventanal",
+      "loop": true,
+      "subtitle": "[pitidos de consola]"
+    },
+    {
+      "audio_id": "A04",
+      "type": "ambient",
+      "description": "Silencio acolchado, ventilación lenta y burbujeo de los cultivos",
+      "loop": true,
+      "subtitle": "[ventilación lenta]"
+    },
+    {
+      "audio_id": "A05",
+      "type": "ambient",
+      "description": "Hangar amplio con eco suave y cables de la grúa crujiendo",
+      "loop": true,
+      "subtitle": "[eco del hangar]"
+    },
+    {
+      "audio_id": "A06",
+      "type": "music",
+      "description": "Tema final: piano y cuerdas ascendentes, esperanzador",
+      "loop": true,
+      "subtitle": "[música esperanzadora]"
+    },
+    {
+      "audio_id": "A07",
+      "type": "voice",
+      "description": "Voz de CORAL, calmada y cálida, o voz grabada de Maren",
+      "loop": false,
+      "subtitle": "Ver diálogos"
+    },
+    {
+      "audio_id": "A08",
+      "type": "sfx",
+      "description": "Clac de interruptores y zumbido creciente del bastidor",
+      "loop": false,
+      "subtitle": "[el bastidor zumba]"
+    },
+    {
+      "audio_id": "A09",
+      "type": "sfx",
+      "description": "Sistemas arrancando uno tras otro con pitidos ascendentes",
+      "loop": false,
+      "subtitle": "[los sistemas arrancan]"
+    },
+    {
+      "audio_id": "A10",
+      "type": "sfx",
+      "description": "Escotilla neumática que se abre con siseo suave",
+      "loop": false,
+      "subtitle": "[se abre una escotilla]"
+    },
+    {
+      "audio_id": "A11",
+      "type": "sfx",
+      "description": "Golpe sordo de escotilla al sellarse y pitido de aviso grave y corto, nunca estridente",
+      "loop": false,
+      "subtitle": "[escotilla sellada]"
+    },
+    {
+      "audio_id": "A12",
+      "type": "sfx",
+      "description": "Dos llaves que giran a la vez y un acorde de confirmación",
+      "loop": false,
+      "subtitle": "[protocolo activado]"
+    },
+    {
+      "audio_id": "A13",
+      "type": "sfx",
+      "description": "Focos que se encienden con un chasquido y un sonar que hace ping",
+      "loop": false,
+      "subtitle": "[ping del sonar]"
+    },
+    {
+      "audio_id": "A14",
+      "type": "sfx",
+      "description": "Cierre de palanca de una caja",
+      "loop": false,
+      "subtitle": "[la caja se cierra]"
+    }
+  ],
+  "visual_effects": [
+    {
+      "vfx_id": "V01",
+      "description": "Las luces del módulo pasan de ámbar a blanco cálido en un barrido de oeste a este",
+      "reduced_motion_alt": "Cambio de color de una vez, sin barrido"
+    },
+    {
+      "vfx_id": "V02",
+      "description": "Los plafones del pasillo se apagan uno a uno y se encienden las tiras fosforescentes",
+      "reduced_motion_alt": "Fundido único a la iluminación de tiras"
+    },
+    {
+      "vfx_id": "V03",
+      "description": "Escotillas que se abren en secuencia con un destello de luz en el marco",
+      "reduced_motion_alt": "Las escotillas aparecen abiertas con un fundido corto"
+    },
+    {
+      "vfx_id": "V04",
+      "description": "Bandas diagonales y candado que se dibujan sobre la escotilla E8 con un pulso lento",
+      "reduced_motion_alt": "Bandas y candado fijos, sin pulso; el texto SELLADA se muestra a la vez"
+    },
+    {
+      "vfx_id": "V05",
+      "description": "Anillo luminoso que se llena alrededor de cada llave durante la ventana y grúa moviendo los vehículos",
+      "reduced_motion_alt": "Contador numérico de 2 a 0 junto a la llave y vehículos que aparecen en sus cunas con fundido"
+    },
+    {
+      "vfx_id": "V06",
+      "description": "Pasarela que se despliega y vehículo que se aleja entre partículas de plancton luminoso",
+      "reduced_motion_alt": "Imagen fija del vehículo partiendo y fundido a negro"
+    }
+  ],
+  "endings": [
+    {
+      "ending_id": "END01",
+      "name": "Rumbo a la superficie",
+      "type": "main",
+      "condition": [
+        "O30_OPEN"
+      ],
+      "text": "La pareja embarca, la cuna se suelta con suavidad y Abisal-3 queda en espera, iluminada por los peces linterna. En el Albatros los recibe la tripulación con mantas y chocolate caliente."
+    },
+    {
+      "ending_id": "END02",
+      "name": "El viaje del Tamboril",
+      "type": "decision",
+      "condition": [
+        "P07_OPT_MINISUB",
+        "O30_OPEN"
+      ],
+      "text": "El Tamboril sigue la baliza durante cuarenta minutos tranquilos. Al llegar, Maren Ibarra abre la bodega y abraza la caja del archivo: dos años de trabajo a salvo gracias a ustedes."
+    },
+    {
+      "ending_id": "END03",
+      "name": "La subida de la Boya-7",
+      "type": "decision",
+      "condition": [
+        "P07_OPT_CAPSULA",
+        "O30_OPEN"
+      ],
+      "text": "La Boya-7 sube recta y sale a la superficie bajo un cielo de amanecer. La lancha llega en minutos. Maren les dice que el archivo puede esperar a la próxima visita y que han elegido bien."
+    },
+    {
+      "ending_id": "END04",
+      "name": "Los plantones viajan",
+      "type": "alternative",
+      "condition": [
+        "P08_SOLVED",
+        "O30_OPEN"
+      ],
+      "text": "Se añade al epílogo: en la cubierta del Albatros, Maren coloca la bandeja de plantones al sol y anota en su cuaderno: Ensayo 14, salvado por nuestras visitas."
+    }
+  ],
+  "replay_tips": [
+    "Intercambien los papeles: quien supervisó la energía, que navegue.",
+    "Elijan el otro vehículo para ver el otro epílogo.",
+    "Busquen la bandeja de plantones si no la encontraron.",
+    "Prueben el modo difícil: la ventana de las llaves baja a 1,2 s y la cámara térmica se actualiza cada 10 s.",
+    "Jueguen otra variante: cambian las celdas, los costes de las escotillas y los datos de las llaves."
+  ],
+  "variants": [
+    {
+      "variant_id": "VAR01",
+      "description": "Cambian las unidades de las celdas; la 2 y la 5 siguen con aviso",
+      "overrides": {
+        "clues": {
+          "C01": {
+            "content": "Bastidor de reserva. Celda 1: 10 unidades. Celda 2: 24 unidades. Celda 3: 20 unidades. Celda 4: 16 unidades. Celda 5: 22 unidades. Celda 6: 28 unidades. El protocolo EVAC-3 necesita exactamente 48 unidades: conectar celdas hasta sumar 48, ni una más ni una menos. No conectar nunca una celda que la cámara térmica marque con aviso: el bastidor se desconectaría entero.",
+            "alt_text": "Celda 1, 10; celda 2, 24; celda 3, 20; celda 4, 16; celda 5, 22; celda 6, 28. Objetivo: 48 exactas. Prohibido conectar celdas con aviso."
+          }
+        },
+        "puzzles": {
+          "P01": {
+            "answer": {
+              "type": "set",
+              "value": [
+                "3",
+                "6"
+              ],
+              "normalize": "Igual que la base. Sanas: 1 (10), 3 (20), 4 (16), 6 (28); solo 20 + 28 da 48. La trampa 10 + 16 + 22 usa la celda 5, con aviso."
+            },
+            "hints": [
+              "A tiene las unidades y B ve qué celdas están calientes: compártanlo.",
+              "Quiten primero las celdas con aviso; con las que quedan, busquen una suma exacta de 48.",
+              "La celda más grande sana es la 6, con 28: les faltan 20, y hay una sola celda sana que da justo 20."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "1",
+                  "4",
+                  "5"
+                ],
+                "why": "Suma 48, pero la celda 5 tiene aviso térmico."
+              },
+              {
+                "value": [
+                  "1",
+                  "3",
+                  "4"
+                ],
+                "why": "Son celdas sanas, pero suman 46."
+              },
+              {
+                "value": [
+                  "1",
+                  "4",
+                  "6"
+                ],
+                "why": "Son celdas sanas, pero suman 54."
+              }
+            ],
+            "steps": [
+              "B examina la cámara térmica y lee los avisos.",
+              "A examina la placa del bastidor.",
+              "Descartan las celdas 2 y 5.",
+              "Con 10, 20, 16 y 28 buscan la suma 48: 20 + 28.",
+              "A pone en CONECTADA las celdas 3 y 6 y confirma."
+            ],
+            "solution_proof": "Las celdas sanas son 1 (10), 3 (20), 4 (16) y 6 (28). Sus sumas posibles: parejas 30, 26, 38, 36, 48 (3 y 6) y 44; tríos 46, 54, 64 y 58; las cuatro, 74. Solo {3, 6} da 48. La combinación {1, 4, 5} también suma 48 pero usa la celda 5, con aviso. A no ve los avisos y B no ve las unidades."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR02",
+      "description": "Cambian los costes de las escotillas; la ruta inicial pasa por el Comedor y el desvío por el Almacén",
+      "overrides": {
+        "clues": {
+          "C05": {
+            "content": "Tablero de escotillas. Coste de apertura en unidades del circuito de esclusas: E1 1. E2 4. E3 4. E4 2. E5 2. E6 2. E7 2. E8 3. E9 5. Regla del circuito: programar una sola ruta desde el Puente hasta el Muelle, la de menor coste total. El circuito tiene 10 unidades y nunca puede gastar más. Las escotillas se programan en el orden en que se cruzan.",
+            "alt_text": "E1 1, E2 4, E3 4, E4 2, E5 2, E6 2, E7 2, E8 3, E9 5. Ruta de menor coste, máximo 10, en orden de paso."
+          }
+        },
+        "puzzles": {
+          "P03": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "E1",
+                "E4",
+                "E8"
+              ],
+              "normalize": "Igual que la base. Rutas: E1-E3-E7 7, E1-E4-E8 6, E2-E5-E8 9, E2-E6-E9 11, E1-E4-E5-E6-E9 12, E2-E5-E4-E3-E7 14."
+            },
+            "hints": [
+              "A tiene los costes y B el mapa: sumen los caminos completos.",
+              "Hay cuatro caminos de tres escotillas del Puente al Muelle: sumen cada uno.",
+              "La ruta empieza por E1, que solo cuesta 1."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "E1",
+                  "E3",
+                  "E7"
+                ],
+                "why": "Es una ruta válida, pero cuesta 7 y hay otra de 6."
+              },
+              {
+                "value": [
+                  "E2",
+                  "E5",
+                  "E8"
+                ],
+                "why": "Cuesta 9; no es la más barata."
+              },
+              {
+                "value": [
+                  "E8",
+                  "E4",
+                  "E1"
+                ],
+                "why": "Es la ruta correcta al revés: no empieza en el Puente."
+              },
+              {
+                "value": [
+                  "E1",
+                  "E8"
+                ],
+                "why": "E1 llega al Comedor y E8 sale de Hidroponía: la ruta tiene un salto."
+              }
+            ],
+            "steps": [
+              "B lee las conexiones del mapa.",
+              "A lee los costes.",
+              "Calculan: E1-E3-E7 = 7; E1-E4-E8 = 6; E2-E5-E8 = 9; E2-E6-E9 = 11; las rutas largas cuestan 12 o más.",
+              "A programa E1, E4, E8 y pulsa Programar."
+            ],
+            "solution_proof": "Con el grafo de C06 hay seis caminos simples del Puente al Muelle: E1-E3-E7 (7), E1-E4-E8 (6), E2-E5-E8 (9), E2-E6-E9 (11), E1-E4-E5-E6-E9 (12) y E2-E5-E4-E3-E7 (14). El mínimo, 6, es único. A no sabe qué une cada escotilla y B no conoce los costes."
+          },
+          "P04": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "E4",
+                "E3",
+                "E7"
+              ],
+              "normalize": "Igual que la base. Desde Hidroponía sin E8: E4-E3-E7 8, E5-E6-E9 9, E4-E1-E2-E6-E9 14, E5-E2-E1-E3-E7 13; la más barata es E4-E3-E7."
+            },
+            "hints": [
+              "Lo que ve B en la escotilla y lo que dice el tablero de A no coinciden: ¿de qué se fían?",
+              "Empiecen en Hidroponía, sin E8, y con 10 unidades como máximo.",
+              "Volver al Comedor por E4 es parte de la ruta buena."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "E8"
+                ],
+                "why": "El tablero de A la muestra disponible, pero está sellada: el panel local la rechaza."
+              },
+              {
+                "value": [
+                  "E5",
+                  "E6",
+                  "E9"
+                ],
+                "why": "Cabe en 10, pero cuesta 9 y hay otra de 8."
+              },
+              {
+                "value": [
+                  "E3",
+                  "E7"
+                ],
+                "why": "B está en Hidroponía: E3 sale del Comedor, falta cruzar E4 primero."
+              }
+            ],
+            "steps": [
+              "B examina E8 y la describe.",
+              "A lee el aviso del tablero.",
+              "Calculan: E4-E3-E7 = 8; E5-E6-E9 = 9; las rutas por el Puente cuestan 13 o más y se pasan del límite.",
+              "B marca E4, E3, E7 en el panel local y pulsa Abrir ruta."
+            ],
+            "solution_proof": "Desde Hidroponía y sin E8 hay cuatro caminos simples al Muelle: E4-E3-E7 (2 + 4 + 2 = 8), E5-E6-E9 (2 + 2 + 5 = 9), E4-E1-E2-E6-E9 (14) y E5-E2-E1-E3-E7 (13). Las dos primeras no superan 10 y la más barata, E4-E3-E7, es única. A no ve que E8 está sellada y B no conoce los costes ni el límite."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR03",
+      "description": "Cambian la fase y la bahía de las placas de las llaves",
+      "overrides": {
+        "clues": {
+          "C09": {
+            "content": "Placa de la llave de energía (operador oeste): Coloque el selector en el número de la bahía activa y gire a la vez que la llave de navegación. Para el operador este: la toma del muelle está conectada en la fase 4.",
+            "alt_text": "Selector oeste igual a la bahía activa, que indica la otra placa. Dato para el otro pedestal: fase 4."
+          },
+          "C10": {
+            "content": "Placa de la llave de navegación (operador este): Coloque el selector en el número de fase de la toma del muelle y gire a la vez que la llave de energía. Para el operador oeste: la bahía activa es la 1.",
+            "alt_text": "Selector este igual a la fase, que indica la otra placa. Dato para el otro pedestal: bahía 1."
+          }
+        },
+        "puzzles": {
+          "P05": {
+            "answer": {
+              "type": "simultaneous",
+              "value": {
+                "A": {
+                  "selector": 1,
+                  "press": "GIRAR_LLAVE"
+                },
+                "B": {
+                  "selector": 4,
+                  "press": "GIRAR_LLAVE"
+                }
+              },
+              "normalize": "Igual que la base"
+            },
+            "hints": [
+              "Cada placa tiene un dato para el otro pedestal: léanselo.",
+              "A pone el número de la bahía, que está en la placa de B; B, el de la fase, que está en la placa de A.",
+              "Cuenten en voz alta tres, dos, uno y giren en el uno."
+            ],
+            "wrong_answers": [
+              {
+                "value": {
+                  "A": {
+                    "selector": 4,
+                    "press": "GIRAR_LLAVE"
+                  },
+                  "B": {
+                    "selector": 1,
+                    "press": "GIRAR_LLAVE"
+                  }
+                },
+                "why": "Cada uno ha usado el dato de su propia placa, que es el del otro."
+              },
+              {
+                "value": {
+                  "A": {
+                    "selector": 1,
+                    "press": "GIRAR_LLAVE"
+                  },
+                  "B": {
+                    "selector": 4,
+                    "press": "NINGUNA"
+                  }
+                },
+                "why": "Solo gira A: la ventana se cierra y la llave vuelve."
+              }
+            ],
+            "steps": [
+              "A lee su placa y dice: fase 4.",
+              "B lee su placa y dice: bahía 1.",
+              "A pone su selector en 1 y B el suyo en 4.",
+              "Cuentan tres, dos, uno y giran a la vez."
+            ],
+            "solution_proof": "Cada placa da un único número para el otro pedestal: fase 4 en la de A y bahía 1 en la de B. La regla de cada selector remite al dato de la otra placa, así que A debe usar 1 y B 4. Invertirlos es el error típico y se rechaza. La ventana de 2 s obliga a coordinarse en tiempo real."
+          }
+        }
+      }
+    }
+  ],
+  "difficulty_tuning": {
+    "easy": [
+      "La ventana de las llaves sube a 3000 ms y aparece una cuenta atrás compartida en las dos pantallas.",
+      "El panel de A muestra el contador de unidades libres mientras B activa sistemas.",
+      "El tablero de escotillas resalta las escotillas que ya forman parte de una ruta continua.",
+      "La ayuda de nivel 1 se ofrece a los 90 s sin progreso."
+    ],
+    "hard": [
+      "La ventana de las llaves baja a 1200 ms.",
+      "La cámara térmica se actualiza cada 10 s en lugar de en directo.",
+      "El mapa de compartimentos no muestra los nombres en las líneas: B debe leer las conexiones en una lista aparte dentro del mapa.",
+      "La ayuda solo se ofrece si se pide."
+    ]
+  },
+  "reset_rules": [
+    {
+      "scope": "puzzle",
+      "target": "P01",
+      "restores": "Los seis interruptores en SUELTA",
+      "keeps": "Pistas C01 y C02"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P02",
+      "restores": "Los ocho interruptores de sistema apagados",
+      "keeps": "Reserva conectada y pistas C03 y C04"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P05",
+      "restores": "Las dos llaves en LOCKED; selectores en 1",
+      "keeps": "Pistas C09 y C10"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM01",
+      "restores": "Bastidor desconectado, tablero de escotillas en OFFLINE",
+      "keeps": "Pistas descubiertas por B en el puente"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM02",
+      "restores": "P02 y P03 sin resolver, consola de asignación en READY si P01 está resuelto",
+      "keeps": "Reserva conectada y pistas de A"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM03",
+      "restores": "P04 sin resolver; B vuelve a Hidroponía con E8 sellada y panel local en IDLE; la bandeja vuelve a su sitio",
+      "keeps": "Todo lo resuelto en el módulo y el puente"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM04",
+      "restores": "P05, P06, P07 y P08 sin resolver, llaves en LOCKED, consola en LOCKED, votos borrados, pasarela plegada",
+      "keeps": "Ruta al muelle abierta y todo lo anterior"
+    },
+    {
+      "scope": "full",
+      "target": "ALL",
+      "restores": "Estado inicial completo e intro",
+      "keeps": "Nada salvo los ajustes de accesibilidad"
+    }
+  ],
+  "test_cases": [
+    {
+      "test_id": "T01",
+      "category": 1,
+      "title": "Inicio correcto",
+      "steps": [
+        "Cargar ER07",
+        "A y B pulsan Listo"
+      ],
+      "expected": "A en ROOM01, B en ROOM02, reloj en 55:00, E01 una vez, D01 y D02 para los dos",
+      "covers": [
+        "ROOM01",
+        "ROOM02",
+        "E01",
+        "D01"
+      ]
+    },
+    {
+      "test_id": "T02",
+      "category": 2,
+      "title": "Pistas obligatorias descubribles",
+      "steps": [
+        "Recorrer la ruta de victoria",
+        "Revisar el registro de pistas de cada jugador"
+      ],
+      "expected": "C01 a C14 descubiertas por su jugador; C16 y C17 solo tras inactividad",
+      "covers": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14"
+      ]
+    },
+    {
+      "test_id": "T03",
+      "category": 3,
+      "title": "P01 correcto",
+      "steps": [
+        "B examina la cámara",
+        "A conecta 1, 4 y 6 y confirma"
+      ],
+      "expected": "P01 resuelto, O01 CONNECTED, O11 READY, E02 una vez",
+      "covers": [
+        "P01",
+        "M01",
+        "E02",
+        "O01"
+      ]
+    },
+    {
+      "test_id": "T04",
+      "category": 4,
+      "title": "P01 con celda caliente",
+      "steps": [
+        "A conecta 2 y 6 y confirma"
+      ],
+      "expected": "Rechazo, interruptores a SUELTA, fails = 1",
+      "covers": [
+        "P01",
+        "C02"
+      ]
+    },
+    {
+      "test_id": "T05",
+      "category": 6,
+      "title": "P01 sin la comprobación térmica de B",
+      "steps": [
+        "B no examina la cámara",
+        "A conecta 1, 4 y 6 y confirma"
+      ],
+      "expected": "Rechazo MISSING_CLUE Falta la comprobación térmica; no cuenta como fallo",
+      "covers": [
+        "P01",
+        "M01",
+        "C02"
+      ]
+    },
+    {
+      "test_id": "T06",
+      "category": 3,
+      "title": "P02 correcto",
+      "steps": [
+        "Resolver P01",
+        "B activa Soporte, Esclusas, Sonar, Baliza y Grúa y firma"
+      ],
+      "expected": "P02 resuelto, E03, O04 ONLINE, C05 visible para A",
+      "covers": [
+        "P02",
+        "E03",
+        "O04",
+        "C05"
+      ]
+    },
+    {
+      "test_id": "T07",
+      "category": 4,
+      "title": "P02 saltando la Grúa",
+      "steps": [
+        "B activa Soporte, Esclusas, Sonar, Baliza e Iluminación y firma"
+      ],
+      "expected": "Rechazo; los interruptores se quedan para corregir",
+      "covers": [
+        "P02"
+      ]
+    },
+    {
+      "test_id": "T08",
+      "category": 5,
+      "title": "Firmar reparto antes de conectar la reserva",
+      "steps": [
+        "B pulsa Firmar reparto al inicio"
+      ],
+      "expected": "La consola está en LOCKED; se muestra Reserva desconectada; no cuenta como fallo",
+      "covers": [
+        "P02",
+        "O11"
+      ]
+    },
+    {
+      "test_id": "T09",
+      "category": 3,
+      "title": "P03 ruta más barata y rechazo de una de 9",
+      "steps": [
+        "A programa E1, E3, E7",
+        "A programa E2, E5, E8"
+      ],
+      "expected": "Primero rechazado por no ser la más barata; después P03 resuelto, E04 y E05",
+      "covers": [
+        "P03",
+        "E04",
+        "E05",
+        "ROOM03"
+      ]
+    },
+    {
+      "test_id": "T10",
+      "category": 6,
+      "title": "P04 siguiendo el tablero de A",
+      "steps": [
+        "Tras E05, B marca E8 en el panel local",
+        "B marca E5, E6, E9"
+      ],
+      "expected": "Primero rechazo con escotilla sellada; después P04 resuelto y E06",
+      "covers": [
+        "P04",
+        "M02",
+        "C07",
+        "C08",
+        "E06"
+      ]
+    },
+    {
+      "test_id": "T11",
+      "category": 12,
+      "title": "Programar desde el tablero de A tras el sellado",
+      "steps": [
+        "Tras E05, A intenta programar E5, E6, E9 en su tablero"
+      ],
+      "expected": "Rechazo REMOTE_LOCKED Control remoto bloqueado; no cuenta como fallo",
+      "covers": [
+        "P04",
+        "O04"
+      ]
+    },
+    {
+      "test_id": "T12",
+      "category": 7,
+      "title": "Llaves dentro de la ventana",
+      "steps": [
+        "A pone 3, B pone 2",
+        "A gira y B gira 1,2 s después"
+      ],
+      "expected": "P05 resuelto, E07, O23 y O24 TURNED",
+      "covers": [
+        "P05",
+        "M03",
+        "E07"
+      ]
+    },
+    {
+      "test_id": "T13",
+      "category": 7,
+      "title": "Llaves fuera de la ventana",
+      "steps": [
+        "A pone 3, B pone 2",
+        "A gira y B gira 2,6 s después"
+      ],
+      "expected": "WAITING_FOR_PARTNER y vuelta a PUZZLE_ACTIVE; D16 con la diferencia de tiempo; no resuelto",
+      "covers": [
+        "P05",
+        "M03",
+        "D16"
+      ]
+    },
+    {
+      "test_id": "T14",
+      "category": 4,
+      "title": "Selectores cruzados",
+      "steps": [
+        "A pone 2, B pone 3",
+        "Giran a la vez"
+      ],
+      "expected": "Las llaves no giran; mensaje sobre que cada placa habla del otro pedestal",
+      "covers": [
+        "P05",
+        "C09",
+        "C10"
+      ]
+    },
+    {
+      "test_id": "T15",
+      "category": 3,
+      "title": "P06 orden correcto y rechazo",
+      "steps": [
+        "B pulsa BALIZA, TOMA, SONAR, FOCOS, ESCOTILLA",
+        "B pulsa BALIZA, SONAR, TOMA, FOCOS, ESCOTILLA"
+      ],
+      "expected": "Primero rechazado; después P06 resuelto y E08",
+      "covers": [
+        "P06",
+        "E08",
+        "C11",
+        "C12"
+      ]
+    },
+    {
+      "test_id": "T16",
+      "category": 6,
+      "title": "Votos distintos y luego iguales en P07",
+      "steps": [
+        "A vota MINISUB, B vota CAPSULA",
+        "Los dos votan CAPSULA"
+      ],
+      "expected": "Primero se borran los votos y aparece D20; después P07 resuelto con CAPSULA y E09",
+      "covers": [
+        "P07",
+        "M04",
+        "D20",
+        "E09"
+      ]
+    },
+    {
+      "test_id": "T17",
+      "category": 8,
+      "title": "Doble envío de P03",
+      "steps": [
+        "A envía la ruta correcta dos veces con el mismo actionId y luego con otro"
+      ],
+      "expected": "E04 y E05 se disparan una sola vez; la segunda respuesta es ALREADY_SOLVED",
+      "covers": [
+        "P03",
+        "E04",
+        "E05"
+      ]
+    },
+    {
+      "test_id": "T18",
+      "category": 9,
+      "title": "Pausa con una llave girada",
+      "steps": [
+        "A gira su llave",
+        "B pulsa Pausa antes de girar",
+        "Reanudar"
+      ],
+      "expected": "El reloj y la ventana se congelan; al reanudar la ventana se cancela sin fallo y la llave vuelve",
+      "covers": [
+        "P05",
+        "O23"
+      ]
+    },
+    {
+      "test_id": "T19",
+      "category": 10,
+      "title": "Reinicio completo",
+      "steps": [
+        "Resolver P01 a P05",
+        "Reinicio completo"
+      ],
+      "expected": "Todos los objetos y pistas en estado inicial, reloj a 55:00 e intro",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ]
+    },
+    {
+      "test_id": "T20",
+      "category": 11,
+      "title": "Final con minisubmarino y plantones",
+      "steps": [
+        "Resolver todo, guardar los plantones y votar MINISUB",
+        "Los dos confirman embarque"
+      ],
+      "expected": "COMPLETED con END01, END02 y END04 en el resumen",
+      "covers": [
+        "END01",
+        "END02",
+        "END04",
+        "P08",
+        "O30",
+        "E12"
+      ]
+    },
+    {
+      "test_id": "T21",
+      "category": 13,
+      "title": "Desconexión de B durante el sellado",
+      "steps": [
+        "Resolver P03",
+        "B se desconecta durante E05 y vuelve a los 40 s"
+      ],
+      "expected": "B aparece en Hidroponía, E8 en SEALED, C07 en su registro; A conserva C08",
+      "covers": [
+        "E05",
+        "O16",
+        "C07"
+      ]
+    },
+    {
+      "test_id": "T22",
+      "category": 14,
+      "title": "Avisos térmicos y escotilla sellada sin color ni audio",
+      "steps": [
+        "Activar modo daltónico, alto contraste y silencio",
+        "Leer C02 y C07"
+      ],
+      "expected": "C02 marca los avisos con rayas, triángulo y texto; C07 muestra bandas, candado y texto SELLADA; subtítulos activos",
+      "covers": [
+        "C02",
+        "C07",
+        "V04"
+      ]
+    },
+    {
+      "test_id": "T23",
+      "category": 15,
+      "title": "Validador sin rutas sin salida y variantes",
+      "steps": [
+        "Ejecutar validate.mjs ER07",
+        "Aplicar VAR01, VAR02 y VAR03 y recalcular las respuestas de P01, P03, P04 y P05"
+      ],
+      "expected": "Todos los acertijos principales y finales alcanzables; cada variante tiene una única respuesta coherente con sus pistas",
+      "covers": [
+        "P01",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08"
+      ]
+    },
+    {
+      "test_id": "T24",
+      "category": 5,
+      "title": "Prelanzamiento antes de activar el protocolo",
+      "steps": [
+        "Llegar al muelle",
+        "B pulsa tareas en la consola sin girar las llaves"
+      ],
+      "expected": "La consola está en LOCKED; se indica Protocolo inactivo; no cuenta como fallo",
+      "covers": [
+        "P06",
+        "O25"
+      ]
+    }
+  ],
+  "resources": {
+    "models_3d": [
+      "Estación en anillo exterior con peces linterna",
+      "Módulo de energía: bastidor de seis celdas, panel de distribución, tablero de escotillas, terminal",
+      "Puente: ventanal curvo, consolas, sillón, atril, mapa iluminado",
+      "Compartimentos: comedor, laboratorio, hidroponía, almacén, sala de descanso",
+      "Escotillas redondas animadas con estados abierta, cerrada y sellada",
+      "Muelle: dos pedestales de llave, consola de prelanzamiento, grúa, pasarela",
+      "Minisubmarino Tamboril con bodega",
+      "Cápsula Boya-7",
+      "Caja estanca y bandeja de plantones"
+    ],
+    "textures": [
+      "Metal pintado con números de pintura luminosa",
+      "Patrones térmicos liso y rayas diagonales con triángulo",
+      "Bandas diagonales de escotilla sellada",
+      "Tiras fosforescentes de suelo",
+      "Agua profunda para ventanas"
+    ],
+    "sounds": [
+      "A01 a A14"
+    ],
+    "animations": [
+      "Interruptores del bastidor",
+      "Sistemas arrancando",
+      "Escotillas abriendo y sellando",
+      "Llaves girando y anillo de ventana",
+      "Grúa moviendo vehículos",
+      "Pasarela desplegándose",
+      "Salida del vehículo"
+    ],
+    "ui": [
+      "Panel de bastidor con seis interruptores",
+      "Imagen térmica con números y patrones",
+      "Consola de asignación con ocho sistemas",
+      "Tablero de escotillas con costes y teclado de ruta",
+      "Panel local de escotillas",
+      "Selector de cuatro posiciones y llave",
+      "Consola de cinco tareas en orden",
+      "Votación oculta de dos opciones"
+    ],
+    "vfx": [
+      "V01 a V06"
+    ],
+    "dialogue_lines": 24,
+    "mechanisms": [
+      "Selección de subconjunto con suma exacta",
+      "Reparto por prioridades con presupuesto",
+      "Ruta de menor coste en un grafo",
+      "Desvío con información contradictoria",
+      "Acción simultánea con datos cruzados",
+      "Ordenación por restricciones",
+      "Votación compartida",
+      "Usar objeto sobre objeto"
+    ]
+  }
+}

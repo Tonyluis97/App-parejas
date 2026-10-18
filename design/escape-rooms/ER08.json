@@ -1,0 +1,4517 @@
+{
+  "scenario_id": "ER08",
+  "title": "El museo de las sombras",
+  "version": "1.0.0",
+  "players": 2,
+  "genre": "Misterio artístico",
+  "synopsis": "Noche de ensayo en el Museo Lumen: la exposición Teatro de sombras de la artista Ilse Moraga se ha quedado congelada y el museo ha cerrado sus puertas en modo nocturno. A maneja los focos desde la cabina de luces; B, en la galería, interpreta las sombras que se proyectan. Juntos completan las piezas, superan un apagón con solo los focos de batería y eligen la obra final que reabrirá la exposición.",
+  "difficulty": "medium",
+  "estimated_duration_minutes": 45,
+  "phase_minutes": {
+    "awakening": 4,
+    "discovery": 12,
+    "complication": 12,
+    "climax": 12,
+    "escape": 5
+  },
+  "competencies": [
+    "Percepción espacial",
+    "Orientación y cambio de perspectiva",
+    "Descripción precisa de formas",
+    "Escucha activa",
+    "Razonamiento proporcional",
+    "Toma de decisiones compartida"
+  ],
+  "initial_conditions": "A empieza en la Cabina de luces, elevada sobre la pared sur de la galería, con los mandos de los focos, la linterna mágica y una ventana inclinada hacia el suelo de la sala. B empieza en la Galería de las sombras, frente al muro de proyección. El programa de sala está congelado y la puerta de la rotonda cerrada. La llamada de voz está abierta; en la ficción, hablan por los auriculares de la visita guiada.",
+  "initial_state": "INITIALIZING",
+  "objectives": [
+    {
+      "objective_id": "OBJ01",
+      "text": "Posar la sombra de la garza en su marco y abrir la vitrina de los cuatro cuerpos",
+      "required": true,
+      "completed_when": [
+        "P01_SOLVED",
+        "P02_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ02",
+      "text": "Reiniciar el programa de sala con la linterna mágica",
+      "required": true,
+      "completed_when": [
+        "P03_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ03",
+      "text": "Abrir la rotonda durante el apagón y despertar el eclipse",
+      "required": true,
+      "completed_when": [
+        "P04_SOLVED",
+        "P05_SOLVED"
+      ]
+    },
+    {
+      "objective_id": "OBJ04",
+      "text": "Elegir la obra final y reabrir la exposición",
+      "required": true,
+      "completed_when": [
+        "P06_SOLVED",
+        "O30_OPEN"
+      ]
+    },
+    {
+      "objective_id": "OBJ05",
+      "text": "Devolver la silueta del gato a su atril",
+      "required": false,
+      "completed_when": [
+        "P07_SOLVED"
+      ]
+    }
+  ],
+  "win_condition": {
+    "type": "all_required_objectives_completed",
+    "required_objectives": [
+      "OBJ01",
+      "OBJ02",
+      "OBJ03",
+      "OBJ04"
+    ]
+  },
+  "fail_condition": {
+    "type": "timer_expired",
+    "minutes": 45,
+    "consequence": "Amanece y las sombras se desvanecen con la luz del día: los jugadores eligen seguir en Modo sin reloj o reiniciar la zona actual. No se pierde ningún acertijo resuelto."
+  },
+  "reset_condition": "Cualquiera de los dos pulsa Reiniciar zona y el otro lo confirma; también se ofrece al agotarse el reloj. El reinicio completo vuelve al estado inicial y a la intro.",
+  "narrative": {
+    "intro": "Fundido desde negro: una sala alta con un muro blanco enorme. Un foco se enciende y la sombra de una garza de alambre crece sobre el muro, demasiado grande, desbordando un marco pintado. Suena un proyector antiguo y se detiene. En el muro aparece un rótulo: Teatro de sombras, de Ilse Moraga. Ensayo general. Las puertas se cierran con un clic suave.",
+    "reason": "La pareja ha sido invitada como público de prueba al ensayo general de la exposición, la noche antes de abrirla. A subió a la cabina de luces a ver cómo se maneja el espectáculo y B se quedó en la galería. A mitad del ensayo, el programa de sala se congela y el museo entra en modo nocturno: todas las puertas se cierran hasta que el programa vuelva a funcionar.",
+    "initial_situation": "LUMEN, la guía automática del museo, explica que la exposición está incompleta: cada pieza tiene que mostrar su sombra correcta para que el programa pueda reiniciarse. Tomás, el vigilante de noche, habla por radio desde fuera: está bien, las puertas solo están cerradas por seguridad y esperará a que las abran.",
+    "goal": "Ajustar las sombras de las piezas de la galería, reiniciar el programa con la linterna mágica, abrir la rotonda con los focos de batería cuando falle la corriente, despertar el eclipse y elegir la obra que cerrará la exposición.",
+    "first_discovery": "A encuentra la ficha del foco de carril con la altura de la garza y las marcas del carril. B ve en el muro el marco donde debe posarse la sombra y la distancia de la garza al muro. Ninguno puede ajustar la sombra solo.",
+    "progression": [
+      "Con la garza en su marco, su pico señala la vitrina de los cuatro cuerpos y se encienden sus luces.",
+      "B ve las sombras de frente en el cristal de la vitrina; A ve las sombras desde arriba, pero desde detrás. Juntos identifican los cuatro cuerpos.",
+      "En la vitrina hay media placa de vidrio. B la sube a la cabina por el montaplatos y A la une con la otra mitad en la linterna mágica. El muro muestra la clave del programa.",
+      "El programa se reinicia, pero el arranque provoca un apagón general: solo quedan los focos de batería de A y la pintura fosforescente.",
+      "Con tres focos y sus filtros, A abre el cerrojo de luz de la rotonda siguiendo las indicaciones de B.",
+      "En la rotonda, B lee la inscripción del obelisco y la rosa del suelo; A enciende las lámparas del anillo para que la sombra señale los símbolos en orden.",
+      "Vuelve la corriente. La pareja elige cuál de las dos obras finales cerrará la exposición."
+    ],
+    "obstacles": [
+      "Desde la cabina A no ve el muro de proyección ni el frontal de la vitrina; B no ve los mandos.",
+      "La vista de A sobre la vitrina está invertida de izquierda a derecha.",
+      "La clave del programa solo aparece con las dos placas unidas y bien orientadas.",
+      "El apagón deja la galería a oscuras: solo brillan los sensores, la cuadrícula fosforescente y los focos de batería."
+    ],
+    "revelations": [
+      "Ilse Moraga dejó la exposición sin terminar a propósito: quería que las primeras personas en verla completaran las sombras.",
+      "El apagón no es una avería: el programa de sala arranca en modo de ahorro y apaga la red general hasta que el eclipse de la rotonda se completa.",
+      "Las dos obras finales son igual de queridas por la artista; nunca supo cuál elegir."
+    ],
+    "climax": "En la rotonda, la sombra del obelisco recorre la Llave, la Luna y la Pluma. La corriente vuelve, A baja por la escalera de la cabina y los dos leen la carta de Ilse y el libro de visitas. Votan la obra final sin ver el voto del otro.",
+    "escape_scene": "La obra elegida se proyecta en la cúpula de la rotonda. Las puertas principales del museo se abren y entra la luz de la calle. Tomás saluda desde la escalinata. Los dos confirman la salida juntos.",
+    "epilogue": "Al día siguiente, la exposición abre con la obra elegida. En la cartela de la entrada se lee: Teatro de sombras, de Ilse Moraga. Completado en el ensayo general por su primer público."
+  },
+  "rooms": [
+    {
+      "room_id": "ROOM01",
+      "name": "Cabina de luces",
+      "description": "Cabina estrecha y elevada sobre la pared sur de la galería, con una ventana inclinada hacia el suelo de la sala, la consola de mandos de los focos, una linterna mágica de latón junto a un portillo de proyección y una escalera de caracol cerrada hacia la rotonda.",
+      "dimensions_m": {
+        "w": 5,
+        "d": 3,
+        "h": 2.6
+      },
+      "layout": "Ventana inclinada en la pared norte, con la consola de mandos debajo: mando del foco de carril a la izquierda, luz cenital de la vitrina en el centro izquierda y panel de focos de batería en el centro. Linterna mágica junto al portillo, a la derecha de la ventana. Ficha del foco de carril en la pared oeste. Cajón con la placa superior al sureste. Consola de la rotonda en la pared este. Puerta de la escalera de caracol en la pared este, al sur. Rollos de filtros en la esquina suroeste y estante de bobinas en la pared sur.",
+      "access": {
+        "A": true,
+        "B": false
+      },
+      "view": {
+        "A": "La cabina y, por la ventana inclinada, el suelo de la galería desde arriba y desde el sur: piezas, carril y la vitrina vista desde detrás. Una visera tapa el muro de proyección y el frontal de la vitrina.",
+        "B": "No la ve; solo oye a A por los auriculares"
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR01",
+          "wall": "east",
+          "position": {
+            "x": 5,
+            "y": 0,
+            "z": 0.8
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "P05_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "north",
+          "position": {
+            "x": 2,
+            "y": 1.4,
+            "z": 3
+          },
+          "note": "Ventana inclinada hacia el suelo de la galería con visera superior; da la vista cenital de A"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L01",
+          "type": "Luz de trabajo azulada",
+          "position": {
+            "x": 2.5,
+            "y": 2.5,
+            "z": 1.5
+          },
+          "color": "#AFC8FF",
+          "intensity": 0.35,
+          "note": "Tenue para no deslumbrar la sala; se apaga en el apagón"
+        },
+        {
+          "light_id": "L02",
+          "type": "Retroiluminación de mandos",
+          "position": {
+            "x": 2.2,
+            "y": 1,
+            "z": 2.6
+          },
+          "color": "#FFE2A8",
+          "intensity": 0.25,
+          "note": "Cada mando tiene etiqueta en texto; en el apagón solo quedan encendidos los de batería"
+        },
+        {
+          "light_id": "L03",
+          "type": "Lámpara de la linterna mágica",
+          "position": {
+            "x": 3.5,
+            "y": 1.1,
+            "z": 2.7
+          },
+          "color": "#FFF4D6",
+          "intensity": 0.6,
+          "note": "Se enciende al cargar las dos placas"
+        }
+      ],
+      "ambient_sound": "A01",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E02",
+          "change": "El mando de la luz cenital de la vitrina se ilumina"
+        },
+        {
+          "event": "E05",
+          "change": "La luz de trabajo se apaga; quedan los mandos de batería con un piloto y la palabra BATERÍA"
+        },
+        {
+          "event": "E07",
+          "change": "Vuelve la luz, aparece el sobre de Ilse y se abre la puerta de la escalera de caracol"
+        }
+      ],
+      "objects": [
+        "O01",
+        "O02",
+        "O03",
+        "O04",
+        "O05",
+        "O07",
+        "O08",
+        "O09",
+        "O10",
+        "O11"
+      ],
+      "puzzles": [],
+      "exit_conditions": [
+        "P05_SOLVED"
+      ],
+      "engine_notes": "Escena independiente para A. La vista por la ventana es una cámara fija desde el sur y desde arriba con un plano de recorte (visera) que oculta el muro norte y el frontal de la vitrina; la imagen no se espeja, así que la izquierda de A es el oeste. Los mandos son superficies de interfaz con estado sincronizado por el servidor. La linterna mágica proyecta en el muro de ROOM02 mediante un proyector de textura (decal o luz con cookie)."
+    },
+    {
+      "room_id": "ROOM02",
+      "name": "Galería de las sombras",
+      "description": "Sala alta y blanca con un muro de proyección al norte, una garza de alambre sobre un carril de foco, la vitrina de los cuatro cuerpos con frontal esmerilado, un atril con el programa de sala, un biombo de papel y la puerta de la rotonda al este.",
+      "dimensions_m": {
+        "w": 12,
+        "d": 9,
+        "h": 4.5
+      },
+      "layout": "Muro de proyección en la pared norte con el marco pintado de la garza a la izquierda. Garza de alambre a 3 m del muro, con el carril del foco hacia el sur. Vitrina de los cuatro cuerpos en el centro, con el frontal mirando al norte; su placa está en el frontal. Montaplatos en la esquina suroeste. Bancos en el centro sur. Atril del programa al sureste. Biombo de papel en la esquina sureste. Puerta de la rotonda en la pared este, al norte, con la cuadrícula de sensores a su lado. Cartela de bienvenida en la pared oeste. Ventana de la cabina en lo alto de la pared sur.",
+      "access": {
+        "A": false,
+        "B": true
+      },
+      "view": {
+        "A": "Desde la cabina: el suelo, la garza, el carril y la vitrina vistos desde arriba y por detrás; no ve el muro ni el frontal de la vitrina",
+        "B": "Toda la galería a ras de suelo: el muro, el frontal de la vitrina, placas y sensores; no ve los mandos de la cabina"
+      },
+      "unlocked_when": [],
+      "doors": [
+        {
+          "door_id": "DOOR02",
+          "wall": "east",
+          "position": {
+            "x": 12,
+            "y": 0,
+            "z": 7
+          },
+          "to": "ROOM03",
+          "opens_when": [
+            "P04_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "south",
+          "position": {
+            "x": 2,
+            "y": 3.4,
+            "z": 0
+          },
+          "note": "Ventana de la cabina de luces, en lo alto; desde abajo solo se ve un cristal oscuro"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L04",
+          "type": "Foco de carril",
+          "position": {
+            "x": 3,
+            "y": 0.3,
+            "z": 5
+          },
+          "color": "#FFF1D6",
+          "intensity": 1,
+          "note": "Proyecta la sombra de la garza; se desplaza por el carril entre z 5,5 y z 3 según la marca; tiene batería"
+        },
+        {
+          "light_id": "L05",
+          "type": "Bañadores generales",
+          "position": {
+            "x": 6,
+            "y": 4.3,
+            "z": 4.5
+          },
+          "color": "#F2F2F2",
+          "intensity": 0.4,
+          "note": "Luz general tenue para no lavar las sombras; se apagan en el apagón"
+        },
+        {
+          "light_id": "L06",
+          "type": "Lámpara trasera de la vitrina",
+          "position": {
+            "x": 7.5,
+            "y": 0.6,
+            "z": 4.1
+          },
+          "color": "#FFFFFF",
+          "intensity": 0.5,
+          "note": "Se enciende al resolver P01 y proyecta las sombras de frente en el cristal"
+        },
+        {
+          "light_id": "L07",
+          "type": "Focos de batería Norte, Centro y Sur",
+          "position": {
+            "x": 6,
+            "y": 4.2,
+            "z": 2
+          },
+          "color": "#FFFFFF",
+          "intensity": 0.9,
+          "note": "Apagados hasta el apagón; luego son la única luz controlable"
+        },
+        {
+          "light_id": "L08",
+          "type": "Pintura fosforescente",
+          "position": {
+            "x": 11.9,
+            "y": 1.5,
+            "z": 6
+          },
+          "color": "#C8FFB0",
+          "intensity": 0.12,
+          "note": "Cuadrícula, sensores y bordes del suelo; solo destaca en el apagón"
+        }
+      ],
+      "ambient_sound": "A03",
+      "music": "A02",
+      "dynamic_changes": [
+        {
+          "event": "E02",
+          "change": "La sombra de la garza se posa en su marco y la vitrina se ilumina por detrás"
+        },
+        {
+          "event": "E03",
+          "change": "El cajón de la vitrina se abre con la placa inferior"
+        },
+        {
+          "event": "E04",
+          "change": "El muro muestra un telón que se abre: el programa arranca"
+        },
+        {
+          "event": "E05",
+          "change": "Apagón general: se apagan los bañadores; brillan la cuadrícula, los sensores y los bordes del suelo"
+        },
+        {
+          "event": "E06",
+          "change": "Los tres sensores brillan a la vez y la puerta de la rotonda se abre"
+        }
+      ],
+      "objects": [
+        "O12",
+        "O13",
+        "O14",
+        "O15",
+        "O16",
+        "O17",
+        "O18",
+        "O19",
+        "O20",
+        "O21",
+        "O22",
+        "O23"
+      ],
+      "puzzles": [
+        "P01",
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "exit_conditions": [
+        "P04_SOLVED"
+      ],
+      "engine_notes": "Escena independiente para B. Todas las sombras son proyecciones reales o decals sincronizados, pero cada figura tiene además un contorno grueso opcional y una descripción en texto al apuntarla. Los acertijos de esta zona se validan aunque la entrada esté en la cabina (P01 y P04): pertenecen a la galería porque las sombras se ven aquí. En el apagón la exposición pasa a un perfil de iluminación nocturno sin cambiar de escena."
+    },
+    {
+      "room_id": "ROOM03",
+      "name": "Rotonda del eclipse",
+      "description": "Sala circular con cúpula, un obelisco negro en el centro, una rosa de sombras grabada en el suelo, ocho lámparas en el borde y dos pedestales con las obras finales cubiertas. Las puertas principales del museo están en el norte.",
+      "dimensions_m": {
+        "w": 10,
+        "d": 10,
+        "h": 6
+      },
+      "layout": "Obelisco en el centro, con la inscripción en su cara sur. Rosa de sombras en el suelo alrededor del obelisco. Ocho lámparas en el borde, una por dirección. Llegada de B por la puerta oeste y de A por la escalera de la puerta sur. Atril vacío del gato al suroeste. Libro de visitas al sureste. Pedestal de La Bandada al noroeste y de El Faro al noreste. Puertas principales del museo en la pared norte, centro. Banco curvo al oeste.",
+      "access": {
+        "A": true,
+        "B": true
+      },
+      "view": {
+        "A": "Hasta P05 no la ve: la cabina no tiene ventana hacia la rotonda y solo maneja sus lámparas desde la consola. Después baja y la ve entera.",
+        "B": "Toda la rotonda; con el apagón, la rosa y la inscripción se leen por la pintura fosforescente"
+      },
+      "unlocked_when": [
+        "P04_SOLVED"
+      ],
+      "doors": [
+        {
+          "door_id": "DOOR03",
+          "wall": "west",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 5
+          },
+          "to": "ROOM02",
+          "opens_when": [
+            "P04_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR04",
+          "wall": "south",
+          "position": {
+            "x": 5,
+            "y": 0,
+            "z": 0
+          },
+          "to": "ROOM01",
+          "opens_when": [
+            "P05_SOLVED"
+          ]
+        },
+        {
+          "door_id": "DOOR05",
+          "wall": "north",
+          "position": {
+            "x": 5,
+            "y": 0,
+            "z": 10
+          },
+          "to": "EXIT",
+          "opens_when": [
+            "P06_SOLVED"
+          ]
+        }
+      ],
+      "windows": [
+        {
+          "wall": "north",
+          "position": {
+            "x": 5,
+            "y": 4,
+            "z": 10
+          },
+          "note": "Montante de cristal sobre las puertas principales; deja ver la farola de la calle"
+        }
+      ],
+      "lighting": [
+        {
+          "light_id": "L09",
+          "type": "Anillo de ocho lámparas",
+          "position": {
+            "x": 5,
+            "y": 2,
+            "z": 5
+          },
+          "color": "#FFE7B0",
+          "intensity": 0.9,
+          "note": "Una por dirección en el borde (radio 4,5 m); con batería; las controla A desde la cabina"
+        },
+        {
+          "light_id": "L10",
+          "type": "Luz de cúpula",
+          "position": {
+            "x": 5,
+            "y": 5.8,
+            "z": 5
+          },
+          "color": "#D7E3FF",
+          "intensity": 0.5,
+          "note": "Apagada durante el apagón; vuelve en E07 y proyecta la obra final en E08"
+        },
+        {
+          "light_id": "L11",
+          "type": "Pintura fosforescente de la rosa",
+          "position": {
+            "x": 5,
+            "y": 0.02,
+            "z": 5
+          },
+          "color": "#C8FFB0",
+          "intensity": 0.15,
+          "note": "Letras de dirección y símbolos legibles en el apagón"
+        }
+      ],
+      "ambient_sound": "A04",
+      "music": "A05",
+      "dynamic_changes": [
+        {
+          "event": "E06",
+          "change": "B entra; solo brillan la rosa fosforescente y la inscripción"
+        },
+        {
+          "event": "E07",
+          "change": "La sombra del obelisco recorre los tres símbolos, vuelve la luz de cúpula y aparecen el libro de visitas y la puerta de A"
+        },
+        {
+          "event": "E08",
+          "change": "La obra elegida se proyecta en la cúpula y se abren las puertas principales"
+        }
+      ],
+      "objects": [
+        "O24",
+        "O25",
+        "O26",
+        "O27",
+        "O28",
+        "O29",
+        "O30",
+        "O31",
+        "O32"
+      ],
+      "puzzles": [
+        "P05",
+        "P06",
+        "P07"
+      ],
+      "exit_conditions": [
+        "P06_SOLVED",
+        "O30_OPEN"
+      ],
+      "engine_notes": "Escena compartida tras E07. La sombra del obelisco se calcula con la lámpara encendida (dirección opuesta) y se muestra también como una flecha fosforescente sobre la rosa con el nombre del símbolo señalado. La entrada de P05 está en la consola de la cabina (O08); el acertijo pertenece a la rotonda porque la sombra se ve aquí."
+    }
+  ],
+  "players_data": {
+    "player_a": {
+      "role": "Técnica o técnico de luces en la cabina",
+      "view": "Mandos de los focos, ficha del foco de carril, linterna mágica, consola de la rotonda y vista cenital de la galería desde detrás. No ve el muro de proyección, el frontal de la vitrina, los sensores ni la rotonda.",
+      "initial_location": "ROOM01",
+      "initial_clues": [],
+      "initial_inventory": []
+    },
+    "player_b": {
+      "role": "Intérprete de sombras en la galería",
+      "view": "Muro de proyección, frontal de la vitrina, placas, sensores y, después, la rotonda. No ve los mandos ni las fichas técnicas de la cabina.",
+      "initial_location": "ROOM02",
+      "initial_clues": [],
+      "initial_inventory": []
+    }
+  },
+  "objects": [
+    {
+      "object_id": "O01",
+      "name": "Mando del foco de carril",
+      "visual": "Palanca deslizante con cinco muescas grabadas I, II, III, IV y V y un botón Fijar",
+      "room": "ROOM01",
+      "position": {
+        "x": 1,
+        "y": 1,
+        "z": 2.6
+      },
+      "category": "coop",
+      "states": [
+        "FREE",
+        "FIXED"
+      ],
+      "initial_state": "FREE",
+      "action": "Deslizar a una marca y pulsar Fijar",
+      "activation_condition": [],
+      "result": "Mueve el foco de carril de la galería; al fijar, se comprueba si la sombra llena el marco",
+      "transitions": [
+        {
+          "to": "FIXED",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "FIXED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O02",
+      "name": "Luz cenital de la vitrina",
+      "visual": "Interruptor de rueda con la etiqueta Cenital vitrina y un piloto",
+      "room": "ROOM01",
+      "position": {
+        "x": 1.8,
+        "y": 1,
+        "z": 2.6
+      },
+      "category": "activate",
+      "states": [
+        "OFF",
+        "ON"
+      ],
+      "initial_state": "OFF",
+      "action": "Encender",
+      "activation_condition": [
+        "P01_SOLVED"
+      ],
+      "result": "Enciende una luz sobre la vitrina: A ve por la ventana las sombras de los cuerpos sobre su fondo (C04)",
+      "transitions": [
+        {
+          "to": "ON",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "A"
+        }
+      ],
+      "clue": "C04",
+      "puzzle": "P02",
+      "authorized": "A",
+      "final_state": "ON",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O03",
+      "name": "Ficha del foco de carril",
+      "visual": "Ficha plastificada clavada en la pared oeste, con un dibujo del foco, la garza y el muro",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.1,
+        "y": 1.4,
+        "z": 1.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda la pista C01",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C01",
+      "puzzle": "P01",
+      "authorized": "A",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O04",
+      "name": "Linterna mágica",
+      "visual": "Proyector de latón con un portaplacas doble y una plaquita de instrucciones atornillada",
+      "room": "ROOM01",
+      "position": {
+        "x": 3.5,
+        "y": 1.1,
+        "z": 2.7
+      },
+      "category": "coop",
+      "states": [
+        "EMPTY",
+        "COMBINED"
+      ],
+      "initial_state": "EMPTY",
+      "action": "Examinar e insertar placas",
+      "activation_condition": [],
+      "result": "Con las dos placas bien orientadas proyecta la imagen compuesta en el muro de la galería",
+      "transitions": [
+        {
+          "to": "COMBINED",
+          "when": [
+            "O13_UP",
+            "O05_COLLECTED"
+          ],
+          "by": "A"
+        }
+      ],
+      "clue": "C07",
+      "puzzle": "P03",
+      "authorized": "A",
+      "final_state": "COMBINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O05",
+      "name": "Placa superior de vidrio",
+      "visual": "Placa rectangular de vidrio con muesca semicircular y trazos grabados",
+      "room": "ROOM01",
+      "position": {
+        "x": 4.2,
+        "y": 0.8,
+        "z": 1
+      },
+      "category": "collect",
+      "states": [
+        "FOUND",
+        "COLLECTED"
+      ],
+      "initial_state": "FOUND",
+      "action": "Recoger",
+      "activation_condition": [],
+      "result": "Pasa al inventario de A y guarda la pista C06",
+      "transitions": [
+        {
+          "to": "COLLECTED",
+          "when": [],
+          "by": "A"
+        }
+      ],
+      "clue": "C06",
+      "puzzle": "P03",
+      "authorized": "A",
+      "final_state": "COLLECTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O07",
+      "name": "Panel de focos de batería",
+      "visual": "Panel con tres focos, Norte, Centro y Sur; cada uno con dos ruedas (columna A a E y fila 1 a 5), un selector de filtro y un botón Encender",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.6,
+        "y": 1,
+        "z": 2.6
+      },
+      "category": "coop",
+      "states": [
+        "OFF",
+        "STANDBY",
+        "AIMED"
+      ],
+      "initial_state": "OFF",
+      "action": "Elegir columna, fila y filtro de cada foco y pulsar Encender los tres",
+      "activation_condition": [
+        "P03_SOLVED"
+      ],
+      "result": "Con el apagón se activa; si los tres sensores reciben su luz, la puerta de la rotonda se abre",
+      "transitions": [
+        {
+          "to": "STANDBY",
+          "when": [
+            "P03_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "AIMED",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C10",
+      "puzzle": "P04",
+      "authorized": "A",
+      "final_state": "AIMED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O08",
+      "name": "Consola de la rotonda",
+      "visual": "Rosa de ocho botones con las letras N, NE, E, SE, S, SO, O y NO, un botón Borrar y un botón Proyectar",
+      "room": "ROOM01",
+      "position": {
+        "x": 4.9,
+        "y": 1.2,
+        "z": 1.5
+      },
+      "category": "coop",
+      "states": [
+        "LOCKED",
+        "READY",
+        "DONE"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Pulsar tres direcciones en orden y pulsar Proyectar",
+      "activation_condition": [
+        "P04_SOLVED"
+      ],
+      "result": "Enciende las lámparas del anillo en ese orden; la sombra del obelisco recorre la rosa",
+      "transitions": [
+        {
+          "to": "READY",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "DONE",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C13",
+      "puzzle": "P05",
+      "authorized": "A",
+      "final_state": "DONE",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O09",
+      "name": "Sobre de Ilse",
+      "visual": "Sobre color crema con la firma de Ilse Moraga, que cae de la bobina del estante al volver la luz",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.5,
+        "y": 0.8,
+        "z": 0.6
+      },
+      "category": "examine",
+      "states": [
+        "HIDDEN",
+        "VISIBLE"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Abrir y leer",
+      "activation_condition": [
+        "P05_SOLVED"
+      ],
+      "result": "Guarda la pista C16",
+      "transitions": [
+        {
+          "to": "VISIBLE",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C16",
+      "puzzle": "P06",
+      "authorized": "A",
+      "final_state": "VISIBLE",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O10",
+      "name": "Rollos de filtros de colores",
+      "visual": "Rollos de gelatina de colores con etiquetas, apoyados en la esquina",
+      "room": "ROOM01",
+      "position": {
+        "x": 0.5,
+        "y": 0,
+        "z": 0.4
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O11",
+      "name": "Estante de bobinas",
+      "visual": "Bobinas de película antiguas en latas con fechas escritas a mano",
+      "room": "ROOM01",
+      "position": {
+        "x": 2.5,
+        "y": 1.8,
+        "z": 0.2
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O12",
+      "name": "Placa inferior de vidrio",
+      "visual": "Placa rectangular de vidrio con muesca cuadrada y trazos grabados, en el cajón de la vitrina",
+      "room": "ROOM02",
+      "position": {
+        "x": 7.5,
+        "y": 0.6,
+        "z": 5.2
+      },
+      "category": "collect",
+      "states": [
+        "HIDDEN",
+        "FOUND",
+        "SENT"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Recoger y enviar por el montaplatos",
+      "activation_condition": [
+        "P02_SOLVED"
+      ],
+      "result": "Aparece al abrir la vitrina; al recogerla se guarda C08; B la envía a la cabina por el montaplatos",
+      "transitions": [
+        {
+          "to": "FOUND",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "SENT",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "B"
+        }
+      ],
+      "clue": "C08",
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "SENT",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O13",
+      "name": "Montaplatos",
+      "visual": "Pequeño ascensor de madera con puertecilla y un botón Subir, que comunica la galería con la cabina",
+      "room": "ROOM02",
+      "position": {
+        "x": 0.5,
+        "y": 0.8,
+        "z": 0.5
+      },
+      "category": "coop",
+      "states": [
+        "DOWN",
+        "UP"
+      ],
+      "initial_state": "DOWN",
+      "action": "Meter un objeto y pulsar Subir",
+      "activation_condition": [],
+      "result": "El objeto llega a la cabina, al alcance de A",
+      "transitions": [
+        {
+          "to": "UP",
+          "when": [
+            "O12_SENT"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "UP",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O14",
+      "name": "Garza de alambre",
+      "visual": "Escultura de alambre de 0,6 m de una garza sobre una pata, sobre una peana baja",
+      "room": "ROOM02",
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 6
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Muestra su cartela: Garza, alambre, 0,6 m",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P01",
+      "authorized": "B",
+      "final_state": "DEFAULT",
+      "interact_radius_m": 1.2
+    },
+    {
+      "object_id": "O15",
+      "name": "Muro de proyección",
+      "visual": "Muro blanco de 4 m de alto con un marco pintado en línea de puntos con una garza dibujada, y una cinta luminosa en el suelo",
+      "room": "ROOM02",
+      "position": {
+        "x": 3,
+        "y": 2,
+        "z": 8.95
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda la pista C02; más tarde muestra la proyección compuesta (C09)",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C02",
+      "puzzle": "P01",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 3
+    },
+    {
+      "object_id": "O16",
+      "name": "Vitrina de los cuatro cuerpos",
+      "visual": "Vitrina alargada con frontal de cristal esmerilado, cuatro etiquetas de posición del 1 al 4 y un teclado de cuatro botones con dibujos de cubo, cilindro, cono y pirámide",
+      "room": "ROOM02",
+      "position": {
+        "x": 7.5,
+        "y": 0,
+        "z": 4.5
+      },
+      "category": "coop",
+      "states": [
+        "DARK",
+        "LIT",
+        "OPEN"
+      ],
+      "initial_state": "DARK",
+      "action": "Mirar el frontal y marcar cuatro cuerpos en orden",
+      "activation_condition": [
+        "P01_SOLVED"
+      ],
+      "result": "Iluminada por detrás muestra las sombras de frente (C05); con la secuencia correcta se abre su cajón",
+      "transitions": [
+        {
+          "to": "LIT",
+          "when": [
+            "P01_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "OPEN",
+          "when": [
+            "P02_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C05",
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "OPEN",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O17",
+      "name": "Placa de la vitrina",
+      "visual": "Placa de latón en el frontal de la vitrina con cuatro dibujos de cuerpos y sus dos sombras",
+      "room": "ROOM02",
+      "position": {
+        "x": 7.5,
+        "y": 1,
+        "z": 5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda la pista C03",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C03",
+      "puzzle": "P02",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O18",
+      "name": "Atril del programa de sala",
+      "visual": "Atril de madera con una pantalla congelada que dice Programa detenido y un teclado de cuatro cifras",
+      "room": "ROOM02",
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 2
+      },
+      "category": "coop",
+      "states": [
+        "FROZEN",
+        "RESTARTED"
+      ],
+      "initial_state": "FROZEN",
+      "action": "Introducir clave de cuatro cifras",
+      "activation_condition": [],
+      "result": "Con la clave correcta reinicia el programa de sala",
+      "transitions": [
+        {
+          "to": "RESTARTED",
+          "when": [
+            "P03_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": "P03",
+      "authorized": "B",
+      "final_state": "RESTARTED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O19",
+      "name": "Puerta de la rotonda",
+      "visual": "Puerta de doble hoja con la cuadrícula A–E por 1–5 pintada al lado y tres sensores con forma de triángulo, cuadrado y círculo",
+      "room": "ROOM02",
+      "position": {
+        "x": 11.9,
+        "y": 0,
+        "z": 7
+      },
+      "category": "locked",
+      "states": [
+        "LOCKED",
+        "DARK_LOCKED",
+        "OPEN"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Antes del apagón dice: Se abre con el programa de sala. En el apagón brillan la cuadrícula y los sensores (C11)",
+      "transitions": [
+        {
+          "to": "DARK_LOCKED",
+          "when": [
+            "P03_SOLVED"
+          ],
+          "by": "system"
+        },
+        {
+          "to": "OPEN",
+          "when": [
+            "P04_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C11",
+      "puzzle": "P04",
+      "authorized": "B",
+      "final_state": "OPEN",
+      "interact_radius_m": 2
+    },
+    {
+      "object_id": "O20",
+      "name": "Silueta del gato",
+      "visual": "Recorte de cartón negro de un gato sentado, caído detrás del biombo",
+      "room": "ROOM02",
+      "position": {
+        "x": 11,
+        "y": 0.5,
+        "z": 0.8
+      },
+      "category": "collect",
+      "states": [
+        "FOUND",
+        "COLLECTED",
+        "PLACED"
+      ],
+      "initial_state": "FOUND",
+      "action": "Recoger",
+      "activation_condition": [],
+      "result": "Pasa al inventario de B y guarda la pista C18",
+      "transitions": [
+        {
+          "to": "COLLECTED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C18",
+      "puzzle": "P07",
+      "authorized": "B",
+      "final_state": "PLACED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O21",
+      "name": "Bancos de la galería",
+      "visual": "Dos bancos largos de madera clara",
+      "room": "ROOM02",
+      "position": {
+        "x": 6,
+        "y": 0,
+        "z": 2
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O22",
+      "name": "Cartela de bienvenida",
+      "visual": "Cartel con el texto Teatro de sombras, desde 1906, y un retrato de Ilse Moraga con un farolillo",
+      "room": "ROOM02",
+      "position": {
+        "x": 0.1,
+        "y": 1.6,
+        "z": 4.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O23",
+      "name": "Biombo de papel",
+      "visual": "Biombo de tres hojas con siluetas de árboles pintadas",
+      "room": "ROOM02",
+      "position": {
+        "x": 10.5,
+        "y": 0,
+        "z": 1
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O24",
+      "name": "Obelisco",
+      "visual": "Obelisco negro de 2,5 m con una inscripción en pintura fosforescente en su cara sur",
+      "room": "ROOM03",
+      "position": {
+        "x": 5,
+        "y": 0,
+        "z": 5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda la pista C12",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C12",
+      "puzzle": "P05",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O25",
+      "name": "Rosa de sombras",
+      "visual": "Círculo grabado en el suelo con ocho símbolos y la letra de cada dirección",
+      "room": "ROOM03",
+      "position": {
+        "x": 5,
+        "y": 0,
+        "z": 3.5
+      },
+      "category": "examine",
+      "states": [
+        "DEFAULT",
+        "EXAMINED"
+      ],
+      "initial_state": "DEFAULT",
+      "action": "Examinar",
+      "activation_condition": [],
+      "result": "Guarda la pista C14",
+      "transitions": [
+        {
+          "to": "EXAMINED",
+          "when": [],
+          "by": "B"
+        }
+      ],
+      "clue": "C14",
+      "puzzle": "P05",
+      "authorized": "B",
+      "final_state": "EXAMINED",
+      "interact_radius_m": 3
+    },
+    {
+      "object_id": "O26",
+      "name": "Libro de visitas del ensayo",
+      "visual": "Libro abierto sobre un atril con dibujos y notas de los grupos que vieron los ensayos",
+      "room": "ROOM03",
+      "position": {
+        "x": 8,
+        "y": 1,
+        "z": 2
+      },
+      "category": "examine",
+      "states": [
+        "HIDDEN",
+        "VISIBLE"
+      ],
+      "initial_state": "HIDDEN",
+      "action": "Leer",
+      "activation_condition": [
+        "P05_SOLVED"
+      ],
+      "result": "Guarda la pista C17",
+      "transitions": [
+        {
+          "to": "VISIBLE",
+          "when": [
+            "P05_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": "C17",
+      "puzzle": "P06",
+      "authorized": "B",
+      "final_state": "VISIBLE",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O27",
+      "name": "Atril vacío del gato",
+      "visual": "Atril pequeño con una silueta de gato dibujada en tiza y un foco diminuto encima",
+      "room": "ROOM03",
+      "position": {
+        "x": 2,
+        "y": 0,
+        "z": 2
+      },
+      "category": "combine",
+      "states": [
+        "EMPTY",
+        "OCCUPIED"
+      ],
+      "initial_state": "EMPTY",
+      "action": "Colocar objeto",
+      "activation_condition": [
+        "P04_SOLVED"
+      ],
+      "result": "Con la silueta del gato, su sombra se proyecta sobre la cúpula y el gato parece estirarse",
+      "transitions": [],
+      "clue": null,
+      "puzzle": "P07",
+      "authorized": "B",
+      "final_state": "OCCUPIED",
+      "interact_radius_m": 1
+    },
+    {
+      "object_id": "O28",
+      "name": "Obra final: La Bandada",
+      "visual": "Pedestal con una tela que cubre una jaula abierta llena de pájaros de papel",
+      "room": "ROOM03",
+      "position": {
+        "x": 2,
+        "y": 0,
+        "z": 8
+      },
+      "category": "narrative",
+      "states": [
+        "COVERED",
+        "SHOWN"
+      ],
+      "initial_state": "COVERED",
+      "action": "Ver de cerca",
+      "activation_condition": [],
+      "result": "Si se elige, se descubre y se proyecta en la cúpula",
+      "transitions": [
+        {
+          "to": "SHOWN",
+          "when": [
+            "P06_OPT_BANDADA"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "SHOWN",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O29",
+      "name": "Obra final: El Faro",
+      "visual": "Pedestal con una tela que cubre una torre de cristal con una lámpara giratoria",
+      "room": "ROOM03",
+      "position": {
+        "x": 8,
+        "y": 0,
+        "z": 8
+      },
+      "category": "narrative",
+      "states": [
+        "COVERED",
+        "SHOWN"
+      ],
+      "initial_state": "COVERED",
+      "action": "Ver de cerca",
+      "activation_condition": [],
+      "result": "Si se elige, se descubre y se proyecta en la cúpula",
+      "transitions": [
+        {
+          "to": "SHOWN",
+          "when": [
+            "P06_OPT_FARO"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "SHOWN",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O30",
+      "name": "Puertas principales del museo",
+      "visual": "Puertas altas de madera con vidrieras; un indicador sobre ellas pasa de CERRADO a ABIERTO",
+      "room": "ROOM03",
+      "position": {
+        "x": 5,
+        "y": 0,
+        "z": 9.9
+      },
+      "category": "exit",
+      "states": [
+        "LOCKED",
+        "OPEN"
+      ],
+      "initial_state": "LOCKED",
+      "action": "Salir",
+      "activation_condition": [
+        "P06_SOLVED"
+      ],
+      "result": "Cada jugador confirma su salida",
+      "transitions": [
+        {
+          "to": "OPEN",
+          "when": [
+            "P06_SOLVED"
+          ],
+          "by": "system"
+        }
+      ],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "AB",
+      "final_state": "OPEN",
+      "interact_radius_m": 1.5
+    },
+    {
+      "object_id": "O31",
+      "name": "Lámparas del anillo",
+      "visual": "Ocho faroles de latón en el borde de la rotonda, cada uno con su letra de dirección",
+      "room": "ROOM03",
+      "position": {
+        "x": 5,
+        "y": 2,
+        "z": 0.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción directa; se manejan desde la consola de la cabina",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    },
+    {
+      "object_id": "O32",
+      "name": "Banco curvo",
+      "visual": "Banco de piedra que sigue la curva de la pared oeste",
+      "room": "ROOM03",
+      "position": {
+        "x": 1,
+        "y": 0,
+        "z": 5.5
+      },
+      "category": "decorative",
+      "states": [
+        "STATIC"
+      ],
+      "initial_state": "STATIC",
+      "action": "none",
+      "activation_condition": [],
+      "result": "Sin interacción",
+      "transitions": [],
+      "clue": null,
+      "puzzle": null,
+      "authorized": "none",
+      "final_state": "STATIC",
+      "interact_radius_m": 0
+    }
+  ],
+  "clues": [
+    {
+      "clue_id": "C01",
+      "content": "Ficha del foco de carril. La garza mide 0,6 m de alto. Marcas del carril, medidas desde la garza hacia el foco: I a 0,5 m. II a 1,0 m. III a 1,5 m. IV a 2,0 m. V a 3,0 m. Altura de la sombra en el muro = altura de la pieza × distancia del foco al muro ÷ distancia del foco a la pieza. La distancia del foco al muro es la del foco a la pieza más la de la pieza al muro.",
+      "alt_text": "Texto grande y lectura en voz: garza 0,6 m; marcas I 0,5, II 1,0, III 1,5, IV 2,0, V 3,0 m; fórmula de la sombra explicada en palabras con un dibujo de dos triángulos.",
+      "location": "O03",
+      "discovery": "A examina la ficha de la pared oeste",
+      "player": "A",
+      "puzzle": "P01",
+      "reveals": "La altura de la pieza, las marcas y cómo calcular la sombra",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O03_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C02",
+      "content": "En el muro norte, un marco en línea de puntos con una garza dibujada: Aquí debe posarse la sombra de la garza. Altura del marco: 2,4 m. En el suelo, una cinta luminosa va de la peana de la garza al muro con la leyenda: De la garza al muro, 3,0 m.",
+      "alt_text": "Texto: marco de 2,4 m de alto; distancia de la garza al muro, 3,0 m. Al apuntar al muro se describe la sombra actual: más alta que el marco, más baja o justa.",
+      "location": "O15",
+      "discovery": "B examina el muro de proyección",
+      "player": "B",
+      "puzzle": "P01",
+      "reveals": "La altura que debe tener la sombra y la distancia de la garza al muro",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O15_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C03",
+      "content": "Placa de la vitrina. Cuatro cuerpos. Cada cuerpo se reconoce por dos sombras, la de frente y la de arriba. Cubo: frente cuadrado, arriba cuadrado. Cilindro (tan alto como ancho): frente cuadrado, arriba círculo. Cono: frente triángulo, arriba círculo. Pirámide: frente triángulo, arriba cuadrado. Para abrir, marquen los cuatro cuerpos en orden, de la posición 1 a la 4.",
+      "alt_text": "Tabla de cuatro filas con nombre, sombra de frente y sombra de arriba, en texto y con dibujos en relieve.",
+      "location": "O17",
+      "discovery": "B examina la placa de la vitrina",
+      "player": "B",
+      "puzzle": "P02",
+      "reveals": "Qué par de sombras corresponde a cada cuerpo",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O17_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C04",
+      "content": "Con la luz cenital encendida ves, por la ventana de la cabina, las sombras de los cuatro cuerpos sobre el fondo de la vitrina. La cabina está detrás de la vitrina: lo que tú ves a tu izquierda, un visitante que mira el frontal lo ve a su derecha. Las etiquetas de posición solo están en el frontal. De tu izquierda a tu derecha: cuadrado, cuadrado, círculo, círculo.",
+      "alt_text": "Texto: vista desde detrás, izquierda y derecha invertidas respecto al frontal. De izquierda a derecha de A: cuadrado, cuadrado, círculo, círculo. Cada sombra tiene contorno grueso.",
+      "location": "O02",
+      "discovery": "A enciende la luz cenital y mira por la ventana",
+      "player": "A",
+      "puzzle": "P02",
+      "reveals": "Las sombras de arriba, vistas desde detrás",
+      "depends_on": [],
+      "enabled_when": [
+        "P01_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O02_ON"
+      ]
+    },
+    {
+      "clue_id": "C05",
+      "content": "En el cristal esmerilado del frontal se ven cuatro sombras de frente, cada una sobre su etiqueta. Posición 1: triángulo. Posición 2: cuadrado. Posición 3: cuadrado. Posición 4: triángulo. Las posiciones van del 1 al 4 de izquierda a derecha mirando el frontal.",
+      "alt_text": "Texto: 1 triángulo, 2 cuadrado, 3 cuadrado, 4 triángulo. Cada sombra se puede resaltar con contorno grueso y leer en voz.",
+      "location": "O16",
+      "discovery": "B mira el frontal cuando la vitrina se ilumina",
+      "player": "B",
+      "puzzle": "P02",
+      "reveals": "Las sombras de frente por posición",
+      "depends_on": [],
+      "enabled_when": [
+        "P01_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O16_LIT"
+      ]
+    },
+    {
+      "clue_id": "C06",
+      "content": "Placa superior: vidrio con muesca semicircular en una esquina. Lleva trazos sueltos, las mitades de arriba de cuatro cifras. Sola, no se puede leer ninguna cifra con seguridad.",
+      "alt_text": "Texto: placa con muesca semicircular y mitades superiores de cuatro cifras ilegibles por separado.",
+      "location": "O05",
+      "discovery": "A recoge la placa del cajón de la cabina",
+      "player": "A",
+      "puzzle": "P03",
+      "reveals": "Que hace falta otra placa",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O05_COLLECTED"
+      ]
+    },
+    {
+      "clue_id": "C07",
+      "content": "Plaquita de la linterna mágica: Linterna de doble placa. Coloquen las dos placas juntas con las muescas arriba a la izquierda: la semicircular delante y la cuadrada detrás. Si una placa está girada, la imagen sale descompuesta y no se lee.",
+      "alt_text": "Texto grande con un dibujo de las dos muescas arriba a la izquierda; semicircular delante, cuadrada detrás.",
+      "location": "O04",
+      "discovery": "A examina la linterna",
+      "player": "A",
+      "puzzle": "P03",
+      "reveals": "Cómo orientar las placas",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": []
+    },
+    {
+      "clue_id": "C08",
+      "content": "Placa inferior: vidrio con muesca cuadrada. Lleva trazos sueltos, las mitades de abajo de cuatro cifras, y una etiqueta: Para la linterna de la cabina. Sola, no se puede leer ninguna cifra.",
+      "alt_text": "Texto: placa con muesca cuadrada, mitades inferiores de cuatro cifras, destino la linterna de la cabina.",
+      "location": "O12",
+      "discovery": "B recoge la placa del cajón de la vitrina",
+      "player": "B",
+      "puzzle": "P03",
+      "reveals": "Que la placa va a la cabina",
+      "depends_on": [],
+      "enabled_when": [
+        "P02_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O16_OPEN"
+      ]
+    },
+    {
+      "clue_id": "C09",
+      "content": "Sobre el muro norte aparece, nítida, la imagen de las dos placas unidas: un telón de teatro y, debajo, cuatro cifras: 3 8 0 6. Bajo las cifras, en letra pequeña: Clave del programa de sala.",
+      "alt_text": "Texto y lectura en voz: cifras 3, 8, 0, 6, clave del programa de sala; las cifras tienen contorno grueso en alto contraste.",
+      "location": "O15",
+      "discovery": "Aparece en el muro cuando A proyecta las dos placas bien orientadas",
+      "player": "B",
+      "puzzle": "P03",
+      "reveals": "La clave del programa",
+      "depends_on": [],
+      "enabled_when": [
+        "O04_COMBINED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O04_COMBINED"
+      ]
+    },
+    {
+      "clue_id": "C10",
+      "content": "Panel de focos de batería. Foco Norte: alcanza las columnas A, B y C; lleva filtro ÁMBAR con triángulos y filtro AZUL con círculos. Foco Centro: alcanza B, C y D; lleva filtro VERDE con cuadrados y filtro AZUL con círculos. Foco Sur: alcanza D y E; lleva filtro ÁMBAR con triángulos y filtro AZUL con círculos. Cada foco ilumina un solo punto, elegido por columna y fila.",
+      "alt_text": "Tabla de tres focos con columnas alcanzables y filtros nombrados por color y por figura: ámbar triángulos, azul círculos, verde cuadrados.",
+      "location": "O07",
+      "discovery": "A examina el panel cuando se activa en el apagón",
+      "player": "A",
+      "puzzle": "P04",
+      "reveals": "Qué puede alcanzar cada foco y qué filtros tiene",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O07_STANDBY"
+      ]
+    },
+    {
+      "clue_id": "C11",
+      "content": "Con el apagón, junto a la puerta de la rotonda brilla una cuadrícula fosforescente de columnas A a E y filas 1 a 5. Hay tres sensores: un triángulo en B4, un cuadrado en C1 y un círculo en E2. Rótulo: Cerrojo de luz. Cada sensor se abre con luz que lleve su misma figura. Los tres a la vez.",
+      "alt_text": "Texto: sensor triángulo en B4, sensor cuadrado en C1, sensor círculo en E2; cada uno necesita luz con su misma figura; los tres a la vez.",
+      "location": "O19",
+      "discovery": "B examina la puerta en el apagón",
+      "player": "B",
+      "puzzle": "P04",
+      "reveals": "Dónde están los sensores y qué figura necesita cada uno",
+      "depends_on": [],
+      "enabled_when": [
+        "P03_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O19_DARK_LOCKED"
+      ]
+    },
+    {
+      "clue_id": "C12",
+      "content": "Inscripción del obelisco: Para despertar el eclipse, la sombra del obelisco debe señalar, por este orden, la Llave, la Luna y la Pluma.",
+      "alt_text": "Texto grande y lectura en voz: Llave, Luna, Pluma, en este orden.",
+      "location": "O24",
+      "discovery": "B examina la cara sur del obelisco",
+      "player": "B",
+      "puzzle": "P05",
+      "reveals": "Los tres símbolos y su orden",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O24_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C13",
+      "content": "Consola de la rotonda. Ocho lámparas en el borde, nombradas por su dirección desde el obelisco: N, NE, E, SE, S, SO, O, NO. Se encienden de una en una, en el orden en que se pulsan. La sombra del obelisco cae siempre hacia el lado contrario de la lámpara encendida: con la lámpara N, la sombra señala al S.",
+      "alt_text": "Texto con un dibujo de la rosa de ocho direcciones y una flecha de ejemplo: lámpara N, sombra al S.",
+      "location": "O08",
+      "discovery": "A examina la consola cuando se activa",
+      "player": "A",
+      "puzzle": "P05",
+      "reveals": "Cómo se mueve la sombra con cada lámpara",
+      "depends_on": [],
+      "enabled_when": [
+        "P04_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O08_READY"
+      ]
+    },
+    {
+      "clue_id": "C14",
+      "content": "Rosa de sombras del suelo, con la letra de cada dirección junto a su símbolo: N Ciervo. NE Ancla. E Llave. SE Pez. S Luna. SO Campana. O Pluma. NO Ojo.",
+      "alt_text": "Lista en texto y voz de las ocho direcciones con su símbolo; cada símbolo tiene contorno en relieve fosforescente.",
+      "location": "O25",
+      "discovery": "B examina la rosa del suelo",
+      "player": "B",
+      "puzzle": "P05",
+      "reveals": "En qué dirección está cada símbolo",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O25_EXAMINED"
+      ]
+    },
+    {
+      "clue_id": "C15",
+      "content": "LUMEN: La sombra crece cuanto más cerca está el foco de la pieza. Comparen la ficha de la cabina con el marco del muro.",
+      "alt_text": "Subtítulo y registro de eventos con la misma frase.",
+      "location": "O03",
+      "discovery": "Ayuda contextual si pasan 2 minutos sin progreso en P01",
+      "player": "AB",
+      "puzzle": "P01",
+      "reveals": "Que A y B deben combinar la ficha y el marco",
+      "depends_on": [],
+      "enabled_when": [
+        "IDLE_120"
+      ],
+      "help_level": 1,
+      "discovered_when": [
+        "IDLE_120"
+      ]
+    },
+    {
+      "clue_id": "C16",
+      "content": "Carta de Ilse Moraga: Dejo dos finales para la exposición y no sé elegir. La Bandada: todas las siluetas de la galería se convierten en pájaros que cruzan los muros a la vez; es alegre y un poco bulliciosa. El Faro: una sola luz gira despacio por la sala y cada pieza cuenta su historia por turnos; es tranquila y larga. Elijan ustedes la que se queda.",
+      "alt_text": "Texto de la carta en grande con un icono por obra: pájaro y faro.",
+      "location": "O09",
+      "discovery": "A abre el sobre al volver la luz",
+      "player": "A",
+      "puzzle": "P06",
+      "reveals": "Cómo es cada obra final",
+      "depends_on": [],
+      "enabled_when": [
+        "P05_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O09_VISIBLE"
+      ]
+    },
+    {
+      "clue_id": "C17",
+      "content": "Libro de visitas del ensayo. Taller infantil del sábado: ¡Queremos que los pájaros vuelen por toda la sala! Grupo de visita tranquila del jueves: Pedimos una luz lenta, para mirar cada pieza con calma.",
+      "alt_text": "Las dos notas en texto grande con el nombre del grupo que firma.",
+      "location": "O26",
+      "discovery": "B lee el libro cuando aparece",
+      "player": "B",
+      "puzzle": "P06",
+      "reveals": "Qué pidió cada grupo de visitantes",
+      "depends_on": [],
+      "enabled_when": [
+        "P05_SOLVED"
+      ],
+      "help_level": 0,
+      "discovered_when": [
+        "O26_VISIBLE"
+      ]
+    },
+    {
+      "clue_id": "C18",
+      "content": "Etiqueta en la silueta del gato: Me caí del atril de la rotonda. Allí mi sombra se estira hasta la cúpula.",
+      "alt_text": "Texto de la etiqueta en grande.",
+      "location": "O20",
+      "discovery": "B recoge la silueta detrás del biombo",
+      "player": "B",
+      "puzzle": "P07",
+      "reveals": "Dónde va la silueta",
+      "depends_on": [],
+      "enabled_when": [],
+      "help_level": 0,
+      "discovered_when": [
+        "O20_COLLECTED"
+      ]
+    },
+    {
+      "clue_id": "C19",
+      "content": "LUMEN: Recuerden que la cabina mira la vitrina desde detrás. Lo que para uno es la izquierda, para el otro es la derecha.",
+      "alt_text": "Subtítulo y registro de eventos con la misma frase.",
+      "location": "O02",
+      "discovery": "Ayuda contextual si pasan 2 minutos sin progreso en P02",
+      "player": "AB",
+      "puzzle": "P02",
+      "reveals": "Que la vista de A está invertida",
+      "depends_on": [],
+      "enabled_when": [
+        "P01_SOLVED",
+        "IDLE_120"
+      ],
+      "help_level": 1,
+      "discovered_when": [
+        "IDLE_120"
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "puzzle_id": "P01",
+      "name": "La garza a medida",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "START"
+      ],
+      "narrative": "La sombra de la garza desborda su marco. Ilse quiso que se posara justo dentro, ni más grande ni más pequeña.",
+      "objective": "Colocar el foco de carril en la marca que hace que la sombra mida exactamente lo que el marco.",
+      "situation": "A tiene el mando del carril y la ficha con la altura de la garza, las marcas y la fórmula. B ve el marco del muro, su altura y la distancia de la garza al muro.",
+      "required_objects": [
+        "O01",
+        "O03",
+        "O14",
+        "O15"
+      ],
+      "info_a": "Garza de 0,6 m; marcas I 0,5, II 1,0, III 1,5, IV 2,0, V 3,0 m; fórmula de la sombra (C01).",
+      "info_b": "Marco de 2,4 m y distancia de la garza al muro de 3,0 m (C02).",
+      "must_communicate": "B da la altura del marco y la distancia al muro; A calcula la sombra de cada marca y elige; B confirma en el muro si la sombra encaja.",
+      "rules": [
+        "El foco se puede mover libremente; solo cuenta la marca al pulsar Fijar.",
+        "Si la sombra no encaja, el foco vuelve a la marca V sin más consecuencias.",
+        "B ve la sombra en directo y su descripción en texto: más alta, más baja o justa."
+      ],
+      "steps": [
+        "B examina el muro y lee el marco y la cinta del suelo.",
+        "A examina la ficha.",
+        "A calcula: con II, 0,6 × (1,0 + 3,0) ÷ 1,0 = 2,4 m.",
+        "A mueve el foco a II y pulsa Fijar."
+      ],
+      "answer": {
+        "type": "position",
+        "value": "II",
+        "normalize": "Marca del carril en números romanos al pulsar Fijar"
+      },
+      "wrong_answers": [
+        {
+          "value": "I",
+          "why": "0,6 × 3,5 ÷ 0,5 = 4,2 m: la sombra desborda el marco."
+        },
+        {
+          "value": "III",
+          "why": "0,6 × 4,5 ÷ 1,5 = 1,8 m: se queda corta."
+        },
+        {
+          "value": "V",
+          "why": "0,6 × 6,0 ÷ 3,0 = 1,2 m: es la mitad del marco."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C01",
+          "C02"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": "M01",
+        "check": "Al pulsar Fijar, el servidor calcula la sombra de la marca elegida con la altura y las marcas de C01 y la distancia de C02, y acepta si coincide con la altura del marco de C02 (variante activa)."
+      },
+      "on_solve": {
+        "message": "La sombra de la garza se posa en su marco. Su pico señala la vitrina.",
+        "events": [
+          "E02"
+        ],
+        "sets": [
+          "O01_FIXED"
+        ]
+      },
+      "on_fail": {
+        "message": "La sombra no encaja en el marco. El foco vuelve al final del carril.",
+        "effect": "El foco vuelve a la marca V; nada más cambia."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "A tiene la fórmula y B las medidas del muro: hace falta juntar las dos cosas.",
+        "La distancia del foco al muro es la marca más 3,0 m.",
+        "Busquen una marca donde la sombra sea cuatro veces la garza: 0,6 × 4 = 2,4."
+      ],
+      "estimated_minutes": 6,
+      "unlocks": [
+        "P02"
+      ],
+      "reset_condition": "Tras un fallo el foco vuelve a V. Un reinicio de zona deja el mando en FREE y el foco en V.",
+      "edge_cases": [
+        "A fija antes de que B haya examinado el muro: se rechaza con Faltan las medidas del muro y no cuenta como fallo.",
+        "A mueve el foco entre marcas: la sombra cambia en directo para B, pero solo se valida al fijar.",
+        "Doble pulsación de Fijar: se ignora la segunda."
+      ],
+      "solution_proof": "Con h = 0,6 y 3,0 m de la garza al muro, la sombra de cada marca es 0,6 × (d + 3,0) ÷ d: I 4,2; II 2,4; III 1,8; IV 1,5; V 1,2. Solo II da 2,4 m. A no conoce el marco ni la distancia al muro, y B no conoce la altura de la garza, las marcas ni la fórmula."
+    },
+    {
+      "puzzle_id": "P02",
+      "name": "Cuatro cuerpos",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "P01_SOLVED"
+      ],
+      "narrative": "La vitrina guarda cuatro cuerpos ocultos tras un cristal esmerilado. Solo sus sombras dicen qué son.",
+      "objective": "Identificar los cuatro cuerpos de la posición 1 a la 4 y marcarlos en el teclado de la vitrina.",
+      "situation": "B ve las sombras de frente en el cristal y tiene la placa con el par de sombras de cada cuerpo. A, desde la cabina, ve las sombras de arriba, pero desde detrás.",
+      "required_objects": [
+        "O16",
+        "O17",
+        "O02"
+      ],
+      "info_a": "Sombras de arriba de izquierda a derecha de A: cuadrado, cuadrado, círculo, círculo; y que su vista está invertida (C04).",
+      "info_b": "Sombras de frente por posición: triángulo, cuadrado, cuadrado, triángulo (C05); tabla de cuerpos (C03).",
+      "must_communicate": "A describe sus sombras y advierte que ve desde detrás; los dos invierten el orden para que coincida con las posiciones del frontal; B combina cada par con la tabla y marca.",
+      "rules": [
+        "Se marcan cuatro cuerpos seguidos, de la posición 1 a la 4.",
+        "Si la secuencia es incorrecta, el teclado se borra con un tono suave.",
+        "La vista de A no se puede espejar desde la interfaz: hay que razonarlo."
+      ],
+      "steps": [
+        "A enciende la luz cenital y describe: cuadrado, cuadrado, círculo, círculo.",
+        "Invierten: posiciones 1 a 4 desde arriba son círculo, círculo, cuadrado, cuadrado.",
+        "B combina con el frontal: 1 triángulo y círculo, cono; 2 cuadrado y círculo, cilindro; 3 cuadrado y cuadrado, cubo; 4 triángulo y cuadrado, pirámide.",
+        "B marca cono, cilindro, cubo, pirámide."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "CONO",
+          "CILINDRO",
+          "CUBO",
+          "PIRAMIDE"
+        ],
+        "normalize": "Sin tildes; lista de cuerpos de la posición 1 a la 4"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "PIRAMIDE",
+            "CUBO",
+            "CILINDRO",
+            "CONO"
+          ],
+          "why": "Usa la vista de A sin invertir: empareja la posición 1 con lo que A ve a su izquierda, que es la posición 4."
+        },
+        {
+          "value": [
+            "CONO",
+            "CUBO",
+            "CILINDRO",
+            "PIRAMIDE"
+          ],
+          "why": "Confunde las posiciones 2 y 3: la 2 tiene sombra de arriba circular."
+        },
+        {
+          "value": [
+            "PIRAMIDE",
+            "CILINDRO",
+            "CUBO",
+            "CONO"
+          ],
+          "why": "Intercambia cono y pirámide: los dos dan triángulo de frente, pero difieren arriba."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C03",
+          "C04",
+          "C05"
+        ],
+        "coop_model": "M4",
+        "mechanism_id": "M02",
+        "check": "La secuencia de B debe coincidir con los cuerpos que resultan de combinar, por posición, la sombra de frente de C05 con la sombra de arriba de C04 invertida, según la tabla de C03 (variante activa). Se exige C04 descubierta por A."
+      },
+      "on_solve": {
+        "message": "La vitrina hace clic y se abre un cajón bajo el frontal.",
+        "events": [
+          "E03"
+        ],
+        "sets": [
+          "O16_OPEN"
+        ]
+      },
+      "on_fail": {
+        "message": "El teclado se borra con un tono suave. Revisen qué ve cada uno y desde dónde.",
+        "effect": "La secuencia vuelve a cero."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "Cada cuerpo necesita dos sombras: B tiene una y A la otra.",
+        "A mira desde detrás de la vitrina: su izquierda es la posición 4.",
+        "La posición 1 tiene triángulo de frente y círculo arriba: es el cono."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P03"
+      ],
+      "reset_condition": "Tras un fallo se borra el teclado. Un reinicio de zona apaga la luz cenital y deja la vitrina en LIT.",
+      "edge_cases": [
+        "B marca antes de que A encienda la luz cenital: se rechaza con Falta la vista de arriba y no cuenta como fallo.",
+        "B marca más de cuatro cuerpos: solo cuentan los cuatro primeros tras el último borrado.",
+        "A apaga y enciende la luz cenital: no cambia nada; la pista ya está en su registro."
+      ],
+      "solution_proof": "Cada sombra de frente encaja con dos cuerpos (triángulo: cono o pirámide; cuadrado: cubo o cilindro) y cada sombra de arriba con otros dos (círculo: cilindro o cono; cuadrado: cubo o pirámide), así que ninguno puede decidir solo. Invirtiendo la vista de A, las sombras de arriba por posición son círculo, círculo, cuadrado, cuadrado; con el frontal triángulo, cuadrado, cuadrado, triángulo, la tabla de C03 da un único cuerpo por posición: cono, cilindro, cubo, pirámide."
+    },
+    {
+      "puzzle_id": "P03",
+      "name": "La linterna mágica",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "P02_SOLVED"
+      ],
+      "narrative": "La clave del programa de sala está partida en dos placas de vidrio: una en la cabina y otra en la vitrina. Solo la linterna mágica puede unirlas.",
+      "objective": "Unir las dos placas en la linterna, proyectar la clave y reiniciar el programa en el atril.",
+      "situation": "A tiene la placa superior y la linterna. B encuentra la placa inferior en el cajón de la vitrina, la envía por el montaplatos y ve el muro donde se proyecta la imagen.",
+      "required_objects": [
+        "O04",
+        "O05",
+        "O12",
+        "O13",
+        "O18"
+      ],
+      "info_a": "Placa superior con muesca semicircular (C06) y la regla de orientación de la linterna (C07).",
+      "info_b": "Placa inferior con muesca cuadrada (C08) y, después, la imagen compuesta en el muro (C09).",
+      "must_communicate": "B avisa de que envía la placa; A la recibe y la coloca según la plaquita; B describe lo que ve en el muro; si sale descompuesta, A gira la placa hasta que B lea las cifras; B introduce la clave.",
+      "rules": [
+        "La linterna solo proyecta con dos placas cargadas.",
+        "Si una placa está girada, el muro muestra trazos descompuestos y no hay clave legible.",
+        "El atril acepta cuatro cifras; un error borra la entrada."
+      ],
+      "steps": [
+        "B recoge la placa inferior y la mete en el montaplatos.",
+        "A la recibe y carga las dos placas con las muescas arriba a la izquierda, la semicircular delante.",
+        "B lee en el muro 3 8 0 6.",
+        "B teclea 3806 en el atril."
+      ],
+      "answer": {
+        "type": "code",
+        "value": "3806",
+        "normalize": "Cuatro cifras sin espacios"
+      },
+      "wrong_answers": [
+        {
+          "value": "1906",
+          "why": "Es el año de la cartela de bienvenida, no la clave proyectada."
+        },
+        {
+          "value": "6083",
+          "why": "Son las cifras al revés."
+        },
+        {
+          "value": "3608",
+          "why": "Intercambia la segunda y la cuarta cifra."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C06",
+          "C07",
+          "C08",
+          "C09"
+        ],
+        "coop_model": "M5",
+        "mechanism_id": "M03",
+        "check": "El código de B debe ser igual a las cifras de C09 (variante activa). Solo se acepta si O04 está en COMBINED, es decir, si A cargó la placa de A y la de B con la orientación de C07."
+      },
+      "on_solve": {
+        "message": "El atril se ilumina: Programa de sala reiniciado. En el muro se abre un telón.",
+        "events": [
+          "E04",
+          "E05"
+        ],
+        "sets": [
+          "O18_RESTARTED"
+        ]
+      },
+      "on_fail": {
+        "message": "Clave incorrecta. La entrada se borra.",
+        "effect": "El teclado vuelve a vacío; las placas siguen en la linterna."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "Cada uno tiene media placa: hay que juntarlas en la cabina.",
+        "El montaplatos de la esquina suroeste sube objetos a la cabina.",
+        "Las dos muescas van arriba a la izquierda; si el muro muestra trazos rotos, giren una placa."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P04"
+      ],
+      "reset_condition": "Tras un fallo se borra el teclado. Un reinicio de zona devuelve la placa inferior al cajón, vacía la linterna y deja el atril en FROZEN.",
+      "edge_cases": [
+        "A intenta proyectar con una sola placa: la linterna muestra trazos sueltos y se indica que falta la otra mitad.",
+        "B envía otro objeto por el montaplatos: llega a la cabina y A puede devolverlo; no afecta al acertijo.",
+        "A carga la placa inferior girada: el muro muestra trazos descompuestos y O04 no pasa a COMBINED hasta corregirla.",
+        "B introduce la clave antes de que se proyecte: se rechaza con Clave no proyectada y no cuenta como fallo."
+      ],
+      "solution_proof": "Ninguna placa por separado permite leer una cifra: una tiene las mitades de arriba y la otra las de abajo. Solo la proyección combinada, que requiere el objeto de cada jugador y la orientación de C07, muestra 3806. El 1906 de la cartela es un distractor visible desde el principio."
+    },
+    {
+      "puzzle_id": "P04",
+      "name": "El cerrojo de luz",
+      "room": "ROOM02",
+      "main": true,
+      "prerequisites": [
+        "P03_SOLVED"
+      ],
+      "narrative": "Al reiniciarse, el programa apaga la red general. La galería queda a oscuras y solo responden los tres focos de batería de A. La puerta de la rotonda tiene un cerrojo de luz para estos casos.",
+      "objective": "Apuntar los tres focos de batería, con el filtro correcto, a los tres sensores de la puerta a la vez.",
+      "situation": "B ve en la oscuridad la cuadrícula fosforescente y los tres sensores. A tiene el panel de focos con el alcance y los filtros de cada uno, pero no ve el muro.",
+      "required_objects": [
+        "O07",
+        "O19"
+      ],
+      "info_a": "Alcance y filtros de cada foco (C10).",
+      "info_b": "Posición y figura de cada sensor (C11).",
+      "must_communicate": "B dicta cada sensor con su casilla y su figura; A comprueba qué foco puede llegar y qué foco tiene el filtro de esa figura; los dos repasan las tres asignaciones antes de encender.",
+      "rules": [
+        "Cada foco ilumina un solo punto.",
+        "Un sensor solo cuenta si recibe luz con su misma figura.",
+        "Se encienden los tres a la vez con un solo botón; si algún sensor no se activa, los focos se apagan y se puede repetir."
+      ],
+      "steps": [
+        "B lee: triángulo en B4, cuadrado en C1, círculo en E2.",
+        "A ve que solo el Foco Centro tiene filtro de cuadrados y llega a C: Centro a C1 con verde.",
+        "Solo el Sur llega a E: Sur a E2 con azul.",
+        "El triángulo B4 queda para el Norte con ámbar.",
+        "A pulsa Encender los tres."
+      ],
+      "answer": {
+        "type": "position",
+        "value": {
+          "NORTE": {
+            "punto": "B4",
+            "filtro": "AMBAR_TRIANGULOS"
+          },
+          "CENTRO": {
+            "punto": "C1",
+            "filtro": "VERDE_CUADRADOS"
+          },
+          "SUR": {
+            "punto": "E2",
+            "filtro": "AZUL_CIRCULOS"
+          }
+        },
+        "normalize": "Punto y filtro de cada foco al pulsar Encender los tres"
+      },
+      "wrong_answers": [
+        {
+          "value": {
+            "NORTE": {
+              "punto": "C1",
+              "filtro": "AZUL_CIRCULOS"
+            },
+            "CENTRO": {
+              "punto": "B4",
+              "filtro": "VERDE_CUADRADOS"
+            },
+            "SUR": {
+              "punto": "E2",
+              "filtro": "AZUL_CIRCULOS"
+            }
+          },
+          "why": "El Norte no tiene filtro de cuadrados y el Centro no tiene de triángulos: dos sensores no se activan."
+        },
+        {
+          "value": {
+            "NORTE": {
+              "punto": "B4",
+              "filtro": "AMBAR_TRIANGULOS"
+            },
+            "CENTRO": {
+              "punto": "C1",
+              "filtro": "VERDE_CUADRADOS"
+            },
+            "SUR": {
+              "punto": "E2",
+              "filtro": "AMBAR_TRIANGULOS"
+            }
+          },
+          "why": "El sensor de E2 es un círculo: necesita el filtro azul de círculos."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C10",
+          "C11"
+        ],
+        "coop_model": null,
+        "mechanism_id": null,
+        "check": "Al encender, cada sensor de C11 debe recibir luz de un foco que lo alcance según C10 y con el filtro de su misma figura; los tres sensores a la vez."
+      },
+      "on_solve": {
+        "message": "Los tres sensores brillan a la vez. El cerrojo de luz se abre y la puerta de la rotonda cede.",
+        "events": [
+          "E06"
+        ],
+        "sets": [
+          "O07_AIMED",
+          "O19_OPEN"
+        ]
+      },
+      "on_fail": {
+        "message": "Algún sensor no ha recibido su luz. Los focos se apagan; revisen alcances y filtros.",
+        "effect": "Los focos se apagan; las ruedas y los filtros se quedan como estaban."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "B ve los sensores y A los focos: comparen casillas y figuras.",
+        "Empiecen por el sensor que solo puede alcanzar un foco.",
+        "Solo un foco tiene filtro de cuadrados."
+      ],
+      "estimated_minutes": 7,
+      "unlocks": [
+        "P05",
+        "P07"
+      ],
+      "reset_condition": "Tras un fallo los focos se apagan. Un reinicio de zona devuelve el panel a STANDBY con las ruedas en A1 y la puerta en DARK_LOCKED.",
+      "edge_cases": [
+        "A enciende antes de que B haya leído los sensores: se rechaza con Faltan los sensores y no cuenta como fallo.",
+        "Dos focos apuntan al mismo sensor: cuenta como fallo de asignación y se indica qué sensor quedó a oscuras.",
+        "B se acerca a un sensor iluminado: se le describe en texto qué figura de luz recibe."
+      ],
+      "solution_proof": "El sensor cuadrado C1 solo puede abrirse con el filtro verde, que solo lleva el Foco Centro, y el Centro llega a C. El sensor círculo E2 está en la columna E, que solo alcanza el Sur, y el Sur tiene filtro azul de círculos. El triángulo B4 queda para el Norte, que alcanza B y tiene ámbar. La asignación es única. A no ve los sensores y B no conoce los focos."
+    },
+    {
+      "puzzle_id": "P05",
+      "name": "La rosa de sombras",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P04_SOLVED"
+      ],
+      "narrative": "En la rotonda a oscuras, el obelisco espera. Su sombra debe recorrer tres símbolos para despertar el eclipse y devolver la corriente al museo.",
+      "objective": "Encender tres lámparas del anillo en el orden que hace que la sombra señale la Llave, la Luna y la Pluma.",
+      "situation": "B lee la inscripción y la rosa del suelo. A tiene en la cabina la consola de las ocho lámparas y sabe hacia dónde cae la sombra.",
+      "required_objects": [
+        "O08",
+        "O24",
+        "O25"
+      ],
+      "info_a": "Las ocho lámparas y la regla: la sombra cae al lado contrario (C13).",
+      "info_b": "Los símbolos en orden (C12) y en qué dirección está cada símbolo (C14).",
+      "must_communicate": "B dice en qué dirección está cada símbolo; A traduce cada dirección a la lámpara contraria y la repite; B confirma en el suelo hacia dónde apunta la sombra.",
+      "rules": [
+        "Se pulsan tres direcciones en orden y después Proyectar.",
+        "Si el recorrido no coincide, la sombra se desvanece y se puede repetir.",
+        "Borrar no cuenta como fallo."
+      ],
+      "steps": [
+        "B lee: Llave, Luna, Pluma.",
+        "B lee la rosa: Llave al E, Luna al S, Pluma al O.",
+        "A traduce a las lámparas contrarias: O, N, E.",
+        "A pulsa O, N, E y Proyectar."
+      ],
+      "answer": {
+        "type": "sequence",
+        "value": [
+          "O",
+          "N",
+          "E"
+        ],
+        "normalize": "Lista de direcciones en mayúsculas, O es oeste"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "E",
+            "S",
+            "O"
+          ],
+          "why": "Enciende las lámparas en la dirección de los símbolos: la sombra señalaría Pluma, Ciervo y Llave."
+        },
+        {
+          "value": [
+            "N",
+            "O",
+            "E"
+          ],
+          "why": "Orden cambiado: la sombra señalaría primero la Luna."
+        },
+        {
+          "value": [
+            "O",
+            "E",
+            "N"
+          ],
+          "why": "Las tres lámparas correctas en otro orden: el recorrido no coincide con la inscripción."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "A"
+        ],
+        "requires_clues": [
+          "C12",
+          "C13",
+          "C14"
+        ],
+        "coop_model": "M1",
+        "mechanism_id": "M04",
+        "check": "Para cada símbolo de C12, en orden, se toma su dirección en C14 y la dirección opuesta según C13. La secuencia de A debe coincidir (variante activa)."
+      },
+      "on_solve": {
+        "message": "La sombra del obelisco recorre la Llave, la Luna y la Pluma. Un eclipse de luz se abre en la cúpula y vuelve la corriente.",
+        "events": [
+          "E07"
+        ],
+        "sets": [
+          "O08_DONE"
+        ]
+      },
+      "on_fail": {
+        "message": "La sombra se desvanece. Recuerden que cae al lado contrario de la lámpara.",
+        "effect": "La secuencia se borra."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 10
+      },
+      "hints": [
+        "B ve los símbolos y A maneja las lámparas.",
+        "La sombra cae al lado contrario de la lámpara encendida.",
+        "La Llave está al E: hay que encender la lámpara O."
+      ],
+      "estimated_minutes": 6,
+      "unlocks": [
+        "P06"
+      ],
+      "reset_condition": "Tras un fallo se borra la secuencia. Un reinicio de zona deja la consola en READY.",
+      "edge_cases": [
+        "A proyecta antes de que B haya leído la inscripción: se rechaza con Falta la inscripción y no cuenta como fallo.",
+        "A pulsa más de tres direcciones: solo cuentan las tres primeras desde el último Borrar.",
+        "Con modo de movimiento reducido, la sombra salta de símbolo en símbolo y el nombre del símbolo señalado aparece en texto."
+      ],
+      "solution_proof": "C14 da una dirección única por símbolo: Llave E, Luna S, Pluma O. C13 dice que la sombra cae al lado contrario, así que las lámparas son O, N y E, en el orden de C12. Encender en la dirección del símbolo es el error típico. B no maneja las lámparas ni conoce la regla del panel; A no ve la rosa ni la inscripción."
+    },
+    {
+      "puzzle_id": "P06",
+      "name": "La obra final",
+      "room": "ROOM03",
+      "main": true,
+      "prerequisites": [
+        "P05_SOLVED"
+      ],
+      "narrative": "Ilse dejó dos finales y nunca eligió. La exposición abrirá con el que decidan sus primeros espectadores.",
+      "objective": "Elegir juntos la obra que cerrará la exposición.",
+      "situation": "A, ya en la rotonda, tiene la carta de Ilse. B tiene el libro de visitas. Votan sin ver el voto del otro.",
+      "required_objects": [
+        "O09",
+        "O26",
+        "O28",
+        "O29"
+      ],
+      "info_a": "Cómo es cada obra según su autora (C16).",
+      "info_b": "Qué pidieron los grupos de visitantes (C17).",
+      "must_communicate": "Cada uno cuenta lo que ha leído y deciden juntos.",
+      "rules": [
+        "Votan los dos.",
+        "Si votan distinto, se borran los votos y se pide que hablen.",
+        "Las dos obras son válidas y abren las puertas del museo."
+      ],
+      "steps": [
+        "A lee la carta.",
+        "B lee el libro de visitas.",
+        "Hablan y votan la misma obra."
+      ],
+      "answer": {
+        "type": "decision",
+        "value": null,
+        "normalize": "Clave de opción",
+        "options": [
+          {
+            "key": "BANDADA",
+            "label": "La Bandada",
+            "consequence": "Todas las siluetas se convierten en pájaros que cruzan la galería; el epílogo muestra al taller infantil en la inauguración."
+          },
+          {
+            "key": "FARO",
+            "label": "El Faro",
+            "consequence": "Una luz lenta recorre la sala y cada pieza cuenta su historia; el epílogo muestra al grupo de visita tranquila en la inauguración."
+          }
+        ]
+      },
+      "wrong_answers": [],
+      "validation": {
+        "input_by": [
+          "A",
+          "B"
+        ],
+        "requires_clues": [
+          "C16",
+          "C17"
+        ],
+        "coop_model": "M6",
+        "mechanism_id": "M05",
+        "check": "Se acepta cuando los votos de A y B coinciden; se guarda la opción elegida."
+      },
+      "on_solve": {
+        "message": "La obra elegida se proyecta en la cúpula. Las puertas principales del museo se abren.",
+        "events": [
+          "E08"
+        ],
+        "sets": [
+          "O30_OPEN"
+        ]
+      },
+      "on_fail": {
+        "message": "Han votado distinto. Cuéntense lo que han leído y voten otra vez.",
+        "effect": "Se borran los dos votos."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "A tiene la carta de Ilse y B el libro de visitas.",
+        "No hay obra incorrecta: elijan la que más les guste.",
+        "Voten la misma obra en las dos pantallas."
+      ],
+      "estimated_minutes": 3,
+      "unlocks": [],
+      "reset_condition": "Un reinicio de zona borra los votos y cubre las obras.",
+      "edge_cases": [
+        "Un jugador vota y el otro se desconecta: el voto se conserva hasta que vuelva.",
+        "Un jugador cambia su voto antes de que vote el otro: cuenta el último.",
+        "Se agota el reloj durante la votación: se ofrece Modo sin reloj y se conservan los votos."
+      ],
+      "solution_proof": "Es una decisión compartida: cualquier obra en la que coincidan es válida. Solo cambia el epílogo y las dos abren la salida."
+    },
+    {
+      "puzzle_id": "P07",
+      "name": "El gato de sombra",
+      "room": "ROOM03",
+      "main": false,
+      "prerequisites": [
+        "P04_SOLVED"
+      ],
+      "narrative": "Una silueta de gato se cayó de su atril durante los ensayos y quedó detrás del biombo.",
+      "objective": "Devolver la silueta al atril de la rotonda.",
+      "situation": "B encuentra la silueta en la galería y la lleva a la rotonda.",
+      "required_objects": [
+        "O20",
+        "O27"
+      ],
+      "info_a": "Desde la cabina A ve un recorte negro detrás del biombo y puede indicárselo a B.",
+      "info_b": "La silueta y su etiqueta (C18).",
+      "must_communicate": "A puede orientar a B hacia el biombo si no encuentra la silueta.",
+      "rules": [
+        "Es opcional y no bloquea nada.",
+        "Se puede completar antes o después del eclipse."
+      ],
+      "steps": [
+        "B recoge la silueta.",
+        "B entra en la rotonda.",
+        "B la coloca en el atril vacío."
+      ],
+      "answer": {
+        "type": "combine",
+        "value": [
+          "O20",
+          "O27"
+        ],
+        "normalize": "Objeto del inventario usado sobre el objeto destino"
+      },
+      "wrong_answers": [
+        {
+          "value": [
+            "O20",
+            "O24"
+          ],
+          "why": "El obelisco no tiene atril."
+        }
+      ],
+      "validation": {
+        "input_by": [
+          "B"
+        ],
+        "requires_clues": [
+          "C18"
+        ],
+        "coop_model": null,
+        "mechanism_id": null,
+        "check": "B tiene O20 en COLLECTED y lo usa sobre O27 en EMPTY."
+      },
+      "on_solve": {
+        "message": "La sombra del gato se estira hasta la cúpula y parece bostezar.",
+        "events": [
+          "E11"
+        ],
+        "sets": [
+          "O20_PLACED",
+          "O27_OCCUPIED"
+        ]
+      },
+      "on_fail": {
+        "message": "Eso no va ahí.",
+        "effect": "Ninguno."
+      },
+      "attempts": {
+        "max": null,
+        "cooldown_after": 3,
+        "cooldown_s": 5
+      },
+      "hints": [
+        "Hay algo caído detrás del biombo.",
+        "La etiqueta dice de dónde se cayó.",
+        "El atril vacío está al suroeste de la rotonda."
+      ],
+      "estimated_minutes": 2,
+      "unlocks": [],
+      "reset_condition": "Reinicio de zona: la silueta vuelve detrás del biombo.",
+      "edge_cases": [
+        "B la coloca en el apagón: se acepta; la sombra aparece cuando vuelve la luz.",
+        "B intenta colocarla tras confirmar la salida: ya no se ofrece."
+      ],
+      "solution_proof": "Solo hay una silueta y un atril vacío; la etiqueta indica el destino. Es opcional y añade un detalle al epílogo."
+    }
+  ],
+  "coop_mechanisms": [
+    {
+      "mechanism_id": "M01",
+      "model": "M1",
+      "puzzle": "P01",
+      "title": "La fórmula y el marco",
+      "why_not_solo": "A tiene la altura de la garza, las marcas y la fórmula; B tiene el marco y la distancia al muro.",
+      "info_a": "Altura, marcas y fórmula.",
+      "info_b": "Altura del marco y distancia de la garza al muro.",
+      "communicate_a": "La sombra calculada para la marca que propone.",
+      "communicate_b": "Las dos medidas del muro y si la sombra encaja.",
+      "action_a": "Mover el foco y fijarlo.",
+      "action_b": "Comprobar la sombra en el muro.",
+      "validation": "La entrada viene de A y exige C02 descubierta por B.",
+      "miscommunication": "Si confunden la distancia al muro con la marca, la sombra no encaja, el foco vuelve y la ayuda explica que hay que sumar 3,0 m.",
+      "anti_domination": "A calcula pero no ve el resultado; B ve el resultado pero no puede mover el foco.",
+      "skill_gap": "La ayuda de nivel 3 reduce el cálculo a buscar el factor 4; la descripción en texto de la sombra (más alta, más baja, justa) permite probar marcas sin cálculo."
+    },
+    {
+      "mechanism_id": "M02",
+      "model": "M4",
+      "puzzle": "P02",
+      "title": "De frente y desde arriba",
+      "why_not_solo": "Cada sombra encaja con dos cuerpos; solo la vista de frente de B y la de arriba de A juntas dan uno.",
+      "info_a": "Sombras de arriba, vistas desde detrás.",
+      "info_b": "Sombras de frente y tabla de cuerpos.",
+      "communicate_a": "Sus cuatro sombras y que su izquierda es la derecha de B.",
+      "communicate_b": "Las sombras de frente por posición y la tabla.",
+      "action_a": "Encender la luz cenital y describir.",
+      "action_b": "Combinar y marcar en el teclado.",
+      "validation": "La entrada viene de B y exige C04 descubierta por A.",
+      "miscommunication": "Si no invierten el orden, obtienen pirámide, cubo, cilindro, cono; el teclado se borra y la ayuda de nivel 2 recuerda la inversión.",
+      "anti_domination": "Quien marca no ve la vista de arriba y quien la ve no tiene el teclado.",
+      "skill_gap": "Las sombras son figuras simples con nombre; la inversión se explica en la propia pista de A."
+    },
+    {
+      "mechanism_id": "M03",
+      "model": "M5",
+      "puzzle": "P03",
+      "title": "Dos mitades de vidrio",
+      "why_not_solo": "La placa superior está en la cabina y la inferior en la vitrina; solo juntas en la linterna se lee la clave, que se proyecta donde solo la ve B.",
+      "info_a": "Placa superior y regla de orientación.",
+      "info_b": "Placa inferior y la imagen del muro.",
+      "communicate_a": "Que ha cargado las dos placas y cómo.",
+      "communicate_b": "Que envía la placa y qué se ve en el muro.",
+      "action_a": "Recibir la placa, orientar y cargar las dos.",
+      "action_b": "Enviar la placa por el montaplatos e introducir la clave.",
+      "validation": "O04 solo pasa a COMBINED con O05 de A y O12 de B bien orientadas; la clave la introduce B.",
+      "miscommunication": "Si una placa va girada, B describe trazos rotos y A corrige; nada se pierde.",
+      "anti_domination": "Cada uno aporta un objeto indispensable y una acción distinta.",
+      "skill_gap": "La orientación se muestra con dibujo y texto; la ayuda de nivel 3 indica exactamente qué girar."
+    },
+    {
+      "mechanism_id": "M04",
+      "model": "M1",
+      "puzzle": "P05",
+      "title": "Símbolos y lámparas",
+      "why_not_solo": "B ve la inscripción y la rosa; A maneja las lámparas y conoce la regla de la sombra.",
+      "info_a": "Lámparas y regla del lado contrario.",
+      "info_b": "Orden de símbolos y su dirección.",
+      "communicate_a": "La lámpara que encenderá para cada símbolo.",
+      "communicate_b": "La dirección de cada símbolo y hacia dónde apunta la sombra.",
+      "action_a": "Pulsar las tres direcciones.",
+      "action_b": "Leer y comprobar en el suelo.",
+      "validation": "La entrada viene de A y exige C12 y C14 descubiertas por B.",
+      "miscommunication": "Si encienden en la dirección del símbolo, la sombra señala otros símbolos y B lo ve; la ayuda recuerda el lado contrario.",
+      "anti_domination": "Tras P04, de nuevo A ejecuta, pero B decide qué se busca y verifica el resultado.",
+      "skill_gap": "La rosa tiene letras y símbolos; la regla tiene un ejemplo resuelto."
+    },
+    {
+      "mechanism_id": "M05",
+      "model": "M6",
+      "puzzle": "P06",
+      "title": "Elegir la obra final",
+      "why_not_solo": "A conoce la visión de la artista y B lo que pidió el público; la votación exige a los dos.",
+      "info_a": "Carta de Ilse.",
+      "info_b": "Libro de visitas.",
+      "communicate_a": "Cómo es cada obra.",
+      "communicate_b": "Qué pidió cada grupo.",
+      "action_a": "Votar.",
+      "action_b": "Votar.",
+      "validation": "Solo se aplica una opción cuando los dos votos coinciden.",
+      "miscommunication": "Si votan distinto, se borran los votos y se pide hablar; sin penalización.",
+      "anti_domination": "El voto es secreto hasta que votan los dos.",
+      "skill_gap": "No hay respuesta correcta; solo hace falta acordar."
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "START",
+      "to": "C01",
+      "condition": "A examina la ficha del foco",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C02",
+      "condition": "B examina el muro",
+      "type": "required"
+    },
+    {
+      "from": "C01",
+      "to": "P01",
+      "condition": "A calcula la sombra",
+      "type": "required"
+    },
+    {
+      "from": "C02",
+      "to": "P01",
+      "condition": "B da las medidas",
+      "type": "required"
+    },
+    {
+      "from": "P01",
+      "to": "C04",
+      "condition": "Se habilita la luz cenital",
+      "type": "required"
+    },
+    {
+      "from": "P01",
+      "to": "C05",
+      "condition": "Se ilumina la vitrina",
+      "type": "required"
+    },
+    {
+      "from": "START",
+      "to": "C03",
+      "condition": "B examina la placa de la vitrina",
+      "type": "required"
+    },
+    {
+      "from": "C03",
+      "to": "P02",
+      "condition": "B aplica la tabla",
+      "type": "required"
+    },
+    {
+      "from": "C04",
+      "to": "P02",
+      "condition": "A describe la vista de arriba",
+      "type": "required"
+    },
+    {
+      "from": "C05",
+      "to": "P02",
+      "condition": "B describe la vista de frente",
+      "type": "required"
+    },
+    {
+      "from": "P02",
+      "to": "O12",
+      "condition": "Se abre el cajón con la placa inferior",
+      "type": "required"
+    },
+    {
+      "from": "O12",
+      "to": "O13",
+      "condition": "B envía la placa",
+      "type": "required"
+    },
+    {
+      "from": "O13",
+      "to": "O04",
+      "condition": "A carga las dos placas",
+      "type": "required"
+    },
+    {
+      "from": "O04",
+      "to": "C09",
+      "condition": "Se proyecta la clave",
+      "type": "required"
+    },
+    {
+      "from": "C09",
+      "to": "P03",
+      "condition": "B introduce la clave",
+      "type": "required"
+    },
+    {
+      "from": "P03",
+      "to": "E05",
+      "condition": "El programa provoca el apagón",
+      "type": "required"
+    },
+    {
+      "from": "E05",
+      "to": "C10",
+      "condition": "Se activa el panel de batería",
+      "type": "required"
+    },
+    {
+      "from": "E05",
+      "to": "C11",
+      "condition": "Brillan los sensores",
+      "type": "required"
+    },
+    {
+      "from": "C10",
+      "to": "P04",
+      "condition": "A asigna focos",
+      "type": "required"
+    },
+    {
+      "from": "C11",
+      "to": "P04",
+      "condition": "B dicta sensores",
+      "type": "required"
+    },
+    {
+      "from": "P04",
+      "to": "ROOM03",
+      "condition": "B entra en la rotonda",
+      "type": "required"
+    },
+    {
+      "from": "ROOM03",
+      "to": "C12",
+      "condition": "B lee el obelisco",
+      "type": "required"
+    },
+    {
+      "from": "ROOM03",
+      "to": "C14",
+      "condition": "B lee la rosa",
+      "type": "required"
+    },
+    {
+      "from": "C12",
+      "to": "P05",
+      "condition": "B dicta los símbolos",
+      "type": "required"
+    },
+    {
+      "from": "C13",
+      "to": "P05",
+      "condition": "A traduce a lámparas",
+      "type": "required"
+    },
+    {
+      "from": "P05",
+      "to": "C16",
+      "condition": "Aparece el sobre de Ilse",
+      "type": "required"
+    },
+    {
+      "from": "P05",
+      "to": "C17",
+      "condition": "Aparece el libro de visitas",
+      "type": "required"
+    },
+    {
+      "from": "C16",
+      "to": "P06",
+      "condition": "A cuenta la carta",
+      "type": "required"
+    },
+    {
+      "from": "C17",
+      "to": "P06",
+      "condition": "B cuenta el libro",
+      "type": "required"
+    },
+    {
+      "from": "P06",
+      "to": "O30",
+      "condition": "Se abren las puertas",
+      "type": "required"
+    },
+    {
+      "from": "O30",
+      "to": "ESCAPE",
+      "condition": "Los dos confirman la salida",
+      "type": "required"
+    },
+    {
+      "from": "P04",
+      "to": "P07",
+      "condition": "La rotonda permite devolver el gato",
+      "type": "optional"
+    },
+    {
+      "from": "P07",
+      "to": "ESCAPE",
+      "condition": "Añade el gato al epílogo",
+      "type": "optional"
+    }
+  ],
+  "state_transitions": [
+    {
+      "from": "INITIALIZING",
+      "to": "INTRO",
+      "event": "session.loaded",
+      "conditions": "Los dos jugadores conectados y con rol asignado",
+      "validations": "Rol A y rol B distintos",
+      "effects": "Reproduce la intro de la garza desbordada",
+      "message": "Teatro de sombras. Ensayo general."
+    },
+    {
+      "from": "INTRO",
+      "to": "EXPLORATION",
+      "event": "player.ready x2",
+      "conditions": "Los dos pulsan Listo o saltan la intro",
+      "validations": "Ambos conectados",
+      "effects": "Arranca el reloj de 45 min; E01 con LUMEN, Ilse y Tomás",
+      "message": "El programa de sala está detenido."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "PUZZLE_ACTIVE",
+      "event": "A toma el mando del carril",
+      "conditions": "P01 disponible",
+      "validations": "Jugador A",
+      "effects": "B ve la sombra en directo con su descripción",
+      "message": "Foco de carril"
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "VALIDATING",
+      "event": "A pulsa Fijar",
+      "conditions": "Marca elegida",
+      "validations": "validatePuzzle(P01) con C02 descubierta por B",
+      "effects": "Bloquea el mando mientras valida",
+      "message": "Comprobando la sombra…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Marca incorrecta",
+      "conditions": "Sombra distinta del marco",
+      "validations": "Contador de fallos",
+      "effects": "Foco a V",
+      "message": "La sombra no encaja."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P01 correcto",
+      "conditions": "Marca II",
+      "validations": "C01 y C02 descubiertas",
+      "effects": "E02",
+      "message": "La garza se posa en su marco."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "EXPLORATION",
+      "event": "Fin de E02",
+      "conditions": "Vitrina en LIT",
+      "validations": "Ninguna",
+      "effects": "Música con una capa más",
+      "message": "La vitrina se ilumina."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P02 correcto",
+      "conditions": "Cono, cilindro, cubo, pirámide",
+      "validations": "C03, C04 y C05 descubiertas",
+      "effects": "E03: cajón con la placa inferior",
+      "message": "La vitrina se abre."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "A carga su placa en la linterna",
+      "conditions": "Falta la placa de B",
+      "validations": "O05 en COLLECTED",
+      "effects": "La linterna muestra trazos sueltos en el muro",
+      "message": "Falta la otra mitad. Esperando el montaplatos…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Llega la placa de B por el montaplatos",
+      "conditions": "O13 en UP",
+      "validations": "O12 en SENT",
+      "effects": "A puede cargar la segunda placa",
+      "message": "Ha llegado la placa inferior."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "VALIDATING",
+      "event": "B introduce la clave",
+      "conditions": "O04 en COMBINED",
+      "validations": "validatePuzzle(P03)",
+      "effects": "Bloquea el atril",
+      "message": "Comprobando clave…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P03 correcto",
+      "conditions": "Clave 3806",
+      "validations": "C06 a C09 descubiertas",
+      "effects": "E04 y E05",
+      "message": "Programa de sala reiniciado."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "EXPLORATION",
+      "event": "Fin de E05 (complicación)",
+      "conditions": "Apagón general",
+      "validations": "O07 en STANDBY y O19 en DARK_LOCKED",
+      "effects": "Perfil de luz nocturno; solo focos de batería",
+      "message": "Apagón. Solo quedan los focos de batería."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P04 correcto",
+      "conditions": "Tres sensores a la vez",
+      "validations": "C10 de A y C11 de B",
+      "effects": "E06",
+      "message": "El cerrojo de luz se abre."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "ROOM_UNLOCKED",
+      "event": "Fin de E06",
+      "conditions": "Exit_conditions de ROOM02 cumplidas",
+      "validations": "Ninguna",
+      "effects": "Carga ROOM03 para B y activa la consola de la rotonda",
+      "message": "La rotonda está abierta."
+    },
+    {
+      "from": "ROOM_UNLOCKED",
+      "to": "EXPLORATION",
+      "event": "B entra en la rotonda",
+      "conditions": "Escena cargada",
+      "validations": "Ninguna",
+      "effects": "La rosa y la inscripción brillan",
+      "message": "El obelisco espera."
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_SOLVED",
+      "event": "P05 correcto",
+      "conditions": "O, N, E",
+      "validations": "C12, C13 y C14 descubiertas",
+      "effects": "E07: vuelve la corriente y se abre la escalera de A",
+      "message": "El eclipse despierta."
+    },
+    {
+      "from": "PUZZLE_ACTIVE",
+      "to": "WAITING_FOR_PARTNER",
+      "event": "Un voto de P06",
+      "conditions": "Falta el voto del otro",
+      "validations": "Jugador con C16 o C17",
+      "effects": "Guarda el voto oculto",
+      "message": "Esperando el voto de tu pareja…"
+    },
+    {
+      "from": "WAITING_FOR_PARTNER",
+      "to": "VALIDATING",
+      "event": "Segundo voto",
+      "conditions": "Los dos votaron",
+      "validations": "submitDecision",
+      "effects": "Compara votos",
+      "message": "Comprobando…"
+    },
+    {
+      "from": "VALIDATING",
+      "to": "PUZZLE_ACTIVE",
+      "event": "Votos distintos",
+      "conditions": "Opciones distintas",
+      "validations": "Ninguna",
+      "effects": "Borra los votos",
+      "message": "Han votado distinto. Hablen y voten otra vez."
+    },
+    {
+      "from": "PUZZLE_SOLVED",
+      "to": "FINAL_SEQUENCE",
+      "event": "P06 resuelto",
+      "conditions": "Votos coincidentes",
+      "validations": "Ninguna",
+      "effects": "E08: obra en la cúpula y puertas abiertas",
+      "message": "La exposición está lista."
+    },
+    {
+      "from": "FINAL_SEQUENCE",
+      "to": "COMPLETED",
+      "event": "escape.confirm x2",
+      "conditions": "Los dos cruzan las puertas principales",
+      "validations": "O30 en OPEN",
+      "effects": "Calcula el final según P06 y P07",
+      "message": "El museo reabre mañana."
+    },
+    {
+      "from": "EXPLORATION",
+      "to": "FAILED",
+      "event": "timer.expired",
+      "conditions": "Reloj a cero en modo con reloj",
+      "validations": "Hora del servidor",
+      "effects": "E10: amanecer",
+      "message": "Amanece. ¿Seguir sin reloj o reiniciar la zona?"
+    },
+    {
+      "from": "FAILED",
+      "to": "EXPLORATION",
+      "event": "Elegir Modo sin reloj",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Oculta el reloj; conserva todo",
+      "message": "Sigan a su ritmo."
+    },
+    {
+      "from": "FAILED",
+      "to": "RESETTING",
+      "event": "Elegir reiniciar zona",
+      "conditions": "Los dos aceptan",
+      "validations": "Ninguna",
+      "effects": "Aplica reset_rules de la zona actual",
+      "message": "Reiniciando la zona…"
+    },
+    {
+      "from": "RESETTING",
+      "to": "EXPLORATION",
+      "event": "Zona restaurada",
+      "conditions": "Estado restaurado",
+      "validations": "Ninguna",
+      "effects": "Reloj con 10 min extra",
+      "message": "Zona reiniciada."
+    },
+    {
+      "from": "ANY",
+      "to": "PAUSED",
+      "event": "game.pause",
+      "conditions": "Cualquiera pulsa Pausa",
+      "validations": "Ninguna",
+      "effects": "Congela el reloj, las sombras animadas y las entradas",
+      "message": "Pausado."
+    },
+    {
+      "from": "PAUSED",
+      "to": "EXPLORATION",
+      "event": "game.resume x2",
+      "conditions": "Los dos pulsan Reanudar",
+      "validations": "Ambos conectados",
+      "effects": "Vuelve al estado anterior a la pausa",
+      "message": "Reanudado."
+    }
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "trigger": [
+        "START"
+      ],
+      "prev_state": "INTRO",
+      "action": "LUMEN presenta la situación, suena la nota de voz de Ilse en la cabina y Tomás habla por radio",
+      "affects": [
+        "ROOM01",
+        "ROOM02"
+      ],
+      "duration_s": 30,
+      "audio": "A06",
+      "visual": null,
+      "end_condition": "Terminan las tres intervenciones",
+      "on_interrupt": "Si se pausa, se reanuda donde se quedó; el texto ya está en el historial",
+      "repeat": "Se puede volver a escuchar desde el historial"
+    },
+    {
+      "event_id": "E02",
+      "trigger": [
+        "P01_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La sombra de la garza se posa en el marco y gira el pico hacia la vitrina, que se ilumina por detrás",
+      "affects": [
+        "O01",
+        "O16",
+        "O02",
+        "ROOM02"
+      ],
+      "duration_s": 6,
+      "audio": "A07",
+      "visual": "V01",
+      "end_condition": "O16 en LIT",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E03",
+      "trigger": [
+        "P02_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Se abre el cajón de la vitrina con la placa inferior",
+      "affects": [
+        "O16",
+        "O12"
+      ],
+      "duration_s": 4,
+      "audio": "A08",
+      "visual": null,
+      "end_condition": "O12 en FOUND",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E04",
+      "trigger": [
+        "P03_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "El programa de sala arranca: en el muro se abre un telón proyectado",
+      "affects": [
+        "O18",
+        "O15",
+        "ROOM02"
+      ],
+      "duration_s": 8,
+      "audio": "A09",
+      "visual": "V02",
+      "end_condition": "Telón abierto",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E05",
+      "trigger": [
+        "P03_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Complicación: el programa arranca en modo de ahorro y apaga la red general; quedan los focos de batería de A, la pintura fosforescente y el foco de carril",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "O07",
+        "O19"
+      ],
+      "duration_s": 6,
+      "audio": "A10",
+      "visual": "V03",
+      "end_condition": "O07 en STANDBY y O19 en DARK_LOCKED",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E06",
+      "trigger": [
+        "P04_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "Los tres sensores brillan y la puerta de la rotonda se abre; la consola de la rotonda se activa en la cabina",
+      "affects": [
+        "O19",
+        "O07",
+        "O08",
+        "DOOR02",
+        "ROOM03"
+      ],
+      "duration_s": 6,
+      "audio": "A11",
+      "visual": "V04",
+      "end_condition": "B puede entrar en ROOM03 y O08 en READY",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E07",
+      "trigger": [
+        "P05_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La sombra recorre los tres símbolos, se forma un eclipse de luz en la cúpula y vuelve la corriente; aparecen el sobre de Ilse y el libro de visitas; se abre la escalera de A",
+      "affects": [
+        "O08",
+        "O09",
+        "O26",
+        "DOOR01",
+        "ROOM01",
+        "ROOM02",
+        "ROOM03"
+      ],
+      "duration_s": 15,
+      "audio": "A12",
+      "visual": "V05",
+      "end_condition": "O09 y O26 en VISIBLE; A puede bajar",
+      "on_interrupt": "Se aplica el estado final",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E08",
+      "trigger": [
+        "P06_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La obra elegida se descubre y se proyecta en la cúpula; las puertas principales se abren",
+      "affects": [
+        "O28",
+        "O29",
+        "O30",
+        "DOOR05"
+      ],
+      "duration_s": 25,
+      "audio": "A05",
+      "visual": "V06",
+      "end_condition": "O30 en OPEN",
+      "on_interrupt": "Las puertas quedan abiertas",
+      "repeat": "Una sola vez"
+    },
+    {
+      "event_id": "E09",
+      "trigger": [
+        "IDLE_120"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "LUMEN ofrece la ayuda de nivel 1 del acertijo activo",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03"
+      ],
+      "duration_s": 5,
+      "audio": "A06",
+      "visual": null,
+      "end_condition": "Aviso mostrado",
+      "on_interrupt": "Se descarta",
+      "repeat": "Cada 2 min sin progreso, una vez por nivel de ayuda"
+    },
+    {
+      "event_id": "E10",
+      "trigger": [
+        "TIMER_EXPIRED"
+      ],
+      "prev_state": "EXPLORATION",
+      "action": "Entra luz de amanecer por los montantes, las sombras se suavizan y se ofrecen Modo sin reloj o reiniciar zona",
+      "affects": [
+        "ROOM01",
+        "ROOM02",
+        "ROOM03"
+      ],
+      "duration_s": 8,
+      "audio": null,
+      "visual": "V07",
+      "end_condition": "Los dos eligen",
+      "on_interrupt": "Se vuelve a mostrar la elección",
+      "repeat": "Una vez por partida con reloj"
+    },
+    {
+      "event_id": "E11",
+      "trigger": [
+        "P07_SOLVED"
+      ],
+      "prev_state": "PUZZLE_SOLVED",
+      "action": "La sombra del gato se estira por la cúpula",
+      "affects": [
+        "O20",
+        "O27"
+      ],
+      "duration_s": 4,
+      "audio": "A13",
+      "visual": null,
+      "end_condition": "O27 en OCCUPIED",
+      "on_interrupt": "Queda en el atril",
+      "repeat": "Una sola vez"
+    }
+  ],
+  "dialogues": [
+    {
+      "dialogue_id": "D01",
+      "speaker": "LUMEN",
+      "text": "Bienvenidos al Museo Lumen. El programa de sala se ha detenido y el museo ha cerrado sus puertas en modo nocturno. No hay ningún peligro.",
+      "trigger": "START",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D02",
+      "speaker": "LUMEN",
+      "text": "La exposición está incompleta. Cada pieza debe mostrar su sombra correcta para que el programa pueda reiniciarse.",
+      "trigger": "START",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D03",
+      "speaker": "Ilse Moraga (nota de voz)",
+      "text": "Si estás en la cabina, tú decides dónde nace la luz. Pero la sombra la ve otra persona. Pregúntale siempre.",
+      "trigger": "E01",
+      "audience": "A",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D04",
+      "speaker": "Tomás, vigilante (radio)",
+      "text": "Aquí Tomás, en la puerta. Todo bien por fuera. Las puertas se abren solas cuando el programa termina; os espero con un café.",
+      "trigger": "E01",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D05",
+      "speaker": "Narrador",
+      "text": "Estás en la galería. La sombra de la garza desborda su marco en el muro. Arriba, en un cristal oscuro, está la cabina de tu pareja.",
+      "trigger": "START",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D06",
+      "speaker": "Narrador",
+      "text": "Desde la cabina ves el suelo de la galería desde arriba. Una visera te tapa el muro: solo tu pareja puede ver las sombras.",
+      "trigger": "START",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D07",
+      "speaker": "LUMEN",
+      "text": "La garza se ha posado. Su pico señala la vitrina de los cuatro cuerpos.",
+      "trigger": "E02",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D08",
+      "speaker": "Ilse Moraga (nota de voz)",
+      "text": "Una sombra sola miente un poco. Dos sombras de la misma cosa ya no pueden mentir.",
+      "trigger": "E02",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D09",
+      "speaker": "Sistema",
+      "text": "Se abre el cajón de la vitrina.",
+      "trigger": "E03",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D10",
+      "speaker": "LUMEN",
+      "text": "Esta placa pertenece a la linterna de la cabina. El montaplatos de la esquina sube hasta allí.",
+      "trigger": "E03",
+      "audience": "B",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D11",
+      "speaker": "Sistema",
+      "text": "Falta la otra mitad. La linterna solo muestra trazos sueltos.",
+      "trigger": "P03",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D12",
+      "speaker": "LUMEN",
+      "text": "Programa de sala reiniciado. Arranque en modo de ahorro: desconecto la red general.",
+      "trigger": "E05",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D13",
+      "speaker": "Narrador",
+      "text": "La galería queda a oscuras. Junto a la puerta de la rotonda brillan una cuadrícula y tres figuras.",
+      "trigger": "E05",
+      "audience": "B",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D14",
+      "speaker": "Narrador",
+      "text": "En la cabina solo quedan encendidos tres mandos con la palabra BATERÍA.",
+      "trigger": "E05",
+      "audience": "A",
+      "channel": "subtitle"
+    },
+    {
+      "dialogue_id": "D15",
+      "speaker": "LUMEN",
+      "text": "Cerrojo de luz: cada sensor necesita su figura. Los focos de batería son los únicos que responden.",
+      "trigger": "E05",
+      "audience": "AB",
+      "channel": "document"
+    },
+    {
+      "dialogue_id": "D16",
+      "speaker": "Sistema",
+      "text": "El cerrojo de luz se abre.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D17",
+      "speaker": "Ilse Moraga (nota de voz)",
+      "text": "En la rotonda la luz no se mira: se mira lo que la luz deja atrás.",
+      "trigger": "E06",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D18",
+      "speaker": "LUMEN",
+      "text": "Eclipse completado. Restablezco la red general. La escalera de la cabina está abierta.",
+      "trigger": "E07",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D19",
+      "speaker": "Ilse Moraga (nota de voz)",
+      "text": "Gracias por terminar lo que yo dejé a medias. Ahora os toca elegir el final.",
+      "trigger": "E07",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D20",
+      "speaker": "Sistema",
+      "text": "Han votado distinto. Cuéntense lo que han leído y voten otra vez.",
+      "trigger": "P06",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D21",
+      "speaker": "Tomás, vigilante (radio)",
+      "text": "¡Se han abierto las puertas! Qué bonito se ve desde aquí. Salid cuando queráis.",
+      "trigger": "E08",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D22",
+      "speaker": "LUMEN",
+      "text": "Si necesitan una pista, pídanla. Mientras tanto, cuéntense lo que ve cada uno.",
+      "trigger": "E09",
+      "audience": "AB",
+      "channel": "audio_subtitled"
+    },
+    {
+      "dialogue_id": "D23",
+      "speaker": "Narrador",
+      "text": "Entra la luz del amanecer y las sombras se suavizan. ¿Seguir sin reloj o reiniciar la zona?",
+      "trigger": "E10",
+      "audience": "AB",
+      "channel": "popup"
+    },
+    {
+      "dialogue_id": "D24",
+      "speaker": "Narrador",
+      "text": "La sombra del gato se estira por la cúpula y parece bostezar.",
+      "trigger": "E11",
+      "audience": "AB",
+      "channel": "subtitle"
+    }
+  ],
+  "audio_cues": [
+    {
+      "audio_id": "A01",
+      "type": "ambient",
+      "description": "Zumbido suave de equipos de luces y ventilador de la linterna",
+      "loop": true,
+      "subtitle": "[zumbido de equipos]"
+    },
+    {
+      "audio_id": "A02",
+      "type": "music",
+      "description": "Celesta y contrabajo pizzicato, misterioso pero amable",
+      "loop": true,
+      "subtitle": null
+    },
+    {
+      "audio_id": "A03",
+      "type": "ambient",
+      "description": "Sala grande en silencio, eco leve de pasos y el tictac de un proyector apagado",
+      "loop": true,
+      "subtitle": "[silencio de museo]"
+    },
+    {
+      "audio_id": "A04",
+      "type": "ambient",
+      "description": "Reverberación de cúpula y viento muy lejano en los montantes",
+      "loop": true,
+      "subtitle": "[eco de la cúpula]"
+    },
+    {
+      "audio_id": "A05",
+      "type": "music",
+      "description": "Tema final: cuerdas y celesta en crescendo luminoso",
+      "loop": true,
+      "subtitle": "[música luminosa]"
+    },
+    {
+      "audio_id": "A06",
+      "type": "voice",
+      "description": "Voces de LUMEN (cálida y pausada), Ilse (grabación con grano) y Tomás (radio)",
+      "loop": false,
+      "subtitle": "Ver diálogos"
+    },
+    {
+      "audio_id": "A07",
+      "type": "sfx",
+      "description": "Campanilla suave cuando la sombra encaja",
+      "loop": false,
+      "subtitle": "[campanilla]"
+    },
+    {
+      "audio_id": "A08",
+      "type": "sfx",
+      "description": "Clic de cerradura y cajón de madera que se desliza",
+      "loop": false,
+      "subtitle": "[se abre un cajón]"
+    },
+    {
+      "audio_id": "A09",
+      "type": "sfx",
+      "description": "Proyector antiguo que arranca con traqueteo rítmico",
+      "loop": false,
+      "subtitle": "[arranca el proyector]"
+    },
+    {
+      "audio_id": "A10",
+      "type": "sfx",
+      "description": "Descenso suave de la red eléctrica, sin golpe ni chispazo",
+      "loop": false,
+      "subtitle": "[se apaga la corriente]"
+    },
+    {
+      "audio_id": "A11",
+      "type": "sfx",
+      "description": "Tres notas ascendentes y una puerta que cede",
+      "loop": false,
+      "subtitle": "[tres notas y la puerta se abre]"
+    },
+    {
+      "audio_id": "A12",
+      "type": "sfx",
+      "description": "Acorde largo y luminoso mientras vuelve la corriente",
+      "loop": false,
+      "subtitle": "[vuelve la luz]"
+    },
+    {
+      "audio_id": "A13",
+      "type": "sfx",
+      "description": "Ronroneo breve y suave",
+      "loop": false,
+      "subtitle": "[ronroneo]"
+    },
+    {
+      "audio_id": "A14",
+      "type": "sfx",
+      "description": "Tono suave de error, nunca estridente",
+      "loop": false,
+      "subtitle": "[tono suave]"
+    }
+  ],
+  "visual_effects": [
+    {
+      "vfx_id": "V01",
+      "description": "La sombra de la garza se encoge hasta el marco y gira el pico hacia la vitrina",
+      "reduced_motion_alt": "La sombra aparece ya encajada con una flecha fija hacia la vitrina"
+    },
+    {
+      "vfx_id": "V02",
+      "description": "Telón proyectado que se abre en el muro",
+      "reduced_motion_alt": "Imagen fija del telón abierto"
+    },
+    {
+      "vfx_id": "V03",
+      "description": "Apagón progresivo de los bañadores y aparición de la pintura fosforescente",
+      "reduced_motion_alt": "Cambio directo al perfil nocturno con fundido corto"
+    },
+    {
+      "vfx_id": "V04",
+      "description": "Tres haces de luz con figura llegando a los sensores, que brillan con su contorno",
+      "reduced_motion_alt": "Los sensores se muestran encendidos con un marco grueso y texto ACTIVADO"
+    },
+    {
+      "vfx_id": "V05",
+      "description": "La sombra del obelisco gira de símbolo en símbolo y se forma un anillo de luz en la cúpula",
+      "reduced_motion_alt": "La sombra salta a cada símbolo con su nombre en texto y la cúpula se ilumina sin animación"
+    },
+    {
+      "vfx_id": "V06",
+      "description": "Proyección animada de la obra elegida en la cúpula: pájaros en vuelo o un haz que gira",
+      "reduced_motion_alt": "Imagen fija de la obra con su título"
+    },
+    {
+      "vfx_id": "V07",
+      "description": "Luz de amanecer entrando por los montantes",
+      "reduced_motion_alt": "Cambio de color sin transición"
+    }
+  ],
+  "endings": [
+    {
+      "ending_id": "END01",
+      "name": "La exposición reabre",
+      "type": "main",
+      "condition": [
+        "O30_OPEN"
+      ],
+      "text": "Las puertas principales se abren a la calle. Tomás los recibe en la escalinata y, al día siguiente, Teatro de sombras abre al público completa."
+    },
+    {
+      "ending_id": "END02",
+      "name": "La Bandada",
+      "type": "decision",
+      "condition": [
+        "P06_OPT_BANDADA",
+        "O30_OPEN"
+      ],
+      "text": "En la inauguración, todas las siluetas de la galería se vuelven pájaros y cruzan los muros. El taller infantil aplaude en el suelo de la rotonda."
+    },
+    {
+      "ending_id": "END03",
+      "name": "El Faro",
+      "type": "decision",
+      "condition": [
+        "P06_OPT_FARO",
+        "O30_OPEN"
+      ],
+      "text": "En la inauguración, una luz lenta recorre la sala y cada pieza cuenta su historia. El grupo de visita tranquila se queda hasta el último giro."
+    },
+    {
+      "ending_id": "END04",
+      "name": "El gato vuelve a su atril",
+      "type": "alternative",
+      "condition": [
+        "P07_SOLVED",
+        "O30_OPEN"
+      ],
+      "text": "Se añade al epílogo: en la rotonda, la sombra de un gato se estira sobre la cúpula cada vez que alguien entra."
+    }
+  ],
+  "replay_tips": [
+    "Intercambien los papeles: quien manejó la luz, que interprete las sombras.",
+    "Elijan la otra obra para ver el otro epílogo.",
+    "Busquen la silueta del gato si no la encontraron.",
+    "Prueben el modo difícil: la sombra de la garza no se describe en texto mientras el foco se mueve.",
+    "Jueguen otra variante: cambian el marco, las sombras de frente, la inscripción y la clave."
+  ],
+  "variants": [
+    {
+      "variant_id": "VAR01",
+      "description": "El marco de la garza es más pequeño",
+      "overrides": {
+        "clues": {
+          "C02": {
+            "content": "En el muro norte, un marco en línea de puntos con una garza dibujada: Aquí debe posarse la sombra de la garza. Altura del marco: 1,8 m. En el suelo, una cinta luminosa va de la peana de la garza al muro con la leyenda: De la garza al muro, 3,0 m.",
+            "alt_text": "Texto: marco de 1,8 m de alto; distancia de la garza al muro, 3,0 m."
+          }
+        },
+        "puzzles": {
+          "P01": {
+            "answer": {
+              "type": "position",
+              "value": "III",
+              "normalize": "Igual que la base: 0,6 × 4,5 ÷ 1,5 = 1,8 m; las demás marcas dan 4,2, 2,4, 1,5 y 1,2."
+            },
+            "hints": [
+              "A tiene la fórmula y B las medidas del muro: hace falta juntar las dos cosas.",
+              "La distancia del foco al muro es la marca más 3,0 m.",
+              "Busquen una marca donde la sombra sea tres veces la garza: 0,6 × 3 = 1,8."
+            ],
+            "wrong_answers": [
+              {
+                "value": "II",
+                "why": "0,6 × 4,0 ÷ 1,0 = 2,4 m: la sombra desborda el marco."
+              },
+              {
+                "value": "IV",
+                "why": "0,6 × 5,0 ÷ 2,0 = 1,5 m: se queda corta."
+              },
+              {
+                "value": "V",
+                "why": "0,6 × 6,0 ÷ 3,0 = 1,2 m: se queda muy corta."
+              }
+            ],
+            "steps": [
+              "B examina el muro y lee el marco y la cinta del suelo.",
+              "A examina la ficha.",
+              "A calcula: con III, 0,6 × (1,5 + 3,0) ÷ 1,5 = 1,8 m.",
+              "A mueve el foco a III y pulsa Fijar."
+            ],
+            "solution_proof": "Con h = 0,6 y 3,0 m de la garza al muro, la sombra de cada marca es 0,6 × (d + 3,0) ÷ d: I 4,2; II 2,4; III 1,8; IV 1,5; V 1,2. Solo III da 1,8 m. A no conoce el marco ni la distancia al muro, y B no conoce la altura de la garza, las marcas ni la fórmula."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR02",
+      "description": "Cambian los símbolos de la inscripción del obelisco",
+      "overrides": {
+        "clues": {
+          "C12": {
+            "content": "Inscripción del obelisco: Para despertar el eclipse, la sombra del obelisco debe señalar, por este orden, la Campana, el Ojo y el Ancla.",
+            "alt_text": "Texto grande y lectura en voz: Campana, Ojo, Ancla, en este orden."
+          }
+        },
+        "puzzles": {
+          "P05": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "NE",
+                "SE",
+                "SO"
+              ],
+              "normalize": "Igual que la base: Campana SO, lámpara NE; Ojo NO, lámpara SE; Ancla NE, lámpara SO."
+            },
+            "hints": [
+              "B ve los símbolos y A maneja las lámparas.",
+              "La sombra cae al lado contrario de la lámpara encendida.",
+              "La Campana está al SO: hay que encender la lámpara NE."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "SO",
+                  "NO",
+                  "NE"
+                ],
+                "why": "Enciende las lámparas en la dirección de los símbolos: la sombra señalaría Ancla, Pez y Campana."
+              },
+              {
+                "value": [
+                  "SE",
+                  "NE",
+                  "SO"
+                ],
+                "why": "Orden cambiado: la sombra señalaría primero el Ojo."
+              },
+              {
+                "value": [
+                  "NE",
+                  "SO",
+                  "SE"
+                ],
+                "why": "Las tres lámparas correctas en otro orden: el recorrido no coincide con la inscripción."
+              }
+            ],
+            "steps": [
+              "B lee: Campana, Ojo, Ancla.",
+              "B lee la rosa: Campana al SO, Ojo al NO, Ancla al NE.",
+              "A traduce a las lámparas contrarias: NE, SE, SO.",
+              "A pulsa NE, SE, SO y Proyectar."
+            ],
+            "on_solve": {
+              "message": "La sombra del obelisco recorre la Campana, el Ojo y el Ancla. Un eclipse de luz se abre en la cúpula y vuelve la corriente.",
+              "events": [
+                "E07"
+              ],
+              "sets": [
+                "O08_DONE"
+              ]
+            },
+            "solution_proof": "C14 da una dirección única por símbolo: Campana SO, Ojo NO, Ancla NE. C13 dice que la sombra cae al lado contrario, así que las lámparas son NE, SE y SO, en el orden de C12. Encender en la dirección del símbolo es el error típico. B no maneja las lámparas ni conoce la regla del panel; A no ve la rosa ni la inscripción."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR03",
+      "description": "Cambian las sombras de frente de la vitrina",
+      "overrides": {
+        "clues": {
+          "C05": {
+            "content": "En el cristal esmerilado del frontal se ven cuatro sombras de frente, cada una sobre su etiqueta. Posición 1: cuadrado. Posición 2: triángulo. Posición 3: cuadrado. Posición 4: triángulo. Las posiciones van del 1 al 4 de izquierda a derecha mirando el frontal.",
+            "alt_text": "Texto: 1 cuadrado, 2 triángulo, 3 cuadrado, 4 triángulo."
+          }
+        },
+        "puzzles": {
+          "P02": {
+            "answer": {
+              "type": "sequence",
+              "value": [
+                "CILINDRO",
+                "CONO",
+                "CUBO",
+                "PIRAMIDE"
+              ],
+              "normalize": "Igual que la base: arriba por posición círculo, círculo, cuadrado, cuadrado."
+            },
+            "hints": [
+              "Cada cuerpo necesita dos sombras: B tiene una y A la otra.",
+              "A mira desde detrás de la vitrina: su izquierda es la posición 4.",
+              "La posición 1 tiene cuadrado de frente y círculo arriba: es el cilindro."
+            ],
+            "wrong_answers": [
+              {
+                "value": [
+                  "CUBO",
+                  "PIRAMIDE",
+                  "CILINDRO",
+                  "CONO"
+                ],
+                "why": "Usa la vista de A sin invertir: empareja la posición 1 con lo que A ve a su izquierda, que es la posición 4."
+              },
+              {
+                "value": [
+                  "CILINDRO",
+                  "PIRAMIDE",
+                  "CUBO",
+                  "CONO"
+                ],
+                "why": "Intercambia cono y pirámide: los dos dan triángulo de frente, pero difieren arriba."
+              },
+              {
+                "value": [
+                  "CONO",
+                  "CILINDRO",
+                  "CUBO",
+                  "PIRAMIDE"
+                ],
+                "why": "Intercambia las posiciones 1 y 2: la 1 tiene cuadrado de frente y la 2 triángulo."
+              }
+            ],
+            "steps": [
+              "A enciende la luz cenital y describe: cuadrado, cuadrado, círculo, círculo.",
+              "Invierten: posiciones 1 a 4 desde arriba son círculo, círculo, cuadrado, cuadrado.",
+              "B combina con el frontal: 1 cuadrado y círculo, cilindro; 2 triángulo y círculo, cono; 3 cuadrado y cuadrado, cubo; 4 triángulo y cuadrado, pirámide.",
+              "B marca cilindro, cono, cubo, pirámide."
+            ],
+            "solution_proof": "Cada sombra de frente encaja con dos cuerpos (triángulo: cono o pirámide; cuadrado: cubo o cilindro) y cada sombra de arriba con otros dos (círculo: cilindro o cono; cuadrado: cubo o pirámide), así que ninguno puede decidir solo. Invirtiendo la vista de A, las sombras de arriba por posición son círculo, círculo, cuadrado, cuadrado; con el frontal cuadrado, triángulo, cuadrado, triángulo, la tabla de C03 da un único cuerpo por posición: cilindro, cono, cubo, pirámide."
+          }
+        }
+      }
+    },
+    {
+      "variant_id": "VAR04",
+      "description": "Cambia la clave grabada en las placas",
+      "overrides": {
+        "clues": {
+          "C09": {
+            "content": "Sobre el muro norte aparece, nítida, la imagen de las dos placas unidas: un telón de teatro y, debajo, cuatro cifras: 5 2 7 9. Bajo las cifras, en letra pequeña: Clave del programa de sala.",
+            "alt_text": "Texto y lectura en voz: cifras 5, 2, 7, 9, clave del programa de sala."
+          }
+        },
+        "puzzles": {
+          "P03": {
+            "answer": {
+              "type": "code",
+              "value": "5279",
+              "normalize": "Igual que la base"
+            },
+            "hints": [
+              "Cada uno tiene media placa: hay que juntarlas en la cabina.",
+              "El montaplatos de la esquina suroeste sube objetos a la cabina.",
+              "Las dos muescas van arriba a la izquierda; si el muro muestra trazos rotos, giren una placa."
+            ],
+            "wrong_answers": [
+              {
+                "value": "1906",
+                "why": "Es el año de la cartela de bienvenida, no la clave proyectada."
+              },
+              {
+                "value": "9725",
+                "why": "Son las cifras al revés."
+              },
+              {
+                "value": "5972",
+                "why": "Intercambia la segunda y la cuarta cifra."
+              }
+            ],
+            "steps": [
+              "B recoge la placa inferior y la mete en el montaplatos.",
+              "A la recibe y carga las dos placas con las muescas arriba a la izquierda, la semicircular delante.",
+              "B lee en el muro 5 2 7 9.",
+              "B teclea 5279 en el atril."
+            ],
+            "solution_proof": "Ninguna placa por separado permite leer una cifra: una tiene las mitades de arriba y la otra las de abajo. Solo la proyección combinada, que requiere el objeto de cada jugador y la orientación de C07, muestra 5279. El 1906 de la cartela es un distractor visible desde el principio."
+          }
+        }
+      }
+    }
+  ],
+  "difficulty_tuning": {
+    "easy": [
+      "La descripción en texto de la sombra de la garza incluye su altura en metros.",
+      "La vista de A sobre la vitrina muestra una flecha con el texto Frontal hacia aquí.",
+      "La consola de la rotonda muestra, al pulsar una lámpara, hacia qué dirección caerá la sombra.",
+      "La ayuda de nivel 1 se ofrece a los 90 s sin progreso."
+    ],
+    "hard": [
+      "La sombra de la garza solo se describe en texto al fijar, no mientras se mueve (la alternativa accesible completa se mantiene si está activada).",
+      "La ficha del foco no recuerda que hay que sumar la distancia de la pieza al muro.",
+      "Los sensores del cerrojo de luz solo brillan 10 s cada 30 s en el apagón.",
+      "La ayuda solo se ofrece si se pide."
+    ]
+  },
+  "reset_rules": [
+    {
+      "scope": "puzzle",
+      "target": "P01",
+      "restores": "Foco de carril en la marca V",
+      "keeps": "Pistas C01 y C02"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P03",
+      "restores": "Teclado del atril vacío; las placas siguen cargadas",
+      "keeps": "Pistas C06 a C09"
+    },
+    {
+      "scope": "puzzle",
+      "target": "P04",
+      "restores": "Focos apagados; ruedas y filtros como estaban",
+      "keeps": "Pistas C10 y C11"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM02",
+      "restores": "P01 a P04 y P07 sin resolver, vitrina en DARK, placa inferior en el cajón, linterna vacía, atril en FROZEN, red general encendida, gato detrás del biombo",
+      "keeps": "Pistas de la cabina descubiertas por A"
+    },
+    {
+      "scope": "room",
+      "target": "ROOM03",
+      "restores": "P05 y P06 sin resolver, consola de la rotonda en READY, votos borrados, obras cubiertas; B vuelve a la puerta oeste",
+      "keeps": "Todo lo resuelto en la galería"
+    },
+    {
+      "scope": "full",
+      "target": "ALL",
+      "restores": "Estado inicial completo e intro",
+      "keeps": "Nada salvo los ajustes de accesibilidad"
+    }
+  ],
+  "test_cases": [
+    {
+      "test_id": "T01",
+      "category": 1,
+      "title": "Inicio correcto",
+      "steps": [
+        "Cargar ER08",
+        "A y B pulsan Listo"
+      ],
+      "expected": "A en ROOM01, B en ROOM02, reloj en 45:00, E01 una vez con D01 a D04",
+      "covers": [
+        "ROOM01",
+        "ROOM02",
+        "E01",
+        "D01"
+      ]
+    },
+    {
+      "test_id": "T02",
+      "category": 2,
+      "title": "Pistas obligatorias descubribles",
+      "steps": [
+        "Recorrer la ruta de victoria",
+        "Revisar el registro de pistas de cada jugador"
+      ],
+      "expected": "C01 a C14, C16 y C17 descubiertas por su jugador; C15 y C19 solo tras inactividad",
+      "covers": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C16",
+        "C17"
+      ]
+    },
+    {
+      "test_id": "T03",
+      "category": 3,
+      "title": "P01 correcto",
+      "steps": [
+        "B examina el muro",
+        "A examina la ficha, mueve el foco a II y fija"
+      ],
+      "expected": "P01 resuelto, O16 LIT, E02 una vez",
+      "covers": [
+        "P01",
+        "M01",
+        "E02"
+      ]
+    },
+    {
+      "test_id": "T04",
+      "category": 4,
+      "title": "P01 en la marca III",
+      "steps": [
+        "A fija en III"
+      ],
+      "expected": "Rechazo; el foco vuelve a V; fails = 1",
+      "covers": [
+        "P01"
+      ]
+    },
+    {
+      "test_id": "T05",
+      "category": 6,
+      "title": "P01 sin las medidas de B",
+      "steps": [
+        "B no examina el muro",
+        "A fija en II"
+      ],
+      "expected": "Rechazo MISSING_CLUE Faltan las medidas del muro; no cuenta como fallo",
+      "covers": [
+        "P01",
+        "M01",
+        "C02"
+      ]
+    },
+    {
+      "test_id": "T06",
+      "category": 4,
+      "title": "P02 sin invertir la vista",
+      "steps": [
+        "Resolver P01",
+        "B marca pirámide, cubo, cilindro, cono"
+      ],
+      "expected": "Rechazo con tono suave; teclado borrado",
+      "covers": [
+        "P02",
+        "M02",
+        "C04"
+      ]
+    },
+    {
+      "test_id": "T07",
+      "category": 3,
+      "title": "P02 correcto",
+      "steps": [
+        "A enciende la cenital",
+        "B marca cono, cilindro, cubo, pirámide"
+      ],
+      "expected": "P02 resuelto, E03, O12 en FOUND",
+      "covers": [
+        "P02",
+        "M02",
+        "E03",
+        "O12"
+      ]
+    },
+    {
+      "test_id": "T08",
+      "category": 5,
+      "title": "Marcar la vitrina antes de la garza",
+      "steps": [
+        "Al inicio, B pulsa el teclado de la vitrina"
+      ],
+      "expected": "La vitrina está en DARK; se indica que la garza aún no se ha posado; no cuenta como fallo",
+      "covers": [
+        "P02",
+        "O16"
+      ]
+    },
+    {
+      "test_id": "T09",
+      "category": 6,
+      "title": "P03 con una sola placa",
+      "steps": [
+        "Resolver P02",
+        "A carga solo la placa superior y proyecta"
+      ],
+      "expected": "WAITING_FOR_PARTNER; trazos sueltos en el muro y D11; C09 no se descubre",
+      "covers": [
+        "P03",
+        "M03",
+        "D11",
+        "O04"
+      ]
+    },
+    {
+      "test_id": "T10",
+      "category": 3,
+      "title": "P03 correcto con placas unidas",
+      "steps": [
+        "B envía la placa por el montaplatos",
+        "A carga las dos con las muescas arriba a la izquierda",
+        "B teclea 3806"
+      ],
+      "expected": "O04 COMBINED, C09 para B, P03 resuelto, E04 y E05",
+      "covers": [
+        "P03",
+        "M03",
+        "O13",
+        "C09",
+        "E04",
+        "E05"
+      ]
+    },
+    {
+      "test_id": "T11",
+      "category": 4,
+      "title": "P03 con la fecha de la cartela",
+      "steps": [
+        "Con la clave proyectada, B teclea 1906"
+      ],
+      "expected": "Rechazo; teclado borrado",
+      "covers": [
+        "P03"
+      ]
+    },
+    {
+      "test_id": "T12",
+      "category": 12,
+      "title": "Clave antes de proyectar",
+      "steps": [
+        "Resolver P02",
+        "B teclea 3806 sin que A haya cargado las placas"
+      ],
+      "expected": "Rechazo Clave no proyectada (O04 en EMPTY); no cuenta como fallo",
+      "covers": [
+        "P03",
+        "O18"
+      ]
+    },
+    {
+      "test_id": "T13",
+      "category": 3,
+      "title": "P04 correcto tras el apagón",
+      "steps": [
+        "Tras E05, A pone Norte B4 ámbar, Centro C1 verde, Sur E2 azul",
+        "A pulsa Encender los tres"
+      ],
+      "expected": "P04 resuelto, E06, ROOM03 desbloqueada",
+      "covers": [
+        "P04",
+        "E06",
+        "ROOM03",
+        "C10",
+        "C11"
+      ]
+    },
+    {
+      "test_id": "T14",
+      "category": 4,
+      "title": "P04 con filtro equivocado",
+      "steps": [
+        "A pone Sur E2 con ámbar y los demás bien"
+      ],
+      "expected": "Rechazo indicando que el sensor E2 no se activó; focos apagados",
+      "covers": [
+        "P04"
+      ]
+    },
+    {
+      "test_id": "T15",
+      "category": 6,
+      "title": "P05 encendiendo hacia los símbolos y luego al contrario",
+      "steps": [
+        "A pulsa E, S, O y Proyectar",
+        "A pulsa O, N, E y Proyectar"
+      ],
+      "expected": "Primero rechazo con la sombra en Pluma, Ciervo y Llave; después P05 resuelto y E07",
+      "covers": [
+        "P05",
+        "M04",
+        "E07",
+        "C13"
+      ]
+    },
+    {
+      "test_id": "T16",
+      "category": 6,
+      "title": "Votos distintos y luego iguales en P06",
+      "steps": [
+        "A vota BANDADA, B vota FARO",
+        "Los dos votan FARO"
+      ],
+      "expected": "Primero D20 y votos borrados; después P06 resuelto con FARO y E08",
+      "covers": [
+        "P06",
+        "M05",
+        "D20",
+        "E08"
+      ]
+    },
+    {
+      "test_id": "T17",
+      "category": 7,
+      "title": "Votos separados en el tiempo",
+      "steps": [
+        "A vota BANDADA",
+        "B vota BANDADA 50 s después"
+      ],
+      "expected": "WAITING_FOR_PARTNER hasta el segundo voto; después resuelto. Este escenario no tiene acciones simultáneas con ventana: no caduca",
+      "covers": [
+        "P06",
+        "M05"
+      ]
+    },
+    {
+      "test_id": "T18",
+      "category": 8,
+      "title": "Doble envío de la clave",
+      "steps": [
+        "B envía 3806 dos veces con el mismo actionId y luego con otro"
+      ],
+      "expected": "E04 y E05 una sola vez; segunda respuesta ALREADY_SOLVED",
+      "covers": [
+        "P03",
+        "E05"
+      ]
+    },
+    {
+      "test_id": "T19",
+      "category": 9,
+      "title": "Pausa durante el apagón",
+      "steps": [
+        "Resolver P03",
+        "B pausa durante E05",
+        "Reanudar"
+      ],
+      "expected": "Reloj congelado; al reanudar, perfil nocturno aplicado y O07 en STANDBY",
+      "covers": [
+        "E05",
+        "O07"
+      ]
+    },
+    {
+      "test_id": "T20",
+      "category": 10,
+      "title": "Reinicio completo",
+      "steps": [
+        "Resolver P01 a P04",
+        "Reinicio completo"
+      ],
+      "expected": "Red general encendida, objetos y pistas en estado inicial, reloj a 45:00 e intro",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04"
+      ]
+    },
+    {
+      "test_id": "T21",
+      "category": 11,
+      "title": "Final con La Bandada y el gato",
+      "steps": [
+        "Resolver todo con BANDADA y P07",
+        "Los dos confirman salida"
+      ],
+      "expected": "COMPLETED con END01, END02 y END04 en el resumen",
+      "covers": [
+        "END01",
+        "END02",
+        "END04",
+        "P07",
+        "O30",
+        "E11"
+      ]
+    },
+    {
+      "test_id": "T22",
+      "category": 13,
+      "title": "Desconexión de A con la placa en el montaplatos",
+      "steps": [
+        "B envía la placa",
+        "A se desconecta 30 s y vuelve"
+      ],
+      "expected": "O13 sigue en UP y A recibe la placa al volver; nada se pierde",
+      "covers": [
+        "O13",
+        "O12",
+        "P03"
+      ]
+    },
+    {
+      "test_id": "T23",
+      "category": 14,
+      "title": "Sombras y sensores sin depender del color ni del audio",
+      "steps": [
+        "Activar modo daltónico, alto contraste, lector de pantalla y silencio",
+        "Leer C02, C05, C10, C11 y C14"
+      ],
+      "expected": "Cada sombra tiene contorno y texto; los filtros se nombran por figura además de color; los sensores por figura y casilla; la rosa con letras y relieve",
+      "covers": [
+        "C02",
+        "C05",
+        "C10",
+        "C11",
+        "C14",
+        "V04"
+      ]
+    },
+    {
+      "test_id": "T24",
+      "category": 15,
+      "title": "Validador sin rutas sin salida y variantes",
+      "steps": [
+        "Ejecutar validate.mjs ER08",
+        "Aplicar VAR01 a VAR04 y recalcular P01, P02, P03 y P05"
+      ],
+      "expected": "Todos los acertijos principales y finales alcanzables; cada variante tiene una única respuesta coherente",
+      "covers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    }
+  ],
+  "resources": {
+    "models_3d": [
+      "Cabina de luces con consola, ventana inclinada y visera",
+      "Linterna mágica de latón con portaplacas doble",
+      "Dos placas de vidrio grabadas con muescas distintas",
+      "Galería con muro de proyección, carril de foco y garza de alambre",
+      "Vitrina con frontal esmerilado y cuatro cuerpos (cubo, cilindro, cono, pirámide)",
+      "Montaplatos de madera",
+      "Atril del programa",
+      "Puerta con cuadrícula y tres sensores",
+      "Rotonda con obelisco, rosa del suelo y ocho faroles",
+      "Dos obras finales cubiertas",
+      "Silueta de gato"
+    ],
+    "textures": [
+      "Pintura fosforescente para cuadrícula, sensores y rosa",
+      "Cristal esmerilado",
+      "Filtros con patrones de triángulos, cuadrados y círculos además de color",
+      "Papel y cartón negro para siluetas"
+    ],
+    "sounds": [
+      "A01 a A14"
+    ],
+    "animations": [
+      "Foco moviéndose por el carril",
+      "Sombra de la garza creciendo y encogiendo",
+      "Cajón de la vitrina",
+      "Montaplatos subiendo",
+      "Telón proyectado",
+      "Apagón progresivo",
+      "Haces con figura hacia los sensores",
+      "Sombra del obelisco girando",
+      "Obra final en la cúpula"
+    ],
+    "ui": [
+      "Mando deslizante con cinco marcas",
+      "Interruptor de luz cenital",
+      "Vista cenital desde detrás",
+      "Teclado de cuatro cuerpos",
+      "Portaplacas con orientación",
+      "Teclado de cuatro cifras",
+      "Panel de tres focos con columna, fila y filtro",
+      "Rosa de ocho botones",
+      "Votación oculta de dos opciones"
+    ],
+    "vfx": [
+      "V01 a V07"
+    ],
+    "dialogue_lines": 24,
+    "mechanisms": [
+      "Proporción de sombras por distancia",
+      "Identificación por dos proyecciones con vista invertida",
+      "Composición de dos placas",
+      "Asignación de focos por alcance y filtro",
+      "Dirección opuesta de la sombra",
+      "Votación compartida",
+      "Usar objeto sobre objeto"
+    ]
+  }
+}

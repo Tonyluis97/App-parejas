@@ -61,7 +61,7 @@ function closeSheet() { const s = $('#sheet'); if (s) s.remove(); }
 
 // ---------- Render conservando lo que se está escribiendo ----------
 const VIEWS = {};
-const GAME_VIEWS = ['escape3d', 'escape', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz'];
+const GAME_VIEWS = ['rooms', 'room', 'escape3d', 'escape', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz'];
 const US_VIEWS = ['lists', 'letters', 'coupons', 'dates'];
 function render() {
   const app = $('#app');
@@ -88,10 +88,11 @@ function render() {
 
 function shell(body) {
   const titles = { home: 'Nosotros', chat: partnerName(), games: 'Juegos', us: 'Lo nuestro', lists: 'Nuestras listas', letters: 'Cartas', coupons: 'Cupones de amor', dates: 'Fechas importantes', settings: 'Ajustes',
+    rooms: 'Escape rooms para dos', room: (window.ROOMS_DATA && ROOMS_DATA[S.roomSel] || {}).title || 'Escape room',
     escape3d: 'Sin salida', escape: 'La casa de los recuerdos', would: '¿Qué prefieres?', tod: 'Verdad o reto', never: 'Yo nunca he…', ttt: 'Tres en raya', cards: 'Cartas de conversación', roulette: 'Ruleta de citas', quiz: '¿Qué tanto me conoces?' };
   const tabs = [['home', '🏠', 'Inicio'], ['chat', '💬', 'Chat'], ['games', '🎲', 'Juegos'], ['us', '💞', 'Lo nuestro']];
   const parent = GAME_VIEWS.includes(S.tab) ? 'games' : US_VIEWS.includes(S.tab) ? 'us' : null;
-  const back = parent ? '<button class="iconbtn" data-act="tab" data-v="' + parent + '" aria-label="Volver">‹</button>' : '';
+  const back = parent ? '<button class="iconbtn" data-act="tab" data-v="' + (S.tab === 'room' ? 'rooms' : parent) + '" aria-label="Volver">‹</button>' : '';
   const callBtn = partnerId() ? '<button class="iconbtn" data-act="call" aria-label="Llamar">📞</button>' : '';
   return '<header class="top">' + back + '<h1>' + esc(titles[S.tab] || 'Nosotros') + '</h1>' + callBtn +
     '<button class="iconbtn" data-act="tab" data-v="settings" aria-label="Ajustes">⚙️</button></header>' +

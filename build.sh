@@ -10,7 +10,7 @@ CONFIG="window.FIREBASE_CONFIG = null;"
   echo "<script>"
   echo "const APP_BUILD = '$BUILD';"
   echo "$CONFIG"
-  for f in engine sync call app-core app-screens app-games app-games2 app-more escape3d main; do cat "src/$f.js"; echo; done
+  for f in engine sync call app-core app-screens app-games app-games2 app-more escape3d rooms-engine rooms-data rooms main; do cat "src/$f.js"; echo; done
   echo "</script>"
 } > dist/.scripts.html
 python3 - "$1" <<'PY'
