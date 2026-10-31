@@ -1,4 +1,6 @@
-// Prueba de los escape rooms para dos en modo demo: dos pestañas = dos móviles juegan ER09 tocando la pantalla.
+// Prueba de los escape rooms para dos: dos móviles juegan ER09 tocando la pantalla.
+// Modo demo (DEMO=1 sh build.sh): dos pestañas. Con FB=1 (sh build.sh): dos navegadores separados contra Firebase real;
+// el SDK sale del paquete npm en FB_PKG porque gstatic puede estar bloqueado.
 const { chromium } = require('/opt/node-tools/node_modules/playwright');
 const fs = require('fs'), path = require('path'), http = require('http');
 const exe = fs.readdirSync('/opt/pw-browsers').filter(d => d.startsWith('chromium-')).map(d => `/opt/pw-browsers/${d}/chrome-linux/chrome`).find(fs.existsSync);
@@ -10,17 +12,24 @@ const srv = http.createServer((q, r) => {
 }).listen(0);
 let fails = 0;
 const ok = (n, c) => { if (!c) { fails++; console.log('FALLA', n); } else console.log('ok', n); };
-const wait = ms => new Promise(r => setTimeout(r, ms));
+const FB = !!process.env.FB, pkg = process.env.FB_PKG || '/tmp/fb12/package';
+const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
 
 (async () => {
   const url = `http://localhost:${srv.address().port}/`;
   const b = await chromium.launch({ executablePath: exe });
-  const ctx = await b.newContext({ viewport: { width: 400, height: 820 }, hasTouch: true, isMobile: true });
-  await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+  const mkCtx = async () => {
+    const ctx = await b.newContext({ viewport: { width: 400, height: 820 }, hasTouch: true, isMobile: true });
+    await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+    if (FB) await ctx.route(/www\.gstatic\.com\/firebasejs\/[^/]+\/(.+)$/, r => r.fulfill({ status: 200, contentType: 'text/javascript', body: fs.readFileSync(path.join(pkg, r.request().url().split('/').pop())) }));
+    return ctx;
+  };
   const errs = [];
-  const A = await ctx.newPage(), B = await ctx.newPage();
+  const ctxA = await mkCtx(), ctxB = FB ? await mkCtx() : ctxA;
+  const A = await ctxA.newPage(), B = await ctxB.newPage();
   for (const [p, n] of [[A, 'A'], [B, 'B']]) { p.on('pageerror', e => errs.push(n + ': ' + e.message)); p.on('console', m => { if (m.type() === 'error' && !/ERR_FAILED/.test(m.text())) errs.push(n + ' consola: ' + m.text()); }); }
   await A.goto(url); await A.evaluate(() => localStorage.clear()); await A.reload(); await B.goto(url);
+  if (FB) { ok('modo firebase', await A.evaluate(() => Sync.mode) === 'firebase'); await A.waitForFunction(() => S.ready); await B.waitForFunction(() => S.ready); }
 
   // Emparejar
   await A.fill('#wName', 'Antonny'); await A.fill('#wStart', '2025-02-14'); await A.click('button[type=submit]');
