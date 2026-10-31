@@ -215,6 +215,7 @@
     }
     const set = new Set();
     for (const v of vals) if (Array.isArray(v)) v.forEach(x => set.add(norm(x)));
+      else if (p.answer.type === 'position' && v != null && typeof v !== 'object') set.add(norm(v)); // una sola posición
     for (const x of extra || []) set.add(norm(x));
     return [...set].sort((a, b) => a.localeCompare(b, 'es', { numeric: true }));
   }

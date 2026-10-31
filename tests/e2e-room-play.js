@@ -95,7 +95,8 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
     }
     if (info.type === 'code') await typeCode(p, String(info.value));
     if (info.type === 'sequence' || info.type === 'set') for (const v of info.value) await p.click('#rz [data-act=rmPick][data-v="' + v + '"]');
-    if (info.type === 'position') for (const k in info.value) await p.click('#rz [data-act=rmPos][data-k="' + k + '"][data-v=\'' + JSON.stringify(info.value[k]) + '\']');
+    if (info.type === 'position' && typeof info.value !== 'object') await p.click('#rz [data-act=rmPos][data-k="_"][data-v=\'' + JSON.stringify(info.value) + '\']');
+    else if (info.type === 'position') for (const k in info.value) await p.click('#rz [data-act=rmPos][data-k="' + k + '"][data-v=\'' + JSON.stringify(info.value[k]) + '\']');
     if (info.type === 'combine') {
       for (const id of info.value.slice(0, -1)) { const btn = await p.$('#rz [data-act=rmUse][data-v="' + id + '"]'); if (!btn) return false; await btn.click(); await wait(80); }
       if (info.value.length > 2) await p.click('#rz [data-act=rmUseGo]');

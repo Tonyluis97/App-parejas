@@ -25,7 +25,7 @@ function rmIdle(st) {
   return Math.floor((Date.now() - Math.max(st.last || 0, st.startedAt)) / 1000);
 }
 function rmCompute(st) { return Rooms.compute(rmScenario(st), st, rmIdle(st)); }
-const rmLabel = (s, v) => (s.ui.labels || {})[Rooms.norm(v)] || String(v).charAt(0) + String(v).slice(1).toLowerCase();
+const rmLabel = (s, v) => v && typeof v === 'object' ? Object.values(v).map(x => rmLabel(s, x)).join(' · ') : (s.ui.labels || {})[Rooms.norm(v)] || (String(v).charAt(0) + String(v).slice(1).toLowerCase()).replace(/_/g, ' ');
 const rmEmoji = (s, o) => (s.ui.objects || {})[o.object_id] || ({ decorative: '🪴', examine: '🔎', collect: '🎒', use: '🔧', combine: '🧩', activate: '🎛️', locked: '🔒', coop: '🤝', narrative: '📜', exit: '🚪' })[o.category] || '❔';
 const RM_DIFF = { easy: 'Fácil', medium: 'Media', hard: 'Difícil' };
 
@@ -236,7 +236,8 @@ function rmPuzzle(s, st, c, p, o, bad) {
       '<div class="symbols">' + opts.map(v => '<button data-act="rmPick" data-v="' + esc(v) + '"' + (RZ.seq.includes(v) ? ' style="outline:3px solid var(--accent)"' : '') + '>' + esc(rmLabel(s, v)) + '</button>').join('') + '</div>' +
       '<div class="grid2" style="margin-top:10px"><button class="btn" data-act="rmClear">Borrar</button><button class="btn primary" data-act="rmTry">' + btn + '</button></div>';
   } else if (t === 'position') {
-    const opts = Rooms.choices(p), keys = (s.ui.keys || {})[p.puzzle_id] || {};
+    // Una sola posición (p. ej. un carril) se muestra como una fila "_"
+    const c0 = Rooms.choices(p), opts = Array.isArray(c0) ? { _: c0 } : c0, keys = Object.assign({ _: 'Posición' }, (s.ui.keys || {})[p.puzzle_id]);
     for (const k in opts) if (RZ.pos[k] === undefined) RZ.pos[k] = opts[k][0];
     h += '<div class="' + sh + '">' + Object.keys(opts).map(k => '<div class="row" style="display:flex;align-items:center;gap:8px;margin:6px 0"><b style="flex:1">' + esc(keys[k] || rmLabel(s, k)) + '</b>' +
       opts[k].map(v => '<button class="chip' + (RZ.pos[k] === v ? ' on' : '') + '" data-act="rmPos" data-k="' + esc(k) + '" data-v="' + esc(JSON.stringify(v)) + '">' + esc(rmLabel(s, v)) + '</button>').join('') + '</div>').join('') + '</div>' +
@@ -342,7 +343,7 @@ ACTS.rmTryText = f => rmTry(f.v.value);
 ACTS.rmTry = () => {
   const p = rmCurPuzzle(), t = p.answer.type;
   if (t === 'code') return rmTry(RZ.code);
-  if (t === 'position') return rmTry(RZ.pos);
+  if (t === 'position') return rmTry(p.answer.value && typeof p.answer.value === 'object' ? RZ.pos : RZ.pos._);
   if (RZ.seq.length < p.answer.value.length) { toast('Faltan ' + (p.answer.value.length - RZ.seq.length)); return; }
   return rmTry(RZ.seq);
 };
