@@ -293,7 +293,7 @@
         B: { door: 'La puerta tiene tres cerraduras: los interruptores, el termostato y el candado de colores. Ábrelas en orden.',
           steps: [
             { id: 'lock', kind: 'switches', answer: [1, 0, 1, 1], lock: 'Panel de interruptores', hint: 'Debajo dice: «Las luces deben quedar igual que en el cuadro de la otra sala».',
-              reveal: 'Con las luces encendidas aparecen letras en el espejo: «Cuenta en la sala de tu pareja: sillas, revistas y lámparas del cuadro. En ese orden».', revealLabel: 'Mensaje en el espejo' },
+              reveal: 'Con las luces encendidas aparecen letras en el espejo: «Cuenta en la sala de tu pareja: sillas, revistas y todas las lámparas del cuadro, encendidas y apagadas. En ese orden».', revealLabel: 'Mensaje en el espejo' },
             { id: 'lock2', kind: 'keypad', len: 3, answer: '926', lock: 'Termostato', hint: 'El termostato no tiene números, solo símbolos: ▲ ★ ●. Pide 3 cifras.',
               reveal: 'El termostato se apaga y se abre una tapita con un papel: «Multiplica las lámparas encendidas del cuadro de tu pareja por las sillas de tu sala».', revealLabel: 'Papel del termostato' },
             { id: 'lock3', kind: 'word', answer: 'AMOR', lock: 'Candado de colores', hint: 'Cuatro puntos de colores, en este orden: azul, rojo, amarillo, verde. Abajo: «Lo que dicen, léelo al revés».' },

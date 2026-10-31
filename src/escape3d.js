@@ -469,7 +469,8 @@ const Esc3D = (function () {
     },
     magazine(color) {
       const g = new T.Group();
-      for (let i = 0; i < 3; i++) { const b = box(0.24, 0.012, 0.32, M(['#c0392b', '#2980b9', '#f1c40f'][i] || color)); b.position.set(i * 0.03, i * 0.013, i * 0.02); b.rotation.y = i * 0.2; g.add(b); }
+      // Separadas sobre la mesa para que se puedan contar (son parte de un acertijo)
+      for (let i = 0; i < 3; i++) { const b = box(0.2, 0.012, 0.26, M(['#c0392b', '#2980b9', '#f1c40f'][i] || color)); b.position.set((i - 1) * 0.04, 0.006, (i - 1) * 0.3); b.rotation.y = (i - 1) * 0.25; g.add(b); }
       return g;
     },
     rug(tex) { const m = plane(2.4, 1.6, tex); m.rotation.x = -Math.PI / 2; m.position.y = 0.005; return m; },
@@ -599,7 +600,7 @@ const Esc3D = (function () {
       for (let i = 0; i < 4; i++) add({ id: 'chair' + i, build: () => P.chair(sd === 'A' ? '#7a2e2e' : '#2e4f7a'), pos: [-3.4, 0, -2.0 + i * 0.75], ry: Math.PI / 2, solid: [0.6, 0.6] });
       add({ id: 'table', build: () => P.table(1.0, 0.6, 0.42, '#6b4a32', 'CoffeeTable_01', { scale: 0.8 }), pos: [-2.3, 0, -0.85], ry: Math.PI / 2, solid: [1.2, 0.75] });
       add({ id: 'mirror', build: () => model('ornate_mirror_01', () => new T.Group(), { back: true, scale: 1.3, shadow: false }), pos: [3.99, 1.15, -2.2], ry: -Math.PI / 2 });
-      add({ id: 'mags', label: 'Revistas', build: () => P.magazine(), pos: [-2.3, 0.42, -0.85], info: sd === 'A' ? 'Una revista vieja abierta en una página subrayada: «Todo lo que necesitas saber está en la otra sala. Hablen.»' : 'Una revista con un crucigrama a medias. En el margen alguien escribió: «Las luces nunca mienten».' });
+      add({ id: 'mags', label: 'Revistas', build: () => P.magazine(), pos: [-2.3, 0.42, -0.85], info: sd === 'A' ? 'Tres revistas sobre la mesita. Una está abierta en una página subrayada: «Todo lo que necesitas saber está en la otra sala. Hablen.»' : 'Tres revistas sobre la mesita. Una tiene un crucigrama a medias. En el margen alguien escribió: «Las luces nunca mienten».' });
       add({ id: 'plant', build: () => P.plant(), pos: [3.4, 0, -3.4], solid: [0.5, 0.5] });
       add({ id: 'radiator', label: 'Radiador', build: () => P.radiator(), pos: [3.92, 0, 0.5], ry: -Math.PI / 2, info: 'El radiador quema al tocarlo. Cada minuto hace más calor.' });
       add({ id: 'sofa', build: () => P.sofa(sd === 'A' ? '#5a2b2b' : '#2b3f5a'), pos: [1.5, 0, 3.4], ry: Math.PI, solid: [1.9, 0.85] });
