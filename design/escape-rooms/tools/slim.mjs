@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const DIR = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(DIR, '..', '..', 'src', 'rooms-data.js');
-const PLAYABLE = ['ER01', 'ER09'];
+const PLAYABLE = ['ER01', 'ER02', 'ER03', 'ER04', 'ER05', 'ER06', 'ER07', 'ER08', 'ER09', 'ER10'];
 
 const pick = (o, keys) => Object.fromEntries(keys.filter(k => k in o).map(k => [k, o[k]]));
 

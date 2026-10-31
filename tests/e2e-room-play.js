@@ -48,7 +48,7 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
   const simPress = async (p, id) => {
     const info = await p.evaluate(id => {
       const st = rmState(), s = rmScenario(st), role = myRole(), pz = s.puzzles.find(x => x.puzzle_id === id);
-      const o = s.objects.find(x => x.puzzle === id && (x.authorized === role || x.authorized === 'AB') && !['examine', 'narrative', 'decorative', 'collect'].includes(x.category));
+      const o = s.objects.find(x => (x.puzzle === id || pz.required_objects.includes(x.object_id)) && (x.authorized === role || x.authorized === 'AB') && !['examine', 'narrative', 'decorative', 'collect'].includes(x.category) && rmObjPuzzle(s, st, rmCompute(st), x, role) === pz);
       return { oid: o && o.object_id, room: o && o.room, mine: pz.answer.value[role], shared: Object.fromEntries(Object.keys(pz.answer.value).filter(k => k !== 'A' && k !== 'B').map(k => [k, pz.answer.value[k]])), parts: Rooms.simParts(pz)[role] };
     }, id);
     if (!info.oid) return;
@@ -60,13 +60,18 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
     for (const k in info.shared) { const i = await p.evaluate(([id, k, v]) => Rooms.simParts(rmScenario(rmState()).puzzles.find(x => x.puzzle_id === id)).shared[k].findIndex(x => JSON.stringify(x) === JSON.stringify(v)), [id, k, info.shared[k]]); await p.click('#rz [data-act=rmSimShared][data-k="' + k + '"][data-i="' + i + '"]'); }
   };
   const other = p => p === A ? B : A;
+  const submit = async p => p.click((await p.$('#rz [data-act=rmTry]')) ? '#rz [data-act=rmTry]' : '#rz form[data-act=rmTryText] button');
+  const typeCode = async (p, v) => {
+    if (await p.$('#rz input[name=v]')) await p.fill('#rz input[name=v]', v);
+    else for (const d of v) await p.click('#rz [data-act=rmKey][data-v="' + d + '"]');
+  };
   // Jugar tocando: cada uno revisa todo lo que ve y resuelve lo que le toca
   const solve = async (p, name) => {
     const info = await p.evaluate(() => {
       if (!document.getElementById('rz')) return null;
       const st = rmState(), s = rmScenario(st), o = s.objects.find(x => x.object_id === RZ.oid);
-      const pz = o.puzzle && s.puzzles.find(x => x.puzzle_id === o.puzzle);
-      if (!pz || !pz.validation.input_by.includes(myRole()) || ['examine', 'narrative', 'decorative', 'collect'].includes(o.category)) return null;
+      const pz = rmObjPuzzle(s, st, rmCompute(st), o, myRole());
+      if (!pz || !pz.validation.input_by.includes(myRole()) || !rmHostsInput(pz, o)) return null;
       return { id: pz.puzzle_id, type: pz.answer.type, value: pz.answer.value, status: Rooms.puzzleStatus(s, rmCompute(st), st, pz).status };
     });
     if (!info || info.status !== 'ready' || info.type === 'decision') return false;
@@ -85,15 +90,17 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
     }
     if (!solve.wrongTried && info.type === 'code') { // una incorrecta primero
       solve.wrongTried = true;
-      for (const d of '999') await p.click('#rz [data-act=rmKey][data-v="' + d + '"]');
-      await p.click('#rz [data-act=rmTry]'); await wait(250);
+      await typeCode(p, /^\d+$/.test(String(info.value)) ? '999' : 'XYZ'); await submit(p); await wait(250);
       ok(name + ' rechaza código incorrecto', !(await p.evaluate(id => !!(rmState().solved || {})[id], info.id)));
     }
-    if (info.type === 'code') for (const d of String(info.value)) await p.click('#rz [data-act=rmKey][data-v="' + d + '"]');
+    if (info.type === 'code') await typeCode(p, String(info.value));
     if (info.type === 'sequence' || info.type === 'set') for (const v of info.value) await p.click('#rz [data-act=rmPick][data-v="' + v + '"]');
     if (info.type === 'position') for (const k in info.value) await p.click('#rz [data-act=rmPos][data-k="' + k + '"][data-v=\'' + JSON.stringify(info.value[k]) + '\']');
-    if (info.type === 'combine') { const btn = await p.$('#rz [data-act=rmUse][data-v="' + info.value[0] + '"]'); if (!btn) return false; await btn.click(); }
-    else await p.click('#rz [data-act=rmTry]');
+    if (info.type === 'combine') {
+      for (const id of info.value.slice(0, -1)) { const btn = await p.$('#rz [data-act=rmUse][data-v="' + id + '"]'); if (!btn) return false; await btn.click(); await wait(80); }
+      if (info.value.length > 2) await p.click('#rz [data-act=rmUseGo]');
+    }
+    else await submit(p);
     await wait(300);
     const done = await p.evaluate(id => !!(rmState().solved || {})[id], info.id);
     ok(name + ' resuelve ' + info.id + ' tocando', done);
@@ -104,12 +111,13 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
     while (await p.$('#rmsub')) await p.click('#rmsub');
     const rooms = await p.$$eval('[data-act=rmRoom]', els => els.map(e => e.dataset.v));
     for (const r of rooms.length ? rooms : [null]) {
-      if (r) { await p.click('[data-act=rmRoom][data-v=' + r + ']'); await wait(100); }
+      while (await p.$('#rmsub')) await p.click('#rmsub');
+      if (r) { if (!(await p.$('[data-act=rmRoom][data-v=' + r + ']'))) { console.log(name, 'sin pestaña', r); continue; } await p.click('[data-act=rmRoom][data-v=' + r + ']'); await wait(100); }
       // solo lo que tiene algo que hacer (acción, pista o acertijo listo para este jugador)
       const tiles = await p.evaluate(() => {
         const st = rmState(), s = rmScenario(st), c = rmCompute(st), role = myRole();
         return [...document.querySelectorAll('[data-act=rmObj]')].map(e => e.dataset.v).filter(id => {
-          const o = s.objects.find(x => x.object_id === id), pz = o.puzzle && s.puzzles.find(x => x.puzzle_id === o.puzzle);
+          const o = s.objects.find(x => x.object_id === id), pz = rmObjPuzzle(s, st, c, o, role);
           return Rooms.nextAction(s, c, o, role) >= 0 || Rooms.cluesAt(s, c, st, o, role).length ||
             (pz && pz.validation.input_by.includes(role) && Rooms.puzzleStatus(s, c, st, pz).status === 'ready');
         });
@@ -133,6 +141,8 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
     await sweep(A, 'A'); await wait(200); await sweep(B, 'B'); await wait(200);
     if (await A.evaluate(() => Rooms.won(rmScenario(rmState()), rmCompute(rmState())))) break;
   }
+  console.log('pendiente', await A.evaluate(() => { const st = rmState(), s = rmScenario(st), c = rmCompute(st);
+    return s.puzzles.filter(p => !(st.solved || {})[p.puzzle_id]).map(p => p.puzzle_id + ':' + p.answer.type + ':' + JSON.stringify(Rooms.puzzleStatus(s, c, st, p)) + ':by' + p.validation.input_by.join('') + ':objs ' + p.required_objects.map(o => o + '=' + c.obj.get(o)).join(' ')).join('\n'); }));
   await wait(400);
   await A.evaluate(() => render()); await B.evaluate(() => render());
   ok('A ve que escaparon', (await A.textContent('main')).includes('Lo lograron juntos'));

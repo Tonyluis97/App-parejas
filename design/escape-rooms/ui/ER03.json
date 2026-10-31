@@ -1,0 +1,16 @@
+{
+ "rooms3d": {
+  "ROOM01": {
+   "theme": "piedra"
+  },
+  "ROOM02": {
+   "theme": "piedra"
+  },
+  "ROOM03": {
+   "theme": "piedra"
+  },
+  "ROOM04": {
+   "theme": "piedra"
+  }
+ }
+}

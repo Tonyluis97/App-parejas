@@ -1,0 +1,18 @@
+{
+ "rooms3d": {
+  "ROOM01": {
+   "theme": "tecnica"
+  },
+  "ROOM02": {
+   "theme": "tecnica",
+   "wallTint": "#9fb59a",
+   "light": "#eaffe0"
+  },
+  "ROOM03": {
+   "theme": "tecnica"
+  },
+  "ROOM04": {
+   "theme": "tecnica"
+  }
+ }
+}

@@ -8,7 +8,7 @@ function ok(name, c) { n++; if (!c) { fails++; console.log('FALLA', name); } }
 
 // Busca un objeto del inventario para los acertijos de combinar
 function combineValue(s, c, p, role) {
-  const inv = R.inventory(s, c, role).map(o => o.object_id);
+  const inv = R.combineItems(s, c, p, role);
   const want = p.answer.value;
   return want.slice(0, -1).every(x => inv.includes(x)) ? want : null;
 }
@@ -76,7 +76,8 @@ for (const id in window.ROOMS_DATA) {
   const s = R.scenario(data, null);
   const st = { startedAt: 1000 };
   const c = R.compute(s, st);
-  for (const p of s.puzzles) if (p.validation.requires_clues.length && p.prerequisites.every(t => t === 'START'))
+  const open0 = R.myRooms(s, c, 'A').concat(R.myRooms(s, c, 'B')).map(r => r.room_id);
+  for (const p of s.puzzles) if (p.validation.requires_clues.length && p.prerequisites.every(t => t === 'START') && open0.includes(p.room))
     ok(id + ' ' + p.puzzle_id + ' pide pistas antes de intentarse', R.puzzleStatus(s, c, st, p, 2000).status === 'clues');
   // Enfriamiento tras fallos seguidos
   const p = s.puzzles.find(x => x.attempts && x.attempts.cooldown_after && x.answer.type !== 'decision');

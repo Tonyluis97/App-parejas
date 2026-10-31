@@ -206,8 +206,8 @@ function rmDraw(bad) {
   if (k.length) h += k.map(x => '<div class="answer" style="text-align:left"><b>📓 Pista nueva</b>' + esc(x.content) + '</div>').join('') + '<p class="small" style="color:var(--ok);font-weight:700">Guardada en tus pistas. Cuéntasela a ' + esc(partnerName()) + '.</p>';
   const i = Rooms.nextAction(s, c, o, role);
   if (i >= 0) h += '<button class="btn primary block" data-act="rmAct">' + esc(o.action) + '</button>';
-  const p = o.puzzle && s.puzzles.find(x => x.puzzle_id === o.puzzle);
-  if (p && p.answer.type !== 'decision' && p.validation.input_by.includes(role) && !['examine', 'narrative', 'decorative', 'collect'].includes(o.category)) h += rmPuzzle(s, st, c, p, o, bad);
+  const p = rmObjPuzzle(s, st, c, o, role); RZ.pid = p && p.puzzle_id;
+  if (p && p.answer.type !== 'decision' && p.validation.input_by.includes(role) && rmHostsInput(p, o)) h += rmPuzzle(s, st, c, p, o, bad);
   else if (p && !p.validation.input_by.includes(role) && !(st.solved || {})[p.puzzle_id] && o.category !== 'decorative' && Rooms.puzzleStatus(s, c, st, p).status !== 'locked') h += '<p class="small muted">Esto lo resuelve ' + esc(partnerName()) + ' desde su lado. Cuéntale lo que ves.</p>';
   h += '<button class="btn block" data-act="closeSheet" style="margin-top:10px">Seguir explorando</button>';
   el.innerHTML = h;
@@ -242,9 +242,13 @@ function rmPuzzle(s, st, c, p, o, bad) {
       opts[k].map(v => '<button class="chip' + (RZ.pos[k] === v ? ' on' : '') + '" data-act="rmPos" data-k="' + esc(k) + '" data-v="' + esc(JSON.stringify(v)) + '">' + esc(rmLabel(s, v)) + '</button>').join('') + '</div>').join('') + '</div>' +
       '<button class="btn primary block" data-act="rmTry" style="margin-top:8px">' + btn + '</button>';
   } else if (t === 'combine') {
-    const inv = Rooms.inventory(s, c, myRole());
-    h += inv.length ? '<p class="small muted" style="margin:0 0 6px">Elige qué usar aquí:</p><div class="chips">' + inv.map(x => '<button class="chip" data-act="rmUse" data-v="' + x.object_id + '">' + rmEmoji(s, x) + ' ' + esc(x.name) + '</button>').join('') + '</div>'
-      : '<p class="small muted" style="margin:0">No llevas nada que puedas usar aquí. Busca por la zona.</p>';
+    // Varias piezas (cuando la respuesta las pide) o una sola que se usa al tocarla
+    const items = Rooms.combineItems(s, c, p, myRole()), many = p.answer.value.length > 2;
+    const name = id => { const x = s.objects.find(o => o.object_id === id); if (x) return rmEmoji(s, x) + ' ' + x.name; const m = /^(O\d+)_(.+)$/.exec(id), b = m && s.objects.find(o => o.object_id === m[1]); return (b ? rmEmoji(s, b) + ' ' : '') + rmLabel(s, m ? m[2].replace(/_/g, ' ') : id); };
+    h += items.length ? '<p class="small muted" style="margin:0 0 6px">' + (many ? 'Elige las ' + (p.answer.value.length - 1) + ' piezas que vas a juntar:' : 'Elige qué usar aquí:') + '</p><div class="chips">' +
+      items.map(id => '<button class="chip' + (RZ.seq.includes(id) ? ' on' : '') + '" data-act="rmUse" data-v="' + esc(id) + '">' + esc(name(id)) + '</button>').join('') + '</div>' +
+      (many ? '<button class="btn primary block" data-act="rmUseGo" style="margin-top:8px">' + btn + '</button>' : '')
+      : '<p class="small muted" style="margin:0">No tienes nada que puedas usar aquí. Busca por la zona o pídeselo a tu pareja.</p>';
   } else if (t === 'simultaneous') h += rmSimUI(s, st, p, sh, btn);
   else h += '<p class="small muted">Este tipo de acertijo llega con los próximos escape rooms.</p>';
   const n = (st.hints || {})[p.puzzle_id] || 0;
@@ -254,8 +258,20 @@ function rmPuzzle(s, st, c, p, o, bad) {
 }
 function rmCurPuzzle() {
   const st = rmState(), s = rmScenario(st), o = s.objects.find(x => x.object_id === RZ.oid);
-  return s.puzzles.find(x => x.puzzle_id === o.puzzle);
+  return s.puzzles.find(x => x.puzzle_id === (RZ.pid || o.puzzle));
 }
+// Un mismo objeto puede servir para dos acertijos (p. ej. una consola que se usa dos veces):
+// se muestra el primero que este jugador aún tiene pendiente
+function rmObjPuzzle(s, st, c, o, role) {
+  const own = o.puzzle && s.puzzles.find(x => x.puzzle_id === o.puzzle);
+  if (['examine', 'narrative', 'decorative', 'collect'].includes(o.category)) return own;
+  const open = p => p && p.answer.type !== 'decision' && p.validation.input_by.includes(role) && !(st.solved || {})[p.puzzle_id] && Rooms.puzzleStatus(s, c, st, p).status !== 'locked';
+  if (open(own)) return own;
+  return s.puzzles.find(p => p !== own && p.required_objects.includes(o.object_id) && can3(o.authorized, role) && open(p)) || own;
+}
+const can3 = (who, role) => who === role || who === 'AB';
+// Dónde se responde: en los objetos de mando, o en el objeto sobre el que se usa algo (combinar)
+const rmHostsInput = (p, o) => !['examine', 'narrative', 'decorative', 'collect'].includes(o.category) || (p.answer.type === 'combine' && p.answer.value[p.answer.value.length - 1] === o.object_id);
 ACTS.rmRedraw = () => rmDraw();
 
 // ---------- Acertijos "a la vez" (M3) ----------
@@ -316,7 +332,12 @@ ACTS.rmPick = el => {
 ACTS.rmClear = () => { RZ.seq = []; rmDraw(); };
 ACTS.rmPos = el => { RZ.pos[el.dataset.k] = JSON.parse(el.dataset.v); rmDraw(); };
 ACTS.rmHint = el => { const st = rmState(), id = el.dataset.v; return rmPatch({ ['hints.' + id]: ((st.hints || {})[id] || 0) + 1 }).then(() => rmDraw()); };
-ACTS.rmUse = el => rmTry([el.dataset.v, RZ.oid]);
+ACTS.rmUse = el => {
+  const p = rmCurPuzzle(), id = el.dataset.v, target = p.answer.value[p.answer.value.length - 1];
+  if (p.answer.value.length <= 2) return rmTry([id, target]);
+  RZ.seq = RZ.seq.includes(id) ? RZ.seq.filter(x => x !== id) : RZ.seq.concat(id); rmDraw();
+};
+ACTS.rmUseGo = () => { const p = rmCurPuzzle(); return rmTry(RZ.seq.concat(p.answer.value[p.answer.value.length - 1])); };
 ACTS.rmTryText = f => rmTry(f.v.value);
 ACTS.rmTry = () => {
   const p = rmCurPuzzle(), t = p.answer.type;

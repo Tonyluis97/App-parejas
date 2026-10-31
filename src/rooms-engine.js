@@ -112,6 +112,26 @@
     return s.objects.filter(o => o.category === 'collect' && can(o.authorized, role) && COLLECTED.includes(c.obj.get(o.object_id)));
   }
 
+  // Lo que un jugador puede usar en un acertijo de combinar: lo que lleva, lo que le pasó su pareja,
+  // las piezas a la vista de su lado y las partes de un contenedor abierto ("O04_CLASE_3" = algo sacado de O04)
+  function combineItems(s, c, p, role) {
+    const ids = new Set(inventory(s, c, role).map(o => o.object_id));
+    const target = p.answer.value[p.answer.value.length - 1];
+    for (const v of [p.answer.value].concat((p.wrong_answers || []).map(w => w.value))) if (Array.isArray(v)) for (const id of v.slice(0, -1)) {
+      if (id === target) continue;
+      const o = s.objects.find(x => x.object_id === id), st = o && c.obj.get(id);
+      if (o) {
+        if (st === 'HIDDEN') continue;
+        const passed = /TRANSFER|PASSED|SENT|DELIVERED/.test(st || '') && !can(o.authorized, role);
+        if (COLLECTED.includes(st) && can(o.authorized, role) || passed || (o.category === 'combine' && can(o.authorized, role))) ids.add(id);
+        continue;
+      }
+      const m = /^(O\d+)_(.+)$/.exec(id), base = m && s.objects.find(x => x.object_id === m[1]);
+      if (base && can(base.authorized, role) && !['HIDDEN', 'LOCKED', 'CLOSED'].includes(c.obj.get(base.object_id))) ids.add(id);
+    }
+    return [...ids];
+  }
+
   // ¿Se puede intentar ya? ready | solved | locked | clues | cooldown | hidden
   function puzzleStatus(s, c, st, p, now) {
     if ((st.solved || {})[p.puzzle_id]) return { status: 'solved' };
@@ -258,7 +278,7 @@
 
   const Rooms = { norm, scenario, compute, discovered, myRooms, objectsIn, nextAction, cluesAt, myClues, helpClues, inventory,
     puzzleStatus, check, choices, objectiveDone, won, endings, dialoguesFor, elapsed, COLLECTED,
-    actTransition, actFind, actTry, actVote, actSim, simParts, applyPatch };
+    actTransition, actFind, actTry, actVote, actSim, simParts, combineItems, applyPatch };
   if (typeof module !== 'undefined' && module.exports) module.exports = Rooms;
   else root.Rooms = Rooms;
 })(typeof window !== 'undefined' ? window : globalThis);
