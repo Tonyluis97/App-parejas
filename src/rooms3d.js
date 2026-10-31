@@ -34,6 +34,64 @@ const Rooms3D = (function () {
     return THEMES.casa;
   }
 
+  // ---------- Sonido ----------
+  // Todo sintetizado con WebAudio: efectos al abrir puertas o resolver, y un ambiente suave por tipo de zona.
+  const SND = { ctx: null, amb: null, mute: (() => { try { return localStorage.getItem('r3mute') === '1'; } catch (e) { return false; } })() };
+  function actx() {
+    if (!SND.ctx) { try { SND.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; } }
+    if (SND.ctx.state === 'suspended') SND.ctx.resume().catch(() => { });
+    return SND.ctx;
+  }
+  function noiseBuf(a, sec) {
+    const b = a.createBuffer(1, a.sampleRate * sec, a.sampleRate), d = b.getChannelData(0);
+    let last = 0; for (let i = 0; i < d.length; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; } // ruido marrón
+    return b;
+  }
+  function tone(a, out, f, t0, dur, type, vol, f2) {
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f, t0); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g).connect(out); o.start(t0); o.stop(t0 + dur + 0.05);
+  }
+  function sfx(kind) {
+    const a = !SND.mute && actx(); if (!a) return;
+    const t = a.currentTime, out = a.destination;
+    if (kind === 'solve') [523, 659, 784, 1047].forEach((f, i) => tone(a, out, f, t + i * 0.09, 0.5, 'triangle', 0.18));
+    else if (kind === 'door') { tone(a, out, 90, t, 1.1, 'sawtooth', 0.05, 60); tone(a, out, 180, t + 0.15, 0.7, 'triangle', 0.04, 140); }
+    else if (kind === 'tap') tone(a, out, 880, t, 0.08, 'sine', 0.06);
+  }
+  function ambient(theme) {
+    ambientStop();
+    const a = !SND.mute && actx(); if (!a) return;
+    const g = a.createGain(); g.gain.value = 0; g.connect(a.destination);
+    g.gain.linearRampToValueAtTime(0.5, a.currentTime + 2);
+    const src = a.createBufferSource(); src.buffer = noiseBuf(a, 4); src.loop = true;
+    const lp = a.createBiquadFilter(); lp.type = 'lowpass';
+    const ng = a.createGain();
+    const kind = theme.outdoor ? 'calle' : theme.decor === 'tech' ? 'tecnica' : theme === THEMES.madera || theme.floor === 'dark_wooden_planks' && theme.wall === 'wood_trunk_wall' ? 'tren' : theme.floor === 'stacked_stone_wall' ? 'piedra' : 'casa';
+    lp.frequency.value = { calle: 600, tecnica: 300, tren: 220, piedra: 400, casa: 250 }[kind]; ng.gain.value = { calle: 0.12, tecnica: 0.05, tren: 0.16, piedra: 0.1, casa: 0.03 }[kind];
+    src.connect(lp).connect(ng).connect(g); src.start();
+    const extra = [];
+    if (kind === 'tecnica') { const o = a.createOscillator(), og = a.createGain(); o.frequency.value = 60; og.gain.value = 0.015; o.connect(og).connect(g); o.start(); extra.push(o); }
+    // Ritmo propio: traqueteo del tren, tic-tac en casas y bibliotecas, pitidos sueltos en zonas técnicas, gotas en piedra
+    const beat = { tren: 430, casa: 1000, tecnica: 4200, piedra: 2900, calle: 0 }[kind];
+    const iv = beat && setInterval(() => {
+      if (SND.mute || !SND.ctx) return;
+      const t = a.currentTime;
+      if (kind === 'tren') { tone(a, g, 70, t, 0.12, 'square', 0.05); tone(a, g, 70, t + 0.13, 0.12, 'square', 0.04); }
+      else if (kind === 'casa') tone(a, g, 2400, t, 0.03, 'square', 0.012);
+      else if (kind === 'tecnica') tone(a, g, 1200 + Math.random() * 600, t, 0.12, 'sine', 0.02);
+      else if (kind === 'piedra') tone(a, g, 1800 + Math.random() * 900, t, 0.18, 'sine', 0.025, 700);
+    }, beat);
+    SND.amb = { g, src, extra, iv };
+  }
+  function ambientStop() {
+    const m = SND.amb; SND.amb = null; if (!m) return;
+    clearInterval(m.iv);
+    try { const a = SND.ctx; m.g.gain.linearRampToValueAtTime(0, a.currentTime + 0.6); setTimeout(() => { try { m.src.stop(); m.extra.forEach(o => o.stop()); m.g.disconnect(); } catch (e) { } }, 800); } catch (e) { }
+  }
+  const doorWas = {}, solvedSeen = new Set(), fxQueue = [];
+
   // ---------- Coordenadas ----------
   // El diseño mide desde la esquina suroeste (x al este, z al norte). En la escena el centro de la zona es el origen
   // y el norte queda hacia -z, que es hacia donde mira la cámara al entrar.
@@ -80,6 +138,7 @@ const Rooms3D = (function () {
     [/palanca|interruptor|aguja/, 'lever', [0.4, 0.4]],
     [/mesa de control|consola|tablero|panel|teclado|cuadro de mandos|pupitre/, 'console', [1.4, 0.8]],
     [/mesa|escritorio|banco de trabajo|mostrador/, 'table', [1.4, 0.8]],
+    [/reloj de (caja|pie|pared alto)|relojes de caja|reloj patr[oó]n de pie|gran reloj de pie|caja alta/, 'tallclock', [0.6, 0.45]],
     [/reloj/, 'clock'],
     [/pantalla|monitor|terminal|ordenador|computador|osciloscopio/, 'screen'],
     [/radio|grabadora|gram[oó]fono|transmisor|tocadiscos|altavoz|magnet[oó]fono/, 'radio'],
@@ -104,17 +163,39 @@ const Rooms3D = (function () {
     if (k) return [k[1], k[2]];
     return [o.category === 'exit' ? 'door' : 'pedestal', null];
   }
+  // ---------- Modelos CC0 por temática (Poly Haven) ----------
+  // mdl() usa el modelo si ya está cargado; si no, apunta que falta (goRoom lo carga y reconstruye) y usa la pieza simple.
+  const GLB_OK = new Set(), GLB_BAD = new Set(), GLB_MISSING = new Set();
+  let CUR_TH = {};
+  const tech = () => CUR_TH.decor === 'tech', stone = () => CUR_TH.floor === 'stacked_stone_wall' && !CUR_TH.outdoor, train = () => CUR_TH.wall === 'wood_trunk_wall';
+  function mdl(id, fb, o) {
+    if (GLB_OK.has(id)) return K.model(id, fb, o);
+    if (!GLB_BAD.has(id)) GLB_MISSING.add(id);
+    return fb();
+  }
+  async function loadMissing() {
+    const ids = [...GLB_MISSING]; GLB_MISSING.clear();
+    if (!ids.length) return false;
+    await K.withTimeout(Promise.all(ids.map(id => K.loadGLB(id).then(g => (g ? GLB_OK : GLB_BAD).add(id)))), 15000).catch(() => { });
+    return ids.some(id => GLB_OK.has(id));
+  }
   const B = {
     door() { return K.P.door('#5b3b28'); },
-    shelf() { return K.model('wooden_bookshelf_worn', () => K.P.bookshelfBox(), { h: 1.9 }); },
+    shelf() { return tech() ? mdl('steel_frame_shelves_01', () => K.P.bookshelfBox(), { h: 1.9 }) : K.model('wooden_bookshelf_worn', () => K.P.bookshelfBox(), { h: 1.9 }); },
+    tallclock() { return mdl('vintage_grandfather_clock_01', () => K.at(K.box(0.5, 2, 0.35, wood('#5a3a22')), 0, 1, 0), { h: 2.05 }); },
     cabinet() {
+      if (tech()) return mdl('metal_tool_chest', () => B.cabinetBox(), { h: 1.15 });
+      return B.cabinetBox();
+    },
+    cabinetBox() {
       const g = new T.Group(), m = metal('#4b5560');
       g.add(K.at(K.box(0.9, 1.8, 0.45, m), 0, 0.9, 0));
       g.add(K.at(K.box(0.02, 1.6, 0.02, metal('#222')), 0, 0.95, 0.23));
       for (const x of [-0.12, 0.12]) g.add(K.at(K.box(0.03, 0.18, 0.04, brass()), x, 1.0, 0.25));
       return g;
     },
-    scope() {
+    scope(o) {
+      if (/microscop/.test(o.name.toLowerCase())) return mdl('vintage_microscope', () => B.small(), { h: 0.4 });
       const g = new T.Group(), b = brass();
       for (let i = 0; i < 3; i++) { const l = K.cyl(0.015, 0.015, 1.25, K.M('#3a2a1a'), 6); l.position.set(Math.cos(i * 2.1) * 0.22, 0.6, Math.sin(i * 2.1) * 0.22); l.rotation.set(Math.sin(i * 2.1) * 0.18, 0, -Math.cos(i * 2.1) * 0.18); g.add(l); }
       const t = K.cyl(0.05, 0.035, 0.8, b, 16); t.rotation.x = Math.PI / 2 - 0.15; t.position.set(0, 1.25, -0.1); g.add(t);
@@ -175,13 +256,19 @@ const Rooms3D = (function () {
       return g;
     },
     console() {
+      if (tech()) {
+        const g = mdl('metal_office_desk', () => K.P.table(1.4, 0.8, 0.78, '#555b62'), { w: 1.4 });
+        const box = new T.Box3().setFromObject(g), inst = mdl('vintage_spacecraft_instrument', () => B.screen(), { w: 0.7 });
+        inst.position.y = box.max.y; g.add(inst);
+        return g;
+      }
       const g = K.P.table(1.4, 0.8, 0.85, '#6b4a32', 'WoodenTable_01', { w: 1.4 });
       const top = new T.Group(); top.position.y = 0.88; g.add(top);
       for (let i = 0; i < 6; i++) top.add(K.at(K.box(0.05, 0.08, 0.05, brass()), -0.5 + i * 0.2, 0.04, 0.15));
       for (let i = 0; i < 3; i++) { const d = K.cyl(0.06, 0.06, 0.05, brass(), 18); d.position.set(-0.2 + i * 0.16, 0.03, -0.15); top.add(d); }
       return g;
     },
-    table() { return K.P.table(1.4, 0.8, 0.85, '#6b4a32', 'WoodenTable_01', { w: 1.4 }); },
+    table() { return tech() ? mdl('metal_office_desk', () => K.P.table(1.4, 0.8, 0.78, '#555b62'), { w: 1.4 }) : K.P.table(1.4, 0.8, 0.85, '#6b4a32', 'WoodenTable_01', { w: 1.4 }); },
     clock() { return K.P.clock('10:10'); },
     screen() {
       const g = new T.Group();
@@ -190,23 +277,44 @@ const Rooms3D = (function () {
       g.add(K.at(K.box(0.08, 0.1, 0.08, K.M('#222')), 0, 0.05, 0));
       return g;
     },
-    radio() {
+    radio(o) {
+      if (!/altavoz/.test(o.name.toLowerCase())) return mdl('vintage_radio_transceiver', () => B.radioBox(), { w: 0.5 });
+      return B.radioBox();
+    },
+    radioBox() {
       const g = new T.Group(), w = wood('#9a6a40', [0.4, 0.4]);
       g.add(K.at(K.box(0.5, 0.32, 0.28, w), 0, 0.16, 0));
       g.add(K.at(K.box(0.3, 0.2, 0.01, K.M('#3a3020', { roughness: 0.9 })), -0.06, 0.17, 0.145));
       for (const x of [0.15, 0.2]) { const k = K.cyl(0.025, 0.025, 0.03, brass(), 12); k.rotation.x = Math.PI / 2; k.position.set(x, 0.12, 0.15); g.add(k); }
       return g;
     },
-    lamp() { return K.model('Lantern_01', () => K.at(K.box(0.14, 0.3, 0.14, brass()), 0, 0.15, 0), { h: 0.38 }); },
+    lamp(o) {
+      const n = o.name.toLowerCase();
+      if (/candel|vela|pebetero/.test(n)) return mdl('brass_candleholders', () => B.lantern(), { h: 0.45 });
+      if (tech() && /l[aá]mpara|foco/.test(n)) return mdl('industrial_wall_lamp', () => B.lantern(), { h: 0.4 });
+      if (!tech()) return mdl('vintage_oil_lamp', () => B.lantern(), { h: 0.42 });
+      return B.lantern();
+    },
+    lantern() { return K.model('Lantern_01', () => K.at(K.box(0.14, 0.3, 0.14, brass()), 0, 0.15, 0), { h: 0.38 }); },
     mirror() { return K.model('ornate_mirror_01', () => K.box(0.6, 0.9, 0.04, K.M('#c8d2d8', { metalness: 1, roughness: 0.05 })), { back: true, h: 1.0, shadow: false }); },
-    board(o) { const p = paper(/azul/.test(o.visual) ? '#9fb8d0' : /corcho/.test(o.visual) ? '#b88a5a' : '#efe3c2', 0.7, 0.5); const f = new T.Group(); f.add(K.at(K.box(0.76, 0.56, 0.03, wood('#7a5530')), 0, 0, -0.02)); p.position.z = 0.0; f.add(p); return f; },
+    board(o) {
+      const n = o.name.toLowerCase();
+      if (/retrato|pintura|obra|cuadro(?! de)/.test(n)) return mdl('hanging_picture_frame_01', () => B.boardBox(o), { w: 0.8, back: true });
+      return B.boardBox(o);
+    },
+    boardBox(o) { const p = paper(/azul/.test(o.visual) ? '#9fb8d0' : /corcho/.test(o.visual) ? '#b88a5a' : '#efe3c2', 0.7, 0.5); const f = new T.Group(); f.add(K.at(K.box(0.76, 0.56, 0.03, wood('#7a5530')), 0, 0, -0.02)); p.position.z = 0.0; f.add(p); return f; },
     book(o) {
       const g = new T.Group(), c = /azul/.test(o.visual) ? '#2c4a7a' : /verde/.test(o.visual) ? '#2c5a3a' : '#6a2c2c';
       g.add(K.at(K.box(0.26, 0.04, 0.34, K.M(c, { roughness: 0.8 })), 0, 0.02, 0));
       const p = paper('#f2e8cf', 0.24, 0.32, 6); p.rotation.x = -Math.PI / 2; p.position.y = 0.042; g.add(p);
       return g;
     },
-    chest() { return K.P.chest(); },
+    chest(o) {
+      const n = o.name.toLowerCase();
+      if (/maleta|malet[ií]n|equipaje/.test(n) || train()) return mdl('vintage_suitcase', () => K.P.chest(), { w: 0.65 });
+      if (/cofre|ba[uú]l|arca/.test(n)) return mdl('treasure_chest', () => K.P.chest(), { w: 0.8 });
+      return K.P.chest();
+    },
     chair() { return K.P.chair('#6b2e2e'); },
     bench() {
       const g = new T.Group(), w = wood('#8a6a55', [1, 0.3]), ir = metal('#222');
@@ -215,13 +323,24 @@ const Rooms3D = (function () {
       return g;
     },
     plant() { return K.P.plant(); },
-    statue() {
+    statue(o) {
+      const n = o.name.toLowerCase();
+      if (/busto/.test(n) || !(stone() || /guardi[aá]n|estatua/.test(n))) {
+        const g = new T.Group(), st = K.M('#c8c2b6', { roughness: 0.7 });
+        g.add(K.at(K.box(0.45, 1.0, 0.45, st), 0, 0.5, 0));
+        const b = mdl('marble_bust_01', () => K.at(new T.Mesh(new T.SphereGeometry(0.15, 16, 12), st), 0, 0.15, 0), { h: 0.55 }); b.position.y += 1.0; g.add(b);
+        return g;
+      }
+      return mdl('gothic_statue', () => B.statueBox(), { h: 1.9 });
+    },
+    statueBox() {
       const g = new T.Group(), st = K.M('#c8c2b6', { roughness: 0.7 });
       g.add(K.at(K.box(0.5, 0.9, 0.5, st), 0, 0.45, 0), K.at(K.cyl(0.14, 0.2, 0.6, st, 16), 0, 1.2, 0), K.at(new T.Mesh(new T.SphereGeometry(0.13, 16, 12), st), 0, 1.6, 0));
       return g;
     },
     vessel(o) {
       const big = /barril|tanque|dep[oó]sito|tambor|bid[oó]n/.test(o.name.toLowerCase());
+      if (!big && /vasija|jarr|[aá]nfora|urna|tarro/.test(o.name.toLowerCase())) return mdl('ceramic_vase_01', () => K.at(K.cyl(0.1, 0.14, 0.35, K.M('#a8643c')), 0, 0.17, 0), { h: 0.4 });
       return big ? K.at(K.cyl(0.3, 0.3, 0.9, metal('#6a4a2a'), 18), 0, 0.45, 0) : K.at(K.cyl(0.05, 0.07, 0.22, brass(), 14), 0, 0.11, 0);
     },
     machine() {
@@ -236,7 +355,7 @@ const Rooms3D = (function () {
   };
   // Lo que se pone sobre una superficie lleva una base si no hay una mesa debajo
   const SMALL = ['book', 'radio', 'lamp', 'screen', 'clock', 'vessel', 'small', 'chest'];
-  const FLOOR = ['table', 'console', 'shelf', 'cabinet', 'booth', 'machine', 'bench', 'chair', 'plant', 'statue', 'fountain', 'boat', 'bridge', 'mailbox', 'lever', 'scope', 'pedestal', 'door', 'facades'];
+  const FLOOR = ['tallclock', 'table', 'console', 'shelf', 'cabinet', 'booth', 'machine', 'bench', 'chair', 'plant', 'statue', 'fountain', 'boat', 'bridge', 'mailbox', 'lever', 'scope', 'pedestal', 'door', 'facades'];
 
   // Exteriores: en lugar de paredes, una hilera de casas con ventanas encendidas
   function street(len) {
@@ -277,6 +396,7 @@ const Rooms3D = (function () {
   // ---------- Construcción de una zona ----------
   function build(s, c, room, role) {
     const th = themeFor(s, room), { w: W, d: D, h: H } = room.dimensions_m;
+    CUR_TH = th;
     const scene = new T.Scene();
     scene.background = new T.Color(th.sky || th.fog);
     scene.fog = new T.Fog(th.fog, Math.max(W, D) * 0.6, Math.max(W, D) * 1.8 + 6);
@@ -315,12 +435,18 @@ const Rooms3D = (function () {
     });
 
     // Puertas del diseño
-    const interact = [], colliders = [], byId = {};
+    const interact = [], colliders = [], byId = {}, anims = [];
     for (const dr of room.doors || []) {
       const m = B.door(), p = toW(room, dr.position), f = wallFacing(room, dr.position);
       m.position.set(p[0], 0, p[2]); m.rotation.y = f.ry;
       const open = (dr.opens_when || []).every(tk => c.T.has(tk));
-      if (open) m.userData.pivot.rotation.y = -1.35;
+      const dk = room.room_id + dr.door_id, was = doorWas[dk];
+      doorWas[dk] = open;
+      if (open && was === false) {
+        const pv = m.userData.pivot; pv.rotation.y = 0;
+        anims.push({ d: 1.3, f: k => { pv.rotation.y = -1.35 * (1 - Math.pow(1 - k, 3)); } });
+        sfx('door');
+      } else if (open) m.userData.pivot.rotation.y = -1.35;
       scene.add(m);
       const label = dr.to === 'EXIT' ? 'Salida' : 'Puerta a ' + ((s.rooms.find(r => r.room_id === dr.to) || {}).name || 'otra zona');
       K.tag(m, 'door:' + dr.door_id, label); interact.push(m);
@@ -364,10 +490,44 @@ const Rooms3D = (function () {
       scene.traverse(x => { if (x.isMesh) for (const mm of [].concat(x.material)) if ('envMapIntensity' in mm) mm.envMapIntensity = th.outdoor ? 0.25 : 0.4; });
     }
     const markers = new T.Group(); scene.add(markers);
-    return { scene, interact, colliders, byId, markers, room, th, W, D };
+    return { scene, interact, colliders, byId, markers, room, th, W, D, anims };
   }
 
   // Signos de "aquí hay algo nuevo" encima de los objetos
+  function burst(mesh) {
+    const box = new T.Box3().setFromObject(mesh), cx = (box.min.x + box.max.x) / 2, cz = (box.min.z + box.max.z) / 2, top = box.max.y;
+    const g = new T.Group(), mat = new T.SpriteMaterial({ color: 0xffd36b, transparent: true, depthWrite: false, blending: T.AdditiveBlending });
+    const parts = [];
+    for (let i = 0; i < 26; i++) {
+      const sp = new T.Sprite(mat.clone()); sp.scale.setScalar(0.06 + Math.random() * 0.06);
+      const a = Math.random() * Math.PI * 2, r = 0.1 + Math.random() * 0.35;
+      sp.position.set(cx + Math.cos(a) * r, top * 0.6 + Math.random() * 0.3, cz + Math.sin(a) * r);
+      parts.push({ sp, vy: 0.6 + Math.random() * 1.1, a }); g.add(sp);
+    }
+    const light = new T.PointLight(0xffc86b, 0, 4); light.position.set(cx, top + 0.3, cz); g.add(light);
+    R.scene.add(g);
+    R.anims.push({ d: 1.8, f: k => {
+      light.intensity = 6 * Math.sin(Math.PI * Math.min(1, k * 1.6));
+      for (const p of parts) { p.sp.position.y += p.vy * 0.016; p.sp.position.x += Math.cos(p.a) * 0.004; p.sp.position.z += Math.sin(p.a) * 0.004; p.sp.material.opacity = 1 - k; }
+      if (k >= 1) R.scene.remove(g);
+    } });
+  }
+  // Acertijos recién resueltos: sonido, aviso y destello en sus objetos si están en esta zona
+  function solvedFx(s, st) {
+    const fresh = Object.keys(st.solved || {}).filter(id => !solvedSeen.has(id));
+    fresh.forEach(id => solvedSeen.add(id));
+    // La primera vez en cada partida solo se toma nota de lo ya resuelto
+    if (solvedFx.primed !== st.startedAt) { solvedFx.primed = st.startedAt; return; }
+    for (const id of fresh) {
+      const p = s.puzzles.find(x => x.puzzle_id === id); if (!p) continue;
+      sfx('solve'); vibrate(80); msg('✅ ' + p.name + (p.on_solve && p.on_solve.message ? '. ' + p.on_solve.message : ''), 5000);
+      const ids = new Set((p.required_objects || []).concat(s.objects.filter(o => o.puzzle === id).map(o => o.object_id)));
+      ids.forEach(o => fxQueue.push(o));
+    }
+  }
+  function flushFx() {
+    while (fxQueue.length) { const id = fxQueue.shift(), b = R.byId[id]; if (b && b.mesh) burst(b.mesh); }
+  }
   function refreshMarkers(s, st, c, role) {
     R.markers.clear();
     for (const id in R.byId) {
@@ -392,7 +552,7 @@ const Rooms3D = (function () {
       '<div id="e3Danger" class="e3-danger"></div><div class="e3-cross"></div><div id="e3Prompt" class="e3-prompt" hidden></div>' +
       '<div id="r3Bar" class="r3-bar"></div>' +
       '<div id="e3Joy" class="e3-joy"><div class="e3-knob"></div></div><div id="e3Hint" class="e3-hint">Arrastra para mirar · usa el círculo para caminar · toca los objetos (❗ = algo nuevo)</div>' +
-      '<div id="e3Msg" class="e3-msg" hidden></div>';
+      '<div id="e3Msg" class="e3-msg" hidden></div><canvas id="r3Map" class="r3-map" width="84" height="84" aria-hidden="true"></canvas>';
     document.body.appendChild(el);
     return el;
   }
@@ -491,14 +651,57 @@ const Rooms3D = (function () {
     if (!R || !R.scene) return;
     const dt = Math.min(0.05, (t - (lastT || t)) / 1000); lastT = t;
     move(dt);
+    if (R.anims && R.anims.length) R.anims = R.anims.filter(a => { a.t = (a.t || 0) + dt; const k = Math.min(1, a.t / a.d); a.f(k); return k < 1; });
+    quality(dt);
     R.markers.children.forEach((m, i) => { m.position.y += Math.sin(t / 300 + i) * 0.0015; });
     if (t - (R.pt || 0) > 150) {
       R.pt = t;
       const h = pick(innerWidth / 2, innerHeight / 2), pr = document.getElementById('e3Prompt');
       if (pr) { if (h && h.dist < 4.2) { pr.textContent = '👆 ' + h.label; pr.hidden = false; } else pr.hidden = true; }
+      minimap();
     }
     R.renderer.render(R.scene, R.camera);
   }
+  // Calidad automática: mide los primeros segundos y, si va lento, quita sombras y baja la resolución
+  const Q = { t: 0, n: 0, level: (() => { try { return +localStorage.getItem('r3q') || 0; } catch (e) { return 0; } })() };
+  function applyQuality() {
+    if (!R) return;
+    R.renderer.setPixelRatio(Q.level >= 2 ? 0.75 : Q.level >= 1 ? 1 : Math.min(devicePixelRatio || 1, 1.5));
+    R.renderer.setSize(innerWidth, innerHeight);
+    if (R.scene) R.scene.traverse(o => { if (o.isLight && o.castShadow && Q.level >= 1) o.castShadow = false; });
+    R.renderer.shadowMap.needsUpdate = true;
+  }
+  function quality(dt) {
+    if (Q.level >= 2 || !dt) return;
+    Q.t += dt; Q.n++;
+    if (Q.t < 3) return;
+    const fps = Q.n / Q.t; Q.t = 0; Q.n = 0;
+    if (fps < 24) { Q.level++; try { localStorage.setItem('r3q', Q.level); } catch (e) { } applyQuality(); }
+  }
+  // Minimapa de la zona: paredes, puertas, objetos (dorados si tienen ❗) y tú con tu dirección
+  function minimap() {
+    const cv = document.getElementById('r3Map'); if (!cv || !R.room) return;
+    const { w, d } = R.room.dimensions_m, S2 = 84, k = S2 / Math.max(w, d), ox = (S2 - w * k) / 2, oz = (S2 - d * k) / 2;
+    const g = cv.getContext('2d'); g.clearRect(0, 0, S2, S2);
+    g.fillStyle = 'rgba(0,0,0,.45)'; g.fillRect(ox, oz, w * k, d * k);
+    g.strokeStyle = 'rgba(255,255,255,.8)'; g.lineWidth = 1.5; g.strokeRect(ox, oz, w * k, d * k);
+    const P = (x, z) => [ox + (x + w / 2) * k, oz + (z + d / 2) * k];
+    const hot = R.markers.children.map(m => m.position);
+    for (const id in R.byId) {
+      const b = R.byId[id], q = b.mesh.position, [x, y] = P(q.x, q.z);
+      const isHot = hot.some(h => Math.abs(h.x - q.x) < 0.6 && Math.abs(h.z - q.z) < 0.6);
+      g.fillStyle = b.door ? '#7fd1ff' : isHot ? '#ffcc33' : 'rgba(255,255,255,.55)';
+      g.beginPath(); g.arc(x, y, b.door ? 3.2 : isHot ? 3 : 2, 0, 7); g.fill();
+    }
+    const [px, pz] = P(R.camera.position.x, R.camera.position.z);
+    g.save(); g.translate(px, pz); g.rotate(-look.yaw); g.fillStyle = '#ff5a7a';
+    g.beginPath(); g.moveTo(0, -6); g.lineTo(4, 4); g.lineTo(-4, 4); g.closePath(); g.fill(); g.restore();
+  }
+  ACTS.r3Snd = () => {
+    SND.mute = !SND.mute; try { localStorage.setItem('r3mute', SND.mute ? '1' : '0'); } catch (e) { }
+    if (SND.mute) ambientStop(); else if (R && R.th) ambient(R.th);
+    hudTick();
+  };
   // Barra inferior: votaciones abiertas y otras zonas
   function hudTick() {
     const st = rmState();
@@ -515,7 +718,9 @@ const Rooms3D = (function () {
     const rooms = Rooms.myRooms(s, c, role);
     const h = votes.map(p => '<button class="e3-pill" data-act="r3Vote" data-v="' + p.puzzle_id + '">🗳️ ' + esc(p.name) + '</button>').join('') +
       (rooms.length > 1 ? '<button class="e3-pill" data-act="r3Rooms">🗺️ Zonas (' + rooms.length + ')</button>' : '') +
-      (Rooms.helpClues(s, c, role).length ? '<button class="e3-pill" data-act="r3Notes">💡 Ayuda</button>' : '');
+      (Rooms.helpClues(s, c, role).length ? '<button class="e3-pill" data-act="r3Notes">💡 Ayuda</button>' : '') +
+      '<button class="e3-pill" data-act="r3Snd" aria-label="Sonido">' + (SND.mute ? '🔇' : '🔊') + '</button>' +
+      '<div style="flex-basis:100%;display:flex;gap:6px;justify-content:center">' + rmPingButtons('e3-pill e3-ping') + '</div>';
     if (bar.innerHTML !== h) bar.innerHTML = h;
   }
 
@@ -527,6 +732,25 @@ const Rooms3D = (function () {
       if (!free(gx, gz)) continue;
       const score = -Math.abs(gx) - Math.abs(gz - d * 0.22) + Math.min(...Object.values(R.byId).map(b => Math.hypot(b.mesh.position.x - gx, b.mesh.position.z - gz)), 3);
       if (score > bs) { bs = score; best = { x: gx, z: gz, yaw: 0 }; }
+    }
+    // Mirar hacia donde hay más objetos a la vista y no contra una pared cercana
+    const objs = Object.values(R.byId).map(b => b.mesh.position);
+    let by = -1e9;
+    for (let i = 0; i < 16; i++) {
+      const yaw = i * Math.PI / 8, fx = -Math.sin(yaw), fz = -Math.cos(yaw);
+      let sc = 0;
+      for (const q of objs) {
+        const dx = q.x - best.x, dz = q.z - best.z, dist = Math.hypot(dx, dz);
+        if (dist < 0.9) continue;
+        const cos = (dx * fx + dz * fz) / dist;
+        // En vertical el móvil ve unos ±20°: cuenta sobre todo lo que cae en pantalla
+        if (cos > 0.93) sc += 1.5; else if (cos > 0.75) sc += 0.4;
+      }
+      // Distancia a la pared en esa dirección
+      const tx = fx > 0 ? (w / 2 - best.x) / fx : fx < 0 ? (-w / 2 - best.x) / fx : 1e9;
+      const tz = fz > 0 ? (d / 2 - best.z) / fz : fz < 0 ? (-d / 2 - best.z) / fz : 1e9;
+      const wd = Math.min(tx, tz); sc += Math.min(wd, 6) * 0.15 - (wd < 1.6 ? 2 : 0) + (i === 0 ? 0.2 : 0);
+      if (sc > by) { by = sc; best.yaw = yaw; }
     }
     return best;
   }
@@ -542,12 +766,18 @@ const Rooms3D = (function () {
     await K.withTimeout(Promise.all([K.loadPBR(th.floor), K.loadPBR(th.wall), th.ceil ? K.loadPBR(th.ceil) : null, K.loadHDR(th.hdri),
       ...['wooden_bookshelf_worn', 'WoodenTable_01', 'Lantern_01', 'GreenChair_01', 'potted_plant_01', 'ornate_mirror_01'].map(K.loadGLB)].filter(Boolean)), 20000);
     if (!R) return;
-    RM.room = id; rmSave();
+    RM.room = id; rmSave(); rmWhere(null);
     Object.assign(R, build(s, c, room, role));
+    // Si la zona pidió modelos que aún no estaban, se cargan y se arma otra vez con ellos
+    if (await loadMissing() && R) Object.assign(R, build(s, c, room, role));
+    if (!R) return;
     R.roomId = id;
     if (!keepCam) { const p = startPos(room); R.camera.position.set(p.x, 1.6, p.z); look.yaw = p.yaw; look.pitch = 0; }
+    if (Q.level) applyQuality();
     R.renderer.shadowMap.needsUpdate = true;
+    if (!SND.amb || SND.ambRoom !== id) { ambient(R.th); SND.ambRoom = id; }
     sig = signature(s, st, c, role);
+    solvedFx(s, st); flushFx();
     refreshMarkers(s, st, c, role);
     hudTick();
     msg(room.name + '. ' + (room.view[role] || room.description), 6000);
@@ -606,7 +836,7 @@ const Rooms3D = (function () {
     },
     close() {
       api.active = false;
-      cancelAnimationFrame(raf); clearInterval(api.tick);
+      cancelAnimationFrame(raf); clearInterval(api.tick); ambientStop(); SND.ambRoom = null;
       window.removeEventListener('resize', onResize); window.removeEventListener('keydown', kd); window.removeEventListener('keyup', ku);
       if (R && R.renderer) R.renderer.dispose();
       R = null;
@@ -622,6 +852,7 @@ const Rooms3D = (function () {
       if (Rooms.won(s, c)) { msg('🎉 ¡Lo lograron juntos!', 5000); setTimeout(() => api.active && api.close(), 3000); return; }
       const now = signature(s, st, c, role);
       if (now !== sig) { const keep = R.roomId; goRoom(keep, true); return; }
+      solvedFx(s, st); flushFx();
       refreshMarkers(s, st, c, role);
     },
   };

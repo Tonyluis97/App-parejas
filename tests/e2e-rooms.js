@@ -134,12 +134,23 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
   ok('A ve que escaparon', (await A.textContent('main')).includes('Lo lograron juntos'));
   ok('B ve que escaparon', (await B.textContent('main')).includes('Lo lograron juntos'));
   ok('final de la votación', (await A.textContent('main')).includes('Noche de faroles'));
+  ok('puntuación y estrellas', /puntos/.test(await A.textContent('main')) && /⭐/.test(await A.textContent('main')));
+  ok('récord guardado', await A.evaluate(() => !!((S.couple.roomsBest || {}).ER09 || {}).points));
+  ok('wonAt fijado', await B.evaluate(() => !!rmState().wonAt));
   await A.screenshot({ path: shots + '/r-06-final.png', fullPage: true });
+  await A.click('[data-act=tab][data-v=rooms]'); await wait(200);
+  ok('récord en la lista', /🏆/.test(await A.textContent('main')));
+  await A.click('[data-act=rmOpen][data-v=ER09]'); await wait(200);
 
   // Pausa compartida y reinicio
   for (const p of [A, B]) while (await p.$('#rmsub')) await p.click('#rmsub');
   await A.click('[data-act=rmStart]'); await wait(400); await B.evaluate(() => render());
   ok('nueva partida en curso', await A.evaluate(() => !rmState().solved));
+  await A.click('[data-act=rmPing][data-v="1"]'); await wait(500);
+  ok('B recibe la señal', !!(await B.$('.rm-ping')));
+  await B.screenshot({ path: shots + '/r-07-senal.png' });
+  await A.click('[data-act=rmObj]'); await wait(300); await A.click('#rz [data-act=closeSheet]'); await wait(300);
+  await B.evaluate(() => render()); ok('B ve dónde está A', (await B.textContent('main')).includes('Antonny está en'));
   await A.click('[data-act=rmPause]'); await wait(400); await B.evaluate(() => render());
   ok('B ve la pausa', (await B.textContent('main')).includes('Partida en pausa'));
   await B.click('[data-act=rmResume]'); await wait(400);

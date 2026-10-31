@@ -35,6 +35,24 @@ Muebles (models/):
   https://polyhaven.com/a/wooden_crate_01
   https://polyhaven.com/a/wooden_stool_01
 
+Modelos de los escape rooms ER01–ER10 (models/):
+  https://polyhaven.com/a/brass_candleholders
+  https://polyhaven.com/a/ceramic_vase_01
+  https://polyhaven.com/a/gothic_statue
+  https://polyhaven.com/a/hanging_picture_frame_01
+  https://polyhaven.com/a/industrial_wall_lamp
+  https://polyhaven.com/a/marble_bust_01
+  https://polyhaven.com/a/metal_office_desk
+  https://polyhaven.com/a/metal_tool_chest
+  https://polyhaven.com/a/steel_frame_shelves_01
+  https://polyhaven.com/a/treasure_chest
+  https://polyhaven.com/a/vintage_grandfather_clock_01
+  https://polyhaven.com/a/vintage_microscope
+  https://polyhaven.com/a/vintage_oil_lamp
+  https://polyhaven.com/a/vintage_radio_transceiver
+  https://polyhaven.com/a/vintage_spacecraft_instrument
+  https://polyhaven.com/a/vintage_suitcase
+
 HDRI (hdri/):
   https://polyhaven.com/a/lythwood_room
   https://polyhaven.com/a/snowy_forest

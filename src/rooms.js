@@ -26,7 +26,19 @@ function rmIdle(st) {
 }
 function rmCompute(st) { return Rooms.compute(rmScenario(st), st, rmIdle(st)); }
 const rmLabel = (s, v) => v && typeof v === 'object' ? Object.values(v).map(x => rmLabel(s, x)).join(' · ') : (s.ui.labels || {})[Rooms.norm(v)] || (String(v).charAt(0) + String(v).slice(1).toLowerCase()).replace(/_/g, ' ');
-const rmEmoji = (s, o) => (s.ui.objects || {})[o.object_id] || ({ decorative: '🪴', examine: '🔎', collect: '🎒', use: '🔧', combine: '🧩', activate: '🎛️', locked: '🔒', coop: '🤝', narrative: '📜', exit: '🚪' })[o.category] || '❔';
+// Icono por palabras del nombre cuando ui/ERxx.json no fija uno
+const RM_KW = [[/retrato|obra|muro de proyecci|biombo/, '🖼️'], [/montaplatos|pasaobjetos|tubo|caj[oó]n|ranura/, '📦'], [/piano/, '🎹'], [/columna|pilastra|cornisa|b[oó]veda pintada/, '🏛️'], [/sensor|ancla/, '📟'], [/port[oó]n/, '🚪'], [/reloj|esfera|carill[oó]n|campanad/, '🕰️'], [/puerta|compuerta|escotilla|salida|pasarela/, '🚪'], [/llave/, '🗝️'], [/cerrad|cerrojo|candado/, '🔐'],
+  [/consola|terminal|panel|tablero|cuadro de arranque|mandos|interruptor|selector|programador|registrador/, '🎛️'], [/pantalla|monitor|teletipo/, '🖥️'],
+  [/radio|receptor|onda|altavoz|interfono|transmisor/, '📻'], [/antena/, '📡'], [/libro|cuaderno|manual|registro|parte del|reglamento|horario|hoja|ficha|lista|carpeta|programa/, '📒'],
+  [/carta|sobre|nota|mensaje|aviso|tarjeta|etiqueta|cartel|cartela|placa/, '✉️'], [/mapa|plano|esquema|carta n[aá]utica/, '🗺️'], [/estatua|armadura|garza|silueta/, '🗿'],
+  [/vasija|tarro|jarr|termo|taza/, '🏺'], [/estanter|archivador|armario|taquilla|vitrina|rejilla/, '🗄️'], [/ba[uú]l|arca|caja|cofre|maleta|saca/, '🧳'],
+  [/l[aá]mpara|foco|luz|linterna|brasero|pebetero|candelabro|vela/, '💡'], [/espejo|ojo de buey|ventan|parabrisas/, '🪟'], [/silla|sill[oó]n|butaca|banco/, '🪑'],
+  [/mesa|pupitre|atril|pedestal/, '🪵'], [/planta|cultivo|plant[oó]n|maceta|regadera|semilla|lavanda/, '🌱'], [/inscripci|friso|relieve|mural|mosaico|estela|losa|tesela/, '📜'],
+  [/volante|manivela|torno|eje|rueda|palanca/, '⚙️'], [/bater|celda|energ/, '🔋'], [/submarino|c[aá]psula|boya|gr[uú]a|red/, '⚓'], [/dron/, '🛸'], [/paloma|jaula/, '🕊️'],
+  [/tren|bicicleta|silbato/, '🚂'], [/gorra|perchero|chaquet|bata|mono/, '🧥'], [/globo|astrolabio|constelaci|obelisco|rosa/, '🧭'], [/estufa|chimenea/, '🔥'], [/ducha|conducto|ventilador/, '🌀'],
+  [/sol\b/, '☀️'], [/luna/, '🌙'], [/disco|anillo/, '💿'], [/bobina|rollo|filtro/, '🎞️'], [/m[uú]sica/, '🎶'], [/escalera/, '🪜'], [/pulsador|bot[oó]n|firmar/, '🔴']];
+const rmKwEmoji = n => { n = String(n || '').toLowerCase(); const m = RM_KW.find(([r]) => r.test(n)); return m && m[1]; };
+const rmEmoji = (s, o) => (s.ui.objects || {})[o.object_id] || rmKwEmoji(o.name) || ({ decorative: '🪴', examine: '🔎', collect: '🎒', use: '🔧', combine: '🧩', activate: '🎛️', locked: '🔒', coop: '🤝', narrative: '📜', exit: '🚪' })[o.category] || '❔';
 const RM_DIFF = { easy: 'Fácil', medium: 'Media', hard: 'Difícil' };
 
 // Lo que cada móvil ya mostró; se limpia al empezar otra partida
@@ -42,8 +54,12 @@ VIEWS.rooms = () => {
   if (cur) h += '<div class="card hero" data-act="rmOpen" data-v="' + st.id + '" role="button" style="cursor:pointer"><div class="sub">Partida en curso</div><div class="big" style="font-size:22px">' + esc(window.ROOMS_DATA[st.id].title) + '</div><div class="sub">Toca para continuar</div></div>';
   return h + window.ROOMS_INDEX.map(r => '<div class="card game' + (r.ready ? '' : ' off') + '"' + (r.ready ? ' data-act="rmOpen" data-v="' + r.id + '" role="button"' : '') + '>' +
     '<div class="ic">' + (r.ready ? '🧩' : '🔒') + '</div><div><h3>' + esc(r.title) + '</h3><div class="muted small">' + esc(r.synopsis) + '</div>' +
-    '<div class="small" style="margin-top:4px;font-weight:700;color:var(--accent)">' + (r.ready ? RM_DIFF[r.difficulty] + ' · ' + r.minutes + ' min' : 'Próximamente') + '</div></div></div>').join('');
+    '<div class="small" style="margin-top:4px;font-weight:700;color:var(--accent)">' + (r.ready ? RM_DIFF[r.difficulty] + ' · ' + r.minutes + ' min' : 'Próximamente') + '</div>' + rmBestLine(r.id) + '</div></div>').join('');
 };
+function rmBestLine(id) {
+  const b = ((S.couple || {}).roomsBest || {})[id];
+  return b && b.points ? '<div class="small" style="margin-top:2px">' + rmStars(b.stars || 1) + ' · 🏆 ' + b.points.toLocaleString('es') + ' pts · ' + E.mmss(b.ms) + '</div>' : '';
+}
 ACTS.rmOpen = el => { S.roomSel = el.dataset.v; S.tab = 'room'; render(); window.scrollTo(0, 0); };
 
 // ---------- Partida ----------
@@ -61,6 +77,7 @@ VIEWS.room = () => {
     '<span style="flex:1"></span><button class="chip" data-act="rmPause" aria-label="Pausar">⏸ Pausa</button></div>';
   if (st.paused) return h + '<div class="card" style="text-align:center"><div style="font-size:56px">⏸</div><h2>Partida en pausa</h2><p class="muted">El reloj está parado para los dos.</p><button class="btn primary block" data-act="rmResume">Seguir jugando</button></div>' + rmFooter();
   h += '<button class="btn primary block" data-act="r3Open" style="margin-bottom:12px">🎮 Entrar en 3D</button>';
+  h += '<div class="rm-pings">' + rmPingButtons('chip') + '</div>' + rmPartnerLine(s, st);
   if (!st.noTimer && left <= 0) {
     h += '<div class="card" style="border:2px solid var(--warn)"><h2>⏰ Se acabó el tiempo</h2><p style="margin-top:0">' + esc(s.fail_condition.consequence) + '</p><div class="grid2"><button class="btn" data-act="rmReset">Reiniciar</button><button class="btn primary" data-act="rmNoTimer">Seguir sin reloj</button></div></div>';
   }
@@ -107,9 +124,60 @@ function rmIntro(data, st) {
 
 function rmWon(s, st, c) {
   const ends = Rooms.endings(s, c);
-  return '<div class="card hero" style="padding:26px 16px"><div style="font-size:60px">🎉</div><div class="big" style="font-size:28px">¡Lo lograron juntos!</div><div class="sub">Tiempo: ' + E.mmss(Rooms.elapsed(st)) + '</div></div>' +
+  return '<div class="card hero" style="padding:26px 16px"><div style="font-size:60px">🎉</div><div class="big" style="font-size:28px">¡Lo lograron juntos!</div><div class="sub">Tiempo: ' + E.mmss(Rooms.elapsed(st)) + '</div></div>' + rmScoreCard(s, st, c) +
     '<div class="card"><p style="margin-top:0">' + esc(s.narrative.escape_scene) + '</p>' + ends.map(e => '<p><b>' + esc(e.name) + '.</b> ' + esc(e.text) + '</p>').join('') + '<p class="muted" style="margin-bottom:0">' + esc(s.narrative.epilogue) + '</p></div>' +
     '<button class="btn primary block" data-act="rmStart" data-v="' + s.scenario_id + '">Jugar otra vez (con otras pistas)</button><button class="btn block" data-act="tab" data-v="rooms" style="margin-top:8px">Ver otros escape rooms</button>';
+}
+
+// ---------- Señales en vivo entre los dos ----------
+// Reacciones rápidas que saltan en la pantalla de la pareja (también en 3D) y dónde está cada uno.
+const RM_PINGS = [['👀', '¡Mira esto!'], ['✅', '¡Lo tengo!'], ['⏳', 'Espera un momento'], ['🤔', 'No lo entiendo'], ['❤️', '¡Bien hecho!']];
+let RM_PING_SEEN = 0, RM_WHERE_T = 0;
+const rmPingButtons = cls => RM_PINGS.map((p, i) => '<button class="' + cls + '" data-act="rmPing" data-v="' + i + '" aria-label="' + p[1] + '">' + p[0] + '</button>').join('');
+ACTS.rmPing = el => { const i = +el.dataset.v; vibrate(30); toast('Enviado: ' + RM_PINGS[i][1]); return Sync.patchCouple(S.code, { 'rooms10.ping': { from: myRole(), k: i, t: Date.now() } }); };
+function rmWhere(oid) {
+  const st = rmState(); if (!st.startedAt || Date.now() - RM_WHERE_T < 1200) return;
+  RM_WHERE_T = Date.now();
+  Sync.patchCouple(S.code, { ['rooms10.where.' + myRole()]: { room: RM.room || null, oid: oid || null, t: Date.now() } });
+}
+function rmPartnerLine(s, st) {
+  const w = ((st.where || {})[myRole() === 'A' ? 'B' : 'A']) || null;
+  if (!w || !w.room) return '';
+  const r = s.rooms.find(x => x.room_id === w.room), o = w.oid && s.objects.find(x => x.object_id === w.oid);
+  return '<div class="small muted" style="margin:-4px 0 8px">📍 ' + esc(partnerName()) + ' está en <b>' + esc(r ? r.name : '') + '</b>' + (o ? ', mirando ' + rmEmoji(s, o) + ' ' + esc(o.name) : '') + '</div>';
+}
+function rmCheckPing() {
+  const p = rmState().ping;
+  if (!p || !p.t || p.from === myRole()) return;
+  // La primera vez solo se muestra si es reciente; después, solo las nuevas
+  if (RM_PING_SEEN ? p.t <= RM_PING_SEEN : Date.now() - p.t > 8000) { RM_PING_SEEN = Math.max(RM_PING_SEEN, p.t); return; }
+  RM_PING_SEEN = p.t;
+  const [e, txt] = RM_PINGS[p.k] || RM_PINGS[0];
+  const d = document.createElement('div');
+  d.className = 'rm-ping'; d.dataset.t = p.t;
+  d.innerHTML = '<div class="e">' + e + '</div><div class="t">' + esc(partnerName()) + ': ' + esc(txt) + '</div>';
+  document.body.appendChild(d);
+  vibrate([60, 40, 60]); try { chime(true); } catch (x) { }
+  setTimeout(() => d.remove(), 2600);
+}
+
+const rmStars = n => '⭐'.repeat(n) + '☆'.repeat(3 - n);
+const rmRoleName = r => r === myRole() ? (me().name || 'Tú') : partnerName();
+function rmScoreCard(s, st, c) {
+  const sc = Rooms.score(s, st, c), best = ((S.couple || {}).roomsBest || {})[st.id] || {};
+  const rec = best.at === st.wonAt && (best.plays || 0) > 1;
+  const row = (l, v) => '<div style="display:flex;justify-content:space-between;padding:3px 0"><span class="muted">' + l + '</span><b>' + v + '</b></div>';
+  const tot = sc.by.A + sc.by.B + sc.by.AB || 1;
+  return '<div class="card" style="text-align:center"><div style="font-size:34px;letter-spacing:4px">' + rmStars(sc.stars) + '</div>' +
+    '<div style="font-size:40px;font-weight:800;color:var(--accent)">' + sc.points.toLocaleString('es') + ' <span style="font-size:16px">puntos</span></div>' +
+    (rec ? '<div class="chip on" style="display:inline-block;margin:6px 0">🏆 ¡Nuevo récord de pareja!</div>' : best.points && best.at !== st.wonAt ? '<div class="small muted">Su récord: ' + best.points.toLocaleString('es') + ' puntos</div>' : '') +
+    '<div style="text-align:left;margin-top:10px" class="small">' + row('Base', '1.000') + row('Rapidez', '+' + sc.speed) + (sc.opt ? row('Objetivos opcionales', '+' + 150 * sc.opt) : '') +
+    (sc.hints ? row('Ayudas (' + sc.hints + ')', '−' + 60 * sc.hints) : '') + (sc.fails ? row('Intentos fallidos (' + sc.fails + ')', '−' + 15 * sc.fails) : '') + '</div>' +
+    '<div style="text-align:left;margin-top:12px"><div class="small muted" style="margin-bottom:4px">Quién resolvió qué</div>' +
+    '<div style="display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line)">' +
+    ['A', 'AB', 'B'].map(r => '<div style="width:' + (100 * sc.by[r] / tot) + '%;background:' + (r === 'A' ? 'var(--accent)' : r === 'B' ? '#6aa5ff' : '#b58cff') + '"></div>').join('') + '</div>' +
+    '<div class="small" style="display:flex;justify-content:space-between;margin-top:4px"><span>' + esc(rmRoleName('A')) + ': ' + sc.by.A + '</span><span>Juntos: ' + sc.by.AB + '</span><span>' + esc(rmRoleName('B')) + ': ' + sc.by.B + '</span></div></div>' +
+    (sc.stars < 3 ? '<p class="small muted" style="margin-bottom:0">' + (sc.hints ? 'Para 3 estrellas: sin ayudas y en menos de ' + s.estimated_duration_minutes + ' min.' : 'Para 3 estrellas: terminen en menos de ' + s.estimated_duration_minutes + ' min.') + '</p>' : '') + '</div>';
 }
 
 // Avisos para los dos: acertijos recién resueltos y diálogos que ya tocan
@@ -150,7 +218,7 @@ ACTS.rmStart = el => {
   if (st.startedAt && !st.wonAt && st.id !== id) return askConfirm('Se cerrará la partida en curso para los dos.', 'Empezar', go);
   return go();
 };
-ACTS.rmRoom = el => { RM.room = el.dataset.v; rmSave(); render(); };
+ACTS.rmRoom = el => { RM.room = el.dataset.v; rmSave(); rmWhere(null); render(); };
 ACTS.rmPause = () => rmPatch({ paused: Date.now() });
 ACTS.rmResume = () => { const st = rmState(); return rmPatch({ paused: null, pausedMs: (st.pausedMs || 0) + (Date.now() - st.paused), last: Date.now() }); };
 ACTS.rmNoTimer = () => rmPatch({ noTimer: true });
@@ -168,6 +236,7 @@ ACTS.rmObj = async el => {
   const o = s.objects.find(x => x.object_id === el.dataset.v);
   if (!o) return;
   RZ = { oid: o.object_id, seq: [], pos: {}, code: '', found: [] };
+  rmWhere(o.object_id);
   let c = rmCompute(st);
   // Examinar es automático; las demás acciones se hacen con su botón
   const i = Rooms.nextAction(s, c, o, role);
@@ -278,11 +347,44 @@ ACTS.rmRedraw = () => rmDraw();
 // ---------- Acertijos "a la vez" (M3) ----------
 // Cada móvil anota cuándo le llegó la pulsación de la pareja y la compara con su propio reloj.
 const RM_SIM_SEEN = {};
+function rmCheckWin() {
+  const st = rmState(), s = st.startedAt && !st.wonAt && rmScenario(st);
+  if (!s) return;
+  const c = rmCompute(st);
+  if (!Rooms.won(s, c)) return;
+  const wonAt = Math.max(...Object.values(st.solved || {}).map(x => x.at || 0), st.startedAt);
+  const sc = Rooms.score(s, Object.assign({}, st, { wonAt }), c), best = ((S.couple || {}).roomsBest || {})[st.id] || {};
+  const patch = { 'rooms10.wonAt': wonAt, ['roomsBest.' + st.id + '.plays']: (best.plays || 0) + (best.lastWon === wonAt ? 0 : 1), ['roomsBest.' + st.id + '.lastWon']: wonAt };
+  if (!best.points || sc.points > best.points || best.at === wonAt) Object.assign(patch, { ['roomsBest.' + st.id + '.points']: sc.points, ['roomsBest.' + st.id + '.stars']: Math.max(sc.stars, best.at === wonAt ? 0 : best.stars || 0), ['roomsBest.' + st.id + '.ms']: sc.ms, ['roomsBest.' + st.id + '.at']: wonAt });
+  else if (sc.stars > (best.stars || 0)) patch['roomsBest.' + st.id + '.stars'] = sc.stars;
+  Sync.patchCouple(S.code, patch);
+}
 function rmTrackSim() {
+  try { rmCheckWin(); rmCheckPing(); } catch (e) { console.warn(e); }
   const sim = rmState().sim || {};
   // Con la ficha de un acertijo "a la vez" abierta, se redibuja para avisar que la pareja ya pulsó
   setTimeout(() => { try { if (document.getElementById('rz') && RZ && rmCurPuzzle() && rmCurPuzzle().answer.type === 'simultaneous') rmDraw(); } catch (e) { } }, 0);
-  for (const pid in sim) for (const r in sim[pid]) { const e = sim[pid][r]; if (e && e.at) { const k = pid + r + e.at; if (!RM_SIM_SEEN[k]) RM_SIM_SEEN[k] = Date.now(); } }
+  const role = myRole(), other = role === 'A' ? 'B' : 'A';
+  for (const pid in sim) for (const r in sim[pid]) {
+    const e = sim[pid][r]; if (!e || !e.at) continue;
+    const k = pid + r + e.at; if (RM_SIM_SEEN[k]) continue;
+    RM_SIM_SEEN[k] = Date.now();
+    // Si los dos pulsaron casi a la vez, cada uno escribió "esperando" sin ver al otro. Al llegar la pulsación
+    // de la pareja mientras la mía sigue reciente (según mi propio reloj), este móvil cierra el acertijo.
+    const mine = sim[pid][role];
+    if (r === other && mine && mine.at && RM_SIM_MINE[pid + mine.at]) setTimeout(() => rmSimResolve(pid, mine), 0);
+  }
+}
+const RM_SIM_MINE = {};
+function rmSimResolve(pid, mine) {
+  const st = rmState(), s = rmScenario(st), p = s && s.puzzles.find(x => x.puzzle_id === pid);
+  if (!p || (st.solved || {})[pid] || Rooms.puzzleStatus(s, rmCompute(st), st, p).status !== 'ready') return;
+  const win = p.validation.window_ms || 2000;
+  if (Date.now() - RM_SIM_MINE[pid + mine.at] > win) return;
+  delete RM_SIM_MINE[pid + mine.at];
+  const r = Rooms.actSim(p, st, myRole(), mine.v, true);
+  if (r.result === 'wait') return;
+  rmPatch(r.patch).then(() => { if (r.result === 'fail') { vibrate([60, 40, 60]); chime(false); toast((p.on_fail && p.on_fail.message) || 'No coincidió'); } if (document.getElementById('rz') && RZ && RZ.pid === pid) { if (r.result === 'solved') closeSheet(); else rmDraw(true); } });
 }
 function rmSimAge(st, p, role) {
   const e = ((st.sim || {})[p.puzzle_id] || {})[role];
@@ -318,7 +420,7 @@ ACTS.rmSim = async () => {
   const win = p.validation.window_ms || 2000;
   const r = Rooms.actSim(p, st, role, { mine, shared: (RZ.sim || {}).shared || {} }, rmSimAge(st, p, role === 'A' ? 'B' : 'A') < win);
   await rmPatch(r.patch);
-  if (r.result === 'wait') { RZ.simAt = Date.now(); rmDraw(); setTimeout(() => { if (document.getElementById('rz')) rmDraw(); }, win + 100); return; }
+  if (r.result === 'wait') { const e = r.patch['sim.' + p.puzzle_id + '.' + role]; RM_SIM_MINE[p.puzzle_id + e.at] = Date.now(); RZ.simAt = Date.now(); rmDraw(); setTimeout(() => { if (document.getElementById('rz')) rmDraw(); }, win + 100); return; }
   if (r.result === 'fail') { RZ.code = ''; vibrate([60, 40, 60]); chime(false); rmDraw(true); toast(r.lock ? 'Pausa corta: hablen y vuelvan a probar' : (p.on_fail && p.on_fail.message) || 'No coincidió'); return; }
   closeSheet();
 };

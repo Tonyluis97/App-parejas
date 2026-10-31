@@ -80,9 +80,13 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
       const q = other(p);
       while (await q.$('#sheet')) await q.click('#sheet [data-act=closeSheet]').catch(() => q.evaluate(() => closeSheet()));
       await simPress(p, info.id); await simPress(q, info.id);
-      await p.click('#rz [data-act=rmSim]'); await wait(FB ? 900 : 300);
-      ok(name + ' ve que la pareja ya pulsó', FB || (await q.textContent('#rz')).includes('ya pulsó'));
-      await q.click('#rz [data-act=rmSim]'); await wait(FB ? 1200 : 400);
+      if (FB) { // con Firebase, los dos a la vez de verdad: ninguno ve aún la pulsación del otro
+        await Promise.all([p.click('#rz [data-act=rmSim]'), q.click('#rz [data-act=rmSim]')]); await wait(1500);
+      } else {
+        await p.click('#rz [data-act=rmSim]'); await wait(300);
+        ok(name + ' ve que la pareja ya pulsó', (await q.textContent('#rz')).includes('ya pulsó'));
+        await q.click('#rz [data-act=rmSim]'); await wait(400);
+      }
       const done = await p.evaluate(id => !!(rmState().solved || {})[id], info.id);
       ok(name + ' resuelve ' + info.id + ' a la vez', done);
       if (await q.$('#rz [data-act=closeSheet]')) await q.click('#rz [data-act=closeSheet]');

@@ -62,6 +62,12 @@ function play(data, variant) {
   ok(tag + ' escapan', R.won(s, c));
   for (const p of s.puzzles.filter(p => p.main)) ok(tag + ' resuelto ' + p.puzzle_id, !!(st.solved || {})[p.puzzle_id]);
   ok(tag + ' hay final', R.endings(s, c).length > 0);
+  // Puntuación: rápida y sin ayudas = 3 estrellas; con ayudas y lenta baja
+  const fast = R.score(s, Object.assign({}, st, { startedAt: 1, wonAt: 10 * 60000, hints: {}, tries: {} }), c);
+  ok(tag + ' 3 estrellas rápido', fast.stars === 3 && fast.points >= 1000);
+  const slow = R.score(s, Object.assign({}, st, { startedAt: 1, wonAt: 200 * 60000, hints: { P01: 3 }, tries: {} }), c);
+  ok(tag + ' menos puntos lento y con ayudas', slow.stars === 1 && slow.points < fast.points && slow.speed === 0);
+  ok(tag + ' cuenta quién resolvió', fast.by.A + fast.by.B + fast.by.AB === Object.keys(st.solved).length);
   // Cada jugador terminó con pistas en su registro y nunca con pistas del otro
   for (const role of ['A', 'B']) for (const k of R.myClues(s, st, role)) ok(tag + ' ' + k.clue_id + ' es de ' + role, k.player === role || k.player === 'AB');
   return steps;

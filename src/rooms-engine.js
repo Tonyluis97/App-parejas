@@ -236,6 +236,19 @@
   }
 
   // Minutos de juego descontando pausas
+  // Puntuación de una partida ganada: base + rapidez + objetivos opcionales − ayudas − fallos
+  function score(s, st, c) {
+    const ms = elapsed(st), est = (s.estimated_duration_minutes || 45) * 60000;
+    const hints = Object.values(st.hints || {}).reduce((a, n) => a + (n || 0), 0);
+    const fails = Object.values(st.tries || {}).reduce((a, t) => a + ((t && t.fails) || 0), 0);
+    const opt = s.objectives.filter(o => !o.required && objectiveDone(s, c, o.objective_id)).length;
+    const speed = st.noTimer ? 0 : Math.round(Math.max(0, Math.min(1, (est * 1.5 - ms) / (est * 1.5))) * 600);
+    const points = Math.max(0, 1000 + speed + 150 * opt - 60 * hints - 15 * fails);
+    const stars = ms <= est && hints === 0 ? 3 : ms <= est * 1.5 && hints <= 2 ? 2 : 1;
+    const by = { A: 0, B: 0, AB: 0 };
+    for (const k in st.solved || {}) { const b = st.solved[k].by; by[b] = (by[b] || 0) + 1; }
+    return { points, stars, ms, hints, fails, opt, speed, by };
+  }
   function elapsed(st, now) {
     if (!st || !st.startedAt) return 0;
     const end = st.wonAt || (st.paused || now || Date.now());
@@ -278,7 +291,7 @@
   }
 
   const Rooms = { norm, scenario, compute, discovered, myRooms, objectsIn, nextAction, cluesAt, myClues, helpClues, inventory,
-    puzzleStatus, check, choices, objectiveDone, won, endings, dialoguesFor, elapsed, COLLECTED,
+    puzzleStatus, check, choices, objectiveDone, won, endings, dialoguesFor, elapsed, score, COLLECTED,
     actTransition, actFind, actTry, actVote, actSim, simParts, combineItems, applyPatch };
   if (typeof module !== 'undefined' && module.exports) module.exports = Rooms;
   else root.Rooms = Rooms;
