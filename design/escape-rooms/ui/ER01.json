@@ -1,0 +1,118 @@
+{
+ "rooms": {
+  "ROOM01": "🔭",
+  "ROOM02": "📼",
+  "ROOM03": "🧪"
+ },
+ "objects": {
+  "O01": "📽️",
+  "O02": "🗃️",
+  "O03": "🖥️",
+  "O04": "💳",
+  "O05": "🔐",
+  "O06": "📓",
+  "O07": "💺",
+  "O08": "🌿",
+  "O09": "🧥",
+  "O10": "📼",
+  "O11": "🎚️",
+  "O12": "🎞️",
+  "O13": "🎛️",
+  "O14": "💳",
+  "O15": "🔐",
+  "O16": "🗄️",
+  "O17": "📯",
+  "O18": "🎧",
+  "O19": "🧪",
+  "O20": "⚗️",
+  "O21": "⌨️",
+  "O22": "⌨️",
+  "O23": "🪧",
+  "O24": "🚪",
+  "O25": "🛏️",
+  "O26": "📝"
+ },
+ "labels": {
+  "K": "K · Azotea",
+  "M": "M · Pizarra",
+  "R": "R · Lámpara",
+  "S": "S · Tarta",
+  "T": "T · Helecho",
+  "V": "V · Caja",
+  "TRIANGULO": "🔺 Triángulo",
+  "CIRCULO": "⚪ Círculo",
+  "ESTRELLA": "⭐ Estrella",
+  "CUADRADO": "🟥 Cuadrado",
+  "ROMBO": "🔷 Rombo",
+  "MUELLE": "Muelle",
+  "FARO": "Faro",
+  "PLAYA": "Playa",
+  "TRANVIA": "Tranvía",
+  "MERCADO": "Mercado",
+  "AZOTEA": "Azotea"
+ },
+ "keys": {
+  "P02": {
+   "1": "Canal 1",
+   "2": "Canal 2",
+   "3": "Canal 3",
+   "4": "Canal 4"
+  }
+ },
+ "inputs": {
+  "P01": {
+   "prompt": "Carga cinco diapositivas en el carrusel, de la mañana a la noche.",
+   "button": "Proyectar"
+  },
+  "P02": {
+   "prompt": "Pon en cada canal la bobina que corresponde al plano del mismo número.",
+   "button": "Sincronizar"
+  },
+  "P03": {
+   "prompt": "Teclea el código de cuatro cifras que forman las dos mitades de la tarjeta.",
+   "button": "Confirmar"
+  },
+  "P04": {
+   "prompt": "Carga tres viales en el sintetizador, en el orden en que Irene los colocó.",
+   "button": "Iniciar"
+  },
+  "P05": {
+   "prompt": "Teclea los dos fragmentos que pide tu terminal y pulsa ANCLAR a la vez que tu pareja.",
+   "button": "⏱️ ANCLAR a la vez"
+  }
+ },
+ "mesh3d": {
+  "O03": "screen",
+  "O05": "console",
+  "O15": "console",
+  "O21": "screen",
+  "O22": "screen",
+  "O20": "machine",
+  "O19": "vessel",
+  "O25": "machine",
+  "O13": "console",
+  "O11": "radio",
+  "O12": "shelf",
+  "O10": "shelf",
+  "O16": "cabinet",
+  "O01": "radio",
+  "O02": "chest",
+  "O04": "book",
+  "O14": "book",
+  "O07": "chair",
+  "O09": "statue",
+  "O23": "board",
+  "O26": "board"
+ },
+ "rooms3d": {
+  "ROOM01": {
+   "theme": "tecnica"
+  },
+  "ROOM02": {
+   "theme": "tecnica"
+  },
+  "ROOM03": {
+   "theme": "tecnica"
+  }
+ }
+}

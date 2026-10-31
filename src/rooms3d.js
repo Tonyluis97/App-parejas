@@ -18,7 +18,7 @@ const Rooms3D = (function () {
     biblioteca: { floor: 'dirty_carpet', wall: 'decrepit_wallpaper', ceil: 'rectangular_parquet', hdri: 'lythwood_room', light: '#ffd9a0', fog: '#141812', wallTint: '#b8c4b0', floorTint: '#b05058' },
     piedra: { floor: 'stacked_stone_wall', wall: 'stacked_stone_wall', ceil: 'stacked_stone_wall', hdri: 'lythwood_room', light: '#ffc98a', fog: '#120e0a', floorTint: '#9a8e80' },
     madera: { floor: 'dark_wooden_planks', wall: 'wood_trunk_wall', ceil: 'roof_planks', hdri: 'snowy_forest', light: '#ffe0b0', fog: '#1a1410' },
-    tecnica: { floor: 'rectangular_parquet', wall: 'painted_plaster_wall', ceil: 'painted_plaster_wall', hdri: 'lythwood_room', light: '#e8f2ff', fog: '#10151a', wallTint: '#b9c4cc', floorTint: '#8a9096' },
+    tecnica: { floor: 'rectangular_parquet', wall: 'painted_plaster_wall', ceil: 'painted_plaster_wall', hdri: 'lythwood_room', light: '#e8f2ff', fog: '#10151a', wallTint: '#8e9ba4', floorTint: '#5e656c', ceilTint: '#9aa3aa', decor: 'tech', dim: 0.7 },
     calle: { floor: 'stacked_stone_wall', wall: 'painted_plaster_wall', outdoor: true, hdri: 'snowy_forest', light: '#ffc46b', fog: '#0d1424', sky: '#0d1424', wallTint: '#d9c7a8', floorTint: '#c9c2b8', floorRep: 1.2 },
   };
   function themeFor(s, room) {
@@ -256,6 +256,24 @@ const Rooms3D = (function () {
     return g;
   }
 
+  // Detalles de las paredes para que no se vean vacías: zócalo, paneles, tuberías o cuadros
+  function decorate(scene, th, W, D, H) {
+    const walls = [[W, 0, -D / 2, 0], [W, 0, D / 2, Math.PI], [D, -W / 2, 0, Math.PI / 2], [D, W / 2, 0, -Math.PI / 2]];
+    for (const [len, x, z, ry] of walls) {
+      const g = new T.Group(); g.position.set(x, 0, z); g.rotation.y = ry; scene.add(g);
+      if (th.decor === 'tech') {
+        g.add(K.at(K.box(len, 0.9, 0.03, K.M('#3d464e', { metalness: 0.5, roughness: 0.45 })), 0, 0.45, 0.02));
+        g.add(K.at(K.cyl(0.04, 0.04, len, metal('#7d868d'), 10), 0, H - 0.25, 0.12)); g.children[1].rotation.z = Math.PI / 2;
+        for (let px = -len / 2 + 0.9; px < len / 2 - 0.5; px += 1.6) {
+          g.add(K.at(K.box(0.7, 0.45, 0.04, K.M('#59636b', { metalness: 0.6, roughness: 0.35 })), px, 1.75, 0.03));
+          g.add(K.at(K.box(0.08, 0.03, 0.02, K.M('#111', { emissive: (px * 10 | 0) % 2 ? '#3cff8f' : '#ffb84d', emissiveIntensity: 1.2 })), px + 0.25, 1.9, 0.06));
+        }
+      } else if (th.decor !== 'none') {
+        g.add(K.at(K.box(len, 0.06, 0.03, K.M('#3b2a1f', { roughness: 0.6 })), 0, 0.95, 0.02));
+      }
+    }
+  }
+
   // ---------- Construcción de una zona ----------
   function build(s, c, room, role) {
     const th = themeFor(s, room), { w: W, d: D, h: H } = room.dimensions_m;
@@ -276,6 +294,7 @@ const Rooms3D = (function () {
       m.position.set(x, wallH / 2, z); m.rotation.y = ry; m.receiveShadow = true; scene.add(m);
       if (!th.outdoor) { const b = K.box(len, 0.14, 0.03, K.M('#2b1d14', { roughness: 0.6 })); b.position.set(x * 0.998, 0.07, z * 0.998); b.rotation.y = ry; scene.add(b); }
     }
+    if (!th.outdoor) decorate(scene, th, W, D, H);
     if (th.outdoor) { // estrellas
       const g = new T.BufferGeometry(), pts = [];
       for (let i = 0; i < 400; i++) { const a = Math.random() * Math.PI * 2, e = 0.15 + Math.random() * 1.2, r = 40; pts.push(Math.cos(a) * Math.cos(e) * r, Math.sin(e) * r, Math.sin(a) * Math.cos(e) * r); }
@@ -284,11 +303,11 @@ const Rooms3D = (function () {
     }
 
     // Luces del diseño (como mucho tres; la primera da sombras)
-    const hemi = new T.HemisphereLight('#ffffff', '#3a2a1a', th.outdoor ? 0.35 : 0.5); scene.add(hemi);
+    const hemi = new T.HemisphereLight('#ffffff', '#3a2a1a', (th.outdoor ? 0.35 : 0.5) * (th.dim || 1)); scene.add(hemi);
     const lights = (room.lighting || []).slice(0, 3);
     if (!lights.length) lights.push({ position: { x: W / 2, y: H - 0.4, z: D / 2 }, color: th.light, intensity: 0.8 });
     lights.forEach((l, i) => {
-      const pl = new T.PointLight(l.color || th.light, 10 + 30 * Math.min(1, l.intensity || 0.6) * Math.max(1, Math.max(W, D) / 8), Math.max(W, D) * 1.6, 1.4);
+      const pl = new T.PointLight(l.color || th.light, (10 + 30 * Math.min(1, l.intensity || 0.6) * Math.max(1, Math.max(W, D) / 8)) * (th.dim || 1), Math.max(W, D) * 1.6, 1.4);
       const p = toW(room, l.position); pl.position.set(p[0], Math.min(p[1], (th.outdoor ? 6 : H) - 0.3), p[2]);
       if (i === 0) { pl.castShadow = true; pl.shadow.mapSize.set(1024, 1024); pl.shadow.bias = -0.002; }
       scene.add(pl);

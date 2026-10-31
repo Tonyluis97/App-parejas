@@ -143,8 +143,42 @@
         return norm(value[value.length - 1]) === norm(t) && value.slice(0, -1).map(norm).sort().join('|') === want.slice(0, -1).map(norm).sort().join('|');
       }
       case 'decision': return (a.options || []).some(o => o.key === value);
+      case 'simultaneous': {
+        // Cada jugador aporta su parte; las dos pulsaciones deben caer dentro de la ventana
+        if (!value || typeof value !== 'object') return false;
+        if (value.gap_ms !== undefined && value.gap_ms > (p.validation.window_ms || 2000)) return false;
+        return Object.keys(want).every(k => simEq(value[k], want[k]));
+      }
       default: return false;
     }
+  }
+
+  const simEq = (a, b) => a !== undefined && (typeof b === 'object' ? norm(JSON.stringify(a)) === norm(JSON.stringify(b)) : (/^\d+$/.test(String(b)) ? normCode(a) === normCode(b) : norm(a) === norm(b)));
+  // Partes de un acertijo "a la vez": qué elige cada jugador (y qué eligen los dos, como la campanada)
+  // { A: { code: true } | { options: [...] }, B: ..., shared: { clave: [opciones] } }
+  function simParts(p) {
+    const vals = [p.answer.value].concat((p.wrong_answers || []).map(w => w.value)).filter(v => v && typeof v === 'object');
+    const opts = k => { const m = new Map(); for (const v of vals) if (v[k] !== undefined) m.set(JSON.stringify(v[k]), v[k]); return [...m.values()]; };
+    const part = k => /^\d+$/.test(String(p.answer.value[k])) ? { code: true, len: String(p.answer.value[k]).length } : { options: opts(k) };
+    const shared = {};
+    for (const k of Object.keys(p.answer.value)) if (k !== 'A' && k !== 'B') shared[k] = opts(k);
+    return { A: part('A'), B: part('B'), shared };
+  }
+  // Pulsación de un jugador en un acertijo "a la vez". partnerFresh: la pulsación de la pareja llegó a este móvil
+  // hace menos de la ventana (cada móvil mide con su propio reloj, así no importa si los relojes difieren).
+  // { result: 'wait'|'solved'|'fail', patch }
+  function actSim(p, st, role, part, partnerFresh, now) {
+    const t = now || Date.now(), other = role === 'A' ? 'B' : 'A';
+    const theirs = ((st.sim || {})[p.puzzle_id] || {})[other];
+    if (!theirs || !partnerFresh) return { result: 'wait', patch: { ['sim.' + p.puzzle_id + '.' + role]: { v: part, at: t } } };
+    const value = Object.assign({}, theirs.v.shared || {}, part.shared || {}, { [role]: part.mine, [other]: theirs.v.mine });
+    // Lo que eligen los dos (como la campanada) tiene que coincidir entre ellos
+    const sharedOk = Object.keys(part.shared || {}).every(k => simEq((theirs.v.shared || {})[k], part.shared[k]));
+    const r = actTry(p, st, value, role, t);
+    const clear = { ['sim.' + p.puzzle_id]: {} };
+    if (r.ok && sharedOk) return { result: 'solved', patch: Object.assign(clear, r.patch, { ['solved.' + p.puzzle_id]: { at: t, by: 'AB' } }) };
+    const bad = r.ok ? actTry(p, st, null, role, t) : r;
+    return { result: 'fail', lock: bad.lock, patch: Object.assign(clear, bad.patch) };
   }
 
   // Opciones que se ofrecen para secuencias, conjuntos y posiciones: lo de la respuesta y lo de las respuestas incorrectas
@@ -224,7 +258,7 @@
 
   const Rooms = { norm, scenario, compute, discovered, myRooms, objectsIn, nextAction, cluesAt, myClues, helpClues, inventory,
     puzzleStatus, check, choices, objectiveDone, won, endings, dialoguesFor, elapsed, COLLECTED,
-    actTransition, actFind, actTry, actVote, applyPatch };
+    actTransition, actFind, actTry, actVote, actSim, simParts, applyPatch };
   if (typeof module !== 'undefined' && module.exports) module.exports = Rooms;
   else root.Rooms = Rooms;
 })(typeof window !== 'undefined' ? window : globalThis);

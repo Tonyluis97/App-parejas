@@ -245,7 +245,8 @@ function rmPuzzle(s, st, c, p, o, bad) {
     const inv = Rooms.inventory(s, c, myRole());
     h += inv.length ? '<p class="small muted" style="margin:0 0 6px">Elige qué usar aquí:</p><div class="chips">' + inv.map(x => '<button class="chip" data-act="rmUse" data-v="' + x.object_id + '">' + rmEmoji(s, x) + ' ' + esc(x.name) + '</button>').join('') + '</div>'
       : '<p class="small muted" style="margin:0">No llevas nada que puedas usar aquí. Busca por la zona.</p>';
-  } else h += '<p class="small muted">Este tipo de acertijo llega con los próximos escape rooms.</p>';
+  } else if (t === 'simultaneous') h += rmSimUI(s, st, p, sh, btn);
+  else h += '<p class="small muted">Este tipo de acertijo llega con los próximos escape rooms.</p>';
   const n = (st.hints || {})[p.puzzle_id] || 0;
   if (n) h += p.hints.slice(0, n).map((x, j) => '<p class="small" style="margin:8px 0 0">💡 Ayuda ' + (j + 1) + ': ' + esc(x) + '</p>').join('');
   if (n < p.hints.length) h += '<button class="btn sm block" data-act="rmHint" data-v="' + p.puzzle_id + '" style="margin-top:8px">💡 Pedir ayuda (' + (n + 1) + ' de ' + p.hints.length + ')</button>';
@@ -256,6 +257,54 @@ function rmCurPuzzle() {
   return s.puzzles.find(x => x.puzzle_id === o.puzzle);
 }
 ACTS.rmRedraw = () => rmDraw();
+
+// ---------- Acertijos "a la vez" (M3) ----------
+// Cada móvil anota cuándo le llegó la pulsación de la pareja y la compara con su propio reloj.
+const RM_SIM_SEEN = {};
+function rmTrackSim() {
+  const sim = rmState().sim || {};
+  // Con la ficha de un acertijo "a la vez" abierta, se redibuja para avisar que la pareja ya pulsó
+  setTimeout(() => { try { if (document.getElementById('rz') && RZ && rmCurPuzzle() && rmCurPuzzle().answer.type === 'simultaneous') rmDraw(); } catch (e) { } }, 0);
+  for (const pid in sim) for (const r in sim[pid]) { const e = sim[pid][r]; if (e && e.at) { const k = pid + r + e.at; if (!RM_SIM_SEEN[k]) RM_SIM_SEEN[k] = Date.now(); } }
+}
+function rmSimAge(st, p, role) {
+  const e = ((st.sim || {})[p.puzzle_id] || {})[role];
+  if (!e || !e.at) return Infinity;
+  const k = p.puzzle_id + role + e.at;
+  return Date.now() - (RM_SIM_SEEN[k] || Date.now());
+}
+const rmSimText = v => v && typeof v === 'object' ? Object.values(v).map(x => rmLabelText(x)).join(' · ') : rmLabelText(v);
+const rmLabelText = v => typeof v === 'number' ? String(v) : String(v).replace(/_/g, ' ').toLowerCase().replace(/^./, c => c.toUpperCase());
+function rmSimUI(s, st, p, sh, btn) {
+  const role = myRole(), parts = Rooms.simParts(p), mine = parts[role], win = p.validation.window_ms || 2000;
+  RZ.sim = RZ.sim || { shared: {} };
+  let h = '';
+  if (mine.code) h += '<div class="display' + sh + '">' + (RZ.code + '_'.repeat(mine.len)).slice(0, mine.len) + '</div><div class="keypad">' + [1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => '<button data-act="rmKey" data-v="' + n + '">' + n + '</button>').join('') +
+    '<button data-act="rmDel" aria-label="Borrar">⌫</button><button data-act="rmKey" data-v="0">0</button><span></span></div>';
+  else h += '<div class="symbols' + sh + '">' + mine.options.map((v, i) => '<button data-act="rmSimPick" data-i="' + i + '"' + (JSON.stringify(RZ.sim.mine) === JSON.stringify(v) ? ' style="outline:3px solid var(--accent)"' : '') + '>' + esc(rmSimText(v)) + '</button>').join('') + '</div>';
+  for (const k in parts.shared) h += '<p class="small" style="margin:10px 0 4px"><b>' + esc(rmLabelText(k)) + '</b> (los dos eligen lo mismo)</p><div class="chips">' + parts.shared[k].map((v, i) => '<button class="chip' + (JSON.stringify(RZ.sim.shared[k]) === JSON.stringify(v) ? ' on' : '') + '" data-act="rmSimShared" data-k="' + esc(k) + '" data-i="' + i + '">' + esc(rmSimText(v)) + '</button>').join('') + '</div>';
+  const myAge = rmSimAge(st, p, role), theirAge = rmSimAge(st, p, role === 'A' ? 'B' : 'A');
+  const waiting = RZ.simAt && Date.now() - RZ.simAt < win, theirsNow = theirAge < win;
+  h += '<button class="btn primary block" data-act="rmSim" style="margin-top:10px">' + (btn === 'Probar' ? '⏱️ Pulsar a la vez' : btn) + '</button>';
+  h += '<p class="small" style="margin:8px 0 0;font-weight:700;color:' + (theirsNow ? 'var(--ok)' : 'var(--muted)') + '">' +
+    (theirsNow ? '¡' + esc(partnerName()) + ' ya pulsó! Pulsa ahora.' : waiting ? 'Esperando a ' + esc(partnerName()) + '…' : 'Cuenten "tres, dos, uno" por la llamada y pulsen los dos (tienen ' + (win / 1000).toLocaleString('es') + ' s de margen).') + '</p>';
+  void myAge;
+  return h;
+}
+ACTS.rmSimPick = el => { const p = rmCurPuzzle(); RZ.sim = RZ.sim || { shared: {} }; RZ.sim.mine = Rooms.simParts(p)[myRole()].options[+el.dataset.i]; rmDraw(); };
+ACTS.rmSimShared = el => { const p = rmCurPuzzle(); RZ.sim = RZ.sim || { shared: {} }; RZ.sim.shared[el.dataset.k] = Rooms.simParts(p).shared[el.dataset.k][+el.dataset.i]; rmDraw(); };
+ACTS.rmSim = async () => {
+  const st = rmState(), p = rmCurPuzzle(), role = myRole(), parts = Rooms.simParts(p);
+  const mine = parts[role].code ? RZ.code : (RZ.sim || {}).mine;
+  if (mine === undefined || mine === '' || Object.keys(parts.shared).some(k => (RZ.sim || { shared: {} }).shared[k] === undefined)) { toast('Elige primero tu parte'); return; }
+  if (Rooms.puzzleStatus(rmScenario(st), rmCompute(st), st, p).status !== 'ready') return rmDraw();
+  const win = p.validation.window_ms || 2000;
+  const r = Rooms.actSim(p, st, role, { mine, shared: (RZ.sim || {}).shared || {} }, rmSimAge(st, p, role === 'A' ? 'B' : 'A') < win);
+  await rmPatch(r.patch);
+  if (r.result === 'wait') { RZ.simAt = Date.now(); rmDraw(); setTimeout(() => { if (document.getElementById('rz')) rmDraw(); }, win + 100); return; }
+  if (r.result === 'fail') { RZ.code = ''; vibrate([60, 40, 60]); chime(false); rmDraw(true); toast(r.lock ? 'Pausa corta: hablen y vuelvan a probar' : (p.on_fail && p.on_fail.message) || 'No coincidió'); return; }
+  closeSheet();
+};
 ACTS.rmKey = el => { const p = rmCurPuzzle(); if (RZ.code.length < String(p.answer.value).length) RZ.code += el.dataset.v; rmDraw(); };
 ACTS.rmDel = () => { RZ.code = RZ.code.slice(0, -1); rmDraw(); };
 ACTS.rmPick = el => {

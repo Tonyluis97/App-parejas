@@ -19,6 +19,7 @@ const errsG = [];
 (async () => {
   const url = `http://localhost:${srv.address().port}/`;
   const b = await chromium.launch({ executablePath: exe, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const ID = process.env.ID || 'ER09';
   const turns = JSON.parse(process.env.TURNS || '[0,0.9,0.9,0.9,0.9,0.9]');
   const mkCtx = async () => {
     const ctx = await b.newContext({ viewport: { width: 400, height: 820 }, hasTouch: true, isMobile: true });
@@ -40,7 +41,7 @@ const errsG = [];
   await B.fill('#wName', 'Ella'); await B.click('button[type=submit]'); await B.waitForSelector('.hero');
 
   // Partida de ER09 y visor 3D
-  for (const p of [A, B]) { await p.click('[data-act=tab][data-v=games]'); await p.click('[data-act=tab][data-v=rooms]'); await p.click('[data-act=rmOpen][data-v=ER09]'); }
+  for (const p of [A, B]) { await p.click('[data-act=tab][data-v=games]'); await p.click('[data-act=tab][data-v=rooms]'); await p.click('[data-act=rmOpen][data-v=' + ID + ']'); }
   await A.click('[data-act=rmStart]'); await wait(300);
   await A.evaluate(() => Sync.patchCouple(S.code, { 'rooms10.variant': null })); await wait(400); await B.evaluate(() => render());
   ok('botón 3D', !!(await A.$('[data-act=r3Open]')));
@@ -49,13 +50,16 @@ const errsG = [];
   await wait(FB ? 3000 : 6000);
   const infoA = await A.evaluate(() => Rooms3D._info()), infoB = await B.evaluate(() => Rooms3D._info());
   console.log('A', JSON.stringify(infoA)); console.log('B', JSON.stringify(infoB));
+  if (ID === 'ER09') {
   ok('A en el altillo 3D', infoA.room === 'ROOM01' && infoA.objects.includes('O05'));
   ok('B en el puerto 3D', infoB.room === 'ROOM02' && infoB.objects.includes('O14'));
+  }
   ok('marcas de novedad', await A.evaluate(() => document.querySelector('#e3Name').textContent.length > 0));
   for (const [p, n] of [[A, 'A'], [B, 'B']]) {
     await p.evaluate(() => { for (const id of ['e3Msg', 'rmsub']) { const m = document.getElementById(id); if (m) m.style.display = 'none'; } });
-    for (const [i, v] of turns.entries()) { await p.evaluate(v => Rooms3D._turn(v), v); await wait(1500); await p.screenshot({ path: shots + '/r3-' + n + '-' + i + '.png' }); }
+    for (const [i, v] of turns.entries()) { await p.evaluate(v => Rooms3D._turn(v), v); await wait(1500); await p.screenshot({ path: shots + '/' + ID + '-' + n + '-' + i + '.png' }); }
   }
+  if (ID === 'ER09') {
   // Tocar un objeto abre la misma ficha que en 2D
   await A.evaluate(() => Rooms3D._interact('O01')); await wait(800);
   ok('ficha del plano', (await A.textContent('#sheet')).includes('Plano del alumbrado'));
@@ -64,8 +68,9 @@ const errsG = [];
   // Puerta cerrada a la plaza
   await B.evaluate(() => Rooms3D._interact('door:DOOR02')); await wait(300);
   ok('puerta cerrada', (await B.textContent('#e3Msg')).includes('cerrada'));
+  }
   await A.click('#e3 [data-act=r3Exit]'); await wait(300);
-  ok('salir del 3D', (await A.$('#e3')) === null && (await A.textContent('main')).includes('Altillo'));
+  ok('salir del 3D', (await A.$('#e3')) === null);
   ok('sin errores', errs.length === 0); if (errs.length) console.log(errs.slice(0, 10).join('\n'));
   await b.close(); srv.close();
   console.log(fails ? fails + ' fallos' : 'todo ok');

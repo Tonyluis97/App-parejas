@@ -99,6 +99,27 @@ for (const id in window.ROOMS_DATA) {
     if (base.answer.value && JSON.stringify(base.answer.value) !== JSON.stringify(vs.answer.value)) ok(id + ' ' + v.variant_id + ' ' + pid + ' no acepta la respuesta base', !R.check(vs, base.answer.value));
   }
 }
+// Acertijo "a la vez" (ER01 P05): cada uno manda su parte; solo vale si la otra llegó dentro de la ventana
+{
+  const s = R.scenario(window.ROOMS_DATA.ER01, null), p = s.puzzles.find(x => x.answer.type === 'simultaneous');
+  const parts = R.simParts(p);
+  ok('a la vez: A teclea un código', parts.A.code && parts.A.len === 2);
+  let st = {};
+  let r = R.actSim(p, st, 'A', { mine: '41', shared: {} }, false, 1000);
+  ok('a la vez: el primero espera', r.result === 'wait'); R.applyPatch(st, r.patch);
+  r = R.actSim(p, st, 'B', { mine: '96', shared: {} }, true, 2000);
+  ok('a la vez: los dos a tiempo resuelven', r.result === 'solved' && r.patch['solved.' + p.puzzle_id]);
+  r = R.actSim(p, st, 'B', { mine: '96', shared: {} }, false, 9000);
+  ok('a la vez: tarde vuelve a esperar', r.result === 'wait');
+  r = R.actSim(p, st, 'B', { mine: '41', shared: {} }, true, 2000);
+  ok('a la vez: cifras cambiadas fallan', r.result === 'fail' && !r.patch['solved.' + p.puzzle_id]);
+  const p7 = R.scenario(require('../design/escape-rooms/ER05.json'), null).puzzles.find(x => x.puzzle_id === 'P07');
+  const sp = R.simParts(p7);
+  ok('a la vez: campanada compartida', sp.shared.strike && sp.shared.strike.includes(3) && sp.A.options.includes('SOLTAR_PESTILLO'));
+  st = {};
+  R.applyPatch(st, R.actSim(p7, st, 'A', { mine: 'SOLTAR_PESTILLO', shared: { strike: 3 } }, false, 1000).patch);
+  ok('a la vez: campanadas distintas fallan', R.actSim(p7, st, 'B', { mine: 'TIRAR_CUERDA', shared: { strike: 8 } }, true, 1500).result === 'fail');
+}
 ok('normaliza tildes', R.check({ answer: { type: 'sequence', value: ['MASCARA'] } }, ['máscara ']));
 
 console.log(fails ? fails + ' fallos de ' + n : 'ok ' + n + ' comprobaciones');
