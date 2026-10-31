@@ -167,6 +167,7 @@ function subscribe() {
     S.couple = doc;
     if (!doc) { S.code = null; saveLocal(); }
     if (typeof Esc3D !== 'undefined') Esc3D.onCouple(doc);
+    if (typeof Rooms3D !== 'undefined') Rooms3D.onCouple(doc);
     render();
   }));
   S.offs.push(Sync.watch(S.code, 'messages', list => {

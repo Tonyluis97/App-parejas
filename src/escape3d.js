@@ -1130,6 +1130,9 @@ const Esc3D = (function () {
       }
     },
   };
+  // Herramientas compartidas con el visor 3D de los escape rooms (rooms3d.js)
+  api.kit = () => ({ T, loadThree, loadExtras, loadPBR, loadGLB, loadHDR, withTimeout, pbr, model, canvasTex, noise, shade, TEX, P, M, box, cyl, at, tag, plane,
+    hdr: id => ready(hdrCache, id) });
   api._interact = id => interactWith(id); // para las pruebas automáticas
   api._info = () => R && R.renderer.info.render;
   api._view = (x, z, yaw, pitch) => { if (R) { R.camera.position.x = x; R.camera.position.z = z; look.yaw = yaw; look.pitch = pitch || 0; } };

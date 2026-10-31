@@ -60,6 +60,7 @@ VIEWS.room = () => {
     '<span class="small muted">' + s.objectives.filter(o => o.required && Rooms.objectiveDone(s, c, o.objective_id)).length + ' de ' + s.objectives.filter(o => o.required).length + ' objetivos</span>' +
     '<span style="flex:1"></span><button class="chip" data-act="rmPause" aria-label="Pausar">⏸ Pausa</button></div>';
   if (st.paused) return h + '<div class="card" style="text-align:center"><div style="font-size:56px">⏸</div><h2>Partida en pausa</h2><p class="muted">El reloj está parado para los dos.</p><button class="btn primary block" data-act="rmResume">Seguir jugando</button></div>' + rmFooter();
+  h += '<button class="btn primary block" data-act="r3Open" style="margin-bottom:12px">🎮 Entrar en 3D</button>';
   if (!st.noTimer && left <= 0) {
     h += '<div class="card" style="border:2px solid var(--warn)"><h2>⏰ Se acabó el tiempo</h2><p style="margin-top:0">' + esc(s.fail_condition.consequence) + '</p><div class="grid2"><button class="btn" data-act="rmReset">Reiniciar</button><button class="btn primary" data-act="rmNoTimer">Seguir sin reloj</button></div></div>';
   }

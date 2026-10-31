@@ -16,8 +16,8 @@ function slim(s) {
     ...pick(s, ['scenario_id', 'title', 'synopsis', 'difficulty', 'estimated_duration_minutes', 'fail_condition', 'objectives', 'win_condition', 'endings']),
     narrative: pick(s.narrative, ['intro', 'goal', 'escape_scene', 'epilogue']),
     players_data: s.players_data,
-    rooms: s.rooms.map(r => pick(r, ['room_id', 'name', 'description', 'access', 'view', 'unlocked_when'])),
-    objects: s.objects.map(o => pick(o, ['object_id', 'name', 'visual', 'room', 'category', 'states', 'initial_state', 'action', 'result', 'transitions', 'clue', 'puzzle', 'authorized'])),
+    rooms: s.rooms.map(r => pick(r, ['room_id', 'name', 'description', 'access', 'view', 'unlocked_when', 'dimensions_m', 'doors', 'windows', 'lighting'])),
+    objects: s.objects.map(o => pick(o, ['object_id', 'name', 'visual', 'room', 'position', 'category', 'states', 'initial_state', 'action', 'result', 'transitions', 'clue', 'puzzle', 'authorized'])),
     clues: s.clues.map(c => pick(c, ['clue_id', 'content', 'alt_text', 'location', 'player', 'depends_on', 'enabled_when', 'help_level', 'discovered_when'])),
     puzzles: s.puzzles.map(p => ({
       ...pick(p, ['puzzle_id', 'name', 'narrative', 'objective', 'situation', 'required_objects', 'rules', 'answer', 'on_solve', 'on_fail', 'attempts', 'hints', 'room', 'main', 'prerequisites']),
