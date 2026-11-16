@@ -245,5 +245,96 @@
  },
  {
   "id": "brass_candleholders"
+ },
+ {
+  "id": "metal_plate_02",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "concrete_panels",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "large_sandstone_blocks",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "monastery_stone_floor",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "cobblestone_floor_08",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "wooden_panels",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "marble_tiles",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "concrete_floor_worn_001",
+  "maps": [
+   "Diffuse",
+   "nor_gl",
+   "arm"
+  ]
+ },
+ {
+  "id": "mounted_fluorescent_lights"
+ },
+ {
+  "id": "utility_box_01"
+ },
+ {
+  "id": "korean_fire_extinguisher_01"
+ },
+ {
+  "id": "hanging_industrial_lamp"
+ },
+ {
+  "id": "wooden_barrels_01"
+ },
+ {
+  "id": "stone_fire_pit"
+ },
+ {
+  "id": "GothicCabinet_01"
+ },
+ {
+  "id": "ClassicConsole_01"
+ },
+ {
+  "id": "security_camera_01"
  }
 ]

@@ -5,7 +5,7 @@ const E = window.Engine;
 const S = {
   uid: null, code: null, name: '', tab: 'home', couple: null,
   msgs: [], items: [], answers: [], pings: [], letters: [], coupons: [], dates: [], greets: [],
-  listTab: 'peliculas', game: null, er: { wall: 0, notes: [] },
+  listTab: 'peliculas', game: null,
   unread: 0, ready: false, offs: [],
 };
 
@@ -15,7 +15,7 @@ function loadLocal() {
   try { return JSON.parse(localStorage.getItem(LS_KEY())) || {}; } catch (e) { return {}; }
 }
 function saveLocal() {
-  const d = { name: S.name, code: S.code, er: S.er, lastRead: S.lastRead || 0, u: Date.now() };
+  const d = { name: S.name, code: S.code, lastRead: S.lastRead || 0, u: Date.now() };
   try { localStorage.setItem(LS_KEY(), JSON.stringify(d)); } catch (e) { }
 }
 
@@ -61,7 +61,7 @@ function closeSheet() { const s = $('#sheet'); if (s) s.remove(); }
 
 // ---------- Render conservando lo que se está escribiendo ----------
 const VIEWS = {};
-const GAME_VIEWS = ['rooms', 'room', 'escape3d', 'escape', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz'];
+const GAME_VIEWS = ['rooms', 'room', 'escape3d', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz'];
 const US_VIEWS = ['lists', 'letters', 'coupons', 'dates'];
 function render() {
   const app = $('#app');
@@ -89,7 +89,7 @@ function render() {
 function shell(body) {
   const titles = { home: 'Nosotros', chat: partnerName(), games: 'Juegos', us: 'Lo nuestro', lists: 'Nuestras listas', letters: 'Cartas', coupons: 'Cupones de amor', dates: 'Fechas importantes', settings: 'Ajustes',
     rooms: 'Escape rooms para dos', room: (window.ROOMS_DATA && ROOMS_DATA[S.roomSel] || {}).title || 'Escape room',
-    escape3d: 'Sin salida', escape: 'La casa de los recuerdos', would: '¿Qué prefieres?', tod: 'Verdad o reto', never: 'Yo nunca he…', ttt: 'Tres en raya', cards: 'Cartas de conversación', roulette: 'Ruleta de citas', quiz: '¿Qué tanto me conoces?' };
+    escape3d: 'Sin salida', would: '¿Qué prefieres?', tod: 'Verdad o reto', never: 'Yo nunca he…', ttt: 'Tres en raya', cards: 'Cartas de conversación', roulette: 'Ruleta de citas', quiz: '¿Qué tanto me conoces?' };
   const tabs = [['home', '🏠', 'Inicio'], ['chat', '💬', 'Chat'], ['games', '🎲', 'Juegos'], ['us', '💞', 'Lo nuestro']];
   const parent = GAME_VIEWS.includes(S.tab) ? 'games' : US_VIEWS.includes(S.tab) ? 'us' : null;
   const back = parent ? '<button class="iconbtn" data-act="tab" data-v="' + (S.tab === 'room' ? 'rooms' : parent) + '" aria-label="Volver">‹</button>' : '';
@@ -236,7 +236,6 @@ async function boot() {
   }
   const L = loadLocal();
   S.name = L.name || ''; S.code = L.code || null; S.lastRead = L.lastRead || 0;
-  if (L.er) S.er = Object.assign(S.er, L.er);
   S.locked = Lock.enabled();
   if (!S.code) readInvite();
   S.ready = true;
@@ -247,6 +246,6 @@ async function boot() {
     if (Lock.enabled() && S._hiddenAt && Date.now() - S._hiddenAt > 60000) { S.locked = true; closeSheet(); render(); return; }
     if (S.tab === 'chat') { markRead(); render(); }
   });
-  setInterval(() => { const ae = document.activeElement; if (S.code && S.couple && ['home', 'escape'].includes(S.tab) && !$('#sheet') && !(ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))) render(); }, 30000);
+  setInterval(() => { const ae = document.activeElement; if (S.code && S.couple && S.tab === 'home' && !$('#sheet') && !(ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))) render(); }, 30000);
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !window.Capacitor) navigator.serviceWorker.register('sw.js').catch(() => { });
 }

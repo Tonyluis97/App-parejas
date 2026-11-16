@@ -60,9 +60,15 @@ function rmBestLine(id) {
   const b = ((S.couple || {}).roomsBest || {})[id];
   return b && b.points ? '<div class="small" style="margin-top:2px">' + rmStars(b.stars || 1) + ' · 🏆 ' + b.points.toLocaleString('es') + ' pts · ' + E.mmss(b.ms) + '</div>' : '';
 }
-ACTS.rmOpen = el => { S.roomSel = el.dataset.v; S.tab = 'room'; render(); window.scrollTo(0, 0); };
+ACTS.rmOpen = el => { RM3.left = false; S.roomSel = el.dataset.v; S.tab = 'room'; render(); window.scrollTo(0, 0); };
 
 // ---------- Partida ----------
+const RM3 = { left: false, opening: false };
+function rm2d() { try { return !!S.no3d || localStorage.getItem('rm2d') === '1'; } catch (e) { return !!S.no3d; } }
+function rmAuto3d() {
+  if (S.tab !== 'room' || RM3.left || RM3.opening || rm2d() || (typeof Rooms3D !== 'undefined' && Rooms3D.active) || rmState().paused) return;
+  ACTS.r3Open();
+}
 VIEWS.room = () => {
   const st = rmState(), id = S.roomSel || st.id;
   const data = window.ROOMS_DATA[id];
@@ -76,11 +82,19 @@ VIEWS.room = () => {
     '<span class="small muted">' + s.objectives.filter(o => o.required && Rooms.objectiveDone(s, c, o.objective_id)).length + ' de ' + s.objectives.filter(o => o.required).length + ' objetivos</span>' +
     '<span style="flex:1"></span><button class="chip" data-act="rmPause" aria-label="Pausar">⏸ Pausa</button></div>';
   if (st.paused) return h + '<div class="card" style="text-align:center"><div style="font-size:56px">⏸</div><h2>Partida en pausa</h2><p class="muted">El reloj está parado para los dos.</p><button class="btn primary block" data-act="rmResume">Seguir jugando</button></div>' + rmFooter();
-  h += '<button class="btn primary block" data-act="r3Open" style="margin-bottom:12px">🎮 Entrar en 3D</button>';
-  h += '<div class="rm-pings">' + rmPingButtons('chip') + '</div>' + rmPartnerLine(s, st);
   if (!st.noTimer && left <= 0) {
     h += '<div class="card" style="border:2px solid var(--warn)"><h2>⏰ Se acabó el tiempo</h2><p style="margin-top:0">' + esc(s.fail_condition.consequence) + '</p><div class="grid2"><button class="btn" data-act="rmReset">Reiniciar</button><button class="btn primary" data-act="rmNoTimer">Seguir sin reloj</button></div></div>';
   }
+  if (!rm2d()) {
+    // El juego es solo en 3D: esta pantalla es la antesala y entra sola
+    if (!RM3.left) setTimeout(rmAuto3d, 0);
+    return h + '<div class="card" style="text-align:center"><div style="font-size:56px">🎮</div><h2>' + esc(s.title) + '</h2>' +
+      '<p class="muted" style="margin-top:0">' + (RM3.left ? 'Saliste del escenario. La partida sigue en marcha.' : 'Entrando en el escenario…') + '</p>' +
+      '<button class="btn primary block" data-act="r3Open">🎮 ' + (RM3.left ? 'Volver a entrar' : 'Entrar') + '</button></div>' + rmPartnerLine(s, st) +
+      '<div class="card"><h2>🎯 Objetivos</h2>' + s.objectives.map(o => '<div class="small" style="padding:4px 0">' + (Rooms.objectiveDone(s, c, o.objective_id) ? '✅' : '⬜') + ' ' + esc(o.text) + (o.required ? '' : ' <span class="muted">(opcional)</span>') + '</div>').join('') + '</div>' + rmFooter();
+  }
+  // Vista de lista: solo como respaldo si el móvil no puede abrir el 3D (y para las pruebas automáticas)
+  h += '<div class="rm-pings">' + rmPingButtons('chip') + '</div>' + rmPartnerLine(s, st);
   const rooms = Rooms.myRooms(s, c, role);
   if (!rooms.find(r => r.room_id === L.room)) { L.room = (rooms.find(r => r.room_id === s.players_data[role === 'A' ? 'player_a' : 'player_b'].initial_location) || rooms[0] || {}).room_id; }
   const room = rooms.find(r => r.room_id === L.room);
@@ -211,7 +225,7 @@ ACTS.rmStart = el => {
     // Variante al azar (o la base) para que cada partida tenga otras pistas y respuestas
     const opts = [null].concat(data.variants.map(v => v.variant_id)).filter(v => v !== (rmState().id === id ? rmState().variant || null : undefined));
     const variant = opts[Math.floor(Math.random() * opts.length)];
-    RM_SUBS.length = 0; rmShowSub();
+    RM_SUBS.length = 0; rmShowSub(); RM3.left = false;
     return Sync.patchCouple(S.code, { rooms10: { id, variant, startedAt: Date.now() } });
   };
   const st = rmState();

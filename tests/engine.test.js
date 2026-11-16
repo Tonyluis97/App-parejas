@@ -25,20 +25,6 @@ eq('pregunta igual para ambos', E.questionFor('2026-10-18'), E.questionFor('2026
 eq('pregunta cambia', E.questionFor('2026-10-18') !== E.questionFor('2026-10-19'), true);
 eq('fusión gana u mayor', E.mergeRecords({ a: { u: 1, t: 'x' } }, { a: { u: 2, t: 'y' }, b: { u: 1 } }), { a: { u: 2, t: 'y' }, b: { u: 1 } });
 
-// Escape room
-let r = E.escapeTry({}, 'chest', '2 7 1 4');
-eq('cofre correcto', r.ok, true);
-eq('cofre incorrecto', E.escapeTry({}, 'chest', '1234').ok, false);
-eq('panel sin cofre', E.escapeTry({}, 'panel', ['rojo', 'verde', 'azul', 'amarillo']).ok, false);
-let s = r.state;
-r = E.escapeTry(s, 'panel', ['Rojo', 'verde', 'azul', 'amarillo']); eq('panel correcto', r.ok, true); s = r.state;
-eq('panel orden malo', E.escapeTry(s, 'panel', ['verde', 'rojo', 'azul', 'amarillo']).ok, false);
-r = E.escapeTry(s, 'doorB', ['sol', 'corazon', 'llave']); eq('puerta B con tilde opcional', r.ok, true); s = r.state;
-eq('no ganó aún', E.escapeWon(s), false);
-r = E.escapeTry(s, 'doorA', ['luna', 'estrella', 'corazón']); eq('puerta A', r.ok, true); s = r.state;
-eq('ganaron', E.escapeWon(s), true);
-eq('progreso', E.escapeProgress(s), 4);
-eq('no muta', E.escapeProgress({}), 0);
 eq('mmss', E.mmss(125000), '02:05');
 
 // Fechas importantes

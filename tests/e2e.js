@@ -99,42 +99,6 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     const st = await A.evaluate(() => Call._pc && Call._pc.connectionState);
     ok(scheme + ' llamada conectada (' + st + ')', st === 'connected');
 
-    // Escape room jugando en llamada
-    await A.click('[data-act=tab][data-v=games]'); await A.click('[data-act=tab][data-v=escape]');
-    await A.click('[data-act=erStart]'); await wait(300);
-    await B.click('[data-act=tab][data-v=games]'); await B.click('[data-act=tab][data-v=escape]'); await wait(200);
-    ok(scheme + ' roles distintos', (await A.textContent('.er-top')).includes('Estudio') && (await B.textContent('.er-top')).includes('Ático'));
-    if (scheme === 'light') await A.screenshot({ path: shots + '/04-escape-estudio.png' });
-    // A mira el cuadro (pista), B el espejo
-    await A.click('[data-v=paintA]'); await wait(100);
-    ok(scheme + ' pista del cuadro', (await A.textContent('#pz')).includes('2 _ _ 4'));
-    await A.click('[data-act=closeSheet]');
-    // B gira a los baúles y abre el cofre
-    await B.click('[data-act=erTurn][data-v="1"]');
-    await B.click('[data-v=chestB]');
-    for (const d of ['1', '2', '3', '4']) await B.click(`.keypad [data-v="${d}"]`);
-    await B.click('[data-act=pzTry]'); await wait(200);
-    ok(scheme + ' código incorrecto no abre', (await B.$('#pz')) !== null);
-    for (const d of ['2', '7', '1', '4']) await B.click(`.keypad [data-v="${d}"]`);
-    await B.click('[data-act=pzTry]'); await wait(300);
-    ok(scheme + ' cofre abierto en A', await A.evaluate(() => S.couple.escape.chest === true));
-    if (scheme === 'light') { await B.click('[data-v=chestB]'); await wait(100); await B.screenshot({ path: shots + '/05-escape-cofre.png' }); await B.click('[data-act=closeSheet]'); }
-    // A resuelve el panel
-    await A.click('[data-act=erTurn][data-v="1"]'); await A.click('[data-v=panelA]');
-    for (const c of ['rojo', 'verde', 'azul', 'amarillo']) await A.click(`.swatches [data-v="${c}"]`);
-    await A.click('[data-act=pzTry]'); await wait(300);
-    ok(scheme + ' panel resuelto', await B.evaluate(() => S.couple.escape.panel === true));
-    // B abre su puerta con la pista del cajón de A
-    await B.click('[data-act=erTurn][data-v="-1"]'); await B.click('[data-v=doorB]');
-    for (const s of ['sol', 'corazón', 'llave']) await B.click(`.symbols [data-v="${s}"]`);
-    await B.click('[data-act=pzTry]'); await wait(300);
-    // A abre la suya con la pista del telescopio de B
-    await A.click('[data-act=erTurn][data-v="-1"]'); await A.click('[data-v=doorA]');
-    if (scheme === 'light') await A.screenshot({ path: shots + '/06-escape-puerta.png' });
-    for (const s of ['luna', 'estrella', 'corazón']) await A.click(`.symbols [data-v="${s}"]`);
-    await A.click('[data-act=pzTry]'); await wait(400);
-    ok(scheme + ' ganaron', (await B.textContent('main')).includes('Escaparon juntos'));
-    if (scheme === 'light') await B.screenshot({ path: shots + '/07-escape-ganaron.png' });
     await A.click('[data-act=callHang]'); await wait(500);
     ok(scheme + ' colgaron ambos', await B.evaluate(() => Call.state) === 'idle');
 
@@ -231,7 +195,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     }
 
     // Sin desbordamiento horizontal en ninguna pantalla
-    for (const t of ['home', 'chat', 'games', 'us', 'lists', 'letters', 'coupons', 'dates', 'settings', 'escape', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz']) {
+    for (const t of ['home', 'chat', 'games', 'us', 'lists', 'letters', 'coupons', 'dates', 'settings', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz']) {
       await A.evaluate(t => { S.tab = t; render(); }, t);
       const over = await A.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
       ok(scheme + ' sin desborde ' + t, !over);

@@ -14,12 +14,13 @@ const Rooms3D = (function () {
   // Se puede fijar en ui/ERxx.json ("rooms3d"); si no, se deduce del nombre de la zona.
   const THEMES = {
     casa: { floor: 'herringbone_parquet', wall: 'painted_plaster_wall', ceil: 'painted_plaster_wall', hdri: 'lythwood_room', light: '#ffe2b8', fog: '#2a1d14', wallTint: '#e6d3ad' },
-    altillo: { floor: 'dark_wooden_planks', wall: 'dark_wooden_planks', ceil: 'roof_planks', hdri: 'lythwood_room', light: '#ffe2bd', fog: '#1d140e', wallTint: '#e0d2c4', ceilTint: '#b8a898' },
-    biblioteca: { floor: 'dirty_carpet', wall: 'decrepit_wallpaper', ceil: 'rectangular_parquet', hdri: 'lythwood_room', light: '#ffd9a0', fog: '#141812', wallTint: '#b8c4b0', floorTint: '#b05058' },
-    piedra: { floor: 'stacked_stone_wall', wall: 'stacked_stone_wall', ceil: 'stacked_stone_wall', hdri: 'lythwood_room', light: '#ffc98a', fog: '#120e0a', floorTint: '#9a8e80' },
-    madera: { floor: 'dark_wooden_planks', wall: 'wood_trunk_wall', ceil: 'roof_planks', hdri: 'snowy_forest', light: '#ffe0b0', fog: '#1a1410' },
-    tecnica: { floor: 'rectangular_parquet', wall: 'painted_plaster_wall', ceil: 'painted_plaster_wall', hdri: 'lythwood_room', light: '#e8f2ff', fog: '#10151a', wallTint: '#8e9ba4', floorTint: '#5e656c', ceilTint: '#9aa3aa', decor: 'tech', dim: 0.7 },
-    calle: { floor: 'stacked_stone_wall', wall: 'painted_plaster_wall', outdoor: true, hdri: 'snowy_forest', light: '#ffc46b', fog: '#0d1424', sky: '#0d1424', wallTint: '#d9c7a8', floorTint: '#c9c2b8', floorRep: 1.2 },
+    altillo: { floor: 'dark_wooden_planks', wall: 'dark_wooden_planks', ceil: 'roof_planks', hdri: 'lythwood_room', light: '#ffe2bd', fog: '#1d140e', wallTint: '#e0d2c4', ceilTint: '#b8a898', decor: 'altillo' },
+    biblioteca: { floor: 'dirty_carpet', wall: 'decrepit_wallpaper', ceil: 'rectangular_parquet', hdri: 'lythwood_room', light: '#ffd9a0', fog: '#141812', wallTint: '#b8c4b0', floorTint: '#b05058', decor: 'biblio' },
+    piedra: { floor: 'monastery_stone_floor', wall: 'large_sandstone_blocks', ceil: 'stacked_stone_wall', hdri: 'lythwood_room', light: '#ffc98a', fog: '#120e0a', wallTint: '#d9c8a8', ceilTint: '#8a7c68', decor: 'stone', floorRep: 2 },
+    madera: { floor: 'dark_wooden_planks', wall: 'wooden_panels', ceil: 'roof_planks', hdri: 'snowy_forest', light: '#ffe0b0', fog: '#1a1410', wallTint: '#c9a888', decor: 'train', wallRep: 1.6 },
+    tecnica: { floor: 'concrete_floor_worn_001', wall: 'concrete_panels', ceil: 'painted_plaster_wall', hdri: 'lythwood_room', light: '#e8f2ff', fog: '#10151a', wallTint: '#b4bec6', floorTint: '#a9afb5', ceilTint: '#9aa3aa', decor: 'tech', dim: 0.8, wallRep: 2.4 },
+    museo: { floor: 'marble_tiles', wall: 'painted_plaster_wall', ceil: 'painted_plaster_wall', hdri: 'lythwood_room', light: '#fff0d8', fog: '#15130f', wallTint: '#d8d0c2', decor: 'museo', floorRep: 2 },
+    calle: { floor: 'cobblestone_floor_08', wall: 'painted_plaster_wall', outdoor: true, hdri: 'snowy_forest', light: '#ffc46b', fog: '#0d1424', sky: '#0d1424', wallTint: '#d9c7a8', floorRep: 2.2, decor: 'calle' },
   };
   function themeFor(s, room) {
     const ui = (s.ui.rooms3d || {})[room.room_id];
@@ -68,7 +69,7 @@ const Rooms3D = (function () {
     const src = a.createBufferSource(); src.buffer = noiseBuf(a, 4); src.loop = true;
     const lp = a.createBiquadFilter(); lp.type = 'lowpass';
     const ng = a.createGain();
-    const kind = theme.outdoor ? 'calle' : theme.decor === 'tech' ? 'tecnica' : theme === THEMES.madera || theme.floor === 'dark_wooden_planks' && theme.wall === 'wood_trunk_wall' ? 'tren' : theme.floor === 'stacked_stone_wall' ? 'piedra' : 'casa';
+    const kind = theme.outdoor ? 'calle' : theme.decor === 'tech' ? 'tecnica' : theme.decor === 'train' ? 'tren' : theme.decor === 'stone' ? 'piedra' : 'casa';
     lp.frequency.value = { calle: 600, tecnica: 300, tren: 220, piedra: 400, casa: 250 }[kind]; ng.gain.value = { calle: 0.12, tecnica: 0.05, tren: 0.16, piedra: 0.1, casa: 0.03 }[kind];
     src.connect(lp).connect(ng).connect(g); src.start();
     const extra = [];
@@ -110,6 +111,17 @@ const Rooms3D = (function () {
     const sp = new T.Sprite(new T.SpriteMaterial({ map: tex, transparent: true, depthWrite: false }));
     sp.scale.set(size || 0.35, size || 0.35, 1);
     return sp;
+  }
+  const icon = o => { try { return rmEmoji(CUR_S, o); } catch (e) { return '❔'; } };
+  // Peana del ambiente: madera, piedra, chapa o mármol
+  function plinth(h, w) {
+    w = w || 0.42;
+    const d = CUR_TH.decor, m = d === 'tech' ? (K.pbr('metal_plate_02', [0.5, h], { color: '#9aa4ac' }) || metal('#59636b'))
+      : d === 'stone' || d === 'calle' ? (K.pbr('large_sandstone_blocks', [0.4, h * 0.8], { color: '#d9c8a8' }) || K.M('#b9a98a', { roughness: 0.9 }))
+      : d === 'museo' ? K.M('#e4dfd4', { roughness: 0.35 }) : wood('#6a4a30', [0.4, h]);
+    const g = new T.Group();
+    g.add(K.at(K.box(w, h - 0.05, w, m), 0, (h - 0.05) / 2, 0), K.at(K.box(w + 0.07, 0.05, w + 0.07, m), 0, h - 0.025, 0), K.at(K.box(w + 0.07, 0.06, w + 0.07, m), 0, 0.03, 0));
+    return g;
   }
   function paper(color, w, h, lines) {
     const tex = K.canvasTex(256, Math.round(256 * h / w), (g, W, H) => {
@@ -160,14 +172,22 @@ const Rooms3D = (function () {
     if (forced) return [forced, (KINDS.find(k => k[1] === forced) || [])[2]];
     const n = (o.name + ' ' + o.visual).toLowerCase(), nm = o.name.toLowerCase();
     const k = KINDS.find(k => k[0].test(nm)) || KINDS.find(k => k[0].test(n));
+    if (k && k[1] === 'console' && o.position && o.position.y >= 1.25) { // un tablero a la altura de los ojos y junto a una pared es un panel de pared
+      const room = s.rooms.find(r => r.room_id === o.room);
+      if (room && room.dimensions_m && wallFacing(room, o.position).dist < 0.6) return ['panel', null];
+    }
     if (k) return [k[1], k[2]];
+    if (o.category !== 'exit' && o.position && o.position.y >= 1.1) { // algo sin pieza propia que cuelga de una pared: una placa con su icono
+      const room = s.rooms.find(r => r.room_id === o.room);
+      if (room && room.dimensions_m && wallFacing(room, o.position).dist < 0.6) return ['plaque', null];
+    }
     return [o.category === 'exit' ? 'door' : 'pedestal', null];
   }
   // ---------- Modelos CC0 por temática (Poly Haven) ----------
   // mdl() usa el modelo si ya está cargado; si no, apunta que falta (goRoom lo carga y reconstruye) y usa la pieza simple.
   const GLB_OK = new Set(), GLB_BAD = new Set(), GLB_MISSING = new Set();
-  let CUR_TH = {};
-  const tech = () => CUR_TH.decor === 'tech', stone = () => CUR_TH.floor === 'stacked_stone_wall' && !CUR_TH.outdoor, train = () => CUR_TH.wall === 'wood_trunk_wall';
+  let CUR_TH = {}, CUR_S = null;
+  const tech = () => CUR_TH.decor === 'tech', stone = () => CUR_TH.decor === 'stone', train = () => CUR_TH.decor === 'train';
   function mdl(id, fb, o) {
     if (GLB_OK.has(id)) return K.model(id, fb, o);
     if (!GLB_BAD.has(id)) GLB_MISSING.add(id);
@@ -179,6 +199,7 @@ const Rooms3D = (function () {
     await K.withTimeout(Promise.all(ids.map(id => K.loadGLB(id).then(g => (g ? GLB_OK : GLB_BAD).add(id)))), 15000).catch(() => { });
     return ids.some(id => GLB_OK.has(id));
   }
+  let HIT = null; // material invisible para ampliar la zona de toque
   const B = {
     door() { return K.P.door('#5b3b28'); },
     shelf() { return tech() ? mdl('steel_frame_shelves_01', () => K.P.bookshelfBox(), { h: 1.9 }) : K.model('wooden_bookshelf_worn', () => K.P.bookshelfBox(), { h: 1.9 }); },
@@ -268,6 +289,14 @@ const Rooms3D = (function () {
       for (let i = 0; i < 3; i++) { const d = K.cyl(0.06, 0.06, 0.05, brass(), 18); d.position.set(-0.2 + i * 0.16, 0.03, -0.15); top.add(d); }
       return g;
     },
+    panel(o) {
+      const g = new T.Group(), n = o.object_id.charCodeAt(o.object_id.length - 1);
+      g.add(K.box(0.85, 0.6, 0.07, metal('#4a545c')), K.at(K.box(0.79, 0.54, 0.02, K.M('#20262b', { roughness: 0.6, metalness: 0.3 })), 0, 0, 0.035));
+      g.add(K.at(K.box(0.3, 0.2, 0.012, K.M('#08140e', { emissive: n % 2 ? '#2bd67b' : '#ffb347', emissiveIntensity: 0.7 })), -0.2, 0.12, 0.05));
+      for (let i = 0; i < 8; i++) g.add(K.at(K.box(0.035, 0.035, 0.02, K.M('#111', { emissive: ['#ff5a4d', '#3cff8f', '#ffd24d', '#4db8ff'][(i + n) % 4], emissiveIntensity: 1.1 })), 0.08 + (i % 4) * 0.08, 0.2 - (i >> 2) * 0.09, 0.05));
+      for (let i = 0; i < 5; i++) { const k = K.cyl(0.028, 0.028, 0.03, brass(), 12); k.rotation.x = Math.PI / 2; k.position.set(-0.32 + i * 0.16, -0.14, 0.055); g.add(k); }
+      return g;
+    },
     table() { return tech() ? mdl('metal_office_desk', () => K.P.table(1.4, 0.8, 0.78, '#555b62'), { w: 1.4 }) : K.P.table(1.4, 0.8, 0.85, '#6b4a32', 'WoodenTable_01', { w: 1.4 }); },
     clock() { return K.P.clock('10:10'); },
     screen() {
@@ -350,12 +379,172 @@ const Rooms3D = (function () {
       g.add(K.at(K.box(0.5, 0.3, 0.02, K.M('#102018', { emissive: '#ffb347', emissiveIntensity: 0.5 })), 0, 0.9, 0.51));
       return g;
     },
-    small() { return K.at(new T.Mesh(new T.SphereGeometry(0.12, 12, 10), K.M('#8a6a45', { roughness: 0.9 })), 0, 0.08, 0); },
-    pedestal() { return K.at(K.cyl(0.22, 0.26, 0.9, K.M('#7a6a5a', { roughness: 0.7 }), 16), 0, 0.45, 0); },
+    // Lo que no tiene una pieza propia se muestra con su icono, para reconocerlo de un vistazo
+    small(o) {
+      const g = new T.Group(); g.add(K.at(K.cyl(0.13, 0.15, 0.03, brass(), 20), 0, 0.015, 0));
+      const sp = emojiSprite(icon(o), 0.3); sp.position.y = 0.2; g.add(sp);
+      return g;
+    },
+    plaque(o) {
+      const g = new T.Group();
+      g.add(K.at(K.box(0.44, 0.44, 0.03, wood('#5a3d28', [0.4, 0.4])), 0, 0, 0.015), K.at(K.box(0.38, 0.38, 0.012, K.M('#efe6d2', { roughness: 0.9 })), 0, 0, 0.034));
+      const sp = emojiSprite(icon(o), 0.3); sp.position.set(0, 0, 0.07); g.add(sp);
+      return g;
+    },
+    pedestal(o) {
+      const g = plinth(0.85);
+      const sp = emojiSprite(icon(o), 0.36); sp.position.y = 1.08; g.add(sp);
+      return g;
+    },
   };
   // Lo que se pone sobre una superficie lleva una base si no hay una mesa debajo
   const SMALL = ['book', 'radio', 'lamp', 'screen', 'clock', 'vessel', 'small', 'chest'];
   const FLOOR = ['tallclock', 'table', 'console', 'shelf', 'cabinet', 'booth', 'machine', 'bench', 'chair', 'plant', 'statue', 'fountain', 'boat', 'bridge', 'mailbox', 'lever', 'scope', 'pedestal', 'door', 'facades'];
+
+  // ---------- Colocación sin superposiciones ----------
+  // El diseño da un punto por objeto, pero no su tamaño. Aquí se mide cada pieza ya construida y se reparte la zona:
+  // lo de pared se pega a su pared y se desliza por ella, lo de suelo se separa, lo pequeño sube a una mesa cercana
+  // (o a un pedestal) y delante de cada puerta queda paso libre. Se calcula con todos los objetos de la zona,
+  // también los que aún no se ven, para que nada se mueva cuando aparecen.
+  const LAY = {}, FLAT = ['board', 'mirror', 'clock', 'panel', 'plaque'], NOTOP = ['console'];
+  function layout(s, room) {
+    const key = s.scenario_id + '/' + room.room_id + '/' + GLB_OK.size + '/' + (CUR_TH.decor || '');
+    if (LAY[key]) return LAY[key];
+    const { w: W, d: D, h: H } = room.dimensions_m, solids = [], kids = [], items = new Map(), b3 = new T.Box3();
+    const axisOf = wall => wall === 'north' || wall === 'south' ? 'x' : 'z';
+    const snap = it => { // pegado a su pared
+      if (it.wall === 'north') it.z = -D / 2 + 0.02 - it.ez0; else if (it.wall === 'south') it.z = D / 2 - 0.02 - it.ez1;
+      else if (it.wall === 'west') it.x = -W / 2 + 0.02 - it.ex0; else it.x = W / 2 - 0.02 - it.ex1;
+    };
+    for (const dr of room.doors || []) {
+      const p = toW(room, dr.position), f = wallFacing(room, dr.position), ax = axisOf(f.wall);
+      // La caja incluye el paso libre de delante (1,1 m)
+      const it = { id: 'door:' + dr.door_id, fixed: true, wall: f.wall, x: p[0], z: p[2], y: 0, ry: f.ry, ey0: 0, ey1: 2.35 };
+      const a = 0.72, dp = 1.1;
+      if (ax === 'x') { it.ex0 = -a; it.ex1 = a; it.ez0 = f.wall === 'north' ? 0 : -dp; it.ez1 = f.wall === 'north' ? dp : 0; it.z = f.wall === 'north' ? -D / 2 + 0.02 : D / 2 - 0.02; it.x = Math.max(-W / 2 + a, Math.min(W / 2 - a, it.x)); }
+      else { it.ez0 = -a; it.ez1 = a; it.ex0 = f.wall === 'west' ? 0 : -dp; it.ex1 = f.wall === 'west' ? dp : 0; it.x = f.wall === 'west' ? -W / 2 + 0.02 : W / 2 - 0.02; it.z = Math.max(-D / 2 + a, Math.min(D / 2 - a, it.z)); }
+      solids.push(it); items.set(it.id, it);
+    }
+    (room.windows || []).forEach((wn, i) => { // ventanas del diseño: fijas, para que nada de pared las tape
+      if (!wn.position || CUR_TH.outdoor) return;
+      const p = toW(room, wn.position), f = wallFacing(room, wn.position), ax = axisOf(f.wall), a = 0.6;
+      const it = { id: 'win:' + i, fixed: true, win: true, wall: f.wall, x: p[0], z: p[2], y: 0, ry: f.ry, ey0: 1.0, ey1: 2.1, ex0: -a, ex1: a, ez0: -a, ez1: a };
+      if (ax === 'x') { it.ez0 = f.wall === 'north' ? 0 : -0.12; it.ez1 = f.wall === 'north' ? 0.12 : 0; it.z = f.wall === 'north' ? -D / 2 + 0.01 : D / 2 - 0.01; it.x = Math.max(-W / 2 + a, Math.min(W / 2 - a, it.x)); }
+      else { it.ex0 = f.wall === 'west' ? 0 : -0.12; it.ex1 = f.wall === 'west' ? 0.12 : 0; it.x = f.wall === 'west' ? -W / 2 + 0.01 : W / 2 - 0.01; it.z = Math.max(-D / 2 + a, Math.min(D / 2 - a, it.z)); }
+      if (solids.some(o => o.fixed && Math.abs(o.x - it.x) < 1.4 && Math.abs(o.z - it.z) < 1.4)) return; // no sobre una puerta
+      solids.push(it); items.set(it.id, it);
+    });
+    const all = s.objects.filter(o => o.room === room.room_id && o.position);
+    const kind = new Map(all.map(o => [o.object_id, kindOf(s, o)[0]]));
+    for (const o of all) {
+      const k = kind.get(o.object_id), m = (B[k] || B.pedestal)(o), p = toW(room, o.position), f = wallFacing(room, o.position);
+      const flat = FLAT.includes(k), floor = FLOOR.includes(k);
+      let y = floor ? 0 : p[1];
+      const it = { id: o.object_id, o, kind: k, wall: f.wall, x: p[0], z: p[2] };
+      it.onWall = (f.dist < 0.35 && (y > 0.5 || flat || k === 'cabinet' || k === 'shelf')) || (flat && f.dist < 1.6) || (k === 'door');
+      it.wallBound = it.onWall || (floor && f.dist < 0.7);
+      if (flat && it.onWall) y = Math.min(Math.max(y, 1.25), H - 0.6);
+      if (flat && !it.onWall) { y = 1.3; it.easel = true; }
+      it.ry = it.wallBound ? f.ry : f.dist > 1.2 ? Math.atan2(-p[0], -p[2]) : f.ry;
+      if (!it.wallBound && !floor) it.ry = Math.round(it.ry / (Math.PI / 2)) * (Math.PI / 2);
+      m.position.set(0, 0, 0); m.rotation.y = it.ry; m.updateMatrixWorld(true); b3.setFromObject(m);
+      Object.assign(it, { ex0: b3.min.x, ex1: b3.max.x, ez0: b3.min.z, ez1: b3.max.z, ey0: b3.min.y, ey1: b3.max.y });
+      if (SMALL.includes(k) && !flat) {
+        if (it.onWall) it.ledge = true;
+        else if (y > 0.25) it.small = true; // mesa cercana o pedestal: se decide abajo
+        else y = 0;
+      }
+      it.y = y - (floor || it.small || y === 0 ? it.ey0 : 0); // apoyado en su base
+      items.set(it.id, it);
+    }
+    // Lo pequeño sube a la mesa más cercana mientras quepa; el resto va en un pedestal propio
+    const tables = [...items.values()].filter(t => t.kind === 'table' && !NOTOP.includes(t.kind));
+    for (const t of tables) t.kids = [];
+    for (const it of items.values()) {
+      if (!it.small) { if (!it.fixed) solids.push(it); continue; }
+      const near = tables.map(t => [Math.hypot(t.x - it.x, t.z - it.z), t]).filter(e => e[0] < 1.3).sort((a, b) => a[0] - b[0])[0];
+      const t = near && near[1], cap = t && Math.max(1, Math.floor(Math.max(t.ex1 - t.ex0, t.ez1 - t.ez0) / 0.45));
+      if (t && t.kids.length < cap) { t.kids.push(it); it.parent = t; kids.push(it); }
+      else { it.stand = Math.max(0.75, Math.min(1.0, it.y)); it.y = it.stand - it.ey0; const r = 0.24; it.ex0 = Math.min(it.ex0, -r); it.ex1 = Math.max(it.ex1, r); it.ez0 = Math.min(it.ez0, -r); it.ez1 = Math.max(it.ez1, r); it.base0 = true; solids.push(it); }
+    }
+    for (const it of solids) if (it.easel) { it.base0 = true; const r = 0.2; it.ez0 = Math.min(it.ez0, -r); it.ez1 = Math.max(it.ez1, r); it.ex0 = Math.min(it.ex0, -r); it.ex1 = Math.max(it.ex1, r); }
+    const y0 = it => it.base0 ? 0 : it.y + it.ey0, y1 = it => it.y + it.ey1;
+    const clamp = it => {
+      if (it.fixed) return;
+      if (it.wallBound) snap(it);
+      it.x = Math.max(-W / 2 + 0.02 - it.ex0, Math.min(W / 2 - 0.02 - it.ex1, it.x));
+      it.z = Math.max(-D / 2 + 0.02 - it.ez0, Math.min(D / 2 - 0.02 - it.ez1, it.z));
+    };
+    const can = (it, ax) => !it.fixed && (!it.wallBound || axisOf(it.wall) === ax);
+    solids.forEach(clamp);
+    const G = 0.07; // separación mínima
+    for (let n = 0; n < 120; n++) {
+      let moved = false;
+      for (let i = 0; i < solids.length; i++) for (let j = i + 1; j < solids.length; j++) {
+        const a = solids[i], b = solids[j];
+        if (a.fixed && b.fixed) continue;
+        if (y0(a) >= y1(b) - 0.02 || y0(b) >= y1(a) - 0.02) continue;
+        const px = Math.min(a.x + a.ex1, b.x + b.ex1) - Math.max(a.x + a.ex0, b.x + b.ex0) + G;
+        const pz = Math.min(a.z + a.ez1, b.z + b.ez1) - Math.max(a.z + a.ez0, b.z + b.ez0) + G;
+        if (px <= 0 || pz <= 0) continue;
+        const okx = can(a, 'x') || can(b, 'x'), okz = can(a, 'z') || can(b, 'z');
+        const ax = okx && (!okz || px <= pz) ? 'x' : okz ? 'z' : null;
+        if (!ax) continue;
+        const pen = ax === 'x' ? px : pz, ca = (ax === 'x' ? a.x + (a.ex0 + a.ex1) / 2 : a.z + (a.ez0 + a.ez1) / 2), cb = (ax === 'x' ? b.x + (b.ex0 + b.ex1) / 2 : b.z + (b.ez0 + b.ez1) / 2);
+        const dir = ca < cb || (ca === cb && i < j) ? -1 : 1, ma = can(a, ax), mb = can(b, ax), sh = ma && mb ? 0.5 : 1;
+        if (ma) a[ax] += dir * pen * sh; if (mb) b[ax] -= dir * pen * sh;
+        moved = true;
+      }
+      solids.forEach(clamp);
+      if (!moved) break;
+    }
+    // Lo que siga pisándose (paredes llenas, rincones) se lleva al hueco libre más cercano; lo de pared puede cambiar de pared
+    const hits = (a, b) => !(y0(a) >= y1(b) - 0.02 || y0(b) >= y1(a) - 0.02) && Math.min(a.x + a.ex1, b.x + b.ex1) - Math.max(a.x + a.ex0, b.x + b.ex0) > -G + 0.01 && Math.min(a.z + a.ez1, b.z + b.ez1) - Math.max(a.z + a.ez0, b.z + b.ez0) > -G + 0.01;
+    const free = it => solids.every(o => o === it || !hits(it, o));
+    const turn = it => { const e = [it.ez0, it.ez1, -it.ex1, -it.ex0]; it.ex0 = e[0]; it.ex1 = e[1]; it.ez0 = e[2]; it.ez1 = e[3]; it.ry += Math.PI / 2; };
+    const WALLS = ['north', 'west', 'south', 'east']; // cada una, la anterior girada 90°
+    const size = it => (it.ex1 - it.ex0) * (it.ez1 - it.ez0);
+    for (let round = 0; round < 3; round++) {
+      const stuck = solids.filter(it => !it.fixed && !free(it)).sort((a, b) => size(a) - size(b));
+      if (!stuck.length) break;
+      for (const it of stuck) {
+        if (free(it)) continue;
+        const ox = it.x, oz = it.z, keep = { x: it.x, z: it.z, wall: it.wall, ry: it.ry, e: [it.ex0, it.ex1, it.ez0, it.ez1] };
+        let best = null;
+        const tryAt = () => { clamp(it); if (free(it)) { const dd = Math.hypot(it.x - ox, it.z - oz); if (!best || dd < best.d) best = { d: dd, x: it.x, z: it.z, wall: it.wall, ry: it.ry, e: [it.ex0, it.ex1, it.ez0, it.ez1] }; } };
+        if (it.wallBound) {
+          for (let k = 0; k < 4; k++) {
+            const len = axisOf(it.wall) === 'x' ? W : D;
+            for (let t = -len / 2; t <= len / 2; t += 0.15) { if (axisOf(it.wall) === 'x') it.x = t; else it.z = t; tryAt(); }
+            it.wall = WALLS[(WALLS.indexOf(it.wall) + 1) % 4]; turn(it);
+          }
+        } else for (let gx = -W / 2; gx <= W / 2; gx += 0.2) for (let gz = -D / 2; gz <= D / 2; gz += 0.2) { it.x = gx; it.z = gz; tryAt(); }
+        const r = best || keep;
+        it.x = r.x; it.z = r.z; it.wall = r.wall; it.ry = r.ry; [it.ex0, it.ex1, it.ez0, it.ez1] = r.e;
+      }
+    }
+    // Si algo de pared solo choca ya con una ventana, la ventana (que es adorno) se quita
+    for (const it of solids.filter(x => !x.fixed)) for (const wn of solids.filter(x => x.win)) if (hits(it, wn)) { solids.splice(solids.indexOf(wn), 1); items.delete(wn.id); }
+    // Sobre cada mesa, sus piezas en fila a lo largo del tablero
+    for (const t of tables) {
+      const lx = t.ex1 - t.ex0 >= t.ez1 - t.ez0, len = (lx ? t.ex1 - t.ex0 : t.ez1 - t.ez0) * 0.8, n = t.kids.length;
+      const cx = t.x + (t.ex0 + t.ex1) / 2, cz = t.z + (t.ez0 + t.ez1) / 2;
+      t.kids.forEach((k, i) => { const off = n > 1 ? (i / (n - 1) - 0.5) * len : 0; k.x = cx + (lx ? off : 0) - (k.ex0 + k.ex1) / 2; k.z = cz + (lx ? 0 : off) - (k.ez0 + k.ez1) / 2; k.y = t.y + t.ey1 - k.ey0 + 0.005; k.ry = t.ry; });
+    }
+    const box = it => ({ id: it.id, x0: it.x + it.ex0, x1: it.x + it.ex1, z0: it.z + it.ez0, z1: it.z + it.ez1, y0: y0(it), y1: y1(it), parent: it.parent && it.parent.id, fixed: it.fixed });
+    return (LAY[key] = { items, boxes: solids.concat(kids).map(box) });
+  }
+  // Cajas que se pisan en una zona (para las pruebas)
+  function overlaps(L) {
+    const out = [], b = L.boxes, e = 0.03;
+    for (let i = 0; i < b.length; i++) for (let j = i + 1; j < b.length; j++) {
+      const p = b[i], q = b[j];
+      if (p.fixed && q.fixed) continue;
+      if (p.parent === q.id || q.parent === p.id) continue;
+      if (p.x1 - e > q.x0 && q.x1 - e > p.x0 && p.z1 - e > q.z0 && q.z1 - e > p.z0 && p.y1 - e > q.y0 && q.y1 - e > p.y0) out.push(p.id + '×' + q.id);
+    }
+    return out;
+  }
 
   // Exteriores: en lugar de paredes, una hilera de casas con ventanas encendidas
   function street(len) {
@@ -376,18 +565,102 @@ const Rooms3D = (function () {
   }
 
   // Detalles de las paredes para que no se vean vacías: zócalo, paneles, tuberías o cuadros
-  function decorate(scene, th, W, D, H) {
+  // Lámpara que corresponde a cada luz del diseño, según el ambiente
+  function fixture(th, pos, H, color) {
+    const glow = K.M('#fff5dd', { emissive: color, emissiveIntensity: 2 });
+    const bulb = () => new T.Mesh(new T.SphereGeometry(0.07, 14, 10), glow);
+    if (th.outdoor) { const m = mdl('street_lamp_01', () => null, { h: 3.4, shadow: false }); if (!m) return null; m.position.set(pos.x, 0, pos.z); return m; }
+    const g = new T.Group(); g.position.set(pos.x, H, pos.z);
+    if (th.decor === 'tech') { g.add(K.at(K.box(1.25, 0.06, 0.2, metal('#c9cfd4')), 0, -0.03, 0), K.at(K.box(1.15, 0.02, 0.14, glow), 0, -0.07, 0)); return g; }
+    const id = th.decor === 'train' || th.decor === 'altillo' ? 'hanging_industrial_lamp' : th.decor === 'stone' ? null : 'Chandelier_01';
+    const m = id && mdl(id, () => null, { h: id === 'Chandelier_01' ? 0.8 : 0.7, shadow: false });
+    if (m) { const b = new T.Box3().setFromObject(m); m.position.y -= b.max.y; g.add(m); g.add(K.at(bulb(), 0, b.min.y - b.max.y + 0.12, 0)); }
+    else { g.add(K.at(K.cyl(0.01, 0.01, 0.35, K.M('#222'), 6), 0, -0.17, 0), K.at(bulb(), 0, -0.38, 0)); }
+    return g;
+  }
+  // Mobiliario de ambiente (no se toca): ocupa huecos libres de pared, rincones y suelo sin tapar nada del juego
+  const FILL = {
+    tech: [['utility_box_01', { h: 0.7 }, 'wall', 1.5, 2], ['korean_fire_extinguisher_01', { h: 0.55 }, 'wall', 0, 1], ['security_camera_01', { h: 0.28 }, 'wall', 2.1, 1], ['steel_frame_shelves_01', { h: 1.9 }, 'wall', 0, 1], ['metal_tool_chest', { h: 1.1 }, 'wall', 0, 1]],
+    stone: [['stone_fire_pit', { w: 0.8 }, 'corner', 0, 2], ['ceramic_vase_01', { h: 0.55 }, 'corner', 0, 2], ['gothic_statue', { h: 1.9 }, 'wall', 0, 1]],
+    train: [['vintage_suitcase', { w: 0.6 }, 'wall', 0, 2], ['wooden_crate_01', { w: 0.55 }, 'corner', 0, 1]],
+    museo: [['marble_bust_01', { h: 0.6 }, 'plinth', 0, 2], ['hanging_picture_frame_01', { w: 0.9, back: true }, 'wall', 1.6, 3], ['potted_plant_01', { h: 1.1 }, 'corner', 0, 2]],
+    calle: [['wooden_barrels_01', { w: 1.1 }, 'corner', 0, 2], ['wooden_crate_01', { w: 0.6 }, 'wall', 0, 2]],
+    biblio: [['wooden_bookshelf_worn', { h: 1.9 }, 'wall', 0, 3], ['hanging_picture_frame_01', { w: 0.8, back: true }, 'wall', 1.6, 2], ['ArmChair_01', { h: 1.0 }, 'corner', 0, 2], ['ClassicConsole_01', { w: 1.1 }, 'wall', 0, 1]],
+    casa: [['GothicCabinet_01', { h: 1.7 }, 'wall', 0, 1], ['ClassicConsole_01', { w: 1.1 }, 'wall', 0, 1], ['hanging_picture_frame_01', { w: 0.8, back: true }, 'wall', 1.6, 2], ['potted_plant_01', { h: 1.0 }, 'corner', 0, 1], ['ArmChair_01', { h: 1.0 }, 'corner', 0, 1]],
+    altillo: [['wooden_barrels_01', { w: 1.0 }, 'corner', 0, 1], ['wooden_crate_01', { w: 0.6 }, 'corner', 0, 2], ['vintage_suitcase', { w: 0.6 }, 'wall', 0, 1]],
+  };
+  const ART = [['#f2c078', '#c9603a', '#3a4a6b'], ['#9cc7d8', '#4f8a6a', '#2f4a3a'], ['#e8d9b0', '#a8743c', '#4a2f25'], ['#c9b6e0', '#6a5a9a', '#2a2a4a']];
+  function artwork(n, w, h) { // paisaje sencillo: cielo, sol y colinas
+    const c = ART[n % ART.length];
+    const tex = K.canvasTex(192, Math.round(192 * h / w), (g, W, H) => {
+      const gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, c[0]); gr.addColorStop(1, c[1]); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+      g.fillStyle = 'rgba(255,245,210,.85)'; g.beginPath(); g.arc(W * (0.25 + 0.5 * ((n * 37) % 10) / 10), H * 0.35, H * 0.12, 0, 7); g.fill();
+      for (let k = 0; k < 3; k++) { g.fillStyle = k === 2 ? c[2] : 'rgba(0,0,0,' + (0.12 + k * 0.1) + ')'; g.beginPath(); g.moveTo(0, H); for (let x = 0; x <= W; x += 8) g.lineTo(x, H * (0.62 + k * 0.1) + Math.sin(x / (22 + k * 9) + n + k) * H * 0.07); g.lineTo(W, H); g.fill(); }
+      K.noise(g, W, H, 500, 0.05);
+    });
+    return K.plane(w, h, tex, { roughness: 0.8 });
+  }
+  function furnish(scene, th, room, L, colliders) {
+    const { w: W, d: D } = room.dimensions_m, used = [], b3 = new T.Box3();
+    const list = FILL[th.decor] || FILL.casa;
+    const hit = (a, g) => L.boxes.concat(used).some(b => a.x1 + g > b.x0 && b.x1 + g > a.x0 && a.z1 + g > b.z0 && b.z1 + g > a.z0 && a.y1 > b.y0 && b.y1 > a.y0);
+    const WALL = { north: [0, 0, -1], west: [Math.PI / 2, -1, 0], south: [Math.PI, 0, 1], east: [-Math.PI / 2, 1, 0] };
+    let seed = room.room_id.charCodeAt(room.room_id.length - 1) * 7 + Math.round(W * 10);
+    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    // Alfombra en casas y museos
+    if (!th.outdoor && (th.decor === 'museo' || !th.decor) && W > 3.5 && D > 3.5) {
+      const rug = new T.Mesh(new T.PlaneGeometry(Math.min(W - 1.6, 4), Math.min(D - 1.6, 3)), K.pbr('dirty_carpet', [2, 1.5], { color: th.decor === 'museo' ? '#7a2f35' : '#8a4a40' }) || K.M('#7a2f35', { roughness: 1 }));
+      rug.rotation.x = -Math.PI / 2; rug.position.y = 0.012; rug.receiveShadow = true; scene.add(rug);
+    }
+    for (const [id, opt, where, y, count] of list) {
+      const many = where === 'corner' ? count : count * Math.max(1, Math.round((W + D) / 7));
+      for (let n = 0; n < many; n++) {
+        const m = mdl(id, () => null, opt); if (!m) break;
+        let placed = false;
+        const spots = [];
+        if (where === 'corner') for (const sx of [-1, 1]) for (const sz of [-1, 1]) spots.push([sx, sz]);
+        else for (const wl of Object.keys(WALL)) { const len = wl === 'north' || wl === 'south' ? W : D; for (let t = -len / 2 + 0.5; t <= len / 2 - 0.5; t += 0.35) spots.push([wl, t]); }
+        for (let i = spots.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [spots[i], spots[j]] = [spots[j], spots[i]]; }
+        for (const sp of spots) {
+          let ry, x, z;
+          if (where === 'corner') { ry = Math.atan2(-sp[0], -sp[1]); m.rotation.y = ry; m.position.set(0, 0, 0); m.updateMatrixWorld(true); b3.setFromObject(m); x = sp[0] * (W / 2 - 0.12) - (sp[0] > 0 ? b3.max.x : b3.min.x); z = sp[1] * (D / 2 - 0.12) - (sp[1] > 0 ? b3.max.z : b3.min.z); }
+          else {
+            const [r, nx, nz] = WALL[sp[0]]; ry = r; m.rotation.y = ry; m.position.set(0, 0, 0); m.updateMatrixWorld(true); b3.setFromObject(m);
+            const off = where === 'plinth' ? 0.25 : 0.03;
+            x = nx ? nx * (W / 2 - off) - (nx > 0 ? b3.max.x : b3.min.x) : sp[1]; z = nz ? nz * (D / 2 - off) - (nz > 0 ? b3.max.z : b3.min.z) : sp[1];
+          }
+          const py = where === 'plinth' ? 1.0 : y;
+          const box = { x0: x + b3.min.x, x1: x + b3.max.x, z0: z + b3.min.z, z1: z + b3.max.z, y0: where === 'plinth' ? 0 : py + b3.min.y, y1: py + b3.max.y };
+          if (box.x0 < -W / 2 || box.x1 > W / 2 || box.z0 < -D / 2 || box.z1 > D / 2 || hit(box, y > 0.5 ? 0.25 : 0.35)) continue;
+          m.position.set(x, py, z); scene.add(m); used.push(box); placed = true;
+          if (id === 'hanging_picture_frame_01') { const sz = b3.getSize(new T.Vector3()), a = artwork(used.length + seed, Math.max(sz.x, sz.z) * 0.72, sz.y * 0.72); a.position.set(0, (b3.min.y + b3.max.y) / 2, 0.045); const hd = new T.Group(); hd.add(a); hd.position.set(x, py, z); hd.rotation.y = ry; scene.add(hd); }
+          if (where === 'plinth') scene.add(K.at(K.box(0.42, 1.0, 0.42, K.M('#d8d2c6', { roughness: 0.6 })), (box.x0 + box.x1) / 2, 0.5, (box.z0 + box.z1) / 2));
+          if (id === 'stone_fire_pit') { const fl = new T.Mesh(new T.ConeGeometry(0.16, 0.42, 10), K.M('#ffb040', { emissive: '#ff7a1a', emissiveIntensity: 2.2, transparent: true, opacity: 0.9 })); fl.position.set((box.x0 + box.x1) / 2, box.y1 + 0.12, (box.z0 + box.z1) / 2); scene.add(fl); }
+          if (box.y0 < 0.6) colliders.push({ x: (box.x0 + box.x1) / 2, z: (box.z0 + box.z1) / 2, w: Math.max(0.2, box.x1 - box.x0 - 0.1), d: Math.max(0.2, box.z1 - box.z0 - 0.1) });
+          break;
+        }
+        if (!placed) break;
+      }
+    }
+    return used;
+  }
+  function decorate(scene, th, W, D, H, boxes) {
+    const v = new T.Vector3(), busy = (g, px, py) => { v.set(px, py, 0.1); g.updateMatrixWorld(true); g.localToWorld(v); return (boxes || []).some(b => v.x > b.x0 - 0.5 && v.x < b.x1 + 0.5 && v.z > b.z0 - 0.5 && v.z < b.z1 + 0.5 && py > b.y0 - 0.35 && py < b.y1 + 0.35); };
     const walls = [[W, 0, -D / 2, 0], [W, 0, D / 2, Math.PI], [D, -W / 2, 0, Math.PI / 2], [D, W / 2, 0, -Math.PI / 2]];
     for (const [len, x, z, ry] of walls) {
       const g = new T.Group(); g.position.set(x, 0, z); g.rotation.y = ry; scene.add(g);
       if (th.decor === 'tech') {
-        g.add(K.at(K.box(len, 0.9, 0.03, K.M('#3d464e', { metalness: 0.5, roughness: 0.45 })), 0, 0.45, 0.02));
+        g.add(K.at(K.box(len, 0.9, 0.03, K.pbr('metal_plate_02', [len / 1.2, 0.75], { color: '#8d979f' }) || K.M('#3d464e', { metalness: 0.5, roughness: 0.45 })), 0, 0.45, 0.02));
         g.add(K.at(K.cyl(0.04, 0.04, len, metal('#7d868d'), 10), 0, H - 0.25, 0.12)); g.children[1].rotation.z = Math.PI / 2;
         for (let px = -len / 2 + 0.9; px < len / 2 - 0.5; px += 1.6) {
+          if (busy(g, px, 1.75)) continue;
           g.add(K.at(K.box(0.7, 0.45, 0.04, K.M('#59636b', { metalness: 0.6, roughness: 0.35 })), px, 1.75, 0.03));
           g.add(K.at(K.box(0.08, 0.03, 0.02, K.M('#111', { emissive: (px * 10 | 0) % 2 ? '#3cff8f' : '#ffb84d', emissiveIntensity: 1.2 })), px + 0.25, 1.9, 0.06));
         }
-      } else if (th.decor !== 'none') {
+      } else if (th.decor === 'train') { // portaequipajes de latón a lo largo del coche
+        const r = K.cyl(0.018, 0.018, len, brass(), 8); r.rotation.z = Math.PI / 2; r.position.set(0, H - 0.55, 0.22); g.add(r);
+        for (let px = -len / 2 + 0.4; px < len / 2; px += 1.2) g.add(K.at(K.box(0.02, 0.02, 0.22, brass()), px, H - 0.55, 0.11));
+      } else if (!th.decor || th.decor === 'museo' || th.decor === 'biblio') {
         g.add(K.at(K.box(len, 0.06, 0.03, K.M('#3b2a1f', { roughness: 0.6 })), 0, 0.95, 0.02));
       }
     }
@@ -396,7 +669,7 @@ const Rooms3D = (function () {
   // ---------- Construcción de una zona ----------
   function build(s, c, room, role) {
     const th = themeFor(s, room), { w: W, d: D, h: H } = room.dimensions_m;
-    CUR_TH = th;
+    CUR_TH = th; CUR_S = s;
     const scene = new T.Scene();
     scene.background = new T.Color(th.sky || th.fog);
     scene.fog = new T.Fog(th.fog, Math.max(W, D) * 0.6, Math.max(W, D) * 1.8 + 6);
@@ -410,11 +683,10 @@ const Rooms3D = (function () {
     const wallH = th.outdoor ? Math.max(H, 4) : H;
     for (const [len, x, z, ry] of [[W, 0, -D / 2, 0], [W, 0, D / 2, Math.PI], [D, -W / 2, 0, Math.PI / 2], [D, W / 2, 0, -Math.PI / 2]]) {
       if (th.outdoor) { const f = street(len); f.position.set(x, 0, z); f.rotation.y = ry; scene.add(f); continue; }
-      const m = new T.Mesh(new T.PlaneGeometry(len, wallH), mat(th.wall, [len / 3, wallH / 2.5], th.wallTint, '#c9b48f'));
+      const m = new T.Mesh(new T.PlaneGeometry(len, wallH), mat(th.wall, [len / (th.wallRep || 3), wallH / (th.wallRep || 2.5)], th.wallTint, '#c9b48f'));
       m.position.set(x, wallH / 2, z); m.rotation.y = ry; m.receiveShadow = true; scene.add(m);
       if (!th.outdoor) { const b = K.box(len, 0.14, 0.03, K.M('#2b1d14', { roughness: 0.6 })); b.position.set(x * 0.998, 0.07, z * 0.998); b.rotation.y = ry; scene.add(b); }
     }
-    if (!th.outdoor) decorate(scene, th, W, D, H);
     if (th.outdoor) { // estrellas
       const g = new T.BufferGeometry(), pts = [];
       for (let i = 0; i < 400; i++) { const a = Math.random() * Math.PI * 2, e = 0.15 + Math.random() * 1.2, r = 40; pts.push(Math.cos(a) * Math.cos(e) * r, Math.sin(e) * r, Math.sin(a) * Math.cos(e) * r); }
@@ -431,14 +703,16 @@ const Rooms3D = (function () {
       const p = toW(room, l.position); pl.position.set(p[0], Math.min(p[1], (th.outdoor ? 6 : H) - 0.3), p[2]);
       if (i === 0) { pl.castShadow = true; pl.shadow.mapSize.set(1024, 1024); pl.shadow.bias = -0.002; }
       scene.add(pl);
-      if (!th.outdoor) { const b = new T.Mesh(new T.SphereGeometry(0.08, 14, 10), K.M('#fff5dd', { emissive: l.color || th.light, emissiveIntensity: 2 })); b.position.copy(pl.position); scene.add(b); }
+      const fx = fixture(th, pl.position, H, l.color || th.light);
+      if (fx) scene.add(fx);
     });
 
-    // Puertas del diseño
-    const interact = [], colliders = [], byId = {}, anims = [];
+    // Puertas y objetos, ya repartidos por layout()
+    const interact = [], colliders = [], byId = {}, anims = [], L = layout(s, room);
+    HIT = HIT || new T.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false, colorWrite: false });
     for (const dr of room.doors || []) {
-      const m = B.door(), p = toW(room, dr.position), f = wallFacing(room, dr.position);
-      m.position.set(p[0], 0, p[2]); m.rotation.y = f.ry;
+      const m = B.door(), it = L.items.get('door:' + dr.door_id);
+      m.position.set(it.x, 0, it.z); m.rotation.y = it.ry;
       const open = (dr.opens_when || []).every(tk => c.T.has(tk));
       const dk = room.room_id + dr.door_id, was = doorWas[dk];
       doorWas[dk] = open;
@@ -452,33 +726,47 @@ const Rooms3D = (function () {
       K.tag(m, 'door:' + dr.door_id, label); interact.push(m);
       byId['door:' + dr.door_id] = { door: dr, mesh: m };
     }
-    // Objetos visibles para este jugador
-    const objs = Rooms.objectsIn(s, c, room.room_id);
-    const tables = objs.filter(o => ['table', 'console'].includes(kindOf(s, o)[0]));
-    for (const o of objs) {
-      if (!o.position) continue;
-      const [kind, foot] = kindOf(s, o);
-      const m = (B[kind] || B.pedestal)(o);
-      const p = toW(room, o.position), f = wallFacing(room, o.position);
-      // Los muebles van siempre en el suelo; la altura del diseño es la de su superficie de trabajo
-      let y = FLOOR.includes(kind) ? 0 : p[1];
-      const onWall = f.dist < 0.35 && (y > 0.5 || ['board', 'mirror', 'clock', 'cabinet', 'shelf'].includes(kind));
-      if (['board', 'mirror', 'clock'].includes(kind) && !onWall && y < 0.5) y = 1.4;
-      if (SMALL.includes(kind) && y > 0.25 && !onWall) {
-        const near = tables.some(t => t !== o && Math.hypot(t.position.x - o.position.x, t.position.z - o.position.z) < 1.0);
-        if (!near) { const st = K.at(K.cyl(0.2, 0.24, y, K.M('#5a4636', { roughness: 0.7 }), 14), p[0], y / 2, p[2]); scene.add(st); }
-        if (near) y = Math.max(y, 0.88);
-      }
-      // Lo que va en una pared se pega a ella; lo demás mira hacia el centro
-      let ry = f.ry;
-      if (!onWall && f.dist > 1.2) ry = Math.atan2(-p[0], -p[2]);
-      m.position.set(p[0], y, p[2]); m.rotation.y = ry;
-      if (kind === 'door' && o.category === 'exit') m.position.y = 0;
+    const prop = K.M('#4a3a2c', { roughness: 0.7 });
+    for (const o of Rooms.objectsIn(s, c, room.room_id)) {
+      const it = L.items.get(o.object_id);
+      if (!it) continue;
+      const m = (B[it.kind] || B.pedestal)(o);
+      m.position.set(it.x, it.y, it.z); m.rotation.y = it.ry;
       scene.add(m);
+      const cx = it.x + (it.ex0 + it.ex1) / 2, cz = it.z + (it.ez0 + it.ez1) / 2;
+      if (it.stand) { // pedestal propio
+        const st = plinth(it.stand);
+        st.position.set(it.x, 0, it.z); scene.add(st); K.tag(st, o.object_id, o.name); interact.push(st);
+      }
+      if (it.easel) { // caballete para lo plano que no está en una pared
+        const st = new T.Group(), yb = it.y + it.ey0;
+        st.add(K.at(K.box(0.05, yb + 0.1, 0.05, prop), 0, (yb + 0.1) / 2, -0.05), K.at(K.box(0.5, 0.04, 0.3, prop), 0, 0.02, 0), K.at(K.box(0.5, 0.03, 0.08, prop), 0, yb - 0.015, 0));
+        st.position.set(it.x, 0, it.z); st.rotation.y = it.ry; scene.add(st);
+      }
+      if (it.ledge) { // repisa bajo lo pequeño que cuelga de una pared
+        const lg = K.box(Math.max(0.3, it.ex1 - it.ex0 + 0.1), 0.03, Math.max(0.2, it.ez1 - it.ez0 + 0.06), prop);
+        lg.position.set(cx, it.y + it.ey0 - 0.016, cz); scene.add(lg);
+      }
+      // Zona de toque: una caja invisible del tamaño de la pieza (más generosa en lo pequeño), para que también
+      // lo fino o con huecos (un catalejo, una estantería) responda al tocarlo
+      {
+        const pad = it.ex1 - it.ex0 < 0.5 && it.ez1 - it.ez0 < 0.5 ? 0.12 : 0;
+        const hb = new T.Mesh(new T.BoxGeometry(Math.max(0.42, it.ex1 - it.ex0 + pad), Math.max(0.4, it.ey1 - it.ey0 + pad), Math.max(pad ? 0.42 : 0.1, it.ez1 - it.ez0 + pad)), HIT);
+        hb.position.set(cx, it.y + (it.ey0 + it.ey1) / 2, cz); scene.add(hb); K.tag(hb, o.object_id, o.name); interact.push(hb);
+      }
       K.tag(m, o.object_id, o.name); interact.push(m);
-      if (foot && FLOOR.includes(kind)) colliders.push({ x: p[0], z: p[2], w: Math.abs(Math.sin(ry)) > 0.5 ? foot[1] : foot[0], d: Math.abs(Math.sin(ry)) > 0.5 ? foot[0] : foot[1] });
-      byId[o.object_id] = { o, mesh: m, top: y + (m.userData.h || 0) };
+      const base = it.base0 ? 0 : it.y + it.ey0;
+      if (base < 0.7 && !it.parent && it.kind !== 'door') colliders.push({ x: cx, z: cz, w: Math.max(0.2, it.ex1 - it.ex0 - 0.1), d: Math.max(0.2, it.ez1 - it.ez0 - 0.1) });
+      byId[o.object_id] = { o, mesh: m, it, c: new T.Vector3(cx, it.y + (it.ey0 + it.ey1) / 2, cz), top: it.y + it.ey1 };
     }
+    for (const it of L.items.values()) if (it.win) { // ventana con marco y noche fuera
+      const g = new T.Group(), fr = K.M('#3b2a1f', { roughness: 0.6 });
+      g.add(K.at(K.box(1.2, 1.1, 0.04, K.M('#0c1626', { roughness: 0.15, metalness: 0.4, emissive: '#1b2f55', emissiveIntensity: 0.5 })), 0, 1.55, 0.02));
+      g.add(K.at(K.box(1.3, 0.07, 0.1, fr), 0, 2.12, 0.05), K.at(K.box(1.3, 0.09, 0.14, fr), 0, 0.98, 0.07), K.at(K.box(0.07, 1.2, 0.1, fr), -0.62, 1.55, 0.05), K.at(K.box(0.07, 1.2, 0.1, fr), 0.62, 1.55, 0.05), K.at(K.box(0.04, 1.1, 0.06, fr), 0, 1.55, 0.05));
+      g.position.set(it.x, 0, it.z); g.rotation.y = it.ry; scene.add(g);
+    }
+    const extra = furnish(scene, th, room, L, colliders);
+    if (!th.outdoor) decorate(scene, th, W, D, H, L.boxes.concat(extra));
     // Luz ambiental con HDRI
     const hdr = K.hdr(th.hdri);
     if (hdr && R) {
@@ -549,7 +837,7 @@ const Rooms3D = (function () {
     el.id = 'e3';
     el.innerHTML = '<div class="e3-top"><button class="e3-btn" data-act="r3Exit" aria-label="Salir del 3D">✕</button><div class="e3-title"><b id="e3Name"></b><span id="e3Time"></span></div>' +
       '<button class="e3-btn" data-act="r3Notes" aria-label="Pistas y objetivos">📓</button><button class="e3-btn" data-act="call" aria-label="Llamar">📞</button></div>' +
-      '<div id="e3Danger" class="e3-danger"></div><div class="e3-cross"></div><div id="e3Prompt" class="e3-prompt" hidden></div>' +
+      '<div id="e3Danger" class="e3-danger"></div><div class="e3-cross"></div><button id="e3Prompt" class="e3-prompt" data-act="r3Use" hidden></button>' +
       '<div id="r3Bar" class="r3-bar"></div>' +
       '<div id="e3Joy" class="e3-joy"><div class="e3-knob"></div></div><div id="e3Hint" class="e3-hint">Arrastra para mirar · usa el círculo para caminar · toca los objetos (❗ = algo nuevo)</div>' +
       '<div id="e3Msg" class="e3-msg" hidden></div><canvas id="r3Map" class="r3-map" width="84" height="84" aria-hidden="true"></canvas>';
@@ -603,15 +891,25 @@ const Rooms3D = (function () {
   }
   function kd(e) { keys[e.key.toLowerCase()] = true; }
   function ku(e) { keys[e.key.toLowerCase()] = false; }
-  function pick(x, y) {
+  function pick(x, y, loose) {
     const rc = new T.Raycaster(), v = new T.Vector2((x / innerWidth) * 2 - 1, -(y / innerHeight) * 2 + 1);
     rc.setFromCamera(v, R.camera);
     const hit = rc.intersectObjects(R.interact, true)[0];
-    return hit ? { id: hit.object.userData.id, label: hit.object.userData.label, dist: hit.distance } : null;
+    if (hit) return { id: hit.object.userData.id, label: hit.object.userData.label, dist: hit.distance };
+    if (!loose) return null;
+    // Toque impreciso: lo interactivo más cercano al dedo (hasta 56 px) que esté delante y a la vista
+    let best = null, bd = 56;
+    for (const id in R.byId) {
+      const b = R.byId[id]; if (!b.c) continue;
+      const q = b.c.clone().project(R.camera); if (q.z > 1) continue;
+      const d = Math.hypot((q.x + 1) / 2 * innerWidth - x, (1 - q.y) / 2 * innerHeight - y), dist = b.c.distanceTo(R.camera.position);
+      if (d < bd && dist < 4.2) { bd = d; best = { id, label: b.o.name, dist }; }
+    }
+    return best;
   }
   function tapAt(x, y) {
     if (document.getElementById('sheet')) return;
-    const h = pick(x, y);
+    const h = pick(x, y, true);
     if (!h) return;
     if (h.dist > 4.2) return msg('Acércate más para examinar: ' + h.label);
     interact(h.id);
@@ -629,6 +927,7 @@ const Rooms3D = (function () {
     return ACTS.rmObj({ dataset: { v: id } });
   }
   function move(dt) {
+    if (R.over) return;
     let f = 0, sd = 0;
     if (keys.w || keys.arrowup) f += 1; if (keys.s || keys.arrowdown) f -= 1;
     if (keys.a || keys.arrowleft) sd -= 1; if (keys.d || keys.arrowright) sd += 1;
@@ -657,7 +956,7 @@ const Rooms3D = (function () {
     if (t - (R.pt || 0) > 150) {
       R.pt = t;
       const h = pick(innerWidth / 2, innerHeight / 2), pr = document.getElementById('e3Prompt');
-      if (pr) { if (h && h.dist < 4.2) { pr.textContent = '👆 ' + h.label; pr.hidden = false; } else pr.hidden = true; }
+      if (pr) { if (h && h.dist < 4.2) { pr.textContent = '👆 ' + h.label; pr.dataset.v = h.id; pr.hidden = false; } else pr.hidden = true; }
       minimap();
     }
     R.renderer.render(R.scene, R.camera);
@@ -719,20 +1018,28 @@ const Rooms3D = (function () {
     const h = votes.map(p => '<button class="e3-pill" data-act="r3Vote" data-v="' + p.puzzle_id + '">🗳️ ' + esc(p.name) + '</button>').join('') +
       (rooms.length > 1 ? '<button class="e3-pill" data-act="r3Rooms">🗺️ Zonas (' + rooms.length + ')</button>' : '') +
       (Rooms.helpClues(s, c, role).length ? '<button class="e3-pill" data-act="r3Notes">💡 Ayuda</button>' : '') +
+ '<button class="e3-pill" data-act="r3List">📋 Objetos</button>' +
       '<button class="e3-pill" data-act="r3Snd" aria-label="Sonido">' + (SND.mute ? '🔇' : '🔊') + '</button>' +
       '<div style="flex-basis:100%;display:flex;gap:6px;justify-content:center">' + rmPingButtons('e3-pill e3-ping') + '</div>';
     if (bar.innerHTML !== h) bar.innerHTML = h;
   }
 
   function startPos(room) {
-    // El punto libre más cercano al sur del centro, mirando hacia el norte (lejos de muebles y paredes)
-    const { w, d } = room.dimensions_m, free = (x, z) => R.colliders.every(b => Math.abs(x - b.x) > b.w / 2 + 0.6 || Math.abs(z - b.z) > b.d / 2 + 0.6);
-    let best = { x: 0, z: d / 2 - 1, yaw: 0 }, bs = -1e9;
-    for (let gx = -w / 2 + 0.8; gx <= w / 2 - 0.8; gx += 0.4) for (let gz = -d / 2 + 0.8; gz <= d / 2 - 0.8; gz += 0.4) {
-      if (!free(gx, gz)) continue;
-      const score = -Math.abs(gx) - Math.abs(gz - d * 0.22) + Math.min(...Object.values(R.byId).map(b => Math.hypot(b.mesh.position.x - gx, b.mesh.position.z - gz)), 3);
-      if (score > bs) { bs = score; best = { x: gx, z: gz, yaw: 0 }; }
+    // Un punto despejado cerca del centro: primero se busca con 1,1 m libres alrededor y, si no hay, con menos
+    const { w, d } = room.dimensions_m;
+    let best = null;
+    for (const mg of [1.1, 0.8, 0.55, 0.35]) {
+      const free = (x, z) => R.colliders.every(b => Math.abs(x - b.x) > b.w / 2 + mg || Math.abs(z - b.z) > b.d / 2 + mg);
+      let bs = -1e9; const wm = Math.min(mg, 0.8);
+      for (let gx = -w / 2 + wm; gx <= w / 2 - wm; gx += 0.3) for (let gz = -d / 2 + wm; gz <= d / 2 - wm; gz += 0.3) {
+        if (!free(gx, gz)) continue;
+        const near = Math.min(3, ...Object.values(R.byId).map(b => Math.hypot(b.mesh.position.x - gx, b.mesh.position.z - gz)));
+        const score = -Math.abs(gx) * 0.6 - Math.abs(gz - d * 0.15) * 0.6 + near;
+        if (score > bs) { bs = score; best = { x: gx, z: gz, yaw: 0 }; }
+      }
+      if (best) break;
     }
+    best = best || { x: 0, z: 0, yaw: 0 };
     // Mirar hacia donde hay más objetos a la vista y no contra una pared cercana
     const objs = Object.values(R.byId).map(b => b.mesh.position);
     let by = -1e9;
@@ -763,7 +1070,7 @@ const Rooms3D = (function () {
     if (!room || !room.dimensions_m) return;
     const th = themeFor(s, room);
     msg('Entrando en ' + room.name + '…', 8000);
-    await K.withTimeout(Promise.all([K.loadPBR(th.floor), K.loadPBR(th.wall), th.ceil ? K.loadPBR(th.ceil) : null, K.loadHDR(th.hdri),
+    await K.withTimeout(Promise.all([K.loadPBR(th.floor), K.loadPBR(th.wall), th.ceil ? K.loadPBR(th.ceil) : null, K.loadHDR(th.hdri), K.loadPBR('dark_wooden_planks'), K.loadPBR(th.decor === 'tech' ? 'metal_plate_02' : th.outdoor ? 'painted_plaster_wall' : 'dirty_carpet'),
       ...['wooden_bookshelf_worn', 'WoodenTable_01', 'Lantern_01', 'GreenChair_01', 'potted_plant_01', 'ornate_mirror_01'].map(K.loadGLB)].filter(Boolean)), 20000);
     if (!R) return;
     RM.room = id; rmSave(); rmWhere(null);
@@ -783,7 +1090,40 @@ const Rooms3D = (function () {
     msg(room.name + '. ' + (room.view[role] || room.description), 6000);
   }
 
-  ACTS.r3Exit = () => api.close();
+  ACTS.r3Exit = () => { RM3.left = true; api.close(); };
+  ACTS.r3Use = el => { if (el.dataset.v && !document.getElementById('sheet')) interact(el.dataset.v); };
+  // Lista de lo que hay en la zona: otra forma de llegar a cada objeto sin apuntar
+  ACTS.r3List = () => {
+    const st = rmState(), s = rmScenario(st), c = rmCompute(st), role = myRole();
+    const objs = Rooms.objectsIn(s, c, R.roomId).filter(o => o.category !== 'decorative' || Rooms.cluesAt(s, c, st, o, role).length);
+    openSheet('<h2>📋 En ' + esc(R.room.name) + '</h2><div class="rgrid">' + objs.map(o => {
+      const mark = Rooms.nextAction(s, c, o, role) >= 0 || Rooms.cluesAt(s, c, st, o, role).length ? ' new' : '';
+      return '<button class="rtile' + mark + '" data-act="r3Pick" data-v="' + o.object_id + '"><span class="e">' + rmEmoji(s, o) + '</span><span class="n">' + esc(o.name) + '</span></button>';
+    }).join('') + '</div><button class="btn block" data-act="closeSheet" style="margin-top:12px">Cerrar</button>');
+  };
+  // Elegir en la lista te lleva junto al objeto, te gira hacia él y abre su ficha
+  function faceObject(b) {
+    const cam = R.camera.position, far = Math.hypot(b.c.x - cam.x, b.c.z - cam.z);
+    if (far > 2.6 || far < 0.7) {
+      const free = (x, z) => R.colliders.every(k => Math.abs(x - k.x) > k.w / 2 + 0.32 || Math.abs(z - k.z) > k.d / 2 + 0.32);
+      let best = null, bs = 1e9;
+      for (let gx = -R.W / 2 + 0.4; gx <= R.W / 2 - 0.4; gx += 0.2) for (let gz = -R.D / 2 + 0.4; gz <= R.D / 2 - 0.4; gz += 0.2) {
+        const dd = Math.hypot(b.c.x - gx, b.c.z - gz);
+        if (dd < 1.1 || dd > 2.4 || !free(gx, gz)) continue;
+        const sc = Math.hypot(cam.x - gx, cam.z - gz) + Math.abs(dd - 1.7);
+        if (sc < bs) { bs = sc; best = [gx, gz]; }
+      }
+      if (best) { cam.x = best[0]; cam.z = best[1]; }
+    }
+    look.yaw = Math.atan2(-(b.c.x - cam.x), -(b.c.z - cam.z));
+    look.pitch = Math.max(-0.9, Math.min(0.6, Math.atan2(b.c.y - 1.6, Math.hypot(b.c.x - cam.x, b.c.z - cam.z))));
+  }
+  ACTS.r3Pick = el => {
+    const id = el.dataset.v, b = R && R.byId[id];
+    closeSheet();
+    if (b && b.c) faceObject(b);
+    setTimeout(() => interact(id), 60);
+  };
   ACTS.r3Notes = () => {
     const st = rmState(), s = rmScenario(st), c = rmCompute(st), role = myRole();
     const mine = Rooms.myClues(s, st, role), inv = Rooms.inventory(s, c, role), help = Rooms.helpClues(s, c, role);
@@ -857,10 +1197,35 @@ const Rooms3D = (function () {
     },
   };
   api._interact = id => interact(id);
+  api._boot = async () => { await Esc3D.kit().loadThree(); K = Esc3D.kit(); T = K.T; await K.withTimeout(K.loadExtras(), 8000); K = Esc3D.kit(); };
+  // Recorre todas las zonas de un escenario y devuelve lo que se pisa o se sale de la zona
+  api._audit = async s => {
+    const out = {};
+    for (const room of s.rooms) {
+      if (!room.dimensions_m) continue;
+      CUR_TH = themeFor(s, room); CUR_S = s;
+      layout(s, room); await loadMissing();
+      const L = layout(s, room), { w, d } = room.dimensions_m;
+      const bad = overlaps(L).concat(L.boxes.filter(b => b.x0 < -w / 2 - 0.01 || b.x1 > w / 2 + 0.01 || b.z0 < -d / 2 - 0.01 || b.z1 > d / 2 + 0.01).map(b => b.id + ' fuera'));
+      if (bad.length) out[room.room_id] = bad;
+    }
+    return out;
+  };
   api._view = (x, z, yaw, pitch) => { if (R) { if (x !== null) { R.camera.position.x = x; R.camera.position.z = z; } look.yaw = yaw === null ? look.yaw : yaw; look.pitch = pitch || 0; } };
+  api._go = id => goRoom(id);
+  api._boxes = async (s, id) => { const room = s.rooms.find(r => r.room_id === id); CUR_TH = themeFor(s, room); CUR_S = s; layout(s, room); await loadMissing(); return layout(s, room).boxes; };
+  // Vista de maqueta desde fuera y arriba (techo y paredes se ven por detrás), para revisar cada zona entera
+  api._over = (on, k) => { R.over = on; if (on) { const m = Math.max(R.W, R.D); R.scene.fog = null; R.camera.position.set(R.W * 0.5 * (k || 1) + 0.6, R.room.dimensions_m.h + m * 0.75, R.D * 0.5 + 0.6); R.camera.lookAt(0, 0.6, 0); } };
   api._turn = d => { look.yaw += d; };
   api._info = () => R && { room: R.roomId, objects: Object.keys(R.byId), calls: R.renderer.info.render.calls };
   return api;
 })();
 
-ACTS.r3Open = async () => { try { await Rooms3D.open(); } catch (e) { toast(e.message); } };
+ACTS.r3Open = async () => {
+  if (RM3.opening) return;
+  RM3.opening = true; RM3.left = false;
+  try { await Rooms3D.open(); }
+  catch (e) { // sin 3D en este móvil: queda la vista de lista para no dejar la partida a medias
+    console.warn(e); S.no3d = true; toast('Este móvil no pudo abrir el 3D. Se muestra la vista simple.'); render();
+  } finally { RM3.opening = false; }
+};

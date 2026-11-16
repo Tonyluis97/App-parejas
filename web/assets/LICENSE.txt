@@ -53,6 +53,25 @@ Modelos de los escape rooms ER01–ER10 (models/):
   https://polyhaven.com/a/vintage_spacecraft_instrument
   https://polyhaven.com/a/vintage_suitcase
 
+Ambiente de los escape rooms (models/ y tex/):
+  https://polyhaven.com/a/utility_box_01
+  https://polyhaven.com/a/korean_fire_extinguisher_01
+  https://polyhaven.com/a/hanging_industrial_lamp
+  https://polyhaven.com/a/wooden_barrels_01
+  https://polyhaven.com/a/stone_fire_pit
+  https://polyhaven.com/a/GothicCabinet_01
+  https://polyhaven.com/a/ClassicConsole_01
+  https://polyhaven.com/a/security_camera_01
+  https://polyhaven.com/a/street_lamp_01
+  https://polyhaven.com/a/metal_plate_02
+  https://polyhaven.com/a/concrete_panels
+  https://polyhaven.com/a/large_sandstone_blocks
+  https://polyhaven.com/a/monastery_stone_floor
+  https://polyhaven.com/a/cobblestone_floor_08
+  https://polyhaven.com/a/wooden_panels
+  https://polyhaven.com/a/marble_tiles
+  https://polyhaven.com/a/concrete_floor_worn_001
+
 HDRI (hdri/):
   https://polyhaven.com/a/lythwood_room
   https://polyhaven.com/a/snowy_forest

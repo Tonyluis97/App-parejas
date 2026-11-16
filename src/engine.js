@@ -118,39 +118,12 @@
     return out;
   }
 
-  // ---------- Escape room "La casa de los recuerdos" ----------
-  // A explora el Estudio y B explora el Ático. Cada uno ve pistas que sirven al otro.
-  const ESCAPE = {
-    chestCode: '2714',              // cofre del ático (lo abre B): A ve "2 _ _ 4", B ve "_ 7 1 _"
-    colors: ['rojo', 'verde', 'azul', 'amarillo'], // panel del estudio (lo resuelve A): la hoja está en el cofre de B
-    symbolsA: ['luna', 'estrella', 'corazón'],     // puerta del estudio: la secuencia la ve B en el telescopio
-    symbolsB: ['sol', 'corazón', 'llave'],         // puerta del ático: la secuencia la ve A en el cajón
-  };
 
-  function norm(s) { return String(s || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function norm(s) { return String(s || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
 
   function sameSeq(a, b) {
     if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
     return a.every((x, i) => norm(x) === norm(b[i]));
-  }
-
-  // Intenta resolver un paso. Devuelve el nuevo estado (sin mutar) y si fue correcto.
-  function escapeTry(state, step, value) {
-    const s = Object.assign({ chest: false, panel: false, doorA: false, doorB: false }, state || {});
-    let ok = false;
-    if (step === 'chest') ok = String(value || '').replace(/\D/g, '') === ESCAPE.chestCode;
-    else if (step === 'panel') ok = s.chest && sameSeq(value, ESCAPE.colors);
-    else if (step === 'doorA') ok = s.panel && sameSeq(value, ESCAPE.symbolsA);
-    else if (step === 'doorB') ok = s.chest && sameSeq(value, ESCAPE.symbolsB);
-    if (ok) s[step] = true;
-    return { state: s, ok };
-  }
-
-  function escapeWon(state) { return !!(state && state.doorA && state.doorB); }
-
-  function escapeProgress(state) {
-    const s = state || {};
-    return ['chest', 'panel', 'doorA', 'doorB'].filter(k => s[k]).length;
   }
 
   function mmss(ms) {
@@ -380,7 +353,7 @@
   const Engine = {
     today, parseDay, daysBetween, daysTogether, distanceKm, formatKm, clock,
     newCode, validCode, QUESTIONS, questionFor, WOULD, mergeRecords,
-    ESCAPE, escapeTry, escapeWon, escapeProgress, norm, sameSeq, mmss,
+    norm, sameSeq, mmss,
     nextOccurrence, yearsAt, addDays, streak, tttWinner, tttMove, pickOther,
     TRUTHS, DARES, NEVER, CARDS, DATE_IDEAS, QUIZ, COUPON_IDEAS,
     caesar, morse, ESC3, esc3Steps, esc3Progress, esc3Check, esc3Solve, esc3LevelDone, esc3Remaining, esc3Advance, esc3Fail,

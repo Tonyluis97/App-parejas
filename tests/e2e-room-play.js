@@ -21,6 +21,7 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
   const mkCtx = async () => {
     const ctx = await b.newContext({ viewport: { width: 400, height: 820 }, hasTouch: true, isMobile: true });
     await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+    await ctx.addInitScript(() => { try { localStorage.setItem('rm2d', '1'); } catch (e) { } }); // vista de lista (respaldo sin 3D): juega rápido sin dibujar
     if (FB) await ctx.route(/www\.gstatic\.com\/firebasejs\/[^/]+\/(.+)$/, r => r.fulfill({ status: 200, contentType: 'text/javascript', body: fs.readFileSync(path.join(pkg, r.request().url().split('/').pop())) }));
     return ctx;
   };

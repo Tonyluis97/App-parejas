@@ -44,9 +44,11 @@ const errsG = [];
   for (const p of [A, B]) { await p.click('[data-act=tab][data-v=games]'); await p.click('[data-act=tab][data-v=rooms]'); await p.click('[data-act=rmOpen][data-v=' + ID + ']'); }
   await A.click('[data-act=rmStart]'); await wait(300);
   await A.evaluate(() => Sync.patchCouple(S.code, { 'rooms10.variant': null })); await wait(400); await B.evaluate(() => render());
-  ok('botón 3D', !!(await A.$('[data-act=r3Open]')));
-  await A.click('[data-act=r3Open]'); await A.waitForSelector('#e3 canvas', { timeout: 60000 });
-  await B.click('[data-act=r3Open]'); await B.waitForSelector('#e3 canvas', { timeout: 60000 });
+  // La partida entra sola en 3D (ya no hay vista 2D)
+  await A.waitForSelector('#e3 canvas', { timeout: 90000 });
+  await B.waitForSelector('#e3 canvas', { timeout: 90000 });
+  ok('entra sola en 3D', true);
+  ok('sin fichas 2D', !(await A.$('main [data-act=rmObj]')));
   await wait(FB ? 3000 : 6000);
   const infoA = await A.evaluate(() => Rooms3D._info()), infoB = await B.evaluate(() => Rooms3D._info());
   console.log('A', JSON.stringify(infoA)); console.log('B', JSON.stringify(infoB));
@@ -64,6 +66,20 @@ const errsG = [];
   await A.evaluate(() => Rooms3D._interact('O01')); await wait(800);
   ok('ficha del plano', (await A.textContent('#sheet')).includes('Plano del alumbrado'));
   await A.screenshot({ path: shots + '/r3-A-ficha.png' });
+  await A.click('#rz [data-act=closeSheet]');
+  // La lista de objetos de la zona lleva al mismo sitio sin tener que apuntar
+  await A.click('[data-act=r3List]'); await wait(400);
+  ok('lista de objetos', (await A.$$('#sheet [data-act=r3Pick]')).length >= 5);
+  await A.click('#sheet [data-act=r3Pick][data-v=O05]'); await wait(900);
+  ok('ficha desde la lista', !!(await A.$('#rz')));
+  await A.click('#rz [data-act=closeSheet]');
+  // Tras elegirlo, la cámara queda mirándolo: el botón del punto de mira lo abre
+  await A.evaluate(() => { const m = document.getElementById('rmsub'); if (m) m.style.display = 'none'; });
+  await wait(1200);
+  const pr = await A.evaluate(() => { const p = document.getElementById('e3Prompt'); return p && !p.hidden ? p.dataset.v : null; });
+  ok('el punto de mira señala el objeto elegido (' + pr + ')', pr === 'O05');
+  await A.click('#e3Prompt'); await wait(900);
+  ok('ficha desde el botón del objeto', !!(await A.$('#rz')));
   await A.click('#rz [data-act=closeSheet]');
   // Puerta cerrada a la plaza
   await B.evaluate(() => Rooms3D._interact('door:DOOR02')); await wait(300);

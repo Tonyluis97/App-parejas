@@ -67,10 +67,6 @@ const until = (p, fn, arg, t = 15000) => p.waitForFunction(fn, arg, { timeout: t
   await A.evaluate(() => Call.hangup());
   ok('llamada terminada en B', await until(B, () => Call.state === 'idle'));
 
-  await A.evaluate(() => ACTS.erStart());
-  ok('escape iniciado', await until(B, () => S.couple.escape && S.couple.escape.startedAt));
-  await B.evaluate(() => Sync.patchCouple(S.code, { 'escape.chest': true }));
-  ok('cofre sincronizado', await until(A, () => S.couple.escape.chest === true));
   await A.evaluate(() => Sync.add(S.code, 'letters', { from: S.uid, to: partnerId(), title: 'Prueba', text: 'Hola', openAt: null, opened: false, t: Date.now() }));
   ok('carta sincronizada', await until(B, () => S.letters.some(l => l.title === 'Prueba')));
   await B.evaluate(() => Sync.patchCouple(S.code, { ttt: { board: ['X', '', '', '', '', '', '', '', ''], x: S.uid, turn: S.uid, score: {} } }));
