@@ -127,6 +127,25 @@ for (const id in window.ROOMS_DATA) {
   R.applyPatch(st, R.actSim(p7, st, 'A', { mine: 'SOLTAR_PESTILLO', shared: { strike: 3 } }, false, 1000).patch);
   ok('a la vez: campanadas distintas fallan', R.actSim(p7, st, 'B', { mine: 'TIRAR_CUERDA', shared: { strike: 8 } }, true, 1500).result === 'fail');
 }
+{ // Reto semanal y logros
+  global.window = global.window || {}; require('../src/rooms-data.js');
+  const I = window.ROOMS_INDEX, D = window.ROOMS_DATA, t0 = Date.UTC(2026, 10, 16, 12), W = 604800000;
+  const w = R.weekly(t0, I), seen = new Set();
+  for (let i = 0; i < 10; i++) seen.add(R.weekly(t0 + i * W, I).id);
+  ok('reto: diez semanas, diez escape rooms', seen.size === 10);
+  ok('reto: misma semana, mismo reto', R.weekly(w.from, I).key === w.key && R.weekly(w.to - 1, I).key === w.key && R.weekly(w.to, I).key !== w.key);
+  const s = { scenario_id: w.id, estimated_duration_minutes: 40 }, sc = { points: 1200, hints: 0, fails: 0, stars: 3, ms: 60000 };
+  const r = R.weeklyResult(w, s, { startedAt: w.from + 5, wonAt: w.from + 99 }, sc);
+  ok('reto: premio por cumplir la condición', r && r.ok && r.points === 1500);
+  ok('reto: otro escape room no cuenta', R.weeklyResult(w, { scenario_id: 'ZZ' }, { startedAt: w.from + 5, wonAt: w.from + 9 }, sc) === null);
+  ok('reto: partida empezada la semana anterior no cuenta', R.weeklyResult(w, s, { startedAt: w.from - 5, wonAt: w.from + 9 }, sc) === null);
+  const c = { roomsWeekly: { [w.key]: r, ['w' + (w.n - 1)]: { points: 900, ms: 1, ok: false }, ['w' + (w.n - 3)]: { points: 2000, ms: 1, ok: true } }, roomsBest: { ER09: { points: 1500, stars: 3, plays: 3, clean: true } }, roomsEnds: { ER09: { END01: 1, END02: 1, END03: 1, END04: 1 } } };
+  const B = R.weeklyBoard(c, t0, I);
+  ok('reto: ranking y racha', B.rows[0].points === 2000 && B.rows.length === 3 && B.streak === 2);
+  const A = R.achievements(c, I, D), done = A.filter(a => a.done).map(a => a.id).join();
+  ok('logros conseguidos (' + done + ')', done === 'first,nohint,star3,replay,endsRoom,week1');
+  ok('logros: nada al empezar', R.achievements({}, I, D).every(a => !a.done));
+}
 ok('normaliza tildes', R.check({ answer: { type: 'sequence', value: ['MASCARA'] } }, ['máscara ']));
 
 console.log(fails ? fails + ' fallos de ' + n : 'ok ' + n + ' comprobaciones');

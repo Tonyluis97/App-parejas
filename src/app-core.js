@@ -10,12 +10,12 @@ const S = {
 };
 
 // ---------- Almacenamiento local (claves estables: no renombrar) ----------
-const LS_KEY = () => 'nosotros_perfil' + (Sync.mode === 'demo' ? ':' + S.uid : '');
+const LS_KEY = () => 'nosotros_perfil' + (Sync.mode === 'demo' ? ':' + Sync.uid() : '');
 function loadLocal() {
   try { return JSON.parse(localStorage.getItem(LS_KEY())) || {}; } catch (e) { return {}; }
 }
 function saveLocal() {
-  const d = { name: S.name, code: S.code, lastRead: S.lastRead || 0, u: Date.now() };
+  const d = { name: S.name, code: S.code, pid: S.pid || null, lastRead: S.lastRead || 0, u: Date.now() };
   try { localStorage.setItem(LS_KEY(), JSON.stringify(d)); } catch (e) { }
 }
 
@@ -37,7 +37,12 @@ function toast(t) {
 function vibrate(p) { try { navigator.vibrate && navigator.vibrate(p); } catch (e) { } }
 function notify(title, body) {
   try {
-    if (document.hidden && 'Notification' in window && Notification.permission === 'granted') new Notification(title, { body });
+    if (!document.hidden || !('Notification' in window) || Notification.permission !== 'granted') return;
+    const o = { body, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', tag: 'nosotros', renotify: true };
+    // En Android el aviso tiene que salir del service worker; "new Notification" allí falla
+    const sw = navigator.serviceWorker;
+    if (sw && sw.controller) sw.ready.then(r => r.showNotification(title, o)).catch(() => { try { new Notification(title, o); } catch (e) { } });
+    else new Notification(title, o);
   } catch (e) { }
 }
 
@@ -61,7 +66,7 @@ function closeSheet() { const s = $('#sheet'); if (s) s.remove(); }
 
 // ---------- Render conservando lo que se está escribiendo ----------
 const VIEWS = {};
-const GAME_VIEWS = ['rooms', 'room', 'escape3d', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz'];
+const GAME_VIEWS = ['rooms', 'room', 'escape3d', 'would', 'tod', 'never', 'ttt', 'cards', 'roulette', 'quiz', 'roomsAlbum'];
 const US_VIEWS = ['lists', 'letters', 'coupons', 'dates'];
 function render() {
   const app = $('#app');
@@ -88,11 +93,11 @@ function render() {
 
 function shell(body) {
   const titles = { home: 'Nosotros', chat: partnerName(), games: 'Juegos', us: 'Lo nuestro', lists: 'Nuestras listas', letters: 'Cartas', coupons: 'Cupones de amor', dates: 'Fechas importantes', settings: 'Ajustes',
-    rooms: 'Escape rooms para dos', room: (window.ROOMS_DATA && ROOMS_DATA[S.roomSel] || {}).title || 'Escape room',
+    rooms: 'Escape rooms para dos', roomsAlbum: 'Logros y álbum', room: (window.ROOMS_DATA && ROOMS_DATA[S.roomSel] || {}).title || 'Escape room',
     escape3d: 'Sin salida', would: '¿Qué prefieres?', tod: 'Verdad o reto', never: 'Yo nunca he…', ttt: 'Tres en raya', cards: 'Cartas de conversación', roulette: 'Ruleta de citas', quiz: '¿Qué tanto me conoces?' };
   const tabs = [['home', '🏠', 'Inicio'], ['chat', '💬', 'Chat'], ['games', '🎲', 'Juegos'], ['us', '💞', 'Lo nuestro']];
   const parent = GAME_VIEWS.includes(S.tab) ? 'games' : US_VIEWS.includes(S.tab) ? 'us' : null;
-  const back = parent ? '<button class="iconbtn" data-act="tab" data-v="' + (S.tab === 'room' ? 'rooms' : parent) + '" aria-label="Volver">‹</button>' : '';
+  const back = parent ? '<button class="iconbtn" data-act="tab" data-v="' + (S.tab === 'room' || S.tab === 'roomsAlbum' ? 'rooms' : parent) + '" aria-label="Volver">‹</button>' : '';
   const callBtn = partnerId() ? '<button class="iconbtn" data-act="call" aria-label="Llamar">📞</button>' : '';
   return '<header class="top">' + back + '<h1>' + esc(titles[S.tab] || 'Nosotros') + '</h1>' + callBtn +
     '<button class="iconbtn" data-act="tab" data-v="settings" aria-label="Ajustes">⚙️</button></header>' +
@@ -158,14 +163,41 @@ ACTS.callHang = () => Call.hangup();
 ACTS.callMute = () => Call.toggleMute();
 ACTS.closeSheet = () => closeSheet();
 
+// ---------- Identidad y recuperación de la sesión ----------
+// "uids" del documento son las sesiones con permiso. Al reinstalar la app la sesión es nueva: con la clave de
+// recuperación entra en "uids" y "alias" la enlaza con la persona de siempre, así no se pierde nada de lo suyo.
+// Para el resto de la app, doc.uids queda con las dos personas (en orden) y S.uid es la persona de este móvil.
+function identity(doc) {
+  const alias = doc.alias || {}, mem = doc.members || {};
+  doc.sessions = doc.uids || [];
+  doc.uids = doc.sessions.filter(u => mem[u] && !alias[u]);
+  const who = alias[Sync.uid()] || Sync.uid();
+  if (S.uid === who) return false;
+  S.uid = who; S.pid = who === Sync.uid() ? null : who; saveLocal();
+  setTimeout(subscribe, 0); // vuelve a conectar todo (chat, llamadas) ya con la identidad correcta
+  return true;
+}
+function recovKey(doc, uid) { const r = (doc && doc.recov) || {}; return Object.keys(r).find(k => r[k] === uid) || null; }
+let RECOV_BUSY = false;
+function ensureRecov(doc) {
+  if (RECOV_BUSY || !(doc.members || {})[S.uid] || recovKey(doc, S.uid)) return;
+  RECOV_BUSY = true;
+  const abc = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789', rnd = new Uint32Array(12);
+  try { crypto.getRandomValues(rnd); } catch (e) { for (let i = 0; i < 12; i++) rnd[i] = Math.random() * 4294967296; }
+  const key = Array.from(rnd, (n, i) => (i && i % 4 === 0 ? '-' : '') + abc[n % abc.length]).join('');
+  Sync.patchCouple(S.code, { ['recov.' + key]: S.uid }).catch(() => { }).then(() => setTimeout(() => { RECOV_BUSY = false; }, 5000));
+}
+
 // ---------- Conexión con la pareja ----------
 function subscribe() {
   S.offs.forEach(f => f && f()); S.offs = [];
   if (!S.code) return;
   let firstPing = true, firstMsgs = true;
   S.offs.push(Sync.watchCouple(S.code, doc => {
+    if (doc && identity(doc)) return;
     S.couple = doc;
-    if (!doc) { S.code = null; saveLocal(); }
+    if (!doc) { S.code = null; S.pid = null; S.uid = Sync.uid(); saveLocal(); }
+    else ensureRecov(doc);
     if (typeof Esc3D !== 'undefined') Esc3D.onCouple(doc);
     if (typeof rmTrackSim === 'function') rmTrackSim();
     if (typeof Rooms3D !== 'undefined') Rooms3D.onCouple(doc);
@@ -236,6 +268,7 @@ async function boot() {
   }
   const L = loadLocal();
   S.name = L.name || ''; S.code = L.code || null; S.lastRead = L.lastRead || 0;
+  if (S.code && L.pid) { S.pid = L.pid; S.uid = L.pid; }
   S.locked = Lock.enabled();
   if (!S.code) readInvite();
   S.ready = true;

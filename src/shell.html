@@ -175,6 +175,7 @@ body.incall .e3-danger{top:calc(116px + env(safe-area-inset-top))}
 .r3-map{position:absolute;right:12px;top:calc(70px + env(safe-area-inset-top));width:84px;height:84px;pointer-events:none;border-radius:10px}
 .e3-ping{padding:6px 10px;font-size:20px;background:rgba(255,255,255,.75)}
 .rm-pings{display:flex;gap:6px;justify-content:space-between;margin-bottom:10px}.rm-pings .chip{flex:1;font-size:20px;padding:6px 0;text-align:center}
+.rm-end{border:1px solid var(--line,rgba(128,128,128,.3));border-radius:12px;padding:8px 12px;margin:6px 0;font-size:14px}.rm-end summary{cursor:pointer}
 .rm-ping{position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);z-index:60;text-align:center;pointer-events:none;animation:rmPing 2.6s ease-out forwards}
 .rm-ping .e{font-size:96px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}.rm-ping .t{margin-top:8px;background:rgba(0,0,0,.75);color:#fff;font-weight:800;border-radius:999px;padding:8px 16px;white-space:nowrap}
 @keyframes rmPing{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}22%{transform:translate(-50%,-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-80%) scale(1)}}

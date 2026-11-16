@@ -27,6 +27,14 @@ VIEWS.welcome = () => {
       '<button class="btn block" data-act="inviteSafari">Prefiero usarla en Safari</button></div>';
   }
   const mode = S._wmode || 'new';
+  if (mode === 'recover') {
+    return '<div class="welcome"><div class="logo">🔑</div><h1>Recuperar mi sesión</h1>' +
+      '<p class="muted" style="text-align:center;margin-top:0">Si reinstalaste la app o cambiaste de móvil, vuelve a entrar como tú, con todo lo suyo intacto. Tu pareja puede ver tu clave en <b>Ajustes › Recuperar la sesión</b>.</p>' +
+      '<form data-act="recover"><label class="f" for="wCode">Código de pareja (6 dígitos)</label><input id="wCode" type="tel" inputmode="numeric" data-keep="wCode" maxlength="6" placeholder="123456" required>' +
+      '<label class="f" for="wKey">Tu clave de recuperación</label><input id="wKey" type="text" data-keep="wKey" maxlength="20" placeholder="ABCD-EFGH-JKMN" autocapitalize="characters" autocomplete="off" required>' +
+      '<button class="btn primary block" style="margin-top:18px" type="submit">Recuperar</button></form>' +
+      '<button class="btn block" style="margin-top:8px" data-act="wmode" data-v="join">Volver</button></div>';
+  }
   const preCode = S.invite && mode === 'join' ? ' value="' + esc(S.invite.code) + '"' : '';
   return '<div class="welcome"><div class="logo">💞</div><h1>' + (S.invite ? esc(S.invite.from || 'Tu pareja') + ' te invita' : 'Nosotros') + '</h1>' +
     '<p class="muted" style="text-align:center;margin-top:0">Un espacio solo para los dos, aunque estén lejos.</p>' +
@@ -36,7 +44,8 @@ VIEWS.welcome = () => {
     (mode === 'new'
       ? '<label class="f" for="wStart">¿Desde cuándo están juntos?</label><input id="wStart" type="date" data-keep="wStart" required>'
       : '<label class="f" for="wCode">Código de 6 dígitos</label><input id="wCode" type="tel" inputmode="numeric" data-keep="wCode" maxlength="6" placeholder="123456" required' + preCode + '>') +
-    '<button class="btn primary block" style="margin-top:18px" type="submit">' + (mode === 'new' ? 'Crear y obtener código' : 'Unirme') + '</button></form></div>';
+    '<button class="btn primary block" style="margin-top:18px" type="submit">' + (mode === 'new' ? 'Crear y obtener código' : 'Unirme') + '</button></form>' +
+    '<button class="btn block sm" style="margin-top:14px" data-act="wmode" data-v="recover">🔑 Ya tenía mi cuenta: recuperar sesión</button></div>';
 };
 ACTS.wmode = el => { S._wmode = el.dataset.v; render(); };
 ACTS.inviteSafari = () => { S._inSafari = true; S._wmode = 'join'; render(); };
@@ -81,6 +90,16 @@ ACTS.join = async f => {
   try { history.replaceState(null, '', location.pathname); } catch (e) { }
   toast('¡Ya están conectados! 💞');
 };
+ACTS.recover = async f => {
+  const code = f.querySelector('#wCode').value.trim();
+  const raw = f.querySelector('#wKey').value.toUpperCase().replace(/[^A-Z0-9]/g, ''), key = (raw.match(/.{1,4}/g) || []).join('-');
+  if (!E.validCode(code)) return toast('El código tiene 6 dígitos');
+  if (raw.length !== 12) return toast('La clave tiene 12 letras y números');
+  const who = await Sync.recover(code, key);
+  S.code = code; S.uid = who; S.pid = who === Sync.uid() ? null : who; S._wmode = null; S.invite = null; saveLocal(); subscribe();
+  toast('¡Sesión recuperada! 💞');
+};
+ACTS.copyRecov = async el => { try { await navigator.clipboard.writeText('Nosotros · código de pareja ' + S.code + ' · clave de recuperación ' + el.dataset.v); toast('Copiado: guárdalo en un lugar seguro'); } catch (e) { toast('No se pudo copiar; anótala a mano'); } };
 ACTS.enter = () => { S._created = false; render(); };
 ACTS.shareCode = async () => {
   const url = inviteLink();
@@ -238,7 +257,10 @@ VIEWS.settings = () => {
     '<div class="card"><h2>Avisos</h2>' + (notif === 'granted' ? '<p class="muted" style="margin:0">Avisos activados mientras la app está abierta o en segundo plano.</p>'
       : notif === 'unsupported' ? '<p class="muted" style="margin:0">Este navegador no permite avisos. En iPhone, primero añade la app a la pantalla de inicio desde Safari (Compartir › Añadir a pantalla de inicio).</p>'
         : '<button class="btn block" data-act="askNotif">Activar avisos</button>') +
-    '<p class="muted small" style="margin:8px 0 0">Esta versión avisa mientras la app sigue abierta. Los avisos con la app cerrada llegarán cuando se conecte el servicio de notificaciones.</p></div>' +
+    '<p class="muted small" style="margin:8px 0 0">Avisa de mensajes, cartas, abrazos y de cuando tu pareja te espera en un escape room, mientras la app sigue abierta en segundo plano. Con la app cerrada del todo aún no llegan avisos.</p></div>' +
+    '<div class="card" id="recovCard"><h2>Recuperar la sesión</h2><p class="muted small" style="margin:0 0 8px">Si reinstalas la app o cambias de móvil, entra con <b>Ya tenía mi cuenta</b>, el código de pareja y tu clave. Guárdala; si la pierdes, tu pareja también la ve aquí.</p>' +
+    (recovKey(S.couple, S.uid) ? '<div class="small muted">Tu clave</div><div class="row"><div class="codebig" id="myRecov" style="font-size:20px;letter-spacing:1px;flex:1;margin:0">' + esc(recovKey(S.couple, S.uid)) + '</div><button class="btn sm" data-act="copyRecov" data-v="' + esc(recovKey(S.couple, S.uid)) + '">Copiar</button></div>' : '<p class="muted small" style="margin:0">Creando tu clave…</p>') +
+    (partnerId() && recovKey(S.couple, partnerId()) ? '<div class="small muted" style="margin-top:10px">Clave de ' + esc(partnerName()) + '</div><div class="codebig" style="font-size:20px;letter-spacing:1px;margin:0">' + esc(recovKey(S.couple, partnerId())) + '</div>' : '') + '</div>' +
     (VIEWS.settingsExtra ? VIEWS.settingsExtra() : '') +
     '<div class="card"><h2>Conexión</h2><p class="muted" style="margin:0">' + (Sync.mode === 'demo' ? 'Modo demo (solo este navegador).' : 'Conectado a la nube: sus datos se sincronizan entre los dos móviles.') + '</p>' +
     (Sync.mode === 'demo' ? '<button class="btn block sm" style="margin-top:10px" data-act="resetDemo">Borrar datos de la demo</button>' : '') + '</div>' +
@@ -251,5 +273,5 @@ ACTS.askNotif = async () => { const r = await Notification.requestPermission(); 
 ACTS.resetDemo = () => askConfirm('Se borrarán todos los datos de la demo en este navegador.', 'Borrar', () => { Sync.reset(); S.code = null; S.couple = null; saveLocal(); render(); });
 ACTS.leave = () => askConfirm('Saldrás de la pareja solo en este móvil. Podrás volver a entrar con el código ' + S.code + '.', 'Salir', () => {
   S.offs.forEach(f => f && f()); S.offs = []; Call.stop();
-  S.code = null; S.couple = null; S.tab = 'home'; S._wmode = 'join'; saveLocal(); render();
+  S.code = null; S.couple = null; S.pid = null; S.uid = Sync.uid(); S.tab = 'home'; S._wmode = 'join'; saveLocal(); render();
 });

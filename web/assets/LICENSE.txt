@@ -71,6 +71,11 @@ Ambiente de los escape rooms (models/ y tex/):
   https://polyhaven.com/a/wooden_panels
   https://polyhaven.com/a/marble_tiles
   https://polyhaven.com/a/concrete_floor_worn_001
+  https://polyhaven.com/a/ocean_buoy
+  https://polyhaven.com/a/old_military_compressor
+  https://polyhaven.com/a/painted_wooden_bench
+  https://polyhaven.com/a/portable_generator
+  https://polyhaven.com/a/wooden_display_shelves_01
 
 HDRI (hdri/):
   https://polyhaven.com/a/lythwood_room

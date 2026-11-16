@@ -10,7 +10,12 @@ service cloud.firestore {
         // Unirse: solo si hay una persona y solo se agrega uno mismo
         (resource.data.uids.size() == 1
           && request.resource.data.uids == resource.data.uids.concat([request.auth.uid])
-          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uids', 'members']))
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uids', 'members'])) ||
+        // Recuperar la sesión tras reinstalar: entra una sesión nueva solo si presenta una clave que ya existe
+        (request.resource.data.uids == resource.data.uids.concat([request.auth.uid])
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uids', 'claim'])
+          && request.resource.data.claim.diff(resource.data.get('claim', {})).affectedKeys().hasOnly([request.auth.uid])
+          && request.resource.data.claim[request.auth.uid] in resource.data.get('recov', {}))
       );
       match /{col}/{id} {
         allow read, write: if request.auth != null

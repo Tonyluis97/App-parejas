@@ -164,7 +164,8 @@ const Rooms3D = (function () {
     [/planta|maceta|[aá]rbol|flor/, 'plant', [0.5, 0.5]],
     [/estatua|figura|busto|escultura|mu[nñ]eco/, 'statue', [0.6, 0.6]],
     [/barril|bid[oó]n|tanque|dep[oó]sito|tambor|aceitera|botella|frasco|tubo de ensayo|vial/, 'vessel'],
-    [/m[aá]quina|generador|motor|reactor|turbina|bomba|compresor|sintetizador/, 'machine', [1.4, 1.0]],
+    [/boya/, 'buoy', [0.8, 0.8]],
+    [/m[aá]quina|generador|motor|reactor|turbina|bomba|compresor|sintetizador|gr[uú]a|bastidor de celdas/, 'machine', [1.4, 1.0]],
     [/nido|gaviota|p[aá]jaro|pluma/, 'small'],
   ];
   function kindOf(s, o) {
@@ -202,7 +203,11 @@ const Rooms3D = (function () {
   let HIT = null; // material invisible para ampliar la zona de toque
   const B = {
     door() { return K.P.door('#5b3b28'); },
-    shelf() { return tech() ? mdl('steel_frame_shelves_01', () => K.P.bookshelfBox(), { h: 1.9 }) : K.model('wooden_bookshelf_worn', () => K.P.bookshelfBox(), { h: 1.9 }); },
+    shelf(o) {
+      if (!tech() && /vitrina|expositor/.test(o.name.toLowerCase())) return mdl('wooden_display_shelves_01', () => K.P.bookshelfBox(), { h: 1.8 });
+      return B.shelfStd();
+    },
+    shelfStd() { return tech() ? mdl('steel_frame_shelves_01', () => K.P.bookshelfBox(), { h: 1.9 }) : K.model('wooden_bookshelf_worn', () => K.P.bookshelfBox(), { h: 1.9 }); },
     tallclock() { return mdl('vintage_grandfather_clock_01', () => K.at(K.box(0.5, 2, 0.35, wood('#5a3a22')), 0, 1, 0), { h: 2.05 }); },
     cabinet() {
       if (tech()) return mdl('metal_tool_chest', () => B.cabinetBox(), { h: 1.15 });
@@ -269,13 +274,16 @@ const Rooms3D = (function () {
       for (let i = 0; i < 4; i++) g.add(K.at(K.box(0.06, 0.4, 0.06, i === 3 ? K.M('#b22222') : brass()), -0.45 + i * 0.3, 1.0, 0.75));
       return g;
     },
-    lever() {
-      const g = new T.Group();
-      g.add(K.at(K.box(0.3, 0.12, 0.3, metal('#333')), 0, 0.06, 0));
-      const h = K.cyl(0.025, 0.025, 0.9, metal('#7a4a2a'), 8); h.position.set(0, 0.5, 0); h.rotation.x = 0.3; g.add(h);
-      g.add(K.at(new T.Mesh(new T.SphereGeometry(0.06, 12, 10), K.M('#b22222')), 0, 0.93, 0.13));
+    lever() { // palanca de cambio de agujas: bastidor, sector dentado, brazo y pomo
+      const g = new T.Group(), ir = metal('#2f3338'), st = metal('#8a8f94');
+      g.add(K.at(K.box(0.5, 0.06, 0.34, ir), 0, 0.03, 0), K.at(K.box(0.42, 0.3, 0.05, ir), 0, 0.21, -0.1), K.at(K.box(0.42, 0.3, 0.05, ir), 0, 0.21, 0.1));
+      const arc = new T.Mesh(new T.TorusGeometry(0.3, 0.018, 8, 20, Math.PI * 0.6), st); arc.rotation.set(0, Math.PI / 2, 0); arc.rotation.z = Math.PI * 0.2; arc.position.set(0, 0.3, 0); g.add(arc);
+      const arm = new T.Group(); arm.position.set(0, 0.3, 0); arm.rotation.x = 0.35;
+      arm.add(K.at(K.box(0.05, 0.85, 0.03, st), 0, 0.42, 0), K.at(K.cyl(0.03, 0.03, 0.2, K.M('#7a1f1f', { roughness: 0.4 }), 12), 0, 0.92, 0), K.at(K.box(0.02, 0.3, 0.02, brass()), 0.045, 0.7, 0));
+      const ax = K.cyl(0.035, 0.035, 0.3, st, 12); ax.rotation.x = Math.PI / 2; ax.position.set(0, 0.3, 0); g.add(arm, ax);
       return g;
     },
+    buoy() { return mdl('ocean_buoy', () => K.at(K.cyl(0.3, 0.4, 1.2, K.M('#c0392b', { roughness: 0.5 }), 16), 0, 0.6, 0), { h: 1.5 }); },
     console() {
       if (tech()) {
         const g = mdl('metal_office_desk', () => K.P.table(1.4, 0.8, 0.78, '#555b62'), { w: 1.4 });
@@ -345,7 +353,8 @@ const Rooms3D = (function () {
       return K.P.chest();
     },
     chair() { return K.P.chair('#6b2e2e'); },
-    bench() {
+    bench() { return mdl('painted_wooden_bench', () => B.benchBox(), { w: 1.5 }); },
+    benchBox() {
       const g = new T.Group(), w = wood('#8a6a55', [1, 0.3]), ir = metal('#222');
       for (let i = 0; i < 4; i++) g.add(K.at(K.box(1.5, 0.04, 0.09, w), 0, 0.45, -0.18 + i * 0.12));
       for (const x of [-0.65, 0.65]) g.add(K.at(K.box(0.05, 0.45, 0.45, ir), x, 0.22, 0));
@@ -372,7 +381,13 @@ const Rooms3D = (function () {
       if (!big && /vasija|jarr|[aá]nfora|urna|tarro/.test(o.name.toLowerCase())) return mdl('ceramic_vase_01', () => K.at(K.cyl(0.1, 0.14, 0.35, K.M('#a8643c')), 0, 0.17, 0), { h: 0.4 });
       return big ? K.at(K.cyl(0.3, 0.3, 0.9, metal('#6a4a2a'), 18), 0, 0.45, 0) : K.at(K.cyl(0.05, 0.07, 0.22, brass(), 14), 0, 0.11, 0);
     },
-    machine() {
+    machine(o) {
+      const n = o.name.toLowerCase();
+      if (/gr[uú]a/.test(n)) return B.machineBox();
+      if (/generador|bater[ií]a|celda|energ/.test(n)) return mdl('portable_generator', () => B.machineBox(), { w: 1.2 });
+      return mdl('old_military_compressor', () => B.machineBox(), { w: 1.4 });
+    },
+    machineBox() {
       const g = new T.Group(), m = metal('#55606a');
       g.add(K.at(K.box(1.4, 1.3, 1.0, m), 0, 0.65, 0));
       for (let i = 0; i < 3; i++) { const p = K.cyl(0.06, 0.06, 1.0, metal('#8a7a50'), 10); p.position.set(-0.5 + i * 0.5, 1.6, -0.3); g.add(p); }
@@ -399,7 +414,7 @@ const Rooms3D = (function () {
   };
   // Lo que se pone sobre una superficie lleva una base si no hay una mesa debajo
   const SMALL = ['book', 'radio', 'lamp', 'screen', 'clock', 'vessel', 'small', 'chest'];
-  const FLOOR = ['tallclock', 'table', 'console', 'shelf', 'cabinet', 'booth', 'machine', 'bench', 'chair', 'plant', 'statue', 'fountain', 'boat', 'bridge', 'mailbox', 'lever', 'scope', 'pedestal', 'door', 'facades'];
+  const FLOOR = ['buoy', 'tallclock', 'table', 'console', 'shelf', 'cabinet', 'booth', 'machine', 'bench', 'chair', 'plant', 'statue', 'fountain', 'boat', 'bridge', 'mailbox', 'lever', 'scope', 'pedestal', 'door', 'facades'];
 
   // ---------- Colocación sin superposiciones ----------
   // El diseño da un punto por objeto, pero no su tamaño. Aquí se mide cada pieza ya construida y se reparte la zona:
@@ -954,6 +969,7 @@ const Rooms3D = (function () {
     move(dt);
     if (R.anims && R.anims.length) R.anims = R.anims.filter(a => { a.t = (a.t || 0) + dt; const k = Math.min(1, a.t / a.d); a.f(k); return k < 1; });
     quality(dt);
+    if (!R.over) { sharePos(t); ghostTick(dt, t); }
     R.markers.children.forEach((m, i) => { m.position.y += Math.sin(t / 300 + i) * 0.0015; });
     if (t - (R.pt || 0) > 150) {
       R.pt = t;
@@ -963,6 +979,48 @@ const Rooms3D = (function () {
     }
     R.renderer.render(R.scene, R.camera);
   }
+  // ---------- Tu pareja dentro del 3D ----------
+  // Cada móvil comparte dónde está (como mucho cada 2,5 s y solo si se movió) y el otro lo dibuja como una silueta
+  // translúcida con su nombre cuando están en la misma zona. No estorba el paso ni tapa los toques.
+  const POS = { t: 0, x: 0, z: 0, yaw: 0, room: null };
+  function sharePos(now) {
+    if (now - POS.t < 2500 || !R.roomId) return;
+    const c = R.camera.position;
+    if (POS.room === R.roomId && Math.hypot(c.x - POS.x, c.z - POS.z) < 0.5 && Math.abs(look.yaw - POS.yaw) < 0.6) return;
+    Object.assign(POS, { t: now, x: c.x, z: c.z, yaw: look.yaw, room: R.roomId });
+    Sync.patchCouple(S.code, { ['rooms10.where.' + myRole()]: { room: R.roomId, oid: null, x: +c.x.toFixed(2), z: +c.z.toFixed(2), yaw: +look.yaw.toFixed(2), t: Date.now() } });
+  }
+  function ghostMesh(name, color) {
+    const g = new T.Group(), m = new T.MeshStandardMaterial({ color, transparent: true, opacity: 0.55, roughness: 0.4, emissive: color, emissiveIntensity: 0.35, depthWrite: false });
+    const body = new T.Mesh(new T.CapsuleGeometry(0.2, 0.75, 6, 14), m); body.position.y = 0.78; g.add(body);
+    const head = new T.Mesh(new T.SphereGeometry(0.15, 18, 14), m); head.position.y = 1.52; g.add(head);
+    const nose = new T.Mesh(new T.ConeGeometry(0.05, 0.14, 10), m); nose.rotation.x = -Math.PI / 2; nose.position.set(0, 1.52, -0.19); g.add(nose); // hacia dónde mira
+    const ring = new T.Mesh(new T.RingGeometry(0.26, 0.33, 28), new T.MeshBasicMaterial({ color, transparent: true, opacity: 0.6, side: T.DoubleSide, depthWrite: false }));
+    ring.rotation.x = -Math.PI / 2; ring.position.y = 0.02; g.add(ring);
+    const tex = K.canvasTex(256, 64, (c, W, H) => { c.font = '700 34px sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = 'rgba(0,0,0,.55)'; const w = Math.min(W - 8, c.measureText(name).width + 28); c.beginPath(); c.roundRect ? c.roundRect((W - w) / 2, 8, w, 48, 24) : c.rect((W - w) / 2, 8, w, 48); c.fill(); c.fillStyle = '#fff'; c.fillText(name, W / 2, 34, W - 24); });
+    const lb = new T.Sprite(new T.SpriteMaterial({ map: tex, transparent: true, depthWrite: false })); lb.scale.set(0.9, 0.225, 1); lb.position.y = 1.95; g.add(lb);
+    g.userData.ring = ring;
+    return g;
+  }
+  function ghostTick(dt, t) {
+    const role = myRole(), w = ((rmState().where || {})[role === 'A' ? 'B' : 'A']) || null;
+    const here = w && w.room === R.roomId && typeof w.x === 'number' && Date.now() - w.t < 180000;
+    if (!here) { if (R.ghost) { R.scene.remove(R.ghost); R.ghost = null; } return; }
+    if (!R.ghost || R.ghost.parent !== R.scene) {
+      R.ghost = ghostMesh(partnerName(), role === 'A' ? '#6aa5ff' : '#ff6f91');
+      R.ghost.position.set(w.x, 0, w.z); R.ghost.rotation.y = w.yaw || 0; R.scene.add(R.ghost);
+      msg('👋 ' + partnerName() + ' está aquí contigo', 3500);
+    }
+    const g = R.ghost, k = Math.min(1, dt * 2.2);
+    g.position.x += (w.x - g.position.x) * k; g.position.z += (w.z - g.position.z) * k;
+    let d = (w.yaw || 0) - g.rotation.y; d = Math.atan2(Math.sin(d), Math.cos(d)); g.rotation.y += d * k;
+    g.userData.ring.scale.setScalar(1 + Math.sin(t / 400) * 0.08);
+    // Su última reacción flota sobre su cabeza unos segundos
+    const p = rmState().ping, fresh = p && p.from !== role && Date.now() - p.t < 4000;
+    if (fresh && g.userData.pingT !== p.t) { if (g.userData.ping) g.remove(g.userData.ping); const sp = emojiSprite((RM_PINGS[p.k] || RM_PINGS[0])[0], 0.5); sp.position.y = 2.4; g.add(sp); g.userData.ping = sp; g.userData.pingT = p.t; }
+    if (!fresh && g.userData.ping) { g.remove(g.userData.ping); g.userData.ping = null; }
+  }
+
   // Calidad automática: mide los primeros segundos y, si va lento, quita sombras y baja la resolución
   const Q = { t: 0, n: 0, level: (() => { try { return +localStorage.getItem('r3q') || 0; } catch (e) { return 0; } })() };
   function applyQuality() {
@@ -994,6 +1052,7 @@ const Rooms3D = (function () {
       g.fillStyle = b.door ? '#7fd1ff' : isHot ? '#ffcc33' : 'rgba(255,255,255,.55)';
       g.beginPath(); g.arc(x, y, b.door ? 3.2 : isHot ? 3 : 2, 0, 7); g.fill();
     }
+    if (R.ghost) { const [qx, qz] = P(R.ghost.position.x, R.ghost.position.z); g.fillStyle = myRole() === 'A' ? '#6aa5ff' : '#ff6f91'; g.beginPath(); g.arc(qx, qz, 4, 0, 7); g.fill(); g.strokeStyle = '#fff'; g.lineWidth = 1; g.stroke(); }
     const [px, pz] = P(R.camera.position.x, R.camera.position.z);
     g.save(); g.translate(px, pz); g.rotate(-look.yaw); g.fillStyle = '#ff5a7a';
     g.beginPath(); g.moveTo(0, -6); g.lineTo(4, 4); g.lineTo(-4, 4); g.closePath(); g.fill(); g.restore();
@@ -1219,6 +1278,7 @@ const Rooms3D = (function () {
   // Vista de maqueta desde fuera y arriba (techo y paredes se ven por detrás), para revisar cada zona entera
   api._over = (on, k) => { R.over = on; if (on) { const m = Math.max(R.W, R.D); R.scene.fog = null; R.camera.position.set(R.W * 0.5 * (k || 1) + 0.6, R.room.dimensions_m.h + m * 0.75, R.D * 0.5 + 0.6); R.camera.lookAt(0, 0.6, 0); } };
   api._turn = d => { look.yaw += d; };
+  api._ghost = () => R && R.ghost ? { x: R.ghost.position.x, z: R.ghost.position.z } : null;
   api._info = () => R && { room: R.roomId, objects: Object.keys(R.byId), calls: R.renderer.info.render.calls };
   return api;
 })();

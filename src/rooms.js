@@ -51,11 +51,64 @@ function rmLocal(st) {
 VIEWS.rooms = () => {
   const st = rmState(), cur = st.startedAt && !st.wonAt && window.ROOMS_DATA[st.id];
   let h = '<p class="muted small" style="margin:0 0 12px">Cada uno ve cosas distintas: solo hablando (mejor con 📞) salen juntos. Se puede pausar o dejar cuando quieran.</p>';
+  h += rmWeeklyCard();
+  const ach = Rooms.achievements(S.couple, window.ROOMS_INDEX, window.ROOMS_DATA), endsAll = ach.find(a => a.id === 'endsAll');
+  h += '<button class="item" style="width:100%;text-align:left;margin-bottom:12px" data-act="tab" data-v="roomsAlbum"><span style="font-size:24px">🏅</span><span class="tx"><b>Logros y álbum de finales</b><br><span class="muted small">' + ach.filter(a => a.done).length + ' de ' + ach.length + ' logros · ' + endsAll.n + ' de ' + endsAll.of + ' finales</span></span><span class="chip on">Ver</span></button>';
   if (cur) h += '<div class="card hero" data-act="rmOpen" data-v="' + st.id + '" role="button" style="cursor:pointer"><div class="sub">Partida en curso</div><div class="big" style="font-size:22px">' + esc(window.ROOMS_DATA[st.id].title) + '</div><div class="sub">Toca para continuar</div></div>';
   return h + window.ROOMS_INDEX.map(r => '<div class="card game' + (r.ready ? '' : ' off') + '"' + (r.ready ? ' data-act="rmOpen" data-v="' + r.id + '" role="button"' : '') + '>' +
     '<div class="ic">' + (r.ready ? '🧩' : '🔒') + '</div><div><h3>' + esc(r.title) + '</h3><div class="muted small">' + esc(r.synopsis) + '</div>' +
     '<div class="small" style="margin-top:4px;font-weight:700;color:var(--accent)">' + (r.ready ? RM_DIFF[r.difficulty] + ' · ' + r.minutes + ' min' : 'Próximamente') + '</div>' + rmBestLine(r.id) + '</div></div>').join('');
 };
+// ---------- Reto semanal, logros y álbum ----------
+function rmWeekDates(n) {
+  const a = new Date(Date.UTC(2026, 0, 5) + n * 604800000), b = new Date(a.getTime() + 6 * 86400000), f = d => d.toLocaleDateString('es', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  return f(a) + ' – ' + f(b);
+}
+function rmWeeklyCard() {
+  const B = Rooms.weeklyBoard(S.couple, Date.now(), window.ROOMS_INDEX), w = B.cur, r = window.ROOMS_INDEX.find(x => x.id === w.id);
+  if (!r) return '';
+  const days = Math.max(1, Math.ceil((w.to - Date.now()) / 86400000)), m = B.mine;
+  return '<div class="card" id="rmWeekly" style="border:2px solid var(--accent)"><div class="small" style="font-weight:700;color:var(--accent)">🗓️ RETO DE LA SEMANA · ' + (days === 1 ? 'último día' : 'quedan ' + days + ' días') + '</div>' +
+    '<h3 style="margin:4px 0">' + esc(r.title) + '</h3><div class="small">' + w.mod.e + ' Condición: <b>' + esc(w.mod.name) + '</b> (+300 puntos)</div>' +
+    (m ? '<div class="small" style="margin-top:6px">' + (m.ok ? '✅ Reto cumplido' : '☑️ Jugado, sin cumplir la condición') + ' · <b>' + m.points.toLocaleString('es') + ' pts</b> · puesto ' + (B.rows.findIndex(x => x.key === w.key) + 1) + ' de ' + B.rows.length + ' entre sus semanas</div>' : '') +
+    (B.streak > 1 ? '<div class="small">🔥 ' + B.streak + ' semanas seguidas</div>' : '') +
+    '<button class="btn primary block sm" style="margin-top:10px" data-act="rmOpen" data-v="' + r.id + '">' + (m ? 'Mejorar nuestra marca' : 'Jugar el reto') + '</button></div>';
+}
+VIEWS.roomsAlbum = () => {
+  const I = window.ROOMS_INDEX, D = window.ROOMS_DATA, ach = Rooms.achievements(S.couple, I, D), B = Rooms.weeklyBoard(S.couple, Date.now(), I);
+  const ends = (S.couple || {}).roomsEnds || {};
+  let h = '<div class="card"><h2>Ranking de sus retos semanales</h2>';
+  h += B.rows.length ? B.rows.slice(0, 8).map((r, i) => '<div class="item"><span style="font-size:20px;width:28px;text-align:center">' + (['🥇', '🥈', '🥉'][i] || (i + 1) + '.') + '</span><span class="tx"><b>' + r.points.toLocaleString('es') + ' pts</b> ' + (r.ok ? '✅' : '') + '<br><span class="muted small">' + esc((D[r.id] || {}).title || '') + ' · ' + rmWeekDates(r.n) + ' · ' + E.mmss(r.ms) + '</span></span>' + (r.key === B.cur.key ? '<span class="chip on">Esta semana</span>' : '') + '</div>').join('')
+    : '<p class="muted" style="margin:0">Aún no han jugado ningún reto semanal. El de esta semana les espera en la lista de escape rooms.</p>';
+  h += '</div><div class="card"><h2>Logros · ' + ach.filter(a => a.done).length + ' de ' + ach.length + '</h2>' + ach.map(a => '<div class="item" style="' + (a.done ? '' : 'opacity:.6') + '"><span style="font-size:24px;' + (a.done ? '' : 'filter:grayscale(1)') + '">' + a.e + '</span><span class="tx"><b>' + esc(a.name) + '</b><br><span class="muted small">' + esc(a.desc) + '</span></span><span class="chip' + (a.done ? ' on' : '') + '">' + (a.done ? '✓' : a.n + '/' + a.of) + '</span></div>').join('') + '</div>';
+  h += '<div class="card"><h2>Álbum de finales</h2><p class="muted small" style="margin-top:0">Cada escape room termina de varias formas según lo que decidan juntos. Los finales que consigan se guardan aquí.</p>';
+  for (const r of I) {
+    const d = D[r.id]; if (!d) continue;
+    const got = ends[r.id] || {};
+    h += '<h3 style="margin:14px 0 6px;font-size:15px">' + esc(r.title) + ' <span class="muted small">' + Object.keys(got).length + '/' + d.endings.length + '</span></h3>' +
+      d.endings.map(e => got[e.ending_id] ? '<details class="rm-end"><summary>🎬 <b>' + esc(e.name) + '</b></summary><p class="small" style="margin:6px 0 0">' + esc(e.text) + '</p></details>' : '<div class="rm-end muted">🔒 Final por descubrir</div>').join('');
+  }
+  return h + '</div>';
+};
+let RM_ACH_SEEN = null;
+function rmCheckAch() {
+  if (!S.couple) return;
+  const done = Rooms.achievements(S.couple, window.ROOMS_INDEX, window.ROOMS_DATA).filter(a => a.done);
+  if (RM_ACH_SEEN) { const nu = done.filter(a => !RM_ACH_SEEN[a.id]); if (nu.length) { toast('🏅 Logro conseguido: ' + nu.map(a => a.name).join(', ')); chime && chime(); } }
+  RM_ACH_SEEN = {}; done.forEach(a => RM_ACH_SEEN[a.id] = 1);
+}
+// Avisos del escape room cuando la app está en segundo plano (o un toque si estás en otra pantalla)
+let RM_START_SEEN = null;
+function rmCheckStart() {
+  const st = rmState(), t = st.startedAt || 0;
+  if (RM_START_SEEN !== null && t && t !== RM_START_SEEN && st.by && st.by !== myRole() && Date.now() - t < 120000) {
+    const txt = partnerName() + ' te espera en el escape room «' + ((window.ROOMS_DATA[st.id] || {}).title || '') + '»';
+    notify('Nosotros', txt);
+    if (S.tab !== 'room') toast('🧩 ' + txt);
+  }
+  RM_START_SEEN = t;
+}
+
 function rmBestLine(id) {
   const b = ((S.couple || {}).roomsBest || {})[id];
   return b && b.points ? '<div class="small" style="margin-top:2px">' + rmStars(b.stars || 1) + ' · 🏆 ' + b.points.toLocaleString('es') + ' pts · ' + E.mmss(b.ms) + '</div>' : '';
@@ -167,6 +220,7 @@ function rmCheckPing() {
   if (RM_PING_SEEN ? p.t <= RM_PING_SEEN : Date.now() - p.t > 8000) { RM_PING_SEEN = Math.max(RM_PING_SEEN, p.t); return; }
   RM_PING_SEEN = p.t;
   const [e, txt] = RM_PINGS[p.k] || RM_PINGS[0];
+  notify(partnerName(), e + ' ' + txt + ' (escape room)');
   const d = document.createElement('div');
   d.className = 'rm-ping'; d.dataset.t = p.t;
   d.innerHTML = '<div class="e">' + e + '</div><div class="t">' + esc(partnerName()) + ': ' + esc(txt) + '</div>';
@@ -226,7 +280,7 @@ ACTS.rmStart = el => {
     const opts = [null].concat(data.variants.map(v => v.variant_id)).filter(v => v !== (rmState().id === id ? rmState().variant || null : undefined));
     const variant = opts[Math.floor(Math.random() * opts.length)];
     RM_SUBS.length = 0; rmShowSub(); RM3.left = false;
-    return Sync.patchCouple(S.code, { rooms10: { id, variant, startedAt: Date.now() } });
+    return Sync.patchCouple(S.code, { rooms10: { id, variant, startedAt: Date.now(), by: myRole() } });
   };
   const st = rmState();
   if (st.startedAt && !st.wonAt && st.id !== id) return askConfirm('Se cerrará la partida en curso para los dos.', 'Empezar', go);
@@ -371,10 +425,18 @@ function rmCheckWin() {
   const patch = { 'rooms10.wonAt': wonAt, ['roomsBest.' + st.id + '.plays']: (best.plays || 0) + (best.lastWon === wonAt ? 0 : 1), ['roomsBest.' + st.id + '.lastWon']: wonAt };
   if (!best.points || sc.points > best.points || best.at === wonAt) Object.assign(patch, { ['roomsBest.' + st.id + '.points']: sc.points, ['roomsBest.' + st.id + '.stars']: Math.max(sc.stars, best.at === wonAt ? 0 : best.stars || 0), ['roomsBest.' + st.id + '.ms']: sc.ms, ['roomsBest.' + st.id + '.at']: wonAt });
   else if (sc.stars > (best.stars || 0)) patch['roomsBest.' + st.id + '.stars'] = sc.stars;
+  // Logros: marcas que se quedan para siempre, finales del álbum y reto de la semana
+  if (sc.hints === 0) patch['roomsBest.' + st.id + '.clean'] = true;
+  if (sc.fails === 0) patch['roomsBest.' + st.id + '.noFail'] = true;
+  if (!st.noTimer && sc.ms <= (s.estimated_duration_minutes || 45) * 30000) patch['roomsBest.' + st.id + '.rapid'] = true;
+  const got = ((S.couple || {}).roomsEnds || {})[st.id] || {};
+  for (const e of Rooms.endings(s, c)) if (!got[e.ending_id]) patch['roomsEnds.' + st.id + '.' + e.ending_id] = wonAt;
+  const wk = Rooms.weekly(wonAt, window.ROOMS_INDEX), wr = Rooms.weeklyResult(wk, s, Object.assign({}, st, { wonAt }), sc), prev = ((S.couple || {}).roomsWeekly || {})[wk.key];
+  if (wr && (!prev || wr.points > prev.points || (wr.ok && !prev.ok && wr.points >= prev.points))) patch['roomsWeekly.' + wk.key] = wr;
   Sync.patchCouple(S.code, patch);
 }
 function rmTrackSim() {
-  try { rmCheckWin(); rmCheckPing(); } catch (e) { console.warn(e); }
+  try { rmCheckWin(); rmCheckPing(); rmCheckAch(); rmCheckStart(); } catch (e) { console.warn(e); }
   const sim = rmState().sim || {};
   // Con la ficha de un acertijo "a la vez" abierta, se redibuja para avisar que la pareja ya pulsó
   setTimeout(() => { try { if (document.getElementById('rz') && RZ && rmCurPuzzle() && rmCurPuzzle().answer.type === 'simultaneous') rmDraw(); } catch (e) { } }, 0);
@@ -386,6 +448,7 @@ function rmTrackSim() {
     // Si los dos pulsaron casi a la vez, cada uno escribió "esperando" sin ver al otro. Al llegar la pulsación
     // de la pareja mientras la mía sigue reciente (según mi propio reloj), este móvil cierra el acertijo.
     const mine = sim[pid][role];
+    if (r === other && Date.now() - e.at < 8000) notify('Nosotros', partnerName() + ' ya pulsó: ¡te toca pulsar a la vez!');
     if (r === other && mine && mine.at && RM_SIM_MINE[pid + mine.at]) setTimeout(() => rmSimResolve(pid, mine), 0);
   }
 }

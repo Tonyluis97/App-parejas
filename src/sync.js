@@ -57,6 +57,14 @@
         c.doc.members[uid] = member;
         save(db);
       },
+      async recover(code, key) {
+        const db = load(), c = db.couples[code], who = c && (c.doc.recov || {})[key];
+        if (!who) throw new Error('El código o la clave no coinciden.');
+        if (!c.doc.uids.includes(uid)) c.doc.uids.push(uid);
+        if (who !== uid) setPath(c.doc, 'alias.' + uid, who);
+        save(db);
+        return who;
+      },
       // patch admite claves con puntos: { 'members.abc.mood': 'feliz' }
       async patchCouple(code, patch) {
         const db = load();
@@ -136,6 +144,21 @@
           if (e && e.code === 'permission-denied') throw new Error('No se pudo unir: el código no existe o la pareja ya está completa.');
           throw e;
         }
+      },
+      // Las reglas dejan entrar a una sesión nueva solo si presenta una clave de recuperación que exista
+      async recover(code, key) {
+        const ref = fs.doc(db, 'couples', code);
+        let d = null;
+        try { d = await fs.getDoc(ref); } catch (e) { /* aún no somos miembros */ }
+        if (!d || !d.exists()) {
+          try { await fs.updateDoc(ref, { uids: fs.arrayUnion(uid), ['claim.' + uid]: key }); }
+          catch (e) { throw new Error('El código o la clave no coinciden.'); }
+          d = await fs.getDoc(ref);
+        }
+        const who = ((d.data() || {}).recov || {})[key];
+        if (!who) throw new Error('El código o la clave no coinciden.');
+        if (who !== uid) await fs.updateDoc(ref, { ['alias.' + uid]: who });
+        return who;
       },
       async patchCouple(code, patch) { await fs.updateDoc(fs.doc(db, 'couples', code), patch); },
       watchCouple(code, cb) {

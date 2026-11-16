@@ -141,6 +141,8 @@ const wait = ms => new Promise(r => setTimeout(r, FB ? ms * 4 : ms));
   await A.screenshot({ path: shots + '/r-06-final.png', fullPage: true });
   await A.click('[data-act=tab][data-v=rooms]'); await wait(200);
   ok('récord en la lista', /🏆/.test(await A.textContent('main')));
+  ok('final guardado en el álbum', await A.evaluate(() => Object.keys((S.couple.roomsEnds || {}).ER09 || {}).length >= 1));
+  ok('logro de primera fuga', await B.evaluate(() => Rooms.achievements(S.couple, ROOMS_INDEX, ROOMS_DATA)[0].done));
   await A.click('[data-act=rmOpen][data-v=ER09]'); await wait(200);
 
   // Pausa compartida y reinicio

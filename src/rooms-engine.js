@@ -290,7 +290,60 @@
     return st;
   }
 
-  const Rooms = { norm, scenario, compute, discovered, myRooms, objectsIn, nextAction, cluesAt, myClues, helpClues, inventory,
+  // ---------- Reto semanal, logros y álbum de finales (todo se calcula con lo que ya guarda la pareja) ----------
+  const WEEK = 604800000, W0 = Date.UTC(2026, 0, 5); // lunes, en UTC: los dos móviles ven el mismo reto aunque vivan en husos distintos
+  const WEEK_MODS = [
+    { k: 'nohint', e: '🧠', name: 'Sin pedir pistas', test: sc => sc.hints === 0 },
+    { k: 'fast', e: '⏱️', name: 'Antes del tiempo estimado', test: (sc, est) => sc.ms <= est },
+    { k: 'nofail', e: '🎯', name: 'Con 2 fallos como mucho', test: sc => sc.fails <= 2 },
+    { k: 'stars', e: '⭐', name: 'Con 2 estrellas o más', test: sc => sc.stars >= 2 },
+  ];
+  function weekly(t, index) {
+    const n = Math.floor((t - W0) / WEEK), ready = index.filter(r => r.ready), L = ready.length || 1;
+    const r = ready[(((n * 7 + 3) % L) + L) % L], mod = WEEK_MODS[((n % 4) + 4) % 4];
+    return { key: 'w' + n, n, id: r && r.id, mod, from: W0 + n * WEEK, to: W0 + (n + 1) * WEEK };
+  }
+  // Resultado del reto de una victoria: 300 puntos extra si se cumple la condición
+  function weeklyResult(w, s, st, sc) {
+    if (!w || s.scenario_id !== w.id || !(st.startedAt >= w.from) || !(st.wonAt < w.to)) return null;
+    const ok = !!w.mod.test(sc, (s.estimated_duration_minutes || 45) * 60000);
+    return { id: w.id, points: sc.points + (ok ? 300 : 0), ok, ms: sc.ms, at: st.wonAt };
+  }
+  function weeklyBoard(couple, now, index) {
+    const all = (couple && couple.roomsWeekly) || {}, cur = weekly(now, index);
+    const rows = Object.keys(all).map(k => Object.assign({ key: k, n: +k.slice(1) }, all[k])).filter(r => r.points).sort((a, b) => b.points - a.points || a.ms - b.ms);
+    let streak = 0;
+    for (let n = all[cur.key] ? cur.n : cur.n - 1; all['w' + n]; n--) streak++;
+    return { rows, streak, cur, mine: all[cur.key] || null };
+  }
+  function achievements(couple, index, data) {
+    const best = (couple && couple.roomsBest) || {}, ends = (couple && couple.roomsEnds) || {}, wk = (couple && couple.roomsWeekly) || {};
+    const ids = index.filter(r => r.ready).map(r => r.id), won = ids.filter(i => best[i] && best[i].points);
+    const cnt = f => ids.filter(i => best[i] && f(best[i])).length;
+    const nEnds = ids.reduce((a, i) => a + Object.keys(ends[i] || {}).length, 0);
+    const totalEnds = ids.reduce((a, i) => a + ((data[i] || {}).endings || []).length, 0);
+    const fullRoom = ids.filter(i => data[i] && data[i].endings.length && Object.keys(ends[i] || {}).length >= data[i].endings.length).length;
+    const weeks = Object.keys(wk).length, weeksOk = Object.keys(wk).filter(k => wk[k].ok).length;
+    const A = (id, e, name, desc, n, of) => ({ id, e, name, desc, n: Math.min(n, of), of, done: n >= of });
+    return [
+      A('first', '🚪', 'Primera fuga', 'Terminen juntos su primer escape room.', won.length, 1),
+      A('five', '🗝️', 'Medio llavero', 'Terminen 5 escape rooms distintos.', won.length, 5),
+      A('all', '🏆', 'Las diez puertas', 'Terminen los 10 escape rooms.', won.length, ids.length),
+      A('nohint', '🧠', 'Sin pistas', 'Terminen uno sin pedir ninguna pista.', cnt(b => b.clean), 1),
+      A('nofail', '🎯', 'A la primera', 'Terminen uno sin una sola respuesta fallida.', cnt(b => b.noFail), 1),
+      A('rapid', '⚡', 'Contrarreloj', 'Terminen uno en la mitad del tiempo estimado.', cnt(b => b.rapid), 1),
+      A('star3', '⭐', 'Tres estrellas', 'Consigan 3 estrellas en un escape room.', cnt(b => b.stars >= 3), 1),
+      A('star3x5', '🌟', 'Constelación', 'Consigan 3 estrellas en 5 escape rooms.', cnt(b => b.stars >= 3), 5),
+      A('replay', '🔁', 'Otra vez, otras pistas', 'Terminen el mismo escape room 3 veces.', Math.max(0, ...ids.map(i => (best[i] || {}).plays || 0)), 3),
+      A('ends10', '📖', 'Coleccionistas', 'Desbloqueen 10 finales del álbum.', nEnds, 10),
+      A('endsRoom', '🎬', 'Todos los caminos', 'Desbloqueen todos los finales de un escape room.', fullRoom, 1),
+      A('endsAll', '💎', 'Álbum completo', 'Desbloqueen todos los finales.', nEnds, totalEnds || 1),
+      A('week1', '📅', 'Cita de la semana', 'Jueguen un reto semanal.', weeks, 1),
+      A('week4', '🔥', 'Cuatro semanas', 'Cumplan la condición del reto en 4 semanas.', weeksOk, 4),
+    ];
+  }
+
+  const Rooms = { weekly, weeklyResult, weeklyBoard, achievements, WEEK_MODS, norm, scenario, compute, discovered, myRooms, objectsIn, nextAction, cluesAt, myClues, helpClues, inventory,
     puzzleStatus, check, choices, objectiveDone, won, endings, dialoguesFor, elapsed, score, COLLECTED,
     actTransition, actFind, actTry, actVote, actSim, simParts, combineItems, applyPatch };
   if (typeof module !== 'undefined' && module.exports) module.exports = Rooms;
