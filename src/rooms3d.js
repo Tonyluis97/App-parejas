@@ -703,7 +703,9 @@ const Rooms3D = (function () {
       const p = toW(room, l.position); pl.position.set(p[0], Math.min(p[1], (th.outdoor ? 6 : H) - 0.3), p[2]);
       if (i === 0) { pl.castShadow = true; pl.shadow.mapSize.set(1024, 1024); pl.shadow.bias = -0.002; }
       scene.add(pl);
-      const fx = fixture(th, pl.position, H, l.color || th.light);
+      // Una farola no se planta encima de un objeto (la luz sí se queda)
+      const busyFx = th.outdoor && layout(s, room).boxes.some(q => pl.position.x > q.x0 - 0.5 && pl.position.x < q.x1 + 0.5 && pl.position.z > q.z0 - 0.5 && pl.position.z < q.z1 + 0.5);
+      const fx = busyFx ? null : fixture(th, pl.position, H, l.color || th.light);
       if (fx) scene.add(fx);
     });
 
