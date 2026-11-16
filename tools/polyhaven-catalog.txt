@@ -743,6 +743,7 @@ fishermans_hat|model|collection: project_lighthouse,props|outdoor,clothing,hat,g
 flamed_black_veneer|tex|wood,raw wood|smooth,grain,wood grain,raw,raw wood,veneer
 flamingo_pan|hdri|outdoor,natural light,nature,skies,partly cloudy,low contrast,sunrise-sunset|sun,tree,hilltop,dam,lake,grass
 flathead_screwdriver|model|tools,props,industrial,collection: the_shed|wood,shed,wooden,garage,workshop,woodwork
+flood_lights|model|lighting,industrial,electronics|light,outdoor,industrial,lighting,work light,portable
 floor_bricks_02|tex|floor,outdoor,man made,dirty,brick|bricks,moss,pavement,scattered plants ,weeds,mosscovered
 floor_klinkers_01|tex|floor,brick,outdoor,dirty,man made|bricks,moss,rough,weathered,aged,uneven
 floor_klinkers_04|tex|floor,brick,outdoor,dirty,man made,wall|smooth,aged,worn,brown,yellow
@@ -1643,6 +1644,7 @@ resting_place_2|hdri|outdoor,natural light,nature,clear,high contrast,morning-af
 resting_place|hdri|outdoor,natural light,nature,partly cloudy,skies,high contrast,morning-afternoon|sun,grass,field,tree,dam,lake
 retro_multimeter|model|collection: project_lighthouse,electronics,industrial,tools,instrument,props|old,vintage,antique,analog,engineering,voltmeter
 rhodes_memorial|hdri|outdoor,urban,morning-afternoon,partly cloudy,high contrast,natural light|sun,view,architecture,statue,backplates
+ribbed_block_wall|tex|wall,man made,outdoor,plaster-concrete|wall,weathered,rough,concrete,uneven,exterior
 ribbed_concrete_wall|tex|wall,concrete,plaster-concrete|grooved,outdoor,patterned,patterned concrete,urban,vertical lines
 ribbed_corduroy|tex|fabric,corduroy|green,striped,fabric,textile ,corduroy,woven
 riet_01|tex|roofing,outdoor,man made|reed,grey,old,village,straw,hut
